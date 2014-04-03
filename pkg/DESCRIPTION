@@ -1,0 +1,9 @@
+Package: fuzzySim
+Type: Package
+Title: Fuzzy similarity in species distributions
+Version: 0.1
+Date: 2014-03-19
+Author: Barbosa A.M.
+Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
+Description: Functions to calculate fuzzy versions of species' distributions based on presence-absence data, and pair-wise fuzzy similarity among those distributions. Includes also functions for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), or transposing part of a data frame. Complete with a couple of sample data sets for providing practical examples.
+License: GPL-3

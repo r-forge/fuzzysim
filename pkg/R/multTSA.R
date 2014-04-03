@@ -1,0 +1,73 @@
+multTSA <-
+function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, Favourability = FALSE, save.models = FALSE) {
+
+  start.time <- proc.time()
+  
+  stopifnot (
+    as.matrix(data[ , sp.cols]) %in% c(0, 1),
+    length(sp.cols) > 0,
+    length(sp.cols) <= ncol(data) - length(coord.cols) - length(id.col),
+    sp.cols %in% 1:ncol(data) | sp.cols %in% colnames(data),
+    is.null(coord.cols) | length(coord.cols) == 2,
+    is.null(coord.cols) | coord.cols %in% 1:ncol(data) | coord.cols %in% colnames(data),
+    is.numeric(as.matrix(data[ , coord.cols])),
+    is.null(id.col) | id.col %in% 1:ncol(data) | id.col %in% colnames(data),
+    degree %% 1 == 0,
+    is.logical(step),
+    is.logical(Favourability),
+    is.logical(save.models)
+  )
+  
+  coords.poly <- as.data.frame(poly(as.matrix(data[ , coord.cols]), degree = degree, raw = TRUE))
+  n.poly.terms <- ncol(coords.poly)
+  colnames(coords.poly) <- paste(rep("poly", n.poly.terms), c(1:n.poly.terms), sep = "")
+
+  sp.data <- as.matrix(data[ , sp.cols])
+  colnames(sp.data) <- colnames(data)[sp.cols]
+  n.subjects <- length(sp.cols)
+  if (save.models) TSA.models <- vector("list", n.subjects)
+  subj.count <- 0
+  
+  data.input <- data
+  data <- cbind(data, coords.poly)
+  attach(data)
+  
+  for (s in 1:n.subjects) {
+    subj.count <- subj.count + 1
+    subj.name <- colnames(sp.data)[s]
+    message("Calculating TS ", subj.count, " of ", n.subjects, " (", subj.name, ") ...")
+    model.formula <- as.formula(paste(subj.name, "~", paste(colnames(coords.poly), collapse = "+")))
+    model.expr <- expression(with(data, glm(model.formula, family = binomial)))
+    if (step) model <- step(eval(model.expr), trace = 0)
+    else model <- eval(model.expr)
+    pred <- predict(model, coords.poly, type = "response")
+    if (Favourability) {
+      n1 <- sum(sp.data[ , s])
+      n0 <- sum(sp.data[ , s] == 0)
+      pred <- (pred / (1 - pred)) / ((n1 / n0) + (pred / (1 - pred)))
+    }
+    data.input[ , ncol(data.input) + 1] <- pred
+    colnames(data.input)[ncol(data.input)] <- paste(subj.name, "TS", degree, sep = "")
+    if (save.models) {
+      TSA.models[[subj.count]] <- model
+      names(TSA.models)[[subj.count]] <- subj.name
+    }
+  }
+
+  detach(data)
+  
+  predictions <- data.frame(data[ , id.col], data.input[ , ((ncol(data) + 1) : ncol(data.input))])
+
+  if (!is.null(id.col)) {
+    if (is.character(id.col)) colnames(predictions)[1] <- id.col
+    else colnames(predictions)[1] <- colnames(data)[id.col]
+  }
+  
+  end.time <- proc.time()
+  duration <- (end.time - start.time)[3]
+  message("Finished in ", round(duration), " second(s).")
+  
+  if (save.models) return(list(predictions = data.frame(predictions), TSA.models = TSA.models))
+  else return (predictions)
+  
+}

@@ -50,19 +50,29 @@ echo $contents; } ?>
 
 <br />
 
+<h2> Install and load </h2>
+<code>
+install.packages("fuzzySim", repos="http://R-Forge.R-project.org")<br />
+library(fuzzySim)<br />
+help("fuzzySim")
+</code>
+<br />
+<br />
+<br />
+
 <h2> References </h2>
 
-<p> There is a forthcoming paper about the package, whose provisional reference is:</p>
+<p><i> There is a forthcoming paper about the package, whose provisional reference is:</i></p>
 
-<p> Barbosa A.M. (submitted) <i>fuzzySim</i>: a fuzzy implementation of binary similarity indices for spatially aware analysis of species’ distributional associations.</p>
+<p> Barbosa A.M. (submitted) <i>fuzzySim</i>: a fuzzy implementation of binary similarity indices for spatially aware analysis of species' distributional associations.</p>
 
 <br />
 
 <h2>Find out more</h2>
 
-<p> The R-Forge project summary page you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">here</a>. </p>
+<p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for <b>further info</b> (including a <b>user's manual</b>) on the package. </p>
 
-<p> You can get <b>further info</b> (including a <b>user's manual</b>) about the package <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a>. </p>
+<p> The R-Forge project summary page you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">here</a>. </p>
 
 </body>
 </html>

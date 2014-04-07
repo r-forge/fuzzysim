@@ -6,7 +6,12 @@
 Fuzzy similarity in species distributions
 }
 \description{
-Functions to calculate fuzzy versions of species' distributions based on presence-absence data, and pair-wise fuzzy similarity among those distributions. Includes also functions for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), or transposing part of a data frame. Complete with a couple of sample data sets for providing practical examples.
+Functions to calculate fuzzy versions of species' distributions based on 
+presence-absence data, and pair-wise fuzzy similarity among those distributions. 
+Includes also functions for data preparation, such as obtaining unique 
+abbreviations of species names, converting species lists (long format) to 
+presence-absence tables (wide format), or transposing part of a data frame. 
+Complete with a couple of sample data sets for providing practical examples.
 }
 \details{
 \tabular{ll}{
@@ -23,11 +28,13 @@ A. Marcia Barbosa
 Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
 }
 \references{
-Barbosa A.M. (submitted) fuzzySim: A Fuzzy Implementation of Binary Similarity Indices for Spatially Aware Analysis of Species' Distributional Associations.
+Barbosa A.M. (submitted) fuzzySim: A Fuzzy Implementation of Binary Similarity 
+Indices for Spatially Aware Analysis of Species' Distributional Associations.
 }
 \keyword{ package }
 \seealso{
-\code{RMACOQUI} (Olivero, Real & Marquez 2011, Systematic Biology 60:645-60, doi 10.1093/sysbio/syr026)
+\code{RMACOQUI} (Olivero, Real & Marquez 2011, Systematic Biology 60:645-60, 
+doi 10.1093/sysbio/syr026)
 }
 \examples{
 data(rotifers)
@@ -37,14 +44,16 @@ head(rotifers)
 
 # add column with species name abbreviations:
 
-rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", nchar.gen = 1, nchar.sp = 5, nchar.ssp = 0)
+rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", nchar.gen = 1, 
+nchar.sp = 5, nchar.ssp = 0)
 
 head(rotifers)
 
 
 # convert species list (long format) to presence-absence table (wide format):
 
-rotifers.presabs <- splist2presabs(rotifers, sites.col = "LEVEL3_COD", sp.col = "spcode", keep.n = FALSE)
+rotifers.presabs <- splist2presabs(rotifers, sites.col = "LEVEL3_COD", 
+sp.col = "spcode", keep.n = FALSE)
 
 head(rotifers.presabs)
 
@@ -55,14 +64,16 @@ data(rotifers01)
 
 names(rotifers01)
 
-rotifers.tsa <- multTSA(rotifers01, sp.cols = 6:40, coord.cols = c("Long", "Lati"), id.col = 1)
+rotifers.tsa <- multTSA(rotifers01, sp.cols = 6:40, 
+coord.cols = c("Long", "Lati"), id.col = 1)
 
 head(rotifers.tsa)
 
 
 # get fuzzy version of presence-absence using inverse squared distance to presence:
 
-rotifers.dsq <- distPres(rotifers01, sp.cols = 6:ncol(rotifers01), coord.cols = c("Long", "Lati"), id.col = 1, p = 2, inv = TRUE)
+rotifers.dsq <- distPres(rotifers01, sp.cols = 6:ncol(rotifers01), 
+coord.cols = c("Long", "Lati"), id.col = 1, p = 2, inv = TRUE)
 
 head(rotifers.dsq)
 
@@ -74,11 +85,13 @@ rot.fuz.sim.mat <- simMat(rotifers.dsq[ , -1], method = "Baroni")
 head(rot.fuz.sim.mat)
 
 
-# transpose fuzzy rotifer distribution data to compare regional species composition rather than species' distributions:
+# transpose fuzzy rotifer distribution data to compare regional species 
+composition rather than species' distributions:
 
 names(rotifers.dsq)
 
-rot.fuz.reg <- transpose(rotifers.dsq, sp.cols = 2:ncol(rotifers.dsq), reg.names = 1)
+rot.fuz.reg <- transpose(rotifers.dsq, sp.cols = 2:ncol(rotifers.dsq), 
+reg.names = 1)
 
 head(rot.fuz.reg)
 

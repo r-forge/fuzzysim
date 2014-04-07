@@ -1,4 +1,3 @@
-
 <!-- This is the project specific website template -->
 <!-- It can be changed as liked or replaced by other content -->
 
@@ -43,9 +42,27 @@ echo $contents; } ?>
 
 <!-- end of project description -->
 
-<p> No content added. </p>
+<p> It includes functions for data preparation, such as converting <b>species lists (long format) to presence-absence tables (wide format)</b>, obtaining <b>unique abbreviations of species names</b>, or <b>transposing (parts of) complex data frames</b>; and a couple of <b>sample data sets</b> for providing practical examples.</p>
 
-<p> The <strong>project summary page</strong> you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>. </p>
+<p> It can <b>convert binary presence-absence data to fuzzy occurrence data</b>, using trend surface analysis or inverse distance interpolation, for multiple species simultaneously.</p>
+
+<p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>.</p>
+
+<br />
+
+<h2> References </h2>
+
+<p> There is a forthcoming paper about the package, whose provisional reference is:</p>
+
+<p> Barbosa A.M. (submitted) <i>fuzzySim</i>: a fuzzy implementation of binary similarity indices for spatially aware analysis of species’ distributional associations.</p>
+
+<br />
+
+<h2>Find out more</h2>
+
+<p> The R-Forge project summary page you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">here</a>. </p>
+
+<p> You can get <b>further info</b> (including a <b>user's manual</b>) about the package <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a>. </p>
 
 </body>
 </html>

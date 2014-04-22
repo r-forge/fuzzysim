@@ -8,8 +8,8 @@ Pair-wise (fuzzy) similarity matrix
 either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the 
 \code{\link{fuzSim}} function to calculate a square matrix of pair-wise 
 similarities between them, using a fuzzy logic version (after Zadeh, 1965) of 
-either Jaccard's (1901) or Baroni-Urbani & Buser's (1976) binary similarity 
-index.
+either Jaccard's (1901), Baroni-Urbani & Buser's (1976) or Sorensen's (1948) 
+binary similarity index.
 }
 \usage{
 simMat(data, method)
@@ -24,7 +24,7 @@ belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence
 \code{\link{multTSA}}.
 }
   \item{method}{
-the similarity index to use. Available options are 'Baroni' and 'Jaccard'.
+the similarity index whose fuzzy version to use. Available options are \code{'Baroni'}, \code{'Jaccard'} and \code{'Sorensen'}.
 }
 }
 \details{
@@ -61,6 +61,11 @@ tool to improve insight into biogeographic patterns. Systematic Biology,
 Olivero, J., Marquez, A.L., Real, R. (2013) Integrating fuzzy logic and 
 statistics to improve the reliable delimitation of biogeographic regions 
 and transition zones. Systematic Biology, 62: 1-21.
+
+Sorensen T. (1948) A method of establishing groups of equal amplitude in 
+plant sociology based on similarity of species and its application to 
+analyses of the vegetation on Danish commons. Kongelige Danske Videnskabernes 
+Selskab 5(4): 1-34
 
 Zadeh L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353. 
 }
@@ -137,9 +142,10 @@ plot(hclust(as.dist(1 - fuz.sim.mat), method = "average"),
 main = "Fuzzy cluster dendrogram")
 
 
-# you can get fuzzy chorotypes from these similarity matrices (or fuzzy biotic 
-regions if your transpose \code{data} so that localities are in columns and 
-species in rows) using the \code{RMACOQUI} package (Olivero et al. 2011).
+# you can get fuzzy chorotypes from these similarity matrices 
+# (or fuzzy biotic regions if your transpose \code{data} so that localities 
+# are in columns and species in rows) using the \code{RMACOQUI} package 
+# (Olivero et al. 2011)
 }
 \keyword{ similarity }
 \keyword{ fuzzy }

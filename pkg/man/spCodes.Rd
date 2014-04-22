@@ -66,7 +66,7 @@ head(rotifers)
 ## add a column to 'rotifers' with shorter versions of the species names:
 
 # rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", nchar.gen = 1, 
-nchar.sp = 4, nchar.ssp = 0, sep.spcode = ".")
+# nchar.sp = 4, nchar.ssp = 0, sep.spcode = ".")
 # this would produce an error due to resulting species codes not being unique
 # (try it out)
 

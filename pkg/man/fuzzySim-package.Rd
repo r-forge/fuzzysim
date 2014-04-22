@@ -6,12 +6,13 @@
 Fuzzy similarity in species distributions
 }
 \description{
-Functions to calculate fuzzy versions of species' distributions based on 
-presence-absence data, and pair-wise fuzzy similarity among those distributions. 
-Includes also functions for data preparation, such as obtaining unique 
-abbreviations of species names, converting species lists (long format) to 
-presence-absence tables (wide format), or transposing part of a data frame. 
-Complete with a couple of sample data sets for providing practical examples.
+Functions to calculate fuzzy versions of species' occurrence patterns based on 
+presence-absence data, and pair-wise fuzzy similarity (based on fuzzy versions 
+of commonly used similarity indices) among those occurrence patterns. Includes 
+also functions for data preparation, such as obtaining unique abbreviations of 
+species names, converting species lists (long format) to presence-absence 
+tables (wide format), or transposing part of a data frame. Complete with a 
+couple of sample data sets for providing practical examples.
 }
 \details{
 \tabular{ll}{
@@ -70,7 +71,8 @@ coord.cols = c("Long", "Lati"), id.col = 1)
 head(rotifers.tsa)
 
 
-# get fuzzy version of presence-absence using inverse squared distance to presence:
+# get fuzzy version of presence-absence using inverse squared 
+# distance to presence:
 
 rotifers.dsq <- distPres(rotifers01, sp.cols = 6:ncol(rotifers01), 
 coord.cols = c("Long", "Lati"), id.col = 1, p = 2, inv = TRUE)
@@ -85,8 +87,8 @@ rot.fuz.sim.mat <- simMat(rotifers.dsq[ , -1], method = "Baroni")
 head(rot.fuz.sim.mat)
 
 
-# transpose fuzzy rotifer distribution data to compare regional species 
-composition rather than species' distributions:
+# transpose fuzzy rotifer distribution data to compare 
+# regional species composition rather than species' distributions:
 
 names(rotifers.dsq)
 

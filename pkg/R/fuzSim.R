@@ -1,6 +1,9 @@
 fuzSim <-
 function(x, y, method) {
-  stopifnot(length(x) == length(y), x >= 0, x <= 1, y >= 0, y <= 1, method %in% c('Baroni', 'Jaccard'))
+  stopifnot(length(x) == length(y), 
+            x >= 0, x <= 1, 
+            y >= 0, y <= 1, 
+            method %in% c('Baroni', 'Jaccard', 'Sorensen'))
   A <- sum(x)
   B <- sum(y)
   C <- sum(pmin(x, y))
@@ -9,4 +12,5 @@ function(x, y, method) {
     return((sqrt(C * D) + C) / ((sqrt(C * D)) + A + B - C))
   }
   else if (method == "Jaccard") return(C / (A + B - C))
+  else if (method == "Sorensen") return(2 * C / (A + B))
 }

@@ -1,5 +1,6 @@
 multTSA <-
-function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, Favourability = FALSE, save.models = FALSE) {
+function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, 
+         Favourability = FALSE, suffix = "_TS", save.models = FALSE) {
 
   start.time <- proc.time()
   
@@ -18,9 +19,11 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, Favo
     is.logical(save.models)
   )
   
-  coords.poly <- as.data.frame(poly(as.matrix(data[ , coord.cols]), degree = degree, raw = TRUE))
+  coords.poly <- as.data.frame(poly(as.matrix(data[ , coord.cols]), 
+                                    degree = degree, raw = TRUE))
   n.poly.terms <- ncol(coords.poly)
-  colnames(coords.poly) <- paste(rep("poly", n.poly.terms), c(1:n.poly.terms), sep = "")
+  colnames(coords.poly) <- paste(rep("poly", n.poly.terms), 
+                                 c(1:n.poly.terms), sep = "")
 
   sp.data <- as.matrix(data[ , sp.cols])
   colnames(sp.data) <- colnames(data)[sp.cols]
@@ -35,7 +38,7 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, Favo
   for (s in 1:n.subjects) {
     subj.count <- subj.count + 1
     subj.name <- colnames(sp.data)[s]
-    message("Calculating TS ", subj.count, " of ", n.subjects, " (", subj.name, ") ...")
+    message("Computing TSA ", subj.count, " of ", n.subjects, " (", subj.name, ") ...")
     model.formula <- as.formula(paste(subj.name, "~", paste(colnames(coords.poly), collapse = "+")))
     model.expr <- expression(with(data, glm(model.formula, family = binomial)))
     if (step) model <- step(eval(model.expr), trace = 0)
@@ -47,7 +50,8 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, Favo
       pred <- (pred / (1 - pred)) / ((n1 / n0) + (pred / (1 - pred)))
     }
     data.input[ , ncol(data.input) + 1] <- pred
-    colnames(data.input)[ncol(data.input)] <- paste(subj.name, "TS", degree, sep = "")
+    #colnames(data.input)[ncol(data.input)] <- paste(subj.name, "TSA", degree, sep = "")
+    colnames(data.input)[ncol(data.input)] <- paste(subj.name, suffix, sep = "")
     if (save.models) {
       TSA.models[[subj.count]] <- model
       names(TSA.models)[[subj.count]] <- subj.name

@@ -10,7 +10,7 @@ denoting the spatial trend in species' occurrence patterns.
 }
 \usage{
 multTSA(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, 
-Favourability = FALSE, save.models = FALSE)
+Favourability = FALSE, suffix = "_TS", save.models = FALSE)
 }
 \arguments{
   \item{data}{
@@ -46,6 +46,9 @@ logical value indicating whether the probability values obtained from the
 regression should be converted to favourability, so that they are more directly 
 comparable among species with different prevalence (see Real et al., 2006). 
 The default is \code{FALSE}.
+}
+  \item{suffix}{
+character indicating the suffix to add to the trend surface columns in the resulting data frame. The default is \code{"_TS"}.
 }
   \item{save.models}{
 logical value indicating whether the models obtained from the regressions should 

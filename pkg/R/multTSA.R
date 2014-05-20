@@ -2,10 +2,10 @@ multTSA <-
 function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, 
          Favourability = FALSE, suffix = "_TS", save.models = FALSE) {
 
-  start.time <- proc.time()
+  start.time <- Sys.time()
   
   stopifnot (
-    as.matrix(data[ , sp.cols]) %in% c(0, 1),
+    na.omit(as.matrix(data[ , sp.cols])) %in% c(0,1),
     length(sp.cols) > 0,
     length(sp.cols) <= ncol(data) - length(coord.cols) - length(id.col),
     sp.cols %in% 1:ncol(data) | sp.cols %in% colnames(data),
@@ -67,9 +67,10 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
     else colnames(predictions)[1] <- colnames(data)[id.col]
   }
   
-  end.time <- proc.time()
-  duration <- (end.time - start.time)[3]
-  message("Finished in ", round(duration), " second(s).")
+  duration <- difftime(start.time, Sys.time())
+  units <- attr(duration, "units")
+  duration <- round(abs(as.numeric(duration)), 1)
+  message("Finished in ", duration, " ", units)
   
   if (save.models) return(list(predictions = data.frame(predictions), TSA.models = TSA.models))
   else return (predictions)

@@ -1,5 +1,6 @@
 distPres <-
-function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, method = "euclidian", suffix = "_D", p = 1, inv = TRUE) {
+function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, 
+         method = "euclidian", suffix = "_D", p = 1, inv = TRUE) {
   stopifnot(
     as.matrix(data[ , sp.cols]) %in% c(0, 1),
     length(sp.cols) > 0 & length(sp.cols) <= ncol(data) - length(coord.cols) - length(id.col),

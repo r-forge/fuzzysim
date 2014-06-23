@@ -51,20 +51,22 @@ echo $contents; } ?>
 <br />
 
 <h2> Install and load </h2>
+<p>Paste the following commands in the R console (when connected to the internet):</p>
 <code>
 install.packages("fuzzySim", repos="http://R-Forge.R-project.org")<br />
 library(fuzzySim)<br />
 help("fuzzySim")
 </code>
 <br />
-<br />
+<p>If you bump into problems, please go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for more complete download information.</p>
 <br />
 
 <h2> References </h2>
+<p>To see how to cite the package, load it in R [by typing <code>library(fuzzySim)</code>]</font> and type <b><code>citation(package="fuzzySim")</code></b></p>
 
-<p><i> There is a forthcoming paper about the package, whose provisional reference is:</i></p>
+<p> There is also a forthcoming paper about the package, whose provisional reference is:</p>
 
-<p> Barbosa A.M. (submitted) A fuzzy implementation of binary similarity indices for spatially aware analysis of biogeographic associations, biotic compositions, and species turnover.</p>
+<p><i> Barbosa A.M. (submitted) A fuzzy implementation of binary similarity indices for spatially aware analysis of biogeographic associations, biotic compositions, and species turnover.</i></p>
 
 <br />
 

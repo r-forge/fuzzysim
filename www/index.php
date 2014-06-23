@@ -46,7 +46,7 @@ echo $contents; } ?>
 
 <p> It can <b>convert binary presence-absence data to fuzzy occurrence data</b>, using trend surface analysis or inverse distance interpolation, for multiple species simultaneously.</p>
 
-<p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>.</p>
+<p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>. Currently available similarity indices are Jaccard, S&oslash;rensen, and Baroni-Urbani & Buser.</p>
 
 <br />
 
@@ -64,7 +64,7 @@ help("fuzzySim")
 
 <p><i> There is a forthcoming paper about the package, whose provisional reference is:</i></p>
 
-<p> Barbosa A.M. (submitted) <i>fuzzySim</i>: a fuzzy implementation of binary similarity indices for spatially aware analysis of species' distributional associations.</p>
+<p> Barbosa A.M. (submitted) A fuzzy implementation of binary similarity indices for spatially aware analysis of biogeographic associations, biotic compositions, and species turnover.</p>
 
 <br />
 

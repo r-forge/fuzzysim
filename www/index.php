@@ -66,7 +66,7 @@ help("fuzzySim")
 
 <p> There is also a forthcoming paper about the package, whose provisional reference is:</p>
 
-<p><i> Barbosa A.M. (submitted) A fuzzy implementation of binary similarity indices for spatially aware analysis of biogeographic associations, biotic compositions, and species turnover.</i></p>
+<p><i> Barbosa A.M. (submitted) A fuzzy implementation of binary similarity indices for assessing biogeographic associations, biotic compositions, and beta diversity.</i></p>
 
 <br />
 

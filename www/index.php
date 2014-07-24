@@ -66,7 +66,7 @@ echo $contents; } ?>
 <br />
 
 <h2>Find out more</h2>
-<p>An <b>illustrated beginners tutorial</b> on <i>fuzzySim</i> (updated 28 Apr 2014) is available in <a href="http://fuzzysim.r-forge.r-project.org/fuzzySim_tutorial.pdf">this PDF</a>.</p>
+<p>An <b>illustrated beginners tutorial</b> on <i>fuzzySim</i> (updated 28 Apr 2014) is available as a <a href="fuzzySim_tutorial.pdf">PDF</a>.</p>
 <p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for <b>further info</b> on the package. </p>
 <p> The R-Forge project summary page you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">here</a>. </p>
 

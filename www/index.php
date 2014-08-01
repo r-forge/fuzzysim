@@ -32,7 +32,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <!-- get project title  -->
 <!-- own website starts here, the following may be changed as you like -->
 
-<div style="text-align: center;"><img src="fuzzySimLogo.png"/></div>
+<div style="text-align: center;"><img src="fuzzySimLogo_small.png"/></div>
 
 <font face="helvetica, verdana, arial"> 
 

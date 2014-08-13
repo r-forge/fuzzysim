@@ -33,7 +33,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <!-- get project title  -->
 <!-- own website starts here, the following may be changed as you like -->
 
-<div style="text-align: center;"><img src="fuzzySimLogo_medium.png"/></div>
+<div style="text-align: center;"><img src="fuzzySim_logo_M.png"/></div>
 
 <font face="helvetica, verdana, arial"> 
 
@@ -77,7 +77,7 @@ echo $contents; } ?>
 
 <p> The <strong>forthcoming paper</strong> about the package should be cited when using the package - the provisional reference is:</p>
 
-<p><i> Barbosa A.M. (in review) A fuzzy implementation of binary similarity indices for assessing biogeographic associations, biotic compositions, and beta diversity.</i></p>
+<p><i> Barbosa A.M. (in review) A fuzzy implementation of binary similarity indices for assessing biogeographic associations, biotic regions, and beta diversity.</i></p>
 <br />
 
 

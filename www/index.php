@@ -1,3 +1,4 @@
+
 <!-- This is the project specific website template -->
 <!-- It can be changed as liked or replaced by other content -->
 
@@ -52,39 +53,41 @@ echo $contents; } ?>
 
 <p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>. Currently available similarity indices are Jaccard, S&oslash;rensen, and Baroni-Urbani & Buser.</p>
 
-<p><i>fuzzySim</i> is also being implemented as a graphical-interface extension for the <a href="http://www.qgis.org">QGIS</a> Processing Toolbox - please check back for news.</p>
+<p><i>fuzzySim</i> is also being implemented as a graphical-interface extension for the <strong><a href="http://www.qgis.org">QGIS</a></strong> Processing Toolbox - please check back for news.</p>
 
 <br />
 
 <h2> Install and load </h2>
-<p>To <strong>install</strong> <i>fuzzySim</i> directly from R-Forge, paste the following command in the R console (when connected to the internet):</p>
+<p>To <big><strong>install</strong></big> <i>fuzzySim</i> directly from R-Forge, paste the following command in the R console (when connected to the internet):</p>
 <code>install.packages("fuzzySim", repos="http://R-Forge.R-project.org")</code><br />
 
 <p>If the command above fails, producing a message like "<i>package 'fuzzySim' is not available for your R version</i>", you can either upgrade R to the latest version <i>or</i> download the compressed package source files to your disk (<i>.zip</i> or <i>.tar.gz</i> available <a href="https://r-forge.r-project.org/R/?group_id=1853">here</a>) and then install the package from there (R menu "<i>Packages - Install packages from local zip files</i>", or "<i>Tools - Install packages - Install from: Package Archive File</i>", or "<i>Packages & Data - Package installer, Packages repository - Local binary package</i>", ... depending on your R interface).</p>
 
-<p>You only need to install the package once, but then every time you re-open R you need to <strong>load</strong> it by typing:</p>
+<p>You only need to install the package once, but then every time you re-open R you need to <big><strong>load</strong></big> it by typing:</p>
 <code>library(fuzzySim)</code><br />
 
-<p>You can then check out the package <strong>help</strong> files and try some of the provided examples:</p>
+<p>You can then check out the package <big><strong>help</strong></big> files and try some of the provided <strong>examples</strong>:</p>
 <code>help("fuzzySim")</code><br />
 <br />
 
 
 <h2> References </h2>
 
-<p>To see how to <strong>cite</strong> the package, load it in R and type <code>citation(package="fuzzySim")</code>.</p>
+<p> To see how to <big><strong>cite</strong></big> the package itself, load it in R and type <big><code>citation(package="fuzzySim")</code></big>.</p>
 
-<p> There is also a <strong>forthcoming paper</strong> about the package, whose provisional reference is:</p>
+<p> The <strong>forthcoming paper</strong> about the package should be cited when using the package - the provisional reference is:</p>
 
-<p><i> Barbosa A.M. (submitted) A fuzzy implementation of binary similarity indices for assessing biogeographic associations, biotic compositions, and beta diversity</i></p>
+<p><i> Barbosa A.M. (in review) A fuzzy implementation of binary similarity indices for assessing biogeographic associations, biotic compositions, and beta diversity.</i></p>
 <br />
 
 
 <h2>Find out more</h2>
 
-<p>An <b>illustrated beginners tutorial</b> on <i>fuzzySim</i> (updated 28 Apr 2014) is available as a <a href="fuzzySim_tutorial.pdf">PDF</a>.</p>
+<p> An <b><a href="fuzzySim_tutorial.pdf">illustrated beginners <big>tutorial</big></a></b> (updated 28 Apr 2014) is available in PDF format.</p>
 
-<p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for <b>further info</b> on the package and its origins. </p>
+<p> Here's a <a href="fuzzySim_poster_RMtp.pdf">poster</a> made to present <i>fuzzySim</i> at <i><a href="http://r2014-mtp.sciencesconf.org/">Rencontres R 2014</a></i>.</p>
+
+<p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for further info on the package and its origins. </p>
 
 <p> The R-Forge project summary page you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">here</a>. </p>
 

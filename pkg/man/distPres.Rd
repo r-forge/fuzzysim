@@ -46,7 +46,8 @@ character indicating the suffix to add to the distance columns in the resulting
 data frame. The default is \code{"_D"}.
 }
   \item{p}{
-the power to which distance should be raised. The default is 1; use 2 or higher  if you want more conservative distances.
+the power to which distance should be raised. The default is 1; use 2 or higher  
+if you want more conservative distances.
 }
   \item{inv}{
 logical value indicating whether distance should be inverted, so that it varies 

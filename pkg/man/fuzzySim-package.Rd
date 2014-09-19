@@ -29,12 +29,11 @@ A. Marcia Barbosa
 Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
 }
 \references{
-Barbosa A.M. (submitted) fuzzySim: A Fuzzy Implementation of Binary Similarity 
-Indices for Spatially Aware Analysis of Species' Distributional Associations.
+Barbosa A.M. (submitted) A fuzzy implementation of binary similarity indices for assessing biogeographic associations, biotic regions, and beta diversity.
 }
 \keyword{ package }
 \seealso{
-\code{RMACOQUI} (Olivero, Real & Marquez 2011, Systematic Biology 60:645-60, 
+\pkg{RMACOQUI} (Olivero, Real & Marquez 2011, Systematic Biology 60:645-60, 
 doi 10.1093/sysbio/syr026)
 }
 \examples{

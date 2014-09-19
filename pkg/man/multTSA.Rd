@@ -48,7 +48,8 @@ comparable among species with different prevalence (see Real et al., 2006).
 The default is \code{FALSE}.
 }
   \item{suffix}{
-character indicating the suffix to add to the trend surface columns in the resulting data frame. The default is \code{"_TS"}.
+character indicating the suffix to add to the trend surface columns in the 
+resulting data frame. The default is \code{"_TS"}.
 }
   \item{save.models}{
 logical value indicating whether the models obtained from the regressions should 

@@ -4,8 +4,9 @@
 Fuzzy similarity
 }
 \description{
-Fuzzy similarity, based on a fuzzy version of the binary similarity index 
-specified in \code{method}, between two binary or fuzzy variables.
+This function calculates the fuzzy similarity, based on a fuzzy version of 
+the binary similarity index specified in \code{method}, between two binary or 
+fuzzy variables.
 }
 \usage{
 fuzSim(x, y, method)
@@ -13,40 +14,44 @@ fuzSim(x, y, method)
 \arguments{
   \item{x}{
 a vector of (optionally fuzzy) presence-absence data, with 1 meaning 
-presence, 0 meaning absence, and values in between meaning fuzzy presence 
-(or the degree to which each locality belongs to the set of species presences, 
-or to which each species belongs to the locality; Zadeh, 1965). Fuzzy 
-presence-absence can be obtained, for example, with functions \code{\link{distPres}} 
-or \code{\link{multTSA}} in this package.
+presence, 0 meaning absence, and values in between meaning fuzzy 
+presence (or the degree to which each locality belongs to the set of 
+species presences, or to which each species belongs to the locality; 
+Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, 
+with functions \code{\link{distPres}} or \code{\link{multTSA}} in this package.
 }
   \item{y}{
 a vector similar to \code{x}, of the same length and in the same order.
 }
   \item{method}{
-the similarity index to use. Currently available options are \code{'Baroni'}, \code{'Jaccard'} and \code{'Sorensen'}.
+the similarity index to use. Currently available options are \code{'Baroni'}, 
+\code{'Jaccard'} and \code{'Sorensen'}.
 }
 }
 \details{
 Similarity between ecological communities, beta diversity patterns, biotic 
-regions, and distributional relationships among species are commonly determined 
-based on pair-wise similarities in species' occurrence patterns. Some of the 
-most commonly employed pair-wise similarity indices are those of Jaccard (1901), 
-Sorensen (1948) and Baroni-Urbani & Buser (1976), which are here implemented 
-in their fuzzy versions (Barbosa, submitted), able to deal with both binary and 
-fuzzy data.
+regions, and distributional relationships among species are commonly 
+determined based on pair-wise (dis)similarities in species' occurrence 
+patterns. Some of the most commonly employed pair-wise similarity indices are 
+those of Jaccard (1901), Sorensen (1948) and Baroni-Urbani & Buser (1976), 
+which are here implemented in their fuzzy versions (Barbosa, submitted), able 
+to deal with both binary and fuzzy data.
 }
 \value{
-The value of fuzzy similarity between \code{x} and \code{y}.
+The function returns a value between 0 and 1 representing the fuzzy 
+similarity between \code{x} and \code{y}. Jaccard's similarity can be 
+converted to dissimilarity (or Jaccard distance) if subtracted from 1. 
+In contrast, \code{1-Sorensen} is not a proper distance metric, as it lacks the 
+property of triangle inequality.
 }
 \note{
-The original formula of Baroni-Urbani & Buser (1976) has been replaced with a 
-mathematically equivalent, slightly different-looking but more efficient one 
-(adapted from Olivero et al. 1998). Not only the letters are switched, but in 
-Baroni's formula the B and C were the numbers of attributes present in one 
-element but not in the other one, while here the A and B are the numbers of 
+The formulas used in this function may look slighty different from some of 
+their published versions, but note that here the A and B are the numbers of 
 attributes present in each element, whether or not they are also present in 
-the other one. This makes the formula faster to calculate, visibly for large 
-datasets, and more coherent with Jaccard's and Sorensen's indices.
+the other one. Thus, our 'A+B' is equivalent to 'A+B+C' in formulas where A 
+and B are the numbers of attributes present in one but not the other element, 
+and our A+B-C is equivalent to their A+B+C. The formulas used here (adapted 
+from Olivero et al 1998) are faster to calculate, visibly for large datasets.
 }
 \references{
 Baroni-Urbani C. & Buser M.W. (1976) Similarity of Binary Data. Systematic 
@@ -80,6 +85,8 @@ head(rotifers01)
 names(rotifers01)
 
 fuzSim(rotifers01[,6], rotifers01[,7], method = "Baroni")
+fuzSim(rotifers01[,6], rotifers01[,7], method = "Jaccard")
+fuzSim(rotifers01[,6], rotifers01[,7], method = "Sorensen")
 }
 \keyword{ similarity }
 \keyword{ fuzzy }

@@ -24,7 +24,8 @@ belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence
 \code{\link{multTSA}}.
 }
   \item{method}{
-the similarity index whose fuzzy version to use. Available options are \code{'Baroni'}, \code{'Jaccard'} and \code{'Sorensen'}.
+the similarity index whose fuzzy version to use. Available options are 
+\code{'Baroni'}, \code{'Jaccard'} and \code{'Sorensen'}.
 }
 }
 \details{

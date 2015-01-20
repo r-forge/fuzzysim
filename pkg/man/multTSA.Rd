@@ -24,8 +24,7 @@ absences in data. Must contain only zeros (0) for absences and ones (1) for
 presences.
 }
   \item{coord.cols}{
-names or index numbers of the columns containing the spatial coordinates in data 
-(in this order, x and y, or longitude and latitude).
+names or index numbers of the columns containing the spatial coordinates in data (x and y, or longitude and latitude, in this order!).
 }
   \item{id.col}{
 optionally, the name or index number of a column (to be included in the output) 

@@ -1,9 +1,9 @@
 multTSA <-
-function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, 
+function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
          Favourability = FALSE, suffix = "_TS", save.models = FALSE) {
 
   start.time <- Sys.time()
-  
+
   stopifnot (
     na.omit(as.matrix(data[ , sp.cols])) %in% c(0,1),
     length(sp.cols) > 0,
@@ -18,11 +18,11 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
     is.logical(Favourability),
     is.logical(save.models)
   )
-  
-  coords.poly <- as.data.frame(poly(as.matrix(data[ , coord.cols]), 
+
+  coords.poly <- as.data.frame(poly(as.matrix(data[ , coord.cols]),
                                     degree = degree, raw = TRUE))
   n.poly.terms <- ncol(coords.poly)
-  colnames(coords.poly) <- paste(rep("poly", n.poly.terms), 
+  colnames(coords.poly) <- paste(rep("poly", n.poly.terms),
                                  c(1:n.poly.terms), sep = "")
 
   sp.data <- as.matrix(data[ , sp.cols])
@@ -30,11 +30,11 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
   n.subjects <- length(sp.cols)
   if (save.models) TSA.models <- vector("list", n.subjects)
   subj.count <- 0
-  
+
   data.input <- data
   data <- cbind(data, coords.poly)
-  attach(data)
-  
+  attach(data, warn.conflicts = FALSE)  # won't work without attach
+
   for (s in 1:n.subjects) {
     subj.count <- subj.count + 1
     subj.name <- colnames(sp.data)[s]
@@ -59,20 +59,20 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
   }
 
   detach(data)
-  
+
   predictions <- data.frame(data[ , id.col], data.input[ , ((ncol(data) + 1) : ncol(data.input))])
 
   if (!is.null(id.col)) {
     if (is.character(id.col)) colnames(predictions)[1] <- id.col
     else colnames(predictions)[1] <- colnames(data)[id.col]
   }
-  
+
   duration <- difftime(start.time, Sys.time())
   units <- attr(duration, "units")
   duration <- round(abs(as.numeric(duration)), 1)
   message("Finished in ", duration, " ", units)
-  
+
   if (save.models) return(list(predictions = data.frame(predictions), TSA.models = TSA.models))
   else return (predictions)
-  
+
 }

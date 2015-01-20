@@ -4,12 +4,7 @@
 Pair-wise (fuzzy) similarity matrix
 }
 \description{
-\code{simMat} takes a matrix or data frame containing species occurrence data, 
-either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the 
-\code{\link{fuzSim}} function to calculate a square matrix of pair-wise 
-similarities between them, using a fuzzy logic version (after Zadeh, 1965) of 
-either Jaccard's (1901), Baroni-Urbani & Buser's (1976) or Sorensen's (1948) 
-binary similarity index.
+\code{simMat} takes a matrix or data frame containing species occurrence data, either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the \code{\link{fuzSim}} function to calculate a square matrix of pair-wise similarities between them, using a fuzzy logic version (after Zadeh, 1965) of the specified similarity index.
 }
 \usage{
 simMat(data, method)
@@ -20,12 +15,10 @@ a matrix or data frame containing (optionally fuzzy) species presence-absence
 data (one column per species), with 1 meaning presence, 0 meaning absence, and 
 values in between for fuzzy presence (or the degree to which each locality 
 belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence
--absence can be obtained, for example, with \code{\link{distPres}} or with 
-\code{\link{multTSA}}.
+-absence can be obtained, for example, with \code{\link{multGLM}},  \code{\link{distPres}} or \code{\link{multTSA}}.
 }
   \item{method}{
-the similarity index whose fuzzy version to use. Available options are 
-\code{'Baroni'}, \code{'Jaccard'} and \code{'Sorensen'}.
+the similarity index whose fuzzy version to use. See ?\code{\link{fuzSim}} for available options.
 }
 }
 \details{
@@ -41,32 +34,19 @@ for determining chorotypes or biotic regions using the \code{RMACOQUI} package
 (Olivero et al. 2011).
 }
 \value{
-A square matrix of pair-wise similarity among the species distributions 
+This function returns a square matrix of pair-wise similarity among the species distributions 
 (columns) in \code{data}. Similarity is calculated with the fuzzy version of 
 the index specified in \code{method}, which yields traditional binary 
 similarity if the data are binary (0 or 1), or fuzzy similarity if the data 
 are fuzzy (between 0 and 1).
 }
 \references{
-Baroni-Urbani, C. & Buser, M.W. (1976) Similarity of Binary Data. Systematic 
-Zoology, 25: 251-259.
-
-Jaccard, P. (1901) Etude comparative de la distribution florale dans une portion 
-des Alpes et des Jura. Memoires de la Societe Vaudoise des Sciences Naturelles, 
-37: 547-579.
-
-Olivero, J., Real, R. & Marquez, A.L. (2011) Fuzzy chorotypes as a conceptual 
-tool to improve insight into biogeographic patterns. Systematic Biology, 
+Olivero, J., Real, R. & Marquez, A.L. (2011) Fuzzy chorotypes as a conceptual tool to improve insight into biogeographic patterns. Systematic Biology, 
 60: 645-60.
 
 Olivero, J., Marquez, A.L., Real, R. (2013) Integrating fuzzy logic and 
 statistics to improve the reliable delimitation of biogeographic regions 
 and transition zones. Systematic Biology, 62: 1-21.
-
-Sorensen T. (1948) A method of establishing groups of equal amplitude in 
-plant sociology based on similarity of species and its application to 
-analyses of the vegetation on Danish commons. Kongelige Danske Videnskabernes 
-Selskab 5(4): 1-34
 
 Zadeh L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353. 
 }
@@ -108,9 +88,9 @@ head(rotifers.invd)
 
 
 # build a matrix of fuzzy similarity among these fuzzy distribution data, 
-# with the fuzzy version of Baroni-Urbani & Buser's index:
+# with the fuzzy version of Jaccard's index:
 
-fuz.sim.mat <- simMat(rotifers.invd[ , -1], method = "Baroni")
+fuz.sim.mat <- simMat(rotifers.invd[ , -1], method = "Jaccard")
 
 head(fuz.sim.mat)
 

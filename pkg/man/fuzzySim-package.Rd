@@ -6,20 +6,14 @@
 Fuzzy similarity in species distributions
 }
 \description{
-Functions to calculate fuzzy versions of species' occurrence patterns based on 
-presence-absence data, and pair-wise fuzzy similarity (based on fuzzy versions 
-of commonly used similarity indices) among those occurrence patterns. Includes 
-also functions for data preparation, such as obtaining unique abbreviations of 
-species names, converting species lists (long format) to presence-absence 
-tables (wide format), or transposing part of a data frame. Complete with a 
-couple of sample data sets for providing practical examples.
+Functions to calculate fuzzy versions of species' occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis and prevalence-independent favourability GLM), and pair-wise fuzzy similarity (based on fuzzy versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), or transposing part of a data frame. Includes also sample data sets for providing practical examples.
 }
 \details{
 \tabular{ll}{
 Package: \tab fuzzySim\cr
 Type: \tab Package\cr
-Version: \tab 0.1\cr
-Date: \tab 2014-03-19\cr
+Version: \tab 1.0\cr
+Date: \tab 2015-01-20\cr
 License: \tab GPL-3\cr
 }
 }
@@ -29,11 +23,11 @@ A. Marcia Barbosa
 Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
 }
 \references{
-Barbosa A.M. (submitted) A fuzzy implementation of binary similarity indices for assessing biogeographic associations, biotic regions, and beta diversity.
+Barbosa A.M. (submitted) fuzzySim: applying fuzzy logic to binary similarity indices in ecology.
 }
 \keyword{ package }
 \seealso{
-\pkg{RMACOQUI} (Olivero, Real & Marquez 2011, Systematic Biology 60:645-60, 
+\pkg{RMACOQUI} (Olivero, Real & Marquez 2011, Systematic Biology 60: 645-60,
 doi 10.1093/sysbio/syr026)
 }
 \examples{
@@ -44,7 +38,7 @@ head(rotifers)
 
 # add column with species name abbreviations:
 
-rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", nchar.gen = 1, 
+rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", nchar.gen = 1,
 nchar.sp = 5, nchar.ssp = 0)
 
 head(rotifers)
@@ -52,7 +46,7 @@ head(rotifers)
 
 # convert species list (long format) to presence-absence table (wide format):
 
-rotifers.presabs <- splist2presabs(rotifers, sites.col = "LEVEL3_COD", 
+rotifers.presabs <- splist2presabs(rotifers, sites.col = "LEVEL3_COD",
 sp.col = "spcode", keep.n = FALSE)
 
 head(rotifers.presabs)
@@ -64,34 +58,43 @@ data(rotifers01)
 
 names(rotifers01)
 
-rotifers.tsa <- multTSA(rotifers01, sp.cols = 6:40, 
+rotifers.tsa <- multTSA(rotifers01, sp.cols = 6:40,
 coord.cols = c("Long", "Lati"), id.col = 1)
 
 head(rotifers.tsa)
 
 
-# get fuzzy version of presence-absence using inverse squared 
-# distance to presence:
+# get inverse squared distance to presence for each species:
 
-rotifers.dsq <- distPres(rotifers01, sp.cols = 6:ncol(rotifers01), 
+rotifers.isqd <- distPres(rotifers01, sp.cols = 6:ncol(rotifers01),
 coord.cols = c("Long", "Lati"), id.col = 1, p = 2, inv = TRUE)
 
-head(rotifers.dsq)
+head(rotifers.isqd)
+
+
+# get prevalence-independent environmental favourability models for each species:
+
+data(rotif.env)
+
+names(rotif.env)
+
+rotifers.fav <- multGLM(data = rotif.env, sp.cols = 18:47, var.cols = 5:17,
+step = FALSE, trim = TRUE, Favourability = TRUE)
 
 
 # get matrix of fuzzy similarity between rotifer species distributions:
 
-rot.fuz.sim.mat <- simMat(rotifers.dsq[ , -1], method = "Baroni")
+rot.fuz.sim.mat <- simMat(rotifers.isqd[ , -1], method = "Baroni")
 
 head(rot.fuz.sim.mat)
 
 
-# transpose fuzzy rotifer distribution data to compare 
+# transpose fuzzy rotifer distribution data to compare
 # regional species composition rather than species' distributions:
 
-names(rotifers.dsq)
+names(rotifers.isqd)
 
-rot.fuz.reg <- transpose(rotifers.dsq, sp.cols = 2:ncol(rotifers.dsq), 
+rot.fuz.reg <- transpose(rotifers.isqd, sp.cols = 2:ncol(rotifers.isqd),
 reg.names = 1)
 
 head(rot.fuz.reg)

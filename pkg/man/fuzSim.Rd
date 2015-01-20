@@ -18,14 +18,14 @@ presence, 0 meaning absence, and values in between meaning fuzzy
 presence (or the degree to which each locality belongs to the set of 
 species presences, or to which each species belongs to the locality; 
 Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, 
-with functions \code{\link{distPres}} or \code{\link{multTSA}} in this package.
+with functions \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}} in this package.
 }
   \item{y}{
 a vector similar to \code{x}, of the same length and in the same order.
 }
   \item{method}{
 the similarity index to use. Currently available options are \code{'Baroni'}, 
-\code{'Jaccard'} and \code{'Sorensen'}.
+\code{'Jaccard'}, \code{'Simpson'} and \code{'Sorensen'}.
 }
 }
 \details{
@@ -33,16 +33,15 @@ Similarity between ecological communities, beta diversity patterns, biotic
 regions, and distributional relationships among species are commonly 
 determined based on pair-wise (dis)similarities in species' occurrence 
 patterns. Some of the most commonly employed pair-wise similarity indices are 
-those of Jaccard (1901), Sorensen (1948) and Baroni-Urbani & Buser (1976), 
-which are here implemented in their fuzzy versions (Barbosa, submitted), able 
-to deal with both binary and fuzzy data.
+those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & 
+Buser (1976), which are here implemented in their fuzzy versions (Barbosa, 
+submitted), able to deal with both binary and fuzzy data.
 }
 \value{
 The function returns a value between 0 and 1 representing the fuzzy 
 similarity between \code{x} and \code{y}. Jaccard's similarity can be 
 converted to dissimilarity (or Jaccard distance) if subtracted from 1. 
-In contrast, \code{1-Sorensen} is not a proper distance metric, as it lacks the 
-property of triangle inequality.
+In contrast, \code{1-Sorensen} is not a proper distance metric, as it lacks the property of triangle inequality.
 }
 \note{
 The formulas used in this function may look slighty different from some of 
@@ -57,17 +56,15 @@ from Olivero et al 1998) are faster to calculate, visibly for large datasets.
 Baroni-Urbani C. & Buser M.W. (1976) Similarity of Binary Data. Systematic 
 Zoology, 25: 251-259
 
-Jaccard P. (1901) Etude comparative de la distribution florale dans une portion 
-des Alpes et des Jura. Memoires de la Societe Vaudoise des Sciences Naturelles, 
-37: 547-579
+Jaccard P. (1901) Etude comparative de la distribution florale dans une portion des Alpes et des Jura. Memoires de la Societe Vaudoise des Sciences Naturelles, 37: 547-579
 
 Olivero J., Real R. & Vargas J.M. (1998) Distribution of breeding, wintering 
 and resident waterbirds in Europe: biotic regions and the macroclimate. Ornis 
 Fennica, 75: 153-175
 
-Sorensen T. (1948) A method of establishing groups of equal amplitude in plant 
-sociology based on similarity of species and its application to analyses of the 
-vegetation on Danish commons. Kongelige Danske Videnskabernes Selskab, 5(4): 1-34
+Simpson, G.G. (1960) Notes on the measurement of faunal resemblance. Amer. J. Sci. 258A, 300-311
+
+Sorensen T. (1948) A method of establishing groups of equal amplitude in plant sociology based on similarity of species and its application to analyses of the vegetation on Danish commons. Kongelige Danske Videnskabernes Selskab, 5(4): 1-34
 
 Zadeh L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353
 }
@@ -87,6 +84,7 @@ names(rotifers01)
 fuzSim(rotifers01[,6], rotifers01[,7], method = "Baroni")
 fuzSim(rotifers01[,6], rotifers01[,7], method = "Jaccard")
 fuzSim(rotifers01[,6], rotifers01[,7], method = "Sorensen")
+fuzSim(rotifers01[,6], rotifers01[,7], method = "Simpson")
 }
 \keyword{ similarity }
 \keyword{ fuzzy }

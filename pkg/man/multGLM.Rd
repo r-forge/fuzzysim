@@ -13,9 +13,9 @@ direction = "both", Y = FALSE, P = TRUE, Favourability = TRUE, sep = "_",
 group.preds = TRUE, trim = TRUE, ...)
 }
 \arguments{
-  \item{data}{a data frame containing your species' binary (0/1) occurrence data and the predictor variables.}
+  \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
   \item{sp.cols}{index numbers of the columns containing the species data to be modelled.}
-  \item{var.cols}{index numbers of the columns containing the predictor variables to be used.}
+  \item{var.cols}{index numbers of the columns containing the predictor variables to be used for modelling.}
   \item{id.col}{(optional) index number of column containing the row identifiers (if defined, it will be included in the output \code{predictions} data frame).}
   \item{family}{argument to be passed to the \code{\link{glm}} function; only 'binomial' is implemented in \code{multGLM} so far.}
   \item{test.sample}{a subset of data to set aside for subsequent model testing.
@@ -41,14 +41,14 @@ group.preds = TRUE, trim = TRUE, ...)
   \item{\dots}{additional arguments to be passed to \code{\link{modelTrim}}.}
 }
 \details{
-This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function. There is also an optional preliminary selection of the variables with a significant bivariate relationship with the response, based on the false discovery rate (\code{\link{FDR}}), but note that some variables can be significant in a multivariate model even if they would not have been selected by FDR. \code{\link{Fav}}ourability is also calculated. By default all data are used in model training, but you can define an optional \code{test.sample} to be reserved for model testing afterwards.
+This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function. There is also an optional preliminary selection of the variables with a significant bivariate relationship with the response, based on the false discovery rate (\code{\link{FDR}}), but note that some variables can be significant in a multivariate model even if they would not have been selected by FDR. \code{\link{Fav}}ourability is also calculated. By default, all data are used in model training, but you can define an optional \code{test.sample} to be reserved for model testing afterwards. You may also want to do a previous check for \code{\link{multicol}}linearity among variables, e.g. the variance inflation factor (VIF).
 
-The function will create a list of the resulting models (each with the name of the corresponding species column) and a data frame with their predictions (Y, P and/or F, all of which are optional). If you plan on representing these predictions in a GIS based on .dbf tables, remember that dbf only allows up to 10 characters in column names; multGLM predictions will add 2 characters (_y, _P and/or _F) to each of your species column names, so use species names/codes with up to 8 characters in the data set that you are modelling. You can create (sub)species name abbreviations with the \code{spCodes} function from the \code{fuzzySim} package.
+The \code{multGLM} function will create a list of the resulting models (each with the name of the corresponding species column) and a data frame with their predictions (Y, P and/or F, all of which are optional). If you plan on representing these predictions in a GIS based on .dbf tables, remember that dbf only allows up to 10 characters in column names; multGLM predictions will add 2 characters (_y, _P and/or _F) to each of your species column names, so use species names/codes with up to 8 characters in the data set that you are modelling. You can create (sub)species name abbreviations with the \code{spCodes} function.
 }
 \value{
-The function returns a list with the following components:
-\item{predictions}{a data frame with the model predictions (if either of \code{y}, \code{P}, or \code{Favourability} are \code{TRUE}).}
-\item{models}{a list of the resulting modol objects.}
+This function returns a list with the following components:
+\item{predictions}{a data frame with the model predictions (if either of \code{Y}, \code{P}, or \code{Favourability} are \code{TRUE}).}
+\item{models}{a list of the resulting model objects.}
 }
 \references{
 Fielding A.H. & Bell J.F. (1997) A review of methods for the assessment of prediction errors in conservation presence/absence models. Environmental Conservation 24: 38-49
@@ -64,7 +64,7 @@ A. Marcia Barbosa
 \note{
 }
 \seealso{
-\code{\link{glm}}, \code{\link{Fav}}, \code{\link{step}}, \code{\link{modelTrim}}
+\code{\link{glm}}, \code{\link{Fav}}, \code{\link{step}}, \code{\link{modelTrim}}, \code{\link{multicol}}
 }
 \examples{
 data(rotif.env)

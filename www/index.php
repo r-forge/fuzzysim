@@ -47,13 +47,13 @@ echo $contents; } ?>
 
 <!-- end of project description -->
 
-<p> It includes functions for data preparation, such as converting <b>species lists (long format) to presence-absence tables (wide format)</b>, obtaining <b>unique abbreviations of species names</b>, or <b>transposing (parts of) complex data frames</b>; and a couple of <b>sample data sets</b> for providing practical examples.</p>
+<p> It includes functions for data preparation, such as converting <b>species lists (long format) to presence-absence tables (wide format)</b>, obtaining <b>unique abbreviations of species names</b>, or <b>transposing (parts of) complex data frames</b>; and <b>sample data sets</b> for providing practical examples.</p>
 
 <p> It can <b>convert binary presence-absence data to fuzzy occurrence data</b>, using e.g. trend surface analysis, inverse distance interpolation or prevalence-independent environmental favourability modelling, for multiple species simultaneously.</p>
 
-<p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>. Currently available similarity indices are Jaccard, S&oslash;rensen, Simpson, and Baroni-Urbani & Buser.</p>
+<p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>. Currently available similarity indices are Jaccard, S&oslash;rensen, Simpson, Baroni-Urbani & Buser, and the simple matching coefficient.</p>
 
-<p><i>fuzzySim</i> is also being implemented as a graphical-interface extension for the <strong><a href="http://www.qgis.org">QGIS</a></strong> Processing Toolbox - please check back for news.</p>
+<p>Some of the <i>fuzzySim</i> functions are also being implemented within a graphical-interface extension for the <strong><a href="http://www.qgis.org">QGIS</a></strong> Processing Toolbox - you can download the current versions from here, place them in your '/home/username/.qgis2/processing/rscripts' folder and give them a try. Feedback welcome!</p>
 
 <br />
 
@@ -61,9 +61,9 @@ echo $contents; } ?>
 <p>To <big><strong>install</strong></big> <i>fuzzySim</i> directly from R-Forge, paste the following command in the R console (when connected to the internet):</p>
 <code>install.packages("fuzzySim", repos="http://R-Forge.R-project.org")</code><br />
 
-<p>If the command above fails, producing a message like "<i>package 'fuzzySim' is not available for your R version</i>", you can either upgrade R to the latest version <i>or</i> download the compressed package source files to your disk (<i>.zip</i> or <i>.tar.gz</i> available <a href="https://r-forge.r-project.org/R/?group_id=1853">here</a>) and then install the package from there (R menu "<i>Packages - Install packages from local zip files</i>", or "<i>Tools - Install packages - Install from: Package Archive File</i>", or "<i>Packages & Data - Package installer, Packages repository - Local source package</i>", ... depending on your R interface).</p>
+<p>This should work if you have the <b>latest version of R</b>; otherwise, it may either fail (producing a message like "<i>package 'fuzzySim' is not available for your R version</i>") or install an older version of <i>fuzzySim</i>. To <b>check the version that you have actually installed</b>, type <big><b><code>citation(package="fuzzySim")</code></b></big>. To install the latest version of the package, you can either upgrade R <i>or</i> download the compressed <i>fuzzySim</i> <b>package source files</b> to your disk (<i>.zip</i> or <i>.tar.gz</i> available <a href="https://r-forge.r-project.org/R/?group_id=1853">here</a>) and then install the package from there, e.g. with R menu "<i>Packages - Install packages from local zip files</i>" (Windows), or "<i>Packages & Data - Package installer, Packages repository - Local source package</i>" (Mac), or "<i>Tools - Install packages - Install from: Package Archive File</i>" (RStudio).</p>
 
-<p>You only need to install the package once, but then every time you re-open R you need to <big><strong>load</strong></big> it by typing:</p>
+<p>You only need to install (each version of) the package once, but then every time you re-open R you need to <big><strong>load</strong></big> it by typing:</p>
 <code>library(fuzzySim)</code><br />
 
 <p>You can then check out the package <big><strong>help</strong></big> files and try some of the provided <strong>examples</strong>:</p>

@@ -2,8 +2,7 @@
 \alias{timer}
 \title{Timer}
 \description{
-Reporting of time elapsed since a given start time. This function is used 
-internally by other functions in the \pkg{modEvA} package.
+Reporting of time elapsed since a given start time. This function is used internally by other functions in the package.
 }
 \usage{
 timer(start.time)

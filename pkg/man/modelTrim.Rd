@@ -49,7 +49,7 @@ names(rotif.env)
 
 # build a stepwise model of a species' occurrence based on some of the variables:
 
-mod <- with(rotif.env, step(glm(Abrigh ~ Area + Altitude + AltitudeRange + 
+mod <- with(rotif.env, step(glm(Abrigh ~ Area + Altitude + AltitudeRange +
 HabitatDiversity + HumanPopulation, family = binomial)))
 
 
@@ -66,8 +66,4 @@ summary(mod)  # only significant variables now
 
 }
 \keyword{ models }
-\keyword{ regression }
-\keyword{ significance }
-\keyword{ stepwise }
-\keyword{ variable selection }
 

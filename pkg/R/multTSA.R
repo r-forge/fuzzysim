@@ -67,10 +67,8 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
     else colnames(predictions)[1] <- colnames(data)[id.col]
   }
 
-  duration <- difftime(start.time, Sys.time())
-  units <- attr(duration, "units")
-  duration <- round(abs(as.numeric(duration)), 1)
-  message("Finished in ", duration, " ", units)
+  message("Finished!")
+  timer(start.time)
 
   if (save.models) return(list(predictions = data.frame(predictions), TSA.models = TSA.models))
   else return (predictions)

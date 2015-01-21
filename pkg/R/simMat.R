@@ -1,12 +1,13 @@
 simMat <-
 function(data, method) {
-  stopifnot(data >= 0, data <= 1, 
+  start.time <- Sys.time()
+  stopifnot(data >= 0, data <= 1,
             method %in% c("Jaccard", "Sorensen", "Baroni"))
   n.subjects <- ncol(data)
   quarter <- round(n.subjects / 4)
   half <- round(n.subjects / 2)
   threequarters <- half + quarter
-  sim.mat <- matrix(nrow = n.subjects, ncol = n.subjects, 
+  sim.mat <- matrix(nrow = n.subjects, ncol = n.subjects,
                     dimnames = list(colnames(data), colnames(data)))
   message ("Calculating pair-wise similarities, please wait...")
   for (i in 1:n.subjects) for (j in 1:n.subjects) {
@@ -16,5 +17,6 @@ function(data, method) {
     if(i == threequarters & j == threequarters) message ("75% done...")
     if(i == n.subjects & j == n.subjects) message ("Finished!")
   }
+  timer(start.time)
   return(sim.mat)
 }

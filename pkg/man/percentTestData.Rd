@@ -35,8 +35,7 @@ A. Marcia Barbosa
 
 percentTestData(15)
 
-# the result tells you that 21\% is an appropriate percentage of data 
+# the result tells you that 21\% is an appropriate percentage of data
 # to set aside for testing your model, so train it with 79\% of the data
 }
-\keyword{ modelling }
 \keyword{ models }

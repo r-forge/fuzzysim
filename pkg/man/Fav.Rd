@@ -7,7 +7,7 @@ Favourability
 Environmental (prevalence-independent) favourability for a species' presence
 }
 \usage{
-Fav(obs = NULL, pred = NULL, n1n0 = NULL, model = NULL, sample.preval = NULL, 
+Fav(obs = NULL, pred = NULL, n1n0 = NULL, model = NULL, sample.preval = NULL,
 method = "RBV", true.preval = NULL)
 }
 \arguments{
@@ -34,9 +34,7 @@ the true prevalence (as opposed to sample prevalence), necessary if you want to 
 }
 }
 \details{
-Logistic regression (Generalised Linear Model with binomial error distribution and a logit link) is widely used for modelling species' potential distributions using presence/absence data and a set of categorical or continuous predictor variables. However, this GLM incorporates the prevalence (relative proportion of presences and absences) of the species in the training sample, which affects the probability values produced.
-
-Barbosa (2006) and Real, Barbosa & Vargas (2006) proposed an environmental favourability function which is based on logistic regression but cancels out uneven proportions of presences and absences in the modelled data. Favourability thus assesses the extent to which the environmental conditions change the probability of occurrence of a species with respect to its overall prevalence in the study area. Model predictions can, therefore, be directly compared between species with different prevalences. The favourability function is implemented in the modEvA package and is also in the SAM (Spatial Analysis in Macroecology) software (Rangel et al. 2010).
+Logistic regression (Generalised Linear Model with binomial error distribution and a logit link) is widely used for modelling species' potential distributions using presence/absence data and a set of categorical or continuous predictor variables. However, this GLM incorporates the prevalence (proportion of presences) of the species in the training sample, which affects the probability values produced. Barbosa (2006) and Real, Barbosa & Vargas (2006) proposed an environmental favourability function which is based on logistic regression but cancels out uneven proportions of presences and absences in the modelled data. Favourability thus assesses the extent to which the environmental conditions change the probability of occurrence of a species with respect to its overall prevalence in the study area. Model predictions become, therefore, directly comparable among species with different prevalences. The favourability function is implemented in the \pkg{fuzzySim} package and is also in the SAM (Spatial Analysis in Macroecology) software (Rangel et al. 2010).
 
 Using simulated data, Albert & Thuiller (2008) proposed a modification to the favourability function, but it requires knowing the true prevalence of the species (not just the prevalence in the studied sample), which is rarely possible in real-world modelling. Besides, this suggestion was based on the misunderstanding that the favourability function was a way to obtain the probability of occurrence when prevalence differs from 50\%, which is incorrect (see Acevedo & Real 2012).
 
@@ -62,7 +60,7 @@ A. Marcia Barbosa
 \note{
 }
 \seealso{
-\code{\link{glm}}, \code{\link{multGLM}}, \code{\link{prevalence}}
+\code{\link{glm}}, \code{\link{multGLM}}
 }
 \examples{
 
@@ -72,7 +70,7 @@ data(rotif.env)
 
 names(rotif.env)
 
-mod <- with(rotif.env, glm(Abrigh ~ Area + Altitude + AltitudeRange + 
+mod <- with(rotif.env, glm(Abrigh ~ Area + Altitude + AltitudeRange +
 HabitatDiversity + HumanPopulation, family = binomial))
 
 prob <- predict(mod, data = rotif.env, type = "response")
@@ -86,11 +84,6 @@ Fav(obs = rotif.env$Abrigh, pred = prob)
 
 Fav(pred = mod$fitted.values, n1n0 = c(112, 179))
 
-Fav(pred = mod$fitted.values, sample.preval = 0.3849)
+Fav(pred = mod$fitted.values, sample.preval = 0.38)
 }
-\keyword{ probability }
-\keyword{ prevalence }
-\keyword{ GLM }
 \keyword{ models }
-\keyword{ prediction }
-

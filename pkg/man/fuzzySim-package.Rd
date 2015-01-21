@@ -79,12 +79,17 @@ data(rotif.env)
 names(rotif.env)
 
 rotifers.fav <- multGLM(data = rotif.env, sp.cols = 18:47, var.cols = 5:17,
-step = FALSE, trim = TRUE, Favourability = TRUE)
+id.col = 1, step = FALSE, trim = TRUE, Favourability = TRUE)
 
 
 # get matrix of fuzzy similarity between rotifer species distributions:
 
-rot.fuz.sim.mat <- simMat(rotifers.isqd[ , -1], method = "Baroni")
+# either based on inverse squared distance to presence:
+rot.fuz.sim.mat <- simMat(rotifers.isqd[ , -1], method = "Jaccard")
+
+# or on environmental favourability for presence:
+rot.fuz.sim.mat <- simMat(rotifers.fav$predictions[ , 32:61], method = "Jaccard")
+
 
 head(rot.fuz.sim.mat)
 
@@ -94,7 +99,7 @@ head(rot.fuz.sim.mat)
 
 names(rotifers.isqd)
 
-rot.fuz.reg <- transpose(rotifers.isqd, sp.cols = 2:ncol(rotifers.isqd),
+rot.fuz.reg <- transpose(rotifers.fav$predictions, sp.cols = 32:61,
 reg.names = 1)
 
 head(rot.fuz.reg)
@@ -102,7 +107,7 @@ head(rot.fuz.reg)
 
 # get matrix of fuzzy similarity between (some) regions' species compositions:
 
-reg.fuz.sim.mat <- simMat(rot.fuz.reg[ , 1:100], method = "Baroni")
+reg.fuz.sim.mat <- simMat(rot.fuz.reg[ , 1:100], method = "Jaccard")
 
 head(reg.fuz.sim.mat)
 }

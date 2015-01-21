@@ -4,63 +4,37 @@
 Fuzzy similarity
 }
 \description{
-This function calculates the fuzzy similarity, based on a fuzzy version of 
-the binary similarity index specified in \code{method}, between two binary or 
-fuzzy variables.
+This function calculates fuzzy similarity, based on a fuzzy version of the binary similarity index specified in \code{method}, between two binary (0 or 1) or fuzzy (between 0 and 1) variables.
 }
 \usage{
 fuzSim(x, y, method)
 }
 \arguments{
   \item{x}{
-a vector of (optionally fuzzy) presence-absence data, with 1 meaning 
-presence, 0 meaning absence, and values in between meaning fuzzy 
-presence (or the degree to which each locality belongs to the set of 
-species presences, or to which each species belongs to the locality; 
-Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, 
-with functions \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}} in this package.
+a vector of (optionally fuzzy) presence-absence data, with 1 meaning presence, 0 meaning absence, and values in between meaning fuzzy presence (or the degree to which each locality belongs to the set of species presences, or to which each species belongs to the locality; Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with functions \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}} in this package.
 }
   \item{y}{
 a vector similar to \code{x}, of the same length and in the same order.
 }
   \item{method}{
-the similarity index to use. Currently available options are \code{'Baroni'}, 
-\code{'Jaccard'}, \code{'Simpson'} and \code{'Sorensen'}.
+the similarity index to use. Currently available options are \code{'Jaccard'}, \code{'Sorensen'}, \code{'Simpson'}, \code{'Baroni'} and \code{'match'} (see Details).
 }
 }
 \details{
-Similarity between ecological communities, beta diversity patterns, biotic 
-regions, and distributional relationships among species are commonly 
-determined based on pair-wise (dis)similarities in species' occurrence 
-patterns. Some of the most commonly employed pair-wise similarity indices are 
-those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & 
-Buser (1976), which are here implemented in their fuzzy versions (Barbosa, 
-submitted), able to deal with both binary and fuzzy data.
+Similarity between ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed pair-wise similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented in their fuzzy versions (Barbosa, submitted), able to deal with both binary and fuzzy data. The simple matchig coefficient (proportion of matches) is also available.
 }
 \value{
-The function returns a value between 0 and 1 representing the fuzzy 
-similarity between \code{x} and \code{y}. Jaccard's similarity can be 
-converted to dissimilarity (or Jaccard distance) if subtracted from 1. 
-In contrast, \code{1-Sorensen} is not a proper distance metric, as it lacks the property of triangle inequality.
+The function returns a value between 0 and 1 representing the fuzzy similarity between \code{x} and \code{y}. Note, for example, that Jaccard similarity can be converted to dissimilarity (or Jaccard distance) if subtracted from 1, while \code{1-Sorensen} is not a proper distance metric as it lacks the property of triangle inequality (see \url{http://en.wikipedia.org/wiki/S\%C3\%B8rensen\%E2\%80\%93Dice_coefficient}).
 }
 \note{
-The formulas used in this function may look slighty different from some of 
-their published versions, but note that here the A and B are the numbers of 
-attributes present in each element, whether or not they are also present in 
-the other one. Thus, our 'A+B' is equivalent to 'A+B+C' in formulas where A 
-and B are the numbers of attributes present in one but not the other element, 
-and our A+B-C is equivalent to their A+B+C. The formulas used here (adapted 
-from Olivero et al 1998) are faster to calculate, visibly for large datasets.
+The formulas used in this function may look slighty different from some of their published versions (e.g. Baroni-Urbani & Buser 1976), not only because the letters are switched, but because here the A and B are the numbers of attributes present in each element, whether or not they are also present in the other one. Thus, our 'A+B' is equivalent to 'A+B+C' in formulas where A and B are the numbers of attributes present in one but not the other element, and our A+B-C is equivalent to their A+B+C. The formulas used here (adapted from Olivero et al. 1998) are faster to calculate, visibly for large datasets.
 }
 \references{
-Baroni-Urbani C. & Buser M.W. (1976) Similarity of Binary Data. Systematic 
-Zoology, 25: 251-259
+Baroni-Urbani C. & Buser M.W. (1976) Similarity of Binary Data. Systematic Zoology, 25: 251-259
 
 Jaccard P. (1901) Etude comparative de la distribution florale dans une portion des Alpes et des Jura. Memoires de la Societe Vaudoise des Sciences Naturelles, 37: 547-579
 
-Olivero J., Real R. & Vargas J.M. (1998) Distribution of breeding, wintering 
-and resident waterbirds in Europe: biotic regions and the macroclimate. Ornis 
-Fennica, 75: 153-175
+Olivero J., Real R. & Vargas J.M. (1998) Distribution of breeding, wintering and resident waterbirds in Europe: biotic regions and the macroclimate. Ornis Fennica, 75: 153-175
 
 Simpson, G.G. (1960) Notes on the measurement of faunal resemblance. Amer. J. Sci. 258A, 300-311
 
@@ -81,10 +55,15 @@ head(rotifers01)
 
 names(rotifers01)
 
-fuzSim(rotifers01[,6], rotifers01[,7], method = "Baroni")
 fuzSim(rotifers01[,6], rotifers01[,7], method = "Jaccard")
+
 fuzSim(rotifers01[,6], rotifers01[,7], method = "Sorensen")
+
 fuzSim(rotifers01[,6], rotifers01[,7], method = "Simpson")
+
+fuzSim(rotifers01[,6], rotifers01[,7], method = "Baroni")
+
+fuzSim(rotifers01[,6], rotifers01[,7], method = "match")
 }
 \keyword{ similarity }
-\keyword{ fuzzy }
+\keyword{ ~kwd1 }

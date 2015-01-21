@@ -11,44 +11,24 @@ simMat(data, method)
 }
 \arguments{
   \item{data}{
-a matrix or data frame containing (optionally fuzzy) species presence-absence 
-data (one column per species), with 1 meaning presence, 0 meaning absence, and 
-values in between for fuzzy presence (or the degree to which each locality 
-belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence
--absence can be obtained, for example, with \code{\link{multGLM}},  \code{\link{distPres}} or \code{\link{multTSA}}.
+a matrix or data frame containing (optionally fuzzy) species presence-absence data (one column per species), with 1 meaning presence, 0 meaning absence, and values in between for fuzzy presence (or the degree to which each locality belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}}.
 }
   \item{method}{
-the similarity index whose fuzzy version to use. See ?\code{\link{fuzSim}} for available options.
+the similarity index whose fuzzy version to use. See \code{\link{fuzSim}} for available options.
 }
 }
 \details{
-Spatial associations between species' distributions can provide deep insights 
-into the processes that drive biodiversity patterns. Chorological clustering 
-provides a systematic framework for analysing such associations, by detecting 
-areas with similar species composition (biotic regions) or clusters of species' 
-distribution types (chorotypes; Olivero et al. 2011, 2013). The fuzzy versions 
-of species occurrence data and of the similarity indices introduce tolerance 
-for small spatial differences in species' occurrence localities and may also 
-compensate geo-referencing errors. The results of \code{simMat} can be used 
-for determining chorotypes or biotic regions using the \code{RMACOQUI} package 
-(Olivero et al. 2011).
+Spatial associations between species' distributions can provide deep insights into the processes that drive biodiversity patterns. Chorological clustering provides a systematic framework for analysing such associations, by detecting areas with similar species composition (biotic regions) or clusters of species' distribution types (chorotypes; Olivero et al. 2011, 2013). The fuzzy versions of species occurrence data and of the similarity indices introduce tolerance for small spatial differences in species' occurrence localities and may also compensate geo-referencing errors. The results of \code{simMat} can be used for determining chorotypes or biotic regions using the \pkg{RMACOQUI} package (Olivero et al. 2011).
 }
 \value{
-This function returns a square matrix of pair-wise similarity among the species distributions 
-(columns) in \code{data}. Similarity is calculated with the fuzzy version of 
-the index specified in \code{method}, which yields traditional binary 
-similarity if the data are binary (0 or 1), or fuzzy similarity if the data 
-are fuzzy (between 0 and 1).
+This function returns a square matrix of pair-wise similarity among the species distributions (columns) in \code{data}. Similarity is calculated with the fuzzy version of the index specified in \code{method}, which yields traditional binary similarity if the data are binary (0 or 1), or fuzzy similarity if the data are fuzzy (between 0 and 1).
 }
 \references{
-Olivero, J., Real, R. & Marquez, A.L. (2011) Fuzzy chorotypes as a conceptual tool to improve insight into biogeographic patterns. Systematic Biology, 
-60: 645-60.
+Olivero, J., Real, R. & Marquez, A.L. (2011) Fuzzy chorotypes as a conceptual tool to improve insight into biogeographic patterns. Systematic Biology, 60: 645-60.
 
-Olivero, J., Marquez, A.L., Real, R. (2013) Integrating fuzzy logic and 
-statistics to improve the reliable delimitation of biogeographic regions 
-and transition zones. Systematic Biology, 62: 1-21.
+Olivero, J., Marquez, A.L., Real, R. (2013) Integrating fuzzy logic and statistics to improve the reliable delimitation of biogeographic regions and transition zones. Systematic Biology, 62: 1-21.
 
-Zadeh L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353. 
+Zadeh L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353.
 }
 \author{
 A. Marcia Barbosa
@@ -70,24 +50,24 @@ head(rotifers01)
 names(rotifers01)
 
 
-# build a matrix of similarity among these binary data 
-# using e.g. Baroni-Urbani & Buser's index:
+# build a matrix of similarity among these binary data
+# using e.g. Jaccard's index:
 
-bin.sim.mat <- simMat(rotifers01[ , 6:40], method = "Baroni")
+bin.sim.mat <- simMat(rotifers01[ , 6:40], method = "Jaccard")
 
 head(bin.sim.mat)
 
 
-# calculate a fuzzy version of the presence-absence data 
+# calculate a fuzzy version of the presence-absence data
 # based on inverse distance to presences:
 
-rotifers.invd <- distPres(rotifers01, sp.cols = 6:40, 
+rotifers.invd <- distPres(rotifers01, sp.cols = 6:40,
 coord.cols = c("Long", "Lati"), id.col = 1, suffix = ".d", p = 1, inv = TRUE)
 
 head(rotifers.invd)
 
 
-# build a matrix of fuzzy similarity among these fuzzy distribution data, 
+# build a matrix of fuzzy similarity among these fuzzy distribution data,
 # with the fuzzy version of Jaccard's index:
 
 fuz.sim.mat <- simMat(rotifers.invd[ , -1], method = "Jaccard")
@@ -97,36 +77,35 @@ head(fuz.sim.mat)
 
 # plot the similarity matrices as colours:
 
-image(x = 1:ncol(bin.sim.mat), y = 1:nrow(bin.sim.mat), z = bin.sim.mat, 
-col = rev(heat.colors(256)), xlab = "", ylab = "", axes = FALSE, 
+image(x = 1:ncol(bin.sim.mat), y = 1:nrow(bin.sim.mat), z = bin.sim.mat,
+col = rev(heat.colors(256)), xlab = "", ylab = "", axes = FALSE,
 main = "Binary similarity")
-axis(side = 1, at = 1:ncol(bin.sim.mat), tick = FALSE, 
+axis(side = 1, at = 1:ncol(bin.sim.mat), tick = FALSE,
 labels = colnames(bin.sim.mat), las = 2)
-axis(side = 2, at = 1:nrow(bin.sim.mat), tick = FALSE, 
+axis(side = 2, at = 1:nrow(bin.sim.mat), tick = FALSE,
 labels = rownames(bin.sim.mat), las = 2)
 
-image(x = 1:ncol(fuz.sim.mat), y = 1:nrow(fuz.sim.mat), z = fuz.sim.mat, 
-col = rev(heat.colors(256)), xlab = "", ylab = "", axes = FALSE, 
+image(x = 1:ncol(fuz.sim.mat), y = 1:nrow(fuz.sim.mat), z = fuz.sim.mat,
+col = rev(heat.colors(256)), xlab = "", ylab = "", axes = FALSE,
 main = "Fuzzy similarity")
-axis(side = 1, at = 1:ncol(fuz.sim.mat), tick = FALSE, 
+axis(side = 1, at = 1:ncol(fuz.sim.mat), tick = FALSE,
 labels = colnames(fuz.sim.mat), las = 2, cex = 0.5)
-axis(side = 2, at = 1:nrow(fuz.sim.mat), tick = FALSE, 
+axis(side = 2, at = 1:nrow(fuz.sim.mat), tick = FALSE,
 labels = rownames(fuz.sim.mat), las = 2)
 
 
 # plot a UPGMA dendrogram from each similarity matrix:
 
-plot(hclust(as.dist(1 - bin.sim.mat), method = "average"), 
+plot(hclust(as.dist(1 - bin.sim.mat), method = "average"),
 main = "Binary cluster dendrogram")
 
-plot(hclust(as.dist(1 - fuz.sim.mat), method = "average"), 
+plot(hclust(as.dist(1 - fuz.sim.mat), method = "average"),
 main = "Fuzzy cluster dendrogram")
 
 
-# you can get fuzzy chorotypes from these similarity matrices 
-# (or fuzzy biotic regions if your transpose \code{data} so that localities 
-# are in columns and species in rows) using the \code{RMACOQUI} package 
-# (Olivero et al. 2011)
+# you can get fuzzy chorotypes from these similarity matrices
+# (or fuzzy biotic regions if your \code{\link{transpose}} \code{data},
+# so that localities are in columns and species in rows)
+# using the \pkg{RMACOQUI} package (Olivero et al. 2011)
 }
-\keyword{ similarity }
-\keyword{ fuzzy }
+\keyword{ ~kwd1 }

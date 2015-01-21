@@ -100,5 +100,7 @@ id.col = 1)
 
 head(tsa)
 }
-\keyword{ models }
 \keyword{ spatial }
+\keyword{ multivariate }
+\keyword{ regression }
+\keyword{ models }

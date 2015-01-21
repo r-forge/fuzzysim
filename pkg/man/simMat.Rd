@@ -108,4 +108,4 @@ main = "Fuzzy cluster dendrogram")
 # so that localities are in columns and species in rows)
 # using the \pkg{RMACOQUI} package (Olivero et al. 2011)
 }
-\keyword{ ~kwd1 }
+\keyword{  }

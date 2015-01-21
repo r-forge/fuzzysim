@@ -65,5 +65,4 @@ fuzSim(rotifers01[,6], rotifers01[,7], method = "Baroni")
 
 fuzSim(rotifers01[,6], rotifers01[,7], method = "match")
 }
-\keyword{ similarity }
-\keyword{ ~kwd1 }
+\keyword{  }

@@ -33,4 +33,4 @@ sapply(rnorm(50000), function(x) x*5)
 # see how long it took:
 timer(start)
 }
-\keyword{ ~kwd1 }
+\keyword{  }

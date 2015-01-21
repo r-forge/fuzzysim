@@ -49,7 +49,7 @@ echo $contents; } ?>
 
 <p> It includes functions for data preparation, such as converting <b>species lists (long format) to presence-absence tables (wide format)</b>, obtaining <b>unique abbreviations of species names</b>, or <b>transposing (parts of) complex data frames</b>; and <b>sample data sets</b> for providing practical examples.</p>
 
-<p> It can <b>convert binary presence-absence data to fuzzy occurrence data</b>, using e.g. trend surface analysis, inverse distance interpolation or prevalence-independent environmental favourability modelling, for multiple species simultaneously.</p>
+<p> It can <b>convert binary presence-absence to fuzzy occurrence data</b>, using e.g. <b>trend surface analysis</b>, <b>inverse distance interpolation</b> or prevalence-independent <b>environmental favourability</b> modelling, for multiple species simultaneously.</p>
 
 <p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>. Currently available similarity indices are Jaccard, S&oslash;rensen, Simpson, Baroni-Urbani & Buser, and the simple matching coefficient.</p>
 

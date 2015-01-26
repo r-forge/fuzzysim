@@ -19,9 +19,10 @@ A numeric value of the percentage of data to leave out of the model for further 
 }
 \references{
 Huberty C.J. (1994) Applied Discriminant Analysis. Wiley, New York, 466 pp.
+
 Schaafsma W. & van Vark G.N. (1979) Classification and discrimination problems with applications. Part IIa. Statistica Neerlandica 33: 91-126
 
-Fielding A. H. & Bell J. F. (1997) A review of methods for the assessment of prediction errors in conservation presence/absence models. Environmental Conservation 24: 38-49
+Fielding A.H. & Bell J.F. (1997) A review of methods for the assessment of prediction errors in conservation presence/absence models. Environmental Conservation 24: 38-49
 }
 \author{
 A. Marcia Barbosa

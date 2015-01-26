@@ -13,7 +13,7 @@ timer(start.time)
 \details{
 }
 \value{
-The function returns a message informing of the time elapsed since \code{start.time}.
+The function returns a message informing of the time elapsed since the input \code{start.time}.
 }
 \references{
 }

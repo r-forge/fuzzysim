@@ -4,7 +4,7 @@
 Transpose (part of) a matrix or dataframe
 }
 \description{
-This function transposes (a specified part of) a matrix or data frame, optionally using one of its columns as column names for the transposed result. It is useful for turning a species presence-absence table into a regional species composition table.
+This function transposes (a specified part of) a matrix or data frame, optionally using one of its columns as column names for the transposed result. It can be useful for turning a species presence-absence table into a regional species composition table.
 }
 \usage{
 transpose(data, sp.cols = 1:ncol(data), reg.names = NULL)
@@ -36,13 +36,13 @@ A. Marcia Barbosa
 \code{\link{t}}
 }
 \examples{
-data(rotifers01)
+data(rotif.env)
 
-head(rotifers01)
+head(rotif.env)
 
-names(rotifers01)
+names(rotif.env)
 
-rotif.reg <- transpose(rotifers01, sp.cols = 6:40, reg.names = 1)
+rotif.reg <- transpose(rotif.env, sp.cols = 18:47, reg.names = 1)
 
 head(rotif.reg)
 }

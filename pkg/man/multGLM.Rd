@@ -4,7 +4,7 @@
 Multiple GLMs
 }
 \description{
-This function calculates generalized linear models for a set of species in a data frame.
+This function calculates generalized linear models for a set of species (presence/absence data) in a data frame.
 }
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
@@ -28,13 +28,13 @@ group.preds = TRUE, trim = TRUE, ...)
   their bivariate relationship with the response and the false discovery rate
   (see \code{\link{FDR}}).}
   \item{step}{logical, whether to use the \code{\link{step}} function to perform
-  a first stepwise variable selection based on AIC.}
+  a stepwise variable selection based on AIC.}
   \item{trace}{if positive, information is printed during the running of \code{\link{step}}. Larger values may give more detailed information.}
-  \item{start}{logical, whether to start with the 'null.model' (so variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if \code{step = TRUE}.}
+  \item{start}{character, whether to start with the 'null.model' (so AIC variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if \code{step = TRUE}.}
   \item{direction}{argument to be passed to \code{\link{step}} specifying the direction of variable selection ('forward', 'backward' or 'both'). Used only if \code{step = TRUE}.}
   \item{Y}{logical, whether to include in the output the response in the scale of the predictor variables (logit).}
   \item{P}{logical, whether to include in the output the response in the probability scale (response).}
-  \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function (Real et al. 2006) and include its results in the output.}
+  \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to extract the effect of prevalence on probability (Real et al. 2006) and include its results in the output.}
   \item{sep}{separator for the predictions (Y, P and/or F) in the output table. The default is "_". If an 'illegal' separator is provided (such as "+", "-", ":", ","), R automatically converts it to a dot.}
   \item{group.preds}{logical, whether to group together predictions of similar type (\code{Y}, \code{P} or \code{F}) in the output \code{predictions} table (e.g. if \code{FALSE}: sp1_Y, sp1_P, sp1_F, sp2_Y, sp2_P, sp2_F; if \code{TRUE}: sp1_Y, , sp2_Y, sp1_P, sp2_P, sp1_F, sp2_F).}
   \item{trim}{logical, whether to trim non-significant variables off the models using the \code{\link{modelTrim}} function; can be used whether or not \code{step} is TRUE; works as a backward variable elimination procedure based on significance.}
@@ -43,7 +43,7 @@ group.preds = TRUE, trim = TRUE, ...)
 \details{
 This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function. There is also an optional preliminary selection of the variables with a significant bivariate relationship with the response, based on the false discovery rate (\code{\link{FDR}}), but note that some variables can be significant in a multivariate model even if they would not have been selected by FDR. \code{\link{Fav}}ourability is also calculated. By default, all data are used in model training, but you can define an optional \code{test.sample} to be reserved for model testing afterwards. You may also want to do a previous check for \code{\link{multicol}}linearity among variables, e.g. the variance inflation factor (VIF).
 
-The \code{multGLM} function will create a list of the resulting models (each with the name of the corresponding species column) and a data frame with their predictions (Y, P and/or F, all of which are optional). If you plan on representing these predictions in a GIS based on .dbf tables, remember that dbf only allows up to 10 characters in column names; multGLM predictions will add 2 characters (_y, _P and/or _F) to each of your species column names, so use species names/codes with up to 8 characters in the data set that you are modelling. You can create (sub)species name abbreviations with the \code{spCodes} function.
+The \code{multGLM} function will create a list of the resulting models (each with the name of the corresponding species column) and a data frame with their predictions (Y, P and/or F, all of which are optional). If you plan on representing these predictions in a GIS based on .dbf tables, remember that dbf only allows up to 10 characters in column names; \code{multGLM} predictions will add 2 characters (_Y, _P and/or _F) to each of your species column names, so use species names/codes with up to 8 characters in the data set that you are modelling. You can create (sub)species name abbreviations with the \code{\link{spCodes}} function.
 }
 \value{
 This function returns a list with the following components:

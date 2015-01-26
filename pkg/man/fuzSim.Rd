@@ -49,20 +49,20 @@ A. Marcia Barbosa
 \code{\link{simMat}}
 }
 \examples{
-data(rotifers01)
+data(rotif.env)
 
-head(rotifers01)
+head(rotif.env)
 
-names(rotifers01)
+names(rotif.env)
 
-fuzSim(rotifers01[,6], rotifers01[,7], method = "Jaccard")
+fuzSim(rotif.env[,18], rotif.env[,19], method = "Jaccard")
 
-fuzSim(rotifers01[,6], rotifers01[,7], method = "Sorensen")
+fuzSim(rotif.env[,18], rotif.env[,19], method = "Sorensen")
 
-fuzSim(rotifers01[,6], rotifers01[,7], method = "Simpson")
+fuzSim(rotif.env[,18], rotif.env[,19], method = "Simpson")
 
-fuzSim(rotifers01[,6], rotifers01[,7], method = "Baroni")
+fuzSim(rotif.env[,18], rotif.env[,19], method = "Baroni")
 
-fuzSim(rotifers01[,6], rotifers01[,7], method = "match")
+fuzSim(rotif.env[,18], rotif.env[,19], method = "match")
 }
 \keyword{  }

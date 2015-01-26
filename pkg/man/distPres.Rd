@@ -75,25 +75,25 @@ A. Marcia Barbosa
 \code{\link{dist}}
 }
 \examples{
-data(rotifers01)
+data(rotif.env)
 
-head(rotifers01)
+head(rotif.env)
 
-names(rotifers01)
+names(rotif.env)
 
 
 # calculate plain distance to presence:
 
-rotifers.dist <- distPres(rotifers01, sp.cols = 6:40,
-coord.cols = c("Long", "Lati"), id.col = 1, p = 1, inv = FALSE, suffix = "_D")
+rotifers.dist <- distPres(rotif.env, sp.cols = 18:47, coord.cols = c("Longitude",
+"Latitude"), id.col = 1, p = 1, inv = FALSE, suffix = "_D")
 
 head(rotifers.dist)
 
 
 # calculate inverse squared distance to presence:
 
-rotifers.invd2 <- distPres(rotifers01, sp.cols = 6:40,
-coord.cols = c("Long", "Lati"), id.col = 1, p = 2, inv = TRUE, suffix = "_iDsq")
+rotifers.invd2 <- distPres(rotif.env, sp.cols = 18:47, coord.cols = c("Longitude",
+"Latitude"), id.col = 1, p = 2, inv = TRUE, suffix = "_iDsq")
 
 head(rotifers.invd2)
 }

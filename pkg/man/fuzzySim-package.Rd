@@ -54,20 +54,20 @@ head(rotifers.presabs)
 
 # get 3rd-degree spatial trend surface for each species' distribution:
 
-data(rotifers01)
+data(rotif.env)
 
-names(rotifers01)
+names(rotif.env)
 
-rotifers.tsa <- multTSA(rotifers01, sp.cols = 6:40,
-coord.cols = c("Long", "Lati"), id.col = 1)
+rotifers.tsa <- multTSA(rotif.env, sp.cols = 18:47,
+coord.cols = c("Longitude", "Latitude"), id.col = 1)
 
 head(rotifers.tsa)
 
 
 # get inverse squared distance to presence for each species:
 
-rotifers.isqd <- distPres(rotifers01, sp.cols = 6:ncol(rotifers01),
-coord.cols = c("Long", "Lati"), id.col = 1, p = 2, inv = TRUE)
+rotifers.isqd <- distPres(rotif.env, sp.cols = 18:47,
+coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 2, inv = TRUE)
 
 head(rotifers.isqd)
 

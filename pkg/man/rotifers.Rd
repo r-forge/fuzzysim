@@ -12,7 +12,7 @@ These data were extracted from a database of monogonont rotifer species records 
   A data frame with 3640 observations on the following 2 variables.
   \describe{
     \item{\code{LEVEL3_COD}}{a factor with 201 levels corresponding to the code
-    names of the TDWG level 3 regions on which the records were taken}
+    names of the TDWG level 3 regions in which the records were taken}
     \item{\code{species}}{a factor with 35 levels corresponding to the names of
     the (sub)species recorded on at least 80 different TDWG level 3 regions}
   }

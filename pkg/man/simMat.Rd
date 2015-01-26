@@ -41,19 +41,19 @@ A. Marcia Barbosa
 }
 \examples{
 
-# load and look at the rotifers01 presence-absence data:
+# load and look at the rotif.env presence-absence data:
 
-data(rotifers01)
+data(rotif.env)
 
-head(rotifers01)
+head(rotif.env)
 
-names(rotifers01)
+names(rotif.env)
 
 
 # build a matrix of similarity among these binary data
 # using e.g. Jaccard's index:
 
-bin.sim.mat <- simMat(rotifers01[ , 6:40], method = "Jaccard")
+bin.sim.mat <- simMat(rotif.env[ , 18:47], method = "Jaccard")
 
 head(bin.sim.mat)
 
@@ -61,14 +61,14 @@ head(bin.sim.mat)
 # calculate a fuzzy version of the presence-absence data
 # based on inverse distance to presences:
 
-rotifers.invd <- distPres(rotifers01, sp.cols = 6:40,
-coord.cols = c("Long", "Lati"), id.col = 1, suffix = ".d", p = 1, inv = TRUE)
+rotifers.invd <- distPres(rotif.env, sp.cols = 18:47,
+coord.cols = c("Longitude", "Latitude"), id.col = 1, suffix = ".d", p = 1, inv = TRUE)
 
 head(rotifers.invd)
 
 
 # build a matrix of fuzzy similarity among these fuzzy distribution data,
-# with the fuzzy version of Jaccard's index:
+# using the fuzzy version of Jaccard's index:
 
 fuz.sim.mat <- simMat(rotifers.invd[ , -1], method = "Jaccard")
 

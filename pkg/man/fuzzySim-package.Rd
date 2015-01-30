@@ -46,7 +46,7 @@ head(rotifers)
 
 # convert species list (long format) to presence-absence table (wide format):
 
-rotifers.presabs <- splist2presabs(rotifers, sites.col = "LEVEL3_COD",
+rotifers.presabs <- splist2presabs(rotifers, sites.col = "TDWG4",
 sp.col = "spcode", keep.n = FALSE)
 
 head(rotifers.presabs)

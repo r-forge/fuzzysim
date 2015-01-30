@@ -43,7 +43,7 @@ data(rotifers)
 
 head(rotifers)
 
-rotifers.presabs <- splist2presabs(rotifers, sites.col = "LEVEL3_COD",
+rotifers.presabs <- splist2presabs(rotifers, sites.col = "TDWG4",
 sp.col = "species", keep.n = FALSE)
 
 head(rotifers.presabs)

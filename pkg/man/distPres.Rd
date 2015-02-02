@@ -50,10 +50,7 @@ the power to which distance should be raised. The default is 1; use 2 or higher
 if you want more conservative distances.
 }
   \item{inv}{
-logical value indicating whether distance should be inverted, so that it varies
-between 0 and 1 and higher values mean closer to presence. The default is
-\code{TRUE}, which is adequate as a fuzzy version of presence-absence
-(for using e.g. with \code{\link{fuzSim}} and \code{\link{simMat}}).
+logical value indicating whether distance should be inverted, so that it varies between 0 and 1 and higher values mean closer to presence. The default is \code{TRUE}, which is adequate as a fuzzy version of presence-absence (for using e.g. with \code{\link{fuzSim}} and \code{\link{simMat}}). In this case, presences maintain the value 1, and inverse distance to presence is calculated only for absence localities.
 }
 }
 \details{

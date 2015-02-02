@@ -83,9 +83,9 @@ echo $contents; } ?>
 
 <h2>Find out more</h2>
 
-<p> An <b><a href="fuzzySim_tutorial.pdf">illustrated beginners <big>tutorial</big></a></b> (updated 28 Apr 2014) is provided in PDF format. A <b><a href="fuzzySim-manual.pdf">reference <big>manual</big></a></b> based on the package help files is also available.</p>
+<p> An <b><a href="fuzzySim-tutorial.pdf">illustrated beginners <big>tutorial</big></a></b> (updated 2 Feb 2015) is provided in PDF format. A <b><a href="fuzzySim-manual.pdf">reference <big>manual</big></a></b> based on the package help files is also available.</p>
 
-<p> Here's a <a href="fuzzySim_poster_RMtp.pdf">poster</a> made to present <i>fuzzySim</i> at <i><a href="http://r2014-mtp.sciencesconf.org/">Rencontres R 2014</a></i>.</p>
+<p> Here's a <a href="fuzzySim-poster-RMtp.pdf">poster</a> made to present <i>fuzzySim</i> at <i><a href="http://r2014-mtp.sciencesconf.org/">Rencontres R 2014</a></i>.</p>
 
 <p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for further info on the package and its origins. </p>
 

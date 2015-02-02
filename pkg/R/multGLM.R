@@ -91,8 +91,8 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
   n.models <- length(sp.cols)
   n.preds <- n.models * (Y + P + Favourability)  # sums logical values of function arguments
   models <- vector("list", n.models)
-  predictions <- matrix(NA, nrow = nrow(data), ncol = n.preds)  # new
-  colnames(predictions) <- rep("", n.preds)  # new
+  predictions <- matrix(NA, nrow = nrow(data), ncol = n.preds)
+  colnames(predictions) <- rep("", n.preds)
   model.count <- 0
   pred.count <- 0
   attach(train.data, warn.conflicts = FALSE)  # won't work without attach
@@ -116,7 +116,7 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
       sel.var.cols <- which(colnames(train.data) %in% rownames(fdr$select))
     } else sel.var.cols <- var.cols
     
-    if (length(sel.var.cols) == 0)  model.vars <- 1  # new
+    if (length(sel.var.cols) == 0)  model.vars <- 1
     else  model.vars <- colnames(train.data)[sel.var.cols]
     model.formula <- as.formula(paste(response, "~", paste(model.vars,
                                                            collapse = "+")))
@@ -131,7 +131,7 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
         null.formula <- as.formula(paste(response, "~", 1))
         model <- step(glm(null.formula, family = binomial), 
                       direction = direction, scope = model.scope, trace = trace)
-      } else stop("'start' must be either 'full.model' or 'null.model'")
+      } else stop ("'start' must be either 'full.model' or 'null.model'")
       n.vars.step <- length(model$coefficients) - 1
       excluded.vars <- setdiff(colnames(data[ , sel.var.cols]), names(model$coefficients)[-1])
       cat(n.vars.start - n.vars.step, "variable(s) excluded by 'step' function\n", paste(excluded.vars, collapse = ", "), "\n\n")
@@ -158,16 +158,16 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
     if (Y) {
       #data[ , ncol(data) + 1] <- predict(model, data)
       #colnames(data)[ncol(data)] <- paste(response, "y", sep = "_")
-      pred.count <- pred.count + 1  # new
+      pred.count <- pred.count + 1
       colnames(predictions)[pred.count] <- paste(response, "Y", sep = sep)
-      predictions[ , pred.count] <- predict(model, data)  # new
+      predictions[ , pred.count] <- predict(model, data)
     }
     if (P) {
       #data[ , ncol(data) + 1] <- predict(model, data, type = "response")
       #colnames(data)[ncol(data)] <- paste(response, "P", sep = "_")
-      pred.count <- pred.count + 1  # new
-      colnames(predictions)[pred.count] <- paste(response, "P", sep = sep)  # new
-      predictions[ , pred.count] <- predict(model, data, type = "response")  # new
+      pred.count <- pred.count + 1
+      colnames(predictions)[pred.count] <- paste(response, "P", sep = sep)
+      predictions[ , pred.count] <- predict(model, data, type = "response")
     }
     if (Favourability) {
       n1 <- sum(train.data[ , s] == 1, na.rm = TRUE)
@@ -175,7 +175,7 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
       #data[ , ncol(data) + 1] <- Fav(n1n0 = c(n1, n0), pred = data[ , pred.count])
       #colnames(data)[ncol(data)] <- paste(response, "F", sep = "_")
       #if (!keeP) data <- data[ , -(pred.count - 1)]
-      pred.count <- pred.count + 1  # new
+      pred.count <- pred.count + 1
       predictions[ , pred.count] <- Fav(n1n0 = c(n1, n0), pred = predictions[ , pred.count - 1])
       colnames(predictions)[pred.count] <- paste(response, "F", sep = sep)
       #if (!keeP) predictions <- predictions[ , -(pred.count - 1)]

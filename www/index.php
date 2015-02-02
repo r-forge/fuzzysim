@@ -53,7 +53,7 @@ echo $contents; } ?>
 
 <p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>. Currently available similarity indices are Jaccard, S&oslash;rensen, Simpson, Baroni-Urbani & Buser, and the simple matching coefficient.</p>
 
-<p>Some of the <i>fuzzySim</i> functions are also being implemented within a graphical-interface extension for the <strong><a href="http://www.qgis.org">QGIS</a></strong> Processing Toolbox - you can download the current versions from here, place them in your '/home/username/.qgis2/processing/rscripts' folder and give them a try. Feedback welcome!</p>
+<p>Some of the <i>fuzzySim</i> functions are also being implemented within a graphical-interface extension for the <strong><a href="http://www.qgis.org">QGIS</a></strong> Processing Toolbox - you can download the current versions from <a href="https://copy.com/GQSTy9GngfRGfLeS">here</a>, place them in your '.qgis2/processing/rscripts' folder (search for it in your computer; you may need to toggle "show hidden files" to see it) and give them a try. Feedback welcome!</p>
 
 <br />
 
@@ -77,7 +77,7 @@ echo $contents; } ?>
 
 <p> The <strong>forthcoming paper</strong> about the package should be cited when using it - the provisional reference is:</p>
 
-<p><i> Barbosa A.M. (in review) fuzzySim: applying fuzzy logic to binary similarity indices in ecology..</i></p>
+<p><i> Barbosa A.M. (in review) fuzzySim: applying fuzzy logic to binary similarity indices in ecology.</i></p>
 <br />
 
 

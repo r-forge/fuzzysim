@@ -2,7 +2,7 @@ simMat <-
 function(data, method) {
   start.time <- Sys.time()
   stopifnot(data >= 0, data <= 1,
-            method %in% c("Jaccard", "Sorensen", "Baroni"))
+            method %in% c("Jaccard", "Sorensen", "Simpson", "Baroni"))
   n.subjects <- ncol(data)
   quarter <- round(n.subjects / 4)
   half <- round(n.subjects / 2)

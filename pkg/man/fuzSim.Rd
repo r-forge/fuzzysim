@@ -17,11 +17,11 @@ a vector of (optionally fuzzy) presence-absence data, with 1 meaning presence, 0
 a vector similar to \code{x}, of the same length and in the same order.
 }
   \item{method}{
-the similarity index to use. Currently available options are \code{'Jaccard'}, \code{'Sorensen'}, \code{'Simpson'}, \code{'Baroni'} and \code{'match'} (see Details).
+the similarity index to use. Currently available options are \code{'Jaccard'}, \code{'Sorensen'}, \code{'Simpson'} and \code{'Baroni'} (see Details).
 }
 }
 \details{
-Similarity between ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed pair-wise similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented in their fuzzy versions (Barbosa, submitted), able to deal with both binary and fuzzy data. The simple matchig coefficient (proportion of matches) is also available.
+Similarity between ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented in their fuzzy versions (Barbosa, submitted), able to deal with both binary and fuzzy data.
 }
 \value{
 The function returns a value between 0 and 1 representing the fuzzy similarity between \code{x} and \code{y}. Note, for example, that Jaccard similarity can be converted to dissimilarity (or Jaccard distance) if subtracted from 1, while \code{1-Sorensen} is not a proper distance metric as it lacks the property of triangle inequality (see \url{http://en.wikipedia.org/wiki/S\%C3\%B8rensen\%E2\%80\%93Dice_coefficient}).
@@ -62,7 +62,5 @@ fuzSim(rotif.env[,18], rotif.env[,19], method = "Sorensen")
 fuzSim(rotif.env[,18], rotif.env[,19], method = "Simpson")
 
 fuzSim(rotif.env[,18], rotif.env[,19], method = "Baroni")
-
-fuzSim(rotif.env[,18], rotif.env[,19], method = "match")
 }
 \keyword{  }

@@ -62,7 +62,7 @@ Type 'p.adjust.methods' for available options.")
   exclude <- subset(results, p.adjusted > q)
   select <- subset(results, p.adjusted <= q)
   if (verbose) cat("\nBivariate p-values adjusted with '", correction,
-      "' correction;\n", nrow(exclude), " variables excluded, ",
+      "' correction;\n", nrow(exclude), " variable(s) excluded, ",
       nrow(select), " selected\n\n", sep = "")
 
   return(list(exclude = exclude, select = select))

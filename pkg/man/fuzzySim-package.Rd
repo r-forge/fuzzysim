@@ -6,7 +6,7 @@
 Fuzzy similarity in species distributions
 }
 \description{
-Functions to calculate fuzzy versions of species' occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis and prevalence-independent favourability GLM), and pair-wise fuzzy similarity (based on fuzzy versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), or transposing part of a data frame. Includes also sample data sets for providing practical examples.
+Functions to calculate fuzzy versions of species' occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis and prevalence-independent favourability GLM), and pair-wise fuzzy similarity (based on fuzzy versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), transposing part of a data frame, assessing the false discovery rate, or analysing multicollinearity among variables. Includes also sample datasets for providing practical examples. A step-by-step illustrated tutorial is available from the package homepage (http://fuzzysim.r-forge.r-project.org).
 }
 \details{
 \tabular{ll}{
@@ -23,12 +23,11 @@ A. Marcia Barbosa
 Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
 }
 \references{
-Barbosa A.M. (submitted) fuzzySim: applying fuzzy logic to binary similarity indices in ecology.
+Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, in press.
 }
 \keyword{ package }
 \seealso{
-\pkg{RMACOQUI} (Olivero, Real & Marquez 2011, Systematic Biology 60: 645-60,
-doi 10.1093/sysbio/syr026)
+\pkg{RMACOQUI}
 }
 \examples{
 data(rotifers)

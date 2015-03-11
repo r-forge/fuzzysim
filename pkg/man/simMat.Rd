@@ -4,31 +4,29 @@
 Pair-wise (fuzzy) similarity matrix
 }
 \description{
-\code{simMat} takes a matrix or data frame containing species occurrence data, either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the \code{\link{fuzSim}} function to calculate a square matrix of pair-wise similarities between them, using a fuzzy logic version (after Zadeh, 1965) of the specified similarity index.
+\code{simMat} takes a matrix or data frame containing species occurrence data or regional species composition, either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the \code{\link{fuzSim}} function to calculate a square matrix of pair-wise similarities between them, using a fuzzy logic version (Barbosa, 2015) of the specified similarity index.
 }
 \usage{
 simMat(data, method)
 }
 \arguments{
   \item{data}{
-a matrix or data frame containing (optionally fuzzy) species presence-absence data (one column per species), with 1 meaning presence, 0 meaning absence, and values in between for fuzzy presence (or the degree to which each locality belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}}.
+a matrix or data frame containing (optionally fuzzy) species presence-absence data (in wide format, i.e. one column per species), with 1 meaning presence, 0 meaning absence, and values in between for fuzzy presence (or the degree to which each locality belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}}. These data can also be \code{\link{transpose}}d for comparing regional species compositions.
 }
   \item{method}{
 the similarity index whose fuzzy version to use. See \code{\link{fuzSim}} for available options.
 }
 }
 \details{
-Spatial associations between species' distributions can provide deep insights into the processes that drive biodiversity patterns. Chorological clustering provides a systematic framework for analysing such associations, by detecting areas with similar species composition (biotic regions) or clusters of species' distribution types (chorotypes; Olivero et al. 2011, 2013). The fuzzy versions of species occurrence data and of the similarity indices introduce tolerance for small spatial differences in species' occurrence localities and may also compensate geo-referencing errors. The results of \code{simMat} can be used for determining chorotypes or biotic regions using the \pkg{RMACOQUI} package (Olivero et al. 2011).
+The fuzzy versions of species occurrence data and of the similarity indices (Barbosa, 2015) introduce tolerance for small spatial differences in species' occurrence localities and may compensate under-sampling and geo-referencing errors. The results of \code{simMat} can be used for determining chorotypes or biotic regions using the \pkg{RMACOQUI} package (Olivero et al. 2011).
 }
 \value{
-This function returns a square matrix of pair-wise similarity among the species distributions (columns) in \code{data}. Similarity is calculated with the fuzzy version of the index specified in \code{method}, which yields traditional binary similarity if the data are binary (0 or 1), or fuzzy similarity if the data are fuzzy (between 0 and 1).
+This function returns a square matrix of pair-wise similarity among the species distributions (columns) in \code{data}. Similarity is calculated with the fuzzy version of the index specified in \code{method}, which yields traditional binary similarity if the data are binary (0 or 1), or fuzzy similarity if the data are fuzzy (between 0 and 1) (Barbosa, 2015).
 }
 \references{
+Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, in press.
+
 Olivero, J., Real, R. & Marquez, A.L. (2011) Fuzzy chorotypes as a conceptual tool to improve insight into biogeographic patterns. Systematic Biology, 60: 645-60.
-
-Olivero, J., Marquez, A.L., Real, R. (2013) Integrating fuzzy logic and statistics to improve the reliable delimitation of biogeographic regions and transition zones. Systematic Biology, 62: 1-21.
-
-Zadeh L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353.
 }
 \author{
 A. Marcia Barbosa

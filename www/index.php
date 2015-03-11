@@ -21,7 +21,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 	<link href="http://<?php echo $themeroot; ?>styles/estilo1.css" rel="stylesheet" type="text/css" />
   </head>
 
-<body bgcolor="#F8F8F8">
+<body bgcolor="#FFFFFF">
 
 <!-- R-Forge Logo -->
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -73,11 +73,12 @@ echo $contents; } ?>
 
 <h2> References </h2>
 
-<p> To see how to <big><strong>cite</strong></big> the package itself, load it in R and type <big><code>citation(package="fuzzySim")</code></big>.</p>
+<p> If you use <i>fuzzySim</i> in publications, please <strong><big>cite</big> the following paper</strong>:
 
-<p> The <strong>forthcoming paper</strong> about the package should be cited when using it - the provisional reference is:</p>
+<p> Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. <i>Methods in Ecology and Evolution</i>, in press</p>
 
-<p><i> Barbosa A.M. (in review) fuzzySim: applying fuzzy logic to binary similarity indices in ecology.</i></p>
+<p> To see how to cite the package itself, load it in R and type <big><code>citation(package="fuzzySim")</code></big>.</p>
+
 <br />
 
 

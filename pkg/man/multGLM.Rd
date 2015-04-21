@@ -4,13 +4,13 @@
 Multiple GLMs
 }
 \description{
-This function calculates generalized linear models for a set of species (presence/absence data) in a data frame.
+This function calculates generalized linear models for a set of (species) presence/absence data in a data frame.
 }
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
 test.sample = 0, FDR = FALSE, step = TRUE, trace = 0, start = "null.model",
-direction = "both", Y = FALSE, P = TRUE, Favourability = TRUE, sep = "_",
-group.preds = TRUE, trim = TRUE, ...)
+direction = "both", Y.prediction = FALSE, P.prediction = TRUE,
+Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
 }
 \arguments{
   \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
@@ -32,10 +32,9 @@ group.preds = TRUE, trim = TRUE, ...)
   \item{trace}{if positive, information is printed during the running of \code{\link{step}}. Larger values may give more detailed information.}
   \item{start}{character, whether to start with the 'null.model' (so AIC variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if \code{step = TRUE}.}
   \item{direction}{argument to be passed to \code{\link{step}} specifying the direction of variable selection ('forward', 'backward' or 'both'). Used only if \code{step = TRUE}.}
-  \item{Y}{logical, whether to include in the output the response in the scale of the predictor variables (logit).}
-  \item{P}{logical, whether to include in the output the response in the probability scale (response).}
+  \item{Y.prediction}{logical, whether to include output predictions in the scale of the predictor variables (\code{type = "link"} in \code{\link{predict.glm}}).}
+  \item{P.prediction}{logical, whether to include output predictions in the scale of the response variable, i.e. probability (\code{type = "response"} in \code{\link{predict.glm}}).}
   \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to extract the effect of prevalence on probability (Real et al. 2006) and include its results in the output.}
-  \item{sep}{separator for the predictions (Y, P and/or F) in the output table. The default is "_". If an 'illegal' separator is provided (such as "+", "-", ":", ","), R automatically converts it to a dot.}
   \item{group.preds}{logical, whether to group together predictions of similar type (\code{Y}, \code{P} or \code{F}) in the output \code{predictions} table (e.g. if \code{FALSE}: sp1_Y, sp1_P, sp1_F, sp2_Y, sp2_P, sp2_F; if \code{TRUE}: sp1_Y, , sp2_Y, sp1_P, sp2_P, sp1_F, sp2_F).}
   \item{trim}{logical, whether to trim non-significant variables off the models using the \code{\link{modelTrim}} function; can be used whether or not \code{step} is TRUE; works as a backward variable elimination procedure based on significance.}
   \item{\dots}{additional arguments to be passed to \code{\link{modelTrim}}.}
@@ -47,7 +46,7 @@ The \code{multGLM} function will create a list of the resulting models (each wit
 }
 \value{
 This function returns a list with the following components:
-\item{predictions}{a data frame with the model predictions (if either of \code{Y}, \code{P}, or \code{Favourability} are \code{TRUE}).}
+\item{predictions}{a data frame with the model predictions (if either of \code{Y.prediction}, \code{P.prediction}, or \code{Favourability} are \code{TRUE}).}
 \item{models}{a list of the resulting model objects.}
 }
 \references{

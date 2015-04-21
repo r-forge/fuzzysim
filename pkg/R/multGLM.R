@@ -1,10 +1,11 @@
 multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
                     test.sample = 0, FDR = FALSE, step = TRUE, trace = 0,
-                    start = "null.model", direction = "both", Y = FALSE,
-                    P = TRUE, Favourability = TRUE, sep = "_", group.preds = TRUE,
+                    start = "null.model", direction = "both",
+                    Y.prediction = FALSE, P.prediction = TRUE,
+                    Favourability = TRUE, group.preds = TRUE,
                     trim = TRUE, ...) {
 
-  # version 3.5 (06 Oct 2014)
+  # version 3.6 (20 Apr 2015)
 
   start.time <- Sys.time()
   input.ncol <- ncol(data)
@@ -22,8 +23,8 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     is.logical(step),
     start %in% c("null.model", "full.model"),
     direction %in% c("both", "backward", "forward"),
-    is.logical(Y),
-    is.logical(P),
+    is.logical(Y.prediction),
+    is.logical(P.prediction),
     is.logical(Favourability),
     is.logical(group.preds),
     is.logical(trim),
@@ -86,10 +87,10 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
     }  # end if family != binomial (for when other families are implemented)
     }  # end if Fav
 
-  keeP <- P  # keep P only if the user wants it
-  if (Favourability)  P <- TRUE  # P is necessary to calculate Fav
+  keeP <- P.prediction  # keep P only if the user wants it
+  if (Favourability)  P.prediction <- TRUE  # P is necessary to calculate Fav
   n.models <- length(sp.cols)
-  n.preds <- n.models * (Y + P + Favourability)  # sums logical values of function arguments
+  n.preds <- n.models * (Y.prediction + P.prediction + Favourability)  # sums logical values of function arguments
   models <- vector("list", n.models)
   predictions <- matrix(NA, nrow = nrow(data), ncol = n.preds)
   colnames(predictions) <- rep("", n.preds)
@@ -155,50 +156,40 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
     models[[model.count]] <- model
     names(models)[[model.count]] <- response
 
-    if (Y) {
-      #data[ , ncol(data) + 1] <- predict(model, data)
-      #colnames(data)[ncol(data)] <- paste(response, "y", sep = "_")
+    if (Y.prediction) {
       pred.count <- pred.count + 1
-      colnames(predictions)[pred.count] <- paste(response, "Y", sep = sep)
+      colnames(predictions)[pred.count] <- paste(response, "Y", sep = "_")
       predictions[ , pred.count] <- predict(model, data)
     }
-    if (P) {
-      #data[ , ncol(data) + 1] <- predict(model, data, type = "response")
-      #colnames(data)[ncol(data)] <- paste(response, "P", sep = "_")
+    if (P.prediction) {
       pred.count <- pred.count + 1
-      colnames(predictions)[pred.count] <- paste(response, "P", sep = sep)
+      colnames(predictions)[pred.count] <- paste(response, "P", sep = "_")
       predictions[ , pred.count] <- predict(model, data, type = "response")
     }
     if (Favourability) {
       n1 <- sum(train.data[ , s] == 1, na.rm = TRUE)
       n0 <- sum(train.data[ , s] == 0, na.rm = TRUE)
-      #data[ , ncol(data) + 1] <- Fav(n1n0 = c(n1, n0), pred = data[ , pred.count])
-      #colnames(data)[ncol(data)] <- paste(response, "F", sep = "_")
-      #if (!keeP) data <- data[ , -(pred.count - 1)]
       pred.count <- pred.count + 1
       predictions[ , pred.count] <- Fav(n1n0 = c(n1, n0), pred = predictions[ , pred.count - 1])
-      colnames(predictions)[pred.count] <- paste(response, "F", sep = sep)
-      #if (!keeP) predictions <- predictions[ , -(pred.count - 1)]
-      #data[ , pred.count + 1] <- Fav(n1n0 = c(n1, n0), pred = data[ , pred.count])
+      colnames(predictions)[pred.count] <- paste(response, "F", sep = "_")
     } # end if Fav
   }  # end for s
 
   detach(train.data)
   #if (rm.null.models) models <- models[!sapply(models, is.null)]
 
-  if (P & !keeP) {  # new block
+  if (P.prediction & !keeP) {
     n.char <- nchar(colnames(predictions))
     pred.suffix <- substr(colnames(predictions), n.char - 1, n.char)
     P.cols <- grep("_P", pred.suffix)
     predictions <- predictions[ , - P.cols]
   }
 
-  n.pred.types <- sum(Y, keeP, Favourability)
+  n.pred.types <- sum(Y.prediction, keeP, Favourability)
   if (n.pred.types == 0) {
     predictions <- data.frame()
   } else {
-  #  predictions <- data[ , c(id.col, ((input.ncol + 1) : pred.count))]
-    predictions <- data.frame(data[ , id.col], sample = data[ , "sample"], predictions)  # new
+    predictions <- data.frame(data[ , id.col], sample = data[ , "sample"], predictions)
 
     if (n.pred.types == 1 | length(sp.cols) == 1)  group.preds <- FALSE
 

@@ -89,7 +89,7 @@ echo $contents; } ?>
 
 <p> Here's a <a href="fuzzySim-poster-RMtp.pdf">poster</a> made to present <i>fuzzySim</i> at <i><a href="http://r2014-mtp.sciencesconf.org/">Rencontres R 2014</a></i>.</p>
 
-<p> There's also a <a href="fuzzySim-modelling-tutorial.html">beginners <b>tutorial on <big>species distribution modelling</big></b> with <i>fuzzySim</i></a> (updated 28 Apr 2015) (<b><a href="fuzzySim-modelling-tutorial.pdf">PDF here</a></b>).</p>
+<p> There's also a <a href="fuzzySim-modelling-tutorial.html">beginners <b>tutorial on <big>species distribution modelling</big></b> with <i>fuzzySim</i></a> (updated 29 Apr 2015) (<b><a href="fuzzySim-modelling-tutorial.pdf">PDF here</a></b>).</p>
 
 <p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for further info on the package and its origins. </p>
 

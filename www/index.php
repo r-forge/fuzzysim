@@ -85,11 +85,11 @@ echo $contents; } ?>
 
 <h2>Find out more</h2>
 
-<p> There's an <b><a href="fuzzySim-tutorial.html">illustrated beginners <big>tutorial</big></b> of <i>fuzzySim</i></a> (updated 27 Feb 2015), also available in <b><a href="fuzzySim-tutorial.pdf">PDF</a></b>; and a <b><a href="fuzzySim-manual.pdf">reference <big>manual</big></a></b> based on the package help files.</p>
+<p> There's an <b><a href="fuzzySim-tutorial.html">illustrated beginners <big>tutorial</big></b> of <i>fuzzySim</i></a> (updated 30 Apr 2015), also available in <b><a href="fuzzySim-tutorial.pdf">PDF</a></b>; and a <b><a href="fuzzySim-manual.pdf">reference <big>manual</big></a></b> based on the package help files.</p>
 
 <p> Here's a <a href="fuzzySim-poster-RMtp.pdf">poster</a> made to present <i>fuzzySim</i> at <i><a href="http://r2014-mtp.sciencesconf.org/">Rencontres R 2014</a></i>.</p>
 
-<p> There's also a <a href="fuzzySim-modelling-tutorial.html">beginners <b>tutorial on <big>species distribution modelling</big></b> with <i>fuzzySim</i></a> (updated 29 Apr 2015) (<b><a href="fuzzySim-modelling-tutorial.pdf">PDF here</a></b>).</p>
+<p> There's also a <a href="fuzzySim-modelling-tutorial.html">beginners <b>tutorial on <big>species distribution modelling</big></b> with <i>fuzzySim</i></a> (updated 30 Apr 2015) (<b><a href="fuzzySim-modelling-tutorial.pdf">PDF here</a></b>).</p>
 
 <p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for further info on the package and its origins. </p>
 

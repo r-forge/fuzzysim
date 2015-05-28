@@ -8,7 +8,7 @@ This function allows getting the predictions of multiple models when applied to 
 }
 \usage{
 getPreds(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE,
-incl.input = TRUE)
+incl.input = FALSE)
 }
 \arguments{
   \item{data}{
@@ -30,7 +30,7 @@ logical, whether to include the probability value in the predictions.
 logical, whether to include Favourability in the predictions (see \code{\link{Fav}}).
 }
   \item{incl.input}{
-logical, whether to include input columns in the output. The default is TRUE.
+logical, whether to include input columns in the output. The default is FALSE.
 }
 }
 \details{

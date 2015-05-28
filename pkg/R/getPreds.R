@@ -1,6 +1,6 @@
 getPreds <-
-function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE, incl.input = TRUE) {
-  # version 1.5 (18 Set 2014)
+function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE, incl.input = FALSE) {
+  # version 1.6 (28 May 2015)
 
   start.time <- Sys.time()
 
@@ -55,16 +55,14 @@ if all Y, P and Favourability are set to FALSE.")
   if (incl.input) {
     id.col <- NULL
   } else {
-    data <- data[ , -(1:ncol(input.data))]
+    data <- data[ , -(1:ncol(input.data)), drop = FALSE]
     if (!is.null(id.col)) {
-      data <- data.frame(input.data[ , id.col], data)
+      data <- data.frame(input.data[ , id.col, drop = FALSE], data)
       names(data)[1] <- names(input.data)[id.col]
     }
   }
 
-  duration <- difftime(start.time, Sys.time())
-  units <- attr(duration, "units")
-  duration <- round(abs(as.numeric(duration)), 1)
-  message("Finished in ", duration, " ", units)
+  message("Finished!")
+  timer(start.time)
   return(data)
 }

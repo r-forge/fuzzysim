@@ -6,13 +6,7 @@ function(data, method, diag = TRUE, upper = TRUE) {
   n.subjects <- ncol(data)
   sim.mat <- matrix(nrow = n.subjects, ncol = n.subjects,
                     dimnames = list(colnames(data), colnames(data)))
-  
-  # get indices for lower triangle (http://stackoverflow.com/questions/20898684/how-to-efficiently-generate-lower-triangle-indices-of-a-symmetric-matrix):
-  seqi <- seq.int(n.subjects - 1)
-  hi <- rev(abs(sequence(seqi) - n.subjects) + 1)
-  lo <- rep.int(seqi, rev(seqi))
-  lower.tri.ind <- cbind(hi, lo, deparse.level = 0)
-  inds <- split(lower.tri.ind, row(lower.tri.ind))
+  inds <- triMatInd(sim.mat, lower = TRUE, list = TRUE)
   
   n.pairs <- length(combn(n.subjects, m = 2)) / 2
   quarter <- round(n.pairs / 4)

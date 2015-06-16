@@ -1,22 +1,43 @@
 simMat <-
-function(data, method) {
+function(data, method, diag = TRUE, upper = TRUE) {
   start.time <- Sys.time()
   stopifnot(data >= 0, data <= 1,
             method %in% c("Jaccard", "Sorensen", "Simpson", "Baroni"))
   n.subjects <- ncol(data)
-  quarter <- round(n.subjects / 4)
-  half <- round(n.subjects / 2)
-  threequarters <- half + quarter
   sim.mat <- matrix(nrow = n.subjects, ncol = n.subjects,
                     dimnames = list(colnames(data), colnames(data)))
-  message ("Calculating pair-wise similarities, please wait...")
-  for (i in 1:n.subjects) for (j in 1:n.subjects) {
-    sim.mat[i, j] <- fuzSim(x = data[ , i], y = data[ , j], method = method)
-    if(i == quarter & j == quarter) message ("25% done...")
-    if(i == half & j == half) message ("50% done...")
-    if(i == threequarters & j == threequarters) message ("75% done...")
-    if(i == n.subjects & j == n.subjects) message ("Finished!")
+  
+  # get indices for lower triangle (http://stackoverflow.com/questions/20898684/how-to-efficiently-generate-lower-triangle-indices-of-a-symmetric-matrix):
+  seqi <- seq.int(n.subjects - 1)
+  hi <- rev(abs(sequence(seqi) - n.subjects) + 1)
+  lo <- rep.int(seqi, rev(seqi))
+  lower.tri.ind <- cbind(hi, lo, deparse.level = 0)
+  inds <- split(lower.tri.ind, row(lower.tri.ind))
+  
+  n.pairs <- length(combn(n.subjects, m = 2)) / 2
+  quarter <- round(n.pairs / 4)
+  half <- round(n.pairs / 2)
+  threequarters <- half + quarter
+  message("Calculating ", n.pairs, " pair-wise similarities...")
+  pair <- 0
+  for (ind in inds) {
+    pair <- pair + 1
+    row <- rownames(sim.mat)[ind[1]]
+    col <- colnames(sim.mat)[ind[2]]
+    sim.mat[ind[1], ind[2]] <- fuzSim(x = data[ , row], y = data[ , col], method = method)
+    if(pair == quarter) message ("25% done...")
+    if(pair == half) message ("50% done...")
+    if(pair == threequarters) message ("75% done...")
+    if(pair == n.pairs) message ("Finished!")
+  }  # end for ind lower
+  
+  if (diag) diag(sim.mat) <- 1
+  if (upper) {  
+    # https://stat.ethz.ch/pipermail/r-help/2008-September/174475.html
+    ind <- upper.tri(sim.mat)
+    sim.mat[ind] <- t(sim.mat)[ind]
   }
+  
   timer(start.time)
   return(sim.mat)
 }

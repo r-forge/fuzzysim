@@ -7,7 +7,7 @@ Pair-wise (fuzzy) similarity matrix
 \code{simMat} takes a matrix or data frame containing species occurrence data or regional species composition, either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the \code{\link{fuzSim}} function to calculate a square matrix of pair-wise similarities between them, using a fuzzy logic version (Barbosa, 2015) of the specified similarity index.
 }
 \usage{
-simMat(data, method)
+simMat(data, method, diag = TRUE, upper = TRUE)
 }
 \arguments{
   \item{data}{
@@ -16,17 +16,21 @@ a matrix or data frame containing (optionally fuzzy) species presence-absence da
   \item{method}{
 the similarity index whose fuzzy version to use. See \code{\link{fuzSim}} for available options.
 }
+  \item{diag}{
+logical value indicating whether the diagonal of the matrix should be filled (with ones). Defaults to TRUE.
+}
+  \item{upper}{
+logical value indicating whether the upper triangle of the matrix (symmetric to the lower triangle) should be filled. Defaults to TRUE.
+}
 }
 \details{
-The fuzzy versions of species occurrence data and of the similarity indices (Barbosa, 2015) introduce tolerance for small spatial differences in species' occurrence localities and may compensate under-sampling and geo-referencing errors. The results of \code{simMat} can be used for determining chorotypes or biotic regions using the \pkg{RMACOQUI} package (Olivero et al. 2011).
+The fuzzy versions of species occurrence data and of binary similarity indices introduce tolerance for small spatial differences in species' occurrence localities, allow for uncertainty about species occurrence, and may compensate for under-sampling and geo-referencing errors (Barbosa, 2015).
 }
 \value{
-This function returns a square matrix of pair-wise similarity among the species distributions (columns) in \code{data}. Similarity is calculated with the fuzzy version of the index specified in \code{method}, which yields traditional binary similarity if the data are binary (0 or 1), or fuzzy similarity if the data are fuzzy (between 0 and 1) (Barbosa, 2015).
+This function returns a square matrix of pair-wise similarities among the species distributions (columns) in \code{data}. Similarity is calculated with the fuzzy version of the index specified in \code{method}, which yields traditional binary similarity if the data are binary (0 or 1), or fuzzy similarity if the data are fuzzy (between 0 and 1) (Barbosa, 2015).
 }
 \references{
 Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, in press.
-
-Olivero, J., Real, R. & Marquez, A.L. (2011) Fuzzy chorotypes as a conceptual tool to improve insight into biogeographic patterns. Systematic Biology, 60: 645-60.
 }
 \author{
 A. Marcia Barbosa

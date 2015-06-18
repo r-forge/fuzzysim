@@ -11,7 +11,7 @@ simFromSetOps(size1, size2, intersection, union, total.size = NULL, method = c("
 }
 \arguments{
   \item{size1}{
-size of subject 1 (e.g., area of the distribution range of a species, or its number of presences within a grid).
+size of subject 1 (e.g., area of the distribution range of a species, or its number of presences within a grid). Not needed if \code{method = "Jaccard"}.
 }
   \item{size2}{
 the same for subject 2.
@@ -23,13 +23,14 @@ size of the intersection among subjects 1 and 2 (area of the intersection among 
 size of the union of subjects 1 and 2.
 }
   \item{total.size}{
-total size of the study area; necessary only when calculating similarity indices which take double absences into account (e.g. Baroni).
+total size of the study area. Needed only when calculating a similarity index that takes shared absences into account (i.e., \code{method = "Baroni"}).
 }
   \item{method}{
-the similarity index to use. Currently available options are \code{'Jaccard'}, \code{'Sorensen'}, \code{'Simpson'} and \code{'Baroni'} (see Details in \code{\link{fuzSim}}).
+the similarity index to use. Currently implemented options are \code{'Jaccard'}, \code{'Sorensen'}, \code{'Simpson'} and \code{'Baroni'}.
 }
 }
 \details{
+Similarities among ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. This function implements some of the most commonly employed similarity indices, namely those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), based on the amount of occupied and overlap area between two species.
 }
 \value{
 The numeric value of similarity among subjects 1 and 2.
@@ -52,17 +53,26 @@ A. Marcia Barbosa
 \code{\link{fuzSim}}, \code{\link{simMat}}
 }
 \examples{
-# take two species whose distribution ranges have 22 and 35 square kilometers, respectively; and which overlap in 8.5 square kilometers:
+# take two species which occur in 22 and 35 area units, respectively
+# and which overlap in 8 of those units:
 
 sp1 <- 22
 sp2 <- 35
-int <- 8.5
+int <- 8
 uni <- sp1 + sp2 - int
 
-simFromSetOps(sp1, sp2, int, uni, method = "Jaccard")
+
+# calculate similarity between their distributions based on different indices:
+
+simFromSetOps(intersection = int, union = uni, method = "Jaccard")
+
+simFromSetOps(sp1, sp2, int, uni, method = "Sorensen")
+
+simFromSetOps(sp1, sp2, int, uni, method = "Simpson")
 
 
-# if you want Baroni-Urbani & Buser's index, you need to provide also the total size of your study area:
+# if you want Baroni-Urbani & Buser's index
+# you need to provide also the total size of your study area:
 
 simFromSetOps(sp1, sp2, int, uni, total = 100, method = "Baroni")
 }

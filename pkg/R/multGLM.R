@@ -141,7 +141,7 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
     if (trim & length(sel.var.cols) > 0) {
       n.vars.start <- length(model$coefficients) - 1
       names.vars.start <- names(model$coefficients)[-1]
-      model <- modelTrim(model, ...)
+      model <- suppressMessages(modelTrim(model, ...))
       n.vars.trim <- length(model$coefficients) - 1
       excluded.vars <- setdiff(names.vars.start, names(model$coefficients)[-1])
       cat(n.vars.start - n.vars.trim, "variable(s) excluded by 'modelTrim' function\n", paste(excluded.vars, collapse = ", "), "\n\n")

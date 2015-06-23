@@ -12,5 +12,5 @@ multicol <- function(vars) {
     result[v, "Tolerance"] <- 1 - R2
     result[v, "VIF"] <- 1 / (1 - R2)
   }
-  return(result)
+  return(data.frame(result))
 }

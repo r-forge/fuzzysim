@@ -28,7 +28,7 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
                                  c(1:n.poly.terms))
 
   sp.data <- as.matrix(data[ , sp.cols])
-  colnames(sp.data) <- colnames(data)[sp.cols]
+  colnames(sp.data) <- colnames(data[ , sp.cols])
   n.subjects <- length(sp.cols)
   if (save.models) TSA.models <- vector("list", n.subjects)
   subj.count <- 0

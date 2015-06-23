@@ -26,7 +26,8 @@ logical value indicating whether to get in the resulting table the number of tim
 \details{
 }
 \value{
-A data frame containing the localities in the first column and then one column per species indicating their presence (or their number of records if \code{keep.n = TRUE)} and absence. Type \code{data(rotif.env); head(rotif.env[,18:47])} for an example.
+A data frame containing the localities in the first column and then one column per species indicating their presence (or their number of records if \code{keep.n = TRUE)} and absence. Type \code{data(rotif.env); 
+head(rotif.env[,18:47])} for an example.
 }
 \references{
 }

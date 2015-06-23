@@ -7,27 +7,27 @@ Favourability
 Environmental (prevalence-independent) favourability for a species' presence
 }
 \usage{
-Fav(obs = NULL, pred = NULL, n1n0 = NULL, model = NULL, sample.preval = NULL,
+Fav(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preval = NULL,
 method = "RBV", true.preval = NULL)
 }
 \arguments{
+  \item{model}{
+a model object of class \code{"glm"} and binomial family.
+}
   \item{obs}{
-a vector of 1-0 values of a modelled binary variable.
+a vector of the 1/0 values of the modelled binary variable. This argument is ignored if \code{model} is provided.
 }
   \item{pred}{
-a vector of predicted probability values for \code{obs}, given e.g. by logistic regression.
+a vector of predicted probability values for \code{obs}, given e.g. by logistic regression. This argument is ignored if \code{model} is provided.
 }
   \item{n1n0}{
-alternatively to obs, an integer vector of length 2 providing the total number of ones and zeros, in this order. This argument is ignored if the \code{obs} vector is provided.
-}
-  \item{model}{
-alternatively to all of the above, a model object of class \code{"glm"}. If provided, will override any values provided in the arguments described above.
+alternatively to \code{obs}, an integer vector of length 2 providing the total numbers of modelled ones and zeros, in this order. Ignored if \code{obs} or \code{model} is provided.
 }
   \item{sample.preval}{
-alternatively to \code{obs} or \code{n1n0}, the prevalence (proportion of positive cases) of the modelled binary variable in the modelled data.
+alternatively to \code{obs} or \code{n1n0}, the prevalence (proportion of positive cases) of the modelled binary variable in the modelled data. Ignored if \code{model} is provided.
 }
   \item{method}{
-either \code{"RBV"} for the original Real, Barbosa & Vargas (2006) procedure, or \code{"AT"}" for the modification proposed by Albert & Thuiller (2008) (but see Acevedo & Real 2012)
+either \code{"RBV"} for the original Real, Barbosa & Vargas (2006) procedure, or \code{"AT"}" for the modification proposed by Albert & Thuiller (2008) (but see Details).
   }
   \item{true.preval}{
 the true prevalence (as opposed to sample prevalence), necessary if you want to use the AT method.

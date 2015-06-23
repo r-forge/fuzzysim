@@ -7,7 +7,8 @@ Calculate similarity from set operations
 This function calculates pair-wise similarity based on the results of set operations (intersection, union) among the subjects.
 }
 \usage{
-simFromSetOps(size1, size2, intersection, union, total.size = NULL, method = c("Jaccard", "Sorensen", "Simpson", "Baroni"))
+simFromSetOps(size1, size2, intersection, union, total.size = NULL, 
+method = c("Jaccard", "Sorensen", "Simpson", "Baroni"))
 }
 \arguments{
   \item{size1}{

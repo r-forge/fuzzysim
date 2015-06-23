@@ -1,6 +1,6 @@
 Fav <-
-function(obs = NULL, pred = NULL, n1n0 = NULL, model = NULL,
-                sample.preval = NULL, method = "RBV", true.preval = NULL) {
+function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, 
+         sample.preval = NULL, method = "RBV", true.preval = NULL) {
   # version 1.2 (25 Mar 2014)
 
   if (!is.null(model)) {

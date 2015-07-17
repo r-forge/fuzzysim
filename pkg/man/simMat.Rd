@@ -30,7 +30,7 @@ The fuzzy versions of species occurrence data and of binary similarity indices i
 This function returns a square matrix of pair-wise similarities among the species distributions (columns) in \code{data}. Similarity is calculated with the fuzzy version of the index specified in \code{method}, which yields traditional binary similarity if the data are binary (0 or 1), or fuzzy similarity if the data are fuzzy (between 0 and 1) (Barbosa, 2015).
 }
 \references{
-Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, in press.
+Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, 6: 853-858.
 }
 \author{
 A. Marcia Barbosa

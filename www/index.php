@@ -75,7 +75,7 @@ echo $contents; } ?>
 
 <p> If you use <i>fuzzySim</i> in publications, please <strong><big>cite</big> the following paper</strong>:
 
-<p> Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. <i>Methods in Ecology and Evolution</i>, in press (DOI: <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract">10.1111/2041-210X.12372)</a></p>
+<p> Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. <i>Methods in Ecology and Evolution</i>, 6: 853-858 (DOI: <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract">10.1111/2041-210X.12372)</a></p>
 
 
 <p> To see how to cite the package itself, load it in R and type <big><code>citation(package="fuzzySim")</code></big>.</p>

@@ -23,7 +23,7 @@ A. Marcia Barbosa
 Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
 }
 \references{
-Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, in press.
+Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, 6: 853-858.
 }
 \keyword{ package }
 \seealso{

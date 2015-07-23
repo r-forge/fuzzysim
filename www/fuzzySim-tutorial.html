@@ -76,9 +76,6 @@ img {
 <p>This should work if you have the <strong>latest version of R</strong>; otherwise, it may either fail (producing a message like “<em>package ‘fuzzySim’ is not available for your R version</em>”) or show a warning and install an older version of <em>fuzzySim</em>. To <strong>check the version that you have actually installed</strong>, type <code>citation(package=&quot;fuzzySim&quot;)</code>. To install the latest version of the package, you can either upgrade R <em>or</em> download the compressed <em>fuzzySim</em> package <strong>source files</strong> to your disk – .<em>zip</em> for Windows or .<em>tar.gz</em> for Linux and Mac, available at the <a href="https://r-forge.r-project.org/R/?group_id=1853">package development page</a> or at <a href="https://www.dropbox.com/sh/9068priyuve14qo/AACaCFuRK9Q5FVaV9mZrlbTCa?dl=0">this Dropbox folder</a> and then install the package locally, e.g. with R menu “<em>Packages - Install packages from local zip files</em>” (Windows), or “<em>Packages &amp; Data - Package installer, Packages repository - Local source package</em>” (Mac), or “<em>Tools - Install packages - Install from: Package Archive File</em>” (RStudio).</p>
 <p>You only need to install the package once (unless a new version becomes available), but you need to <strong>load it every time you open a new R session</strong> in which you intend to use <em>fuzzySim</em> (no need for an internet connection anymore), by pasting the following command in R:</p>
 <pre class="r"><code>library(fuzzySim)</code></pre>
-<pre><code>## fuzzySim comes free of charge and with absolutely no warranty.
-## When using it, please cite the original paper:
-## Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, 6: 853-858 (DOI: 10.1111/2041-210X.12372)</code></pre>
 </div>
 <div id="preparing-the-species-occurrence-data" class="section level2">
 <h2>Preparing the species occurrence data</h2>
@@ -306,7 +303,7 @@ mantel(bin.sim.mat, fuz.sim.mat, method = &quot;spearman&quot;)</code></pre>
 ## 
 ## Upper quantiles of permutations (null model):
 ##   90%   95% 97.5%   99% 
-## 0.159 0.227 0.268 0.315 
+## 0.163 0.208 0.269 0.356 
 ## Permutation: free
 ## Number of permutations: 999</code></pre>
 </div>

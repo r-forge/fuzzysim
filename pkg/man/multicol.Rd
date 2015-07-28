@@ -5,7 +5,7 @@
 This function analyses multicollinearity in a set of variables, including the R-squared, tolerance and variance inflation factor (VIF).
 }
 \usage{
-multicol(vars)
+multicol(vars, reorder = TRUE)
 }
 \arguments{
   \item{vars}{
@@ -13,6 +13,9 @@ A matrix or data frame containing the numeric variables for which to calculate
 multicollinearity. Only the 'independent' (predictor, explanatory, right hand side)
 variables should be entered, as the result obtained for each variable depends on all
 the other variables present in the analysed data set.
+}
+  \item{reorder}{
+logical, whether variables should be output in decreasing order or VIF value rather than in their input order. The default is TRUE.
 }
 }
 \details{
@@ -41,8 +44,8 @@ data(rotif.env)
 names(rotif.env)
 
 # calculate multicollinearity among the predictor variables:
+multicol(rotif.env[ , 5:17], reorder = FALSE)
 multicol(rotif.env[ , 5:17])
-
 
 # more examples uing R datasets:
 multicol(trees)

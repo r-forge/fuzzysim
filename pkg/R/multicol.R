@@ -1,4 +1,4 @@
-multicol <- function(vars) {
+multicol <- function(vars, reorder = TRUE) {
   result <- matrix(NA, nrow = ncol(vars), ncol = 3)
   rownames(result) <- colnames(vars)
   colnames(result) <- c("Rsquared", "Tolerance", "VIF")
@@ -12,5 +12,7 @@ multicol <- function(vars) {
     result[v, "Tolerance"] <- 1 - R2
     result[v, "VIF"] <- 1 / (1 - R2)
   }
-  return(data.frame(result))
+  result <- data.frame(result)
+  if (reorder)  result <- result[order(result$VIF, decreasing = TRUE), ]
+  return(result)
 }

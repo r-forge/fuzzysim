@@ -33,7 +33,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   )
 
   data$sample <- "train"
-  n <- nrow(data)
+  n <- nrow(data)  # [is.finite(data[ , sp.cols]), ]  # but this can differ among spp
   data.row <- 1:n
 
   test.sample.input <- test.sample
@@ -44,17 +44,16 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
         test.sample <- percentTestData(length(var.cols)) / 100
         n.test <- round(n * test.sample)
         message(
-          "Following Huberty's rule, ", test.sample * 100, "% of observations
-          (", n.test, " out of ", n, ") set aside for model testing; ",
+          "Following Huberty's rule, ", test.sample * 100, "% of observations 
+          (", n.test, " out of ", n, ") set aside for model testing; ", 
           n - n.test, " observations used for model training.")
-      } else stop ("
-Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
-                   the number of variables differ among models. Set these 3 parameters to FALSE,
+      } else stop ("Sorry, Huberty's rule cannot be used with 'FDR', 'step' or 'trim', 
+                   as these make the number of variables vary. 
+                   Set these 3 parameters to FALSE, 
                    or use a different 'test.sample' option.")
     }  # end if Huberty
     else if (test.sample == 0) {
-      message("
-              All ", n, " observations used for model training;
+      message("All ", n, " observations used for model training; 
               none reserved for model testing.")
       n.test <- 0
     } else if (test.sample < 1) {
@@ -80,9 +79,9 @@ Sorry, Huberty's rule cannot be used with FDR, step or trim, as these make
   train.data <- data[data$sample == "train", ]
 
   if (Favourability) {
-    if(family != "binomial") {
+    if (family != "binomial") {
       Favourability <- FALSE
-      warning("Favourability is only applicable to binomial responses,
+      warning ("Favourability is only applicable to binomial responses,
               so it could not be calculated")
     }  # end if family != binomial (for when other families are implemented)
     }  # end if Fav

@@ -1,4 +1,13 @@
-multicol <- function(vars, reorder = TRUE) {
+multicol <- function(vars = NULL, model = NULL, reorder = TRUE) {
+  
+  if (is.null(vars)) {
+    if (is.null(model)) stop ("You must provide either 'vars' or 'model'.")
+    if (!("glm" %in% class(model))) stop ("'model' must be an object of class 'glm'.")
+    vars <- model$model[ , -1]
+  }
+  
+  if (!(all(class(vars) %in% c("matrix", "data.frame")))) stop ("'vars' must be a matrix or data frame")
+  vars <- as.data.frame(vars)
   result <- matrix(NA, nrow = ncol(vars), ncol = 3)
   rownames(result) <- colnames(vars)
   colnames(result) <- c("Rsquared", "Tolerance", "VIF")

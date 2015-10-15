@@ -1,6 +1,7 @@
-simFromSetOps <- function(size1, size2, intersection, union, total.size = NULL, method = c("Jaccard", "Sorensen", "Simpson", "Baroni")) {
+simFromSetOps <- function(size1, size2, intersection, union, total.size = NULL, method = c("Jaccard", "Sorensen", "Simpson", "Baroni"), verbosity = 1) {
   
   method <- match.arg(method, c("Jaccard", "Sorensen", "Simpson", "Baroni"))
+  if (verbosity > 0)  message("using ", method, " similarity index")
   
   if (method == "Jaccard") return(intersection / union)
 

@@ -8,7 +8,7 @@ This function calculates pair-wise similarity based on the results of set operat
 }
 \usage{
 simFromSetOps(size1, size2, intersection, union, total.size = NULL, 
-method = c("Jaccard", "Sorensen", "Simpson", "Baroni"))
+method = c("Jaccard", "Sorensen", "Simpson", "Baroni"), verbosity = 1)
 }
 \arguments{
   \item{size1}{
@@ -28,6 +28,9 @@ total size of the study area. Needed only when calculating a similarity index th
 }
   \item{method}{
 the similarity index to use. Currently implemented options are \code{'Jaccard'}, \code{'Sorensen'}, \code{'Simpson'} and \code{'Baroni'}.
+}
+  \item{verbosity}{
+integer indicating whether to display messages.
 }
 }
 \details{

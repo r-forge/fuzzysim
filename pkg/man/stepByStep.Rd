@@ -1,12 +1,14 @@
 \name{stepByStep}
 \alias{stepByStep}
 \title{
-Step by step}
+Analyse and compare stepwise model predictions
+}
 \description{
 This function builds a generalized linear model with forward stepwise inclusion of variables, using AIC as the selection criterion, and provides the values predicted at each step, as well as their correlation with the final model predictions.
 }
 \usage{
-stepByStep(data, sp.col, var.cols, family = binomial(link = "logit"), Favourability = FALSE, trace = 0, cor.method = "pearson")
+stepByStep(data, sp.col, var.cols, family = binomial(link = "logit"), 
+Favourability = FALSE, trace = 0, cor.method = "pearson")
 }
 \arguments{
   \item{data}{
@@ -32,7 +34,7 @@ character string to pass to function \code{\link{cor}} indicating which coeffici
 }
 }
 \details{
-Stepwise variable selection often includes more variables than would a model selected after examining all possible combinations of the variables (e.g. with packages \pkg{MuMIn} and \pkg{glmulti}). The \code{stepByStep} function can be useful to assess if a stepwise model with just the first few variables could already provide predictions very close to the final ones (see e.g. Fig. 3 in Mu?oz et al., 2005). It can also be useful to see which variables determine the more general trends in the model predictions, and which just add (local) additional nuances.
+Stepwise variable selection often includes more variables than would a model selected after examining all possible combinations of the variables (e.g. with packages \pkg{MuMIn} and \pkg{glmulti}). The \code{stepByStep} function can be useful to assess if a stepwise model with just the first few variables could already provide predictions very close to the final ones (see e.g. Fig. 3 in Munoz et al., 2005). It can also be useful to see which variables determine the more general trends in the model predictions, and which just add (local) additional nuances.
 }
 \value{
 This function returns a list of the following components:
@@ -56,12 +58,15 @@ A. Marcia Barbosa
 }
 \examples{
 data(rotif.env)
+
+stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17, 
+cor.method = "spearman")
  
-stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17, cor.method = "spearman")
+stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17, 
+cor.method = "spearman", Favourability = TRUE)
  
-stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17, cor.method = "spearman", Favourability = TRUE)
- 
-stepByStep(data = rotif.env, sp.col = 9, var.cols = c(5:8, 10:17), family = poisson)
+stepByStep(data = rotif.env, sp.col = 9, var.cols = c(5:8, 10:17), 
+family = poisson)
 }
 \keyword{models}
 \keyword{regression}

@@ -48,7 +48,7 @@ Zadeh L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353
 A. Marcia Barbosa
 }
 \seealso{
-\code{\link{simMat}}
+\code{\link{simMat}}; \code{\link{modOverlap}}
 }
 \examples{
 data(rotif.env)

@@ -1,16 +1,16 @@
 \name{multGLM}
 \alias{multGLM}
 \title{
-Multiple GLMs
+GLMs for multiple species with multiple options
 }
 \description{
-This function calculates generalized linear models for a set of (species) presence/absence data in a data frame.
+This function calculates generalized linear models for a set of (species) presence/absence records in a data frame, with a wide set of options for data partition, variable selection, and output form.
 }
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-test.sample = 0, FDR = FALSE, step = TRUE, trace = 0, start = "null.model",
-direction = "both", Y.prediction = FALSE, P.prediction = TRUE,
-Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
+test.sample = 0, FDR = FALSE, corSelect = FALSE, cor.thresh = 0.8, step = TRUE, 
+trace = 0, start = "null.model", direction = "both", Y.prediction = FALSE, 
+P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
 }
 \arguments{
   \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
@@ -18,17 +18,11 @@ Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
   \item{var.cols}{index numbers of the columns containing the predictor variables to be used for modelling.}
   \item{id.col}{(optional) index number of column containing the row identifiers (if defined, it will be included in the output \code{predictions} data frame).}
   \item{family}{argument to be passed to the \code{\link{glm}} function; only 'binomial' is implemented in \code{multGLM} so far.}
-  \item{test.sample}{a subset of data to set aside for subsequent model testing.
-  Can be a value between 0 and 1 for a proportion of the data to choose randomly
-  (e.g. 0.2 for 20\%), or an  integer number for a particular number of cases to
-  choose randomly among the records in \code{data}, or a vector of integers for
-  the index numbers of the particular rows to set aside, or "Huberty" for his rule
-  of thumb based on the number of variables (Huberty 1994, Fielding & Bell 1997).}
-  \item{FDR}{logical, whether to do a preliminary exclusion of variables based on
-  their bivariate relationship with the response and the false discovery rate
-  (see \code{\link{FDR}}).}
-  \item{step}{logical, whether to use the \code{\link{step}} function to perform
-  a stepwise variable selection based on AIC.}
+  \item{test.sample}{a subset of data to set aside for subsequent model testing. Can be a value between 0 and 1 for a proportion of the data to choose randomly (e.g. 0.2 for 20\%), or an  integer number for a particular number of cases to choose randomly among the records in \code{data}, or a vector of integers for the index numbers of the particular rows to set aside, or "Huberty" for his rule of thumb based on the number of variables (Huberty 1994, Fielding & Bell 1997).}
+  \item{FDR}{logical value indicating whether to do a preliminary exclusion of variables based on the false discovery rate (see \code{\link{FDR}}). The default is \code{FALSE}.}
+  \item{corSelect}{logical value indicating whether to do a preliminary exclusion of highly correlated variables (see \code{\link{corSelect}}). The default is \code{FALSE}.}
+  \item{cor.thresh}{numerical value indicating the correlation threshold to pass to \code{\link{corSelect}} (used only if \code{corSelect = TRUE}).}
+  \item{step}{logical, whether to use the \code{\link{step}} function to perform a stepwise variable selection based on AIC.}
   \item{trace}{if positive, information is printed during the running of \code{\link{step}}. Larger values may give more detailed information.}
   \item{start}{character, whether to start with the 'null.model' (so AIC variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if \code{step = TRUE}.}
   \item{direction}{argument to be passed to \code{\link{step}} specifying the direction of variable selection ('forward', 'backward' or 'both'). Used only if \code{step = TRUE}.}
@@ -40,7 +34,13 @@ Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
   \item{\dots}{additional arguments to be passed to \code{\link{modelTrim}}.}
 }
 \details{
-This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function. There is also an optional preliminary selection of the variables with a significant bivariate relationship with the response, based on the false discovery rate (\code{\link{FDR}}), but note that some variables can be significant in a multivariate model even if they would not have been selected by FDR. \code{\link{Fav}}ourability is also calculated. By default, all data are used in model training, but you can define an optional \code{test.sample} to be reserved for model testing afterwards. You may also want to do a previous check for \code{\link{multicol}}linearity among variables, e.g. the variance inflation factor (VIF).
+This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function.
+
+There is also an optional preliminary selection of non-correlated variables, and/or of variables with a significant bivariate relationship with the response, based on the false discovery rate (\code{\link{FDR}}). Note, however, that some variables can be significant in a multivariate model even if they would not have been selected by FDR.
+
+\code{\link{Fav}}ourability is also calculated, removing the effect of species prevalence from occurrence probability and thus allowing direct comparisons between models (Real et al. 2006).
+
+By default, all data are used in model training, but you can define an optional \code{test.sample} to be reserved for model testing afterwards. You may also want to do a previous check for \code{\link{multicol}}linearity among variables, e.g. the variance inflation factor (VIF).
 
 The \code{multGLM} function will create a list of the resulting models (each with the name of the corresponding species column) and a data frame with their predictions (Y, P and/or F, all of which are optional). If you plan on representing these predictions in a GIS based on .dbf tables, remember that dbf only allows up to 10 characters in column names; \code{multGLM} predictions will add 2 characters (_Y, _P and/or _F) to each of your species column names, so use species names/codes with up to 8 characters in the data set that you are modelling. You can create (sub)species name abbreviations with the \code{\link{spCodes}} function.
 }
@@ -63,7 +63,7 @@ A. Marcia Barbosa
 \note{
 }
 \seealso{
-\code{\link{glm}}, \code{\link{Fav}}, \code{\link{step}}, \code{\link{modelTrim}}, \code{\link{multicol}}
+\code{\link{glm}}, \code{\link{Fav}}, \code{\link{step}}, \code{\link{modelTrim}}, \code{\link{multicol}}, \code{\link{corSelect}}
 }
 \examples{
 data(rotif.env)

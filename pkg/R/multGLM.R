@@ -1,7 +1,7 @@
 multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-                    test.sample = 0, FDR = FALSE, step = TRUE, trace = 0,
-                    start = "null.model", direction = "both",
-                    Y.prediction = FALSE, P.prediction = TRUE,
+                    test.sample = 0, FDR = FALSE, corSelect = FALSE, 
+                    cor.thresh = 0.8, step = TRUE,  trace = 0, start = "null.model",
+                    direction = "both", Y.prediction = FALSE, P.prediction = TRUE,
                     Favourability = TRUE, group.preds = TRUE,
                     trim = TRUE, ...) {
 
@@ -105,7 +105,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     cat(length(var.cols), "input predictor variable(s)\n\n")
 
     if (FDR) {
-      fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, model.type = "GLM", verbose = FALSE)
+      fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, verbose = FALSE)
       if (nrow(fdr$select) == 0) {
         warning(paste0(
           "No variables passed the FDR test (so no variables included in the model)\n for '", response, "'. Consider using FDR = FALSE?"))
@@ -114,7 +114,14 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
         cat(length(var.cols) - nrow(fdr$select), "variable(s) excluded by 'FDR' function\n", paste(row.names(fdr$exclude), collapse = ", "), "\n\n")
       #}
       sel.var.cols <- which(colnames(train.data) %in% rownames(fdr$select))
-    } else sel.var.cols <- var.cols
+    }  # end if FDR
+    else sel.var.cols <- var.cols  
+    
+    if (length(sel.var.cols) > 0 && corSelect == TRUE) {
+      corselect <- corSelect(data = train.data, sp.cols = s, var.cols = sel.var.cols, cor.thresh = cor.thresh)
+      corsel.var.cols <- corselect$selected.var.cols
+      cat(length(sel.var.cols) - length(corsel.var.cols), "variable(s) excluded by 'corSelect' function\n", corselect$excluded.vars, "\n\n")
+    }  # end if corSelect
 
     if (length(sel.var.cols) == 0)  model.vars <- 1
     else  model.vars <- colnames(train.data)[sel.var.cols]

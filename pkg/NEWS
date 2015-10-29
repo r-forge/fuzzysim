@@ -1,0 +1,38 @@
+============================================
+fuzzySim v1.5 (committed 2015-10-29)
+============================================
+
+## New functions:
+
+* corSelect (select among correlated variables based on their bivariate relationship with the response)
+
+* modOverlap (calculate overlap between model predictions using niche comparison metrics)
+
+
+## Modified functions:
+
+* FDR:
+- AIC now also calculated
+- 'model.type' deprecated
+- 'family = "auto"' by default
+- 'simplif' argument added
+
+* multGLM:
+- 'corSelect' now included as additional option for variable selection
+
+
+============================================
+previous edits (that I can remember)
+============================================
+
+## Modified functions:
+
+* multicol:
+- 'model' argument added (user can provide a model object instead of a set of variables)
+
+* simFromSetOps:
+- the similarity index used is now mentioned in a message
+
+* multicol:
+- variables in output are now ordered according to VIF
+

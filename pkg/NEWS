@@ -1,4 +1,15 @@
 ============================================
+fuzzySim v1.6 (committed 2015-11-03)
+============================================
+
+## New functions:
+
+* fuzzyOverlay (calculate row-wise intersection, union, expansion, contraction or consensus among continuous model predictions)
+
+* fuzzyRangeChange (calculate overal loss, gain, and maintenance of favourability between models)
+
+
+============================================
 fuzzySim v1.5 (committed 2015-10-29)
 ============================================
 
@@ -6,19 +17,19 @@ fuzzySim v1.5 (committed 2015-10-29)
 
 * corSelect (select among correlated variables based on their bivariate relationship with the response)
 
-* modOverlap (calculate overlap between model predictions using niche comparison metrics)
+* modOverlap (asses the total overlap between model predictions using niche comparison metrics)
 
 
 ## Modified functions:
+
+* multGLM:
+- 'corSelect' now included as additional option for variable selection
 
 * FDR:
 - AIC now also calculated
 - 'model.type' deprecated
 - 'family = "auto"' by default
 - 'simplif' argument added
-
-* multGLM:
-- 'corSelect' now included as additional option for variable selection
 
 
 ============================================
@@ -29,10 +40,12 @@ previous edits (that I can remember)
 
 * multicol:
 - 'model' argument added (user can provide a model object instead of a set of variables)
+- variables in output are now ordered according to VIF
 
 * simFromSetOps:
 - the similarity index used is now mentioned in a message
 
-* multicol:
-- variables in output are now ordered according to VIF
+* FDR:
+- data input format changed, with former parameters 'response' and 'predictors' replaced with 'data', 'sp.cols' and 'var.cols' (for coherence and compatibility with 'multGLM' function)
+
 

@@ -1,0 +1,92 @@
+\name{fuzzyOverlay}
+\alias{fuzzyOverlay}
+\title{
+Row-wise overlay operations based on fuzzy logic
+}
+\description{
+Logical operations are useful e.g. to assess consensus or agreement between the predictions of different models. Fuzzy set theory (Zadeh 1965) allows performing such operations without converting the predictions from continuous to binary, which always implies applying arbitrary thresholds and over-simplifying model predictions. The result is a continuous numerical value quantifying the intersection, union, or other operation among model predictions, whether binary or continuous.
+}
+\usage{
+fuzzyOverlay(data, op = "intersection", na.rm = FALSE, round.digits = 2)
+}
+\arguments{
+  \item{data}{
+matrix or data frame containing (only) the model prediction columns to compare
+}
+  \item{op}{
+character value indicating the operation to perform between the prediction columns in \code{data}. Can be \code{'consensus'} for the arithmetic mean of predictions, \code{'fuzzy_and'} or \code{'intersection'} for fuzzy intersection; \code{'fuzzy_or'} or \code{'union'} for fuzzy union; \code{'prob_and'} or \code{'prob_or'} for probabilistic and/or, respectively; \code{'maintenance'} for the values where all predictions in the same row (rounded to the number of digits specified in the next argument) are the same. If \code{data} has only two columns to compare, you can also calculate \code{'xor'} for exclusive or, \code{'expansion'} for the prediction increase in rows where the second column has higher values than the first column, \code{'contraction'} for the prediction decrease in rows where the second column has lower values than the first column. For expansion, contraction and maintenance, rows where the values do not satisfy the condition (i.e. second column larger, smaller, or roughly equal to the first column) get a value of zero.
+}
+  \item{na.rm}{
+logical value indicating if \code{NA} values should be ignored. The default is \code{FALSE}, so rows with \code{NA} in any of the prediction columns get \code{NA} as a result.
+}
+  \item{round.digits}{
+integer value indicating the number of decimal places to be used if \code{op = 'maintenance'}. The default is 2.
+}
+}
+\details{
+If your predictions are probabilities, \code{'prob_and'} (probabilistic "and") gives the probability of all occurring simultaneously by multiplying all probabilities; and \code{'prob_or'} (probabilistic "or") gives the probability of any of them occurring at each site. These can be quite restrictive, though; probabilistic "and" can give particularly irrealistically small values. 
+
+If you have (or convert your probabilities to) favourability predictions, which can be used directly with fuzzy logic (Real et al. 2006; see \code{\link{Fav}} function), you can use \code{'fuzzy_and'} or \code{'intersection'} to get the favourability for all species co-occurring at each site, and \code{'fuzzy_or'} or \code{'union'} to get favourability for any of them to occur at each site (Barbosa & Real 2010).
+}
+\value{
+This function returns a vector, with length equal to the number of rows in \code{data}, containing the row-wise result of the operation performed.
+}
+\references{
+Barbosa A.M. & Real R. (2012) Applying fuzzy logic to comparative distribution modelling: a case study with two sympatric amphibians. The Scientific World Journal, 2012, Article ID 428206
+
+Real R., Barbosa A.M. & Vargas J.M. (2006) Obtaining environmental favourability functions from logistic regression. Environmental and Ecological Statistics 13: 237-245.
+
+Zadeh, L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353
+}
+\author{A. Marcia Barbosa}
+\note{
+}
+\seealso{
+\code{\link{fuzSim}} and \code{\link{modOverlap}} for overall (not row-wise) comparisons among model predictions.
+}
+\examples{
+data(rotif.env)
+
+names(rotif.env)
+
+
+# get model predictions for 3 of the species in rotif.env:
+
+mods <- multGLM(rotif.env, sp.cols = 18:20, var.cols = 5:17, id.col = 1,
+step = TRUE, FDR = TRUE, trim = TRUE)
+
+preds <- mods$predictions[ , c("Abrigh_F", "Afissa_F", "Apriod_F")]
+
+
+# calculate intersection and union among those predictions:
+
+preds$intersect <- fuzzyOverlay(preds, op = "intersection")
+
+preds$union <- fuzzyOverlay(preds, op = "union")
+
+head(preds)
+
+
+# imagine you have a model prediction for species 'Abrigh' in a future time
+# (here we will create one by randomly jittering the current predictions)
+
+preds$Abrigh_imag <- jitter(preds[ , "Abrigh_F"], amount = 0.2)
+
+
+# you can calculate row-wise prediction changes from Abrigh to Abrigh_imag:
+
+preds$Abrigh_exp <- fuzzyOverlay(preds[ , c("Abrigh_F", "Abrigh_imag")], 
+op = "expansion")
+
+preds$Abrigh_contr <- fuzzyOverlay(preds[ , c("Abrigh_F", "Abrigh_imag")], 
+op = "contraction")
+
+preds$Abrigh_chg <- fuzzyOverlay(preds[ , c("Abrigh_F", "Abrigh_imag")], 
+op = "change")
+
+preds$Abrigh_maint <- fuzzyOverlay(preds[ , c("Abrigh_F", "Abrigh_imag")], 
+op = "maintenance")
+
+head(preds)
+}
+\keyword{  }

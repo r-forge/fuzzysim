@@ -4,7 +4,7 @@
 Range change based on continuous (fuzzy) values
 }
 \description{
-This function quantifies overall change based on the predictions of two models
+This function quantifies overall range change based on the continuous predictions of two species distribution models.
 }
 \usage{
 fuzzyRangeChange(pred1, pred2, na.rm = FALSE, round.digits = 2)
@@ -45,7 +45,7 @@ This function returns a list of the following numeric values:
 \code{\link{fuzSim}}, \code{\link{modOverlap}} for other ways to compare models; \code{\link{fuzzyOverlay}} for row-wise model comparisons
 }
 \examples{
-# get environmental favourability for a rotifer species:
+# get an environmental favourability model for a rotifer species:
 
 data(rotif.env)
 

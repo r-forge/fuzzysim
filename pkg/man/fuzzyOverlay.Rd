@@ -4,7 +4,7 @@
 Row-wise overlay operations based on fuzzy logic
 }
 \description{
-Logical operations are useful e.g. to assess consensus or agreement between the predictions of different models. Fuzzy set theory (Zadeh 1965) allows performing such operations without converting the predictions from continuous to binary, which always implies applying arbitrary thresholds and over-simplifying model predictions. The result is a continuous numerical value quantifying the intersection, union, or other operation among model predictions, whether binary or continuous.
+Logical and set operations are useful for comparative distribution modelling, to assess consensus or mismatches between the predictions of different models, and to quantify differences between models obtained for different time periods. Fuzzy set theory (Zadeh 1965, Barbosa & Real 2012) allows performing such operations without converting the predictions from continuous to binary, with the inherent application of arbitrary thresholds and over-simplification of model predictions. The result is a continuous numerical value quantifying the intersection, union, sum, or other operation among model predictions, whether binary or continuous.
 }
 \usage{
 fuzzyOverlay(data, op = "intersection", na.rm = FALSE, round.digits = 2)
@@ -14,7 +14,7 @@ fuzzyOverlay(data, op = "intersection", na.rm = FALSE, round.digits = 2)
 matrix or data frame containing (only) the model prediction columns to compare
 }
   \item{op}{
-character value indicating the operation to perform between the prediction columns in \code{data}. Can be \code{'consensus'} for the arithmetic mean of predictions, \code{'fuzzy_and'} or \code{'intersection'} for fuzzy intersection; \code{'fuzzy_or'} or \code{'union'} for fuzzy union; \code{'prob_and'} or \code{'prob_or'} for probabilistic and/or, respectively; \code{'maintenance'} for the values where all predictions in the same row (rounded to the number of digits specified in the next argument) are the same. If \code{data} has only two columns to compare, you can also calculate \code{'xor'} for exclusive or, \code{'expansion'} for the prediction increase in rows where the second column has higher values than the first column, \code{'contraction'} for the prediction decrease in rows where the second column has lower values than the first column. For expansion, contraction and maintenance, rows where the values do not satisfy the condition (i.e. second column larger, smaller, or roughly equal to the first column) get a value of zero.
+character value indicating the operation to perform between the prediction columns in \code{data}. Can be \code{'consensus'} for the arithmetic mean of predictions (or the fuzzy equivalent of the proportion of models that agree that the species occurs at each site), \code{'fuzzy_and'} or \code{'intersection'} for fuzzy intersection; \code{'fuzzy_or'} or \code{'union'} for fuzzy union; \code{'prob_and'} or \code{'prob_or'} for probabilistic and/or, respectively (see Details); \code{'maintenance'} for the values where all predictions for the same row (rounded to the number of digits specified in the next argument) are the same. If \code{data} has only two columns to compare, you can also calculate \code{'xor'} for exclusive or, \code{'AnotB'} for the the occurrence of the species in column 1 in detriment of that in column 2,\code{'expansion'} for the prediction increase in rows where column 2 has higher values than column 1, \code{'contraction'} for the prediction decrease in rows where column 2 has lower values than column 1, or \code{'change'} for a mix of the latter two,  with positive values where there has been an increase and negative values where there was decrease in favourability from columns 1 to 2. For expansion, contraction and maintenance, rows where the values do not satisfy the condition (i.e. second column larger, smaller, or roughly equal to the first column) get a value of zero.
 }
   \item{na.rm}{
 logical value indicating if \code{NA} values should be ignored. The default is \code{FALSE}, so rows with \code{NA} in any of the prediction columns get \code{NA} as a result.
@@ -24,9 +24,9 @@ integer value indicating the number of decimal places to be used if \code{op = '
 }
 }
 \details{
-If your predictions are probabilities, \code{'prob_and'} (probabilistic "and") gives the probability of all occurring simultaneously by multiplying all probabilities; and \code{'prob_or'} (probabilistic "or") gives the probability of any of them occurring at each site. These can be quite restrictive, though; probabilistic "and" can give particularly irrealistically small values. 
+If your predictions are probabilities, \code{'prob_and'} (probabilistic "and") gives the probability of all species in \code{data} occurring simultaneously by multiplying all probabilities; and \code{'prob_or'} (probabilistic "or") gives the probability of any of them occurring at each site. These can be quite restrictive, though; probabilistic "and" can give particularly irrealistically small values. 
 
-If you have (or convert your probabilities to) favourability predictions, which can be used directly with fuzzy logic (Real et al. 2006; see \code{\link{Fav}} function), you can use \code{'fuzzy_and'} or \code{'intersection'} to get the favourability for all species co-occurring at each site, and \code{'fuzzy_or'} or \code{'union'} to get favourability for any of them to occur at each site (Barbosa & Real 2010).
+If you have (or convert your probabilities to) favourability predictions, which can be used directly with fuzzy logic (Real et al. 2006; see \code{\link{Fav}} function), you can use \code{'fuzzy_and'} or \code{'intersection'} to get the favourability for all species co-occurring at each site, and \code{'fuzzy_or'} or \code{'union'} to get favourability for any of them to occur at each site (Barbosa & Real 2012).
 }
 \value{
 This function returns a vector, with length equal to the number of rows in \code{data}, containing the row-wise result of the operation performed.
@@ -42,7 +42,7 @@ Zadeh, L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353
 \note{
 }
 \seealso{
-\code{\link{fuzSim}} and \code{\link{modOverlap}} for overall (not row-wise) comparisons among model predictions.
+\code{\link{fuzSim}}, \code{\link{modOverlap}} and \code{\link{fuzzyRangeChange}} for overall (not row-wise) comparisons among model predictions.
 }
 \examples{
 data(rotif.env)

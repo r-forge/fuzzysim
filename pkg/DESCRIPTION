@@ -1,8 +1,8 @@
 Package: fuzzySim
 Type: Package
 Title: Fuzzy similarity in species distributions
-Version: 1.6
-Date: 2015-11-03
+Version: 1.6.1
+Date: 2015-11-13
 Author: Barbosa A.M.
 Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
 Description: Functions to calculate fuzzy versions of species' occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis and prevalence-independent favourability GLM), and pair-wise fuzzy similarity (based on fuzzy versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for model comparison (overlap, loss and gain of ), and for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), transposing part of a data frame, assessing the false discovery rate, or analysing and dealing with multicollinearity among variables. Includes also sample datasets for providing practical examples.

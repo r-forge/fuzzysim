@@ -1,8 +1,16 @@
 fuzSim <-
-function(x, y, method) {
+function(x, y, method, na.rm = TRUE) {
+  
   stopifnot (length(x) == length(y), x >= 0 & x <= 1, y >= 0 & y <= 1)
   method <- match.arg(method, c("Jaccard", "Sorensen", "Simpson", "Baroni"))
   dab.methods <- c("Baroni")
+  
+  if (na.rm) {
+    data <- cbind(x, y)
+    data <- na.omit(data)
+    x <- data[ , 1]
+    y <- data[ , 2]
+  }
 
   A <- sum(x)
   B <- sum(y)

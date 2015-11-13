@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">A quick guide to species distribution modelling with <em>fuzzySim</em></h1>
 <h4 class="author"><em>A. Marcia Barbosa, CIBIO/InBIO - University of Evora (Portugal), <a href="mailto:barbosa@uevora.pt">barbosa@uevora.pt</a></em></h4>
-<h4 class="date"><em>updated 29 October 2015</em></h4>
+<h4 class="date"><em>updated 13 November 2015</em></h4>
 </div>
 
 
@@ -209,15 +209,33 @@ img {
 <p>The <strong><em>step</em></strong> argument, which is TRUE by default, defines whether variables should be included in the models with a stepwise selection procedure based on Akaike’s Information Criterion (AIC), using the <em>step</em> function of R. The three following arguments are relevant only when <em>step = TRUE</em>: <em>trace</em> shows (or not, if FALSE) the intermediate results of the stepwise inclusion of model variables; <strong><em>start</em></strong> defines whether the inclusion of the variables should start forward (with “null.model”) or backward (with “full.model)”; and <em>direction</em> specifies in which direction the variable selection should proceed (“forward”, “backward”, or “both”; see <code>help(step)</code> for more info.)</p>
 <p>Arguments <strong><em>Y.prediction</em></strong>, <strong><em>P.prediction</em></strong> and <strong><em>Favourability</em></strong> define the type of predictions you want in the output <em>predictions</em> table. <em>Y</em> (FALSE by default) is the prediction in the scale of the predictor variables (i.e. the logit equation); <em>P</em> is the prediction in the scale of the response variable (i.e. probability, varying between 0 and 1); and <em>Favourability</em> is the prevalence-independent version of probability (also between 0 and 1), which can be directly compared across species (see Details in <code>help(Fav)</code> for more info).</p>
 </div>
-<div id="further-steps" class="section level2">
-<h2>Further steps</h2>
+<div id="model-evaluation" class="section level2">
+<h2>Model evaluation</h2>
 <p>You can <strong>analyse these models and evaluate their performance</strong> with the <strong><em>modEvA</em> R package</strong>, which is <a href="http://modeva.r-forge.r-project.org/">also available on R-Forge</a> together with <a href="http://modeva.r-forge.r-project.org/modEvA-tutorial.html">another short tutorial</a>.</p>
+</div>
+<div id="model-extrapolation-and-comparison" class="section level2">
+<h2>Model extrapolation and comparison</h2>
 <p>You can <strong>apply all these models at once to a different dataset</strong> containing the same variables (with the same names) but for another region or time period: see the Examples in <code>help(getPreds)</code> for how to do this.</p>
-<p>If you’ve calculated Favourability, which is directly comparable among species, you can then use <strong>fuzzy logic</strong> to <strong>combine different models</strong>: for example, minimum favourability is the favourability for the simultaneous occurrence of all species in a given set; maximum favourability is the favourability for occurrence of at least one of the species in the given set (see e.g. <a href="https://modtools.files.wordpress.com/2012/07/barbosa-real-2012-fuzzy-logic-comparative-modelling-tswj.pdf">this article</a> for illustrated details). The following commands will calculate these values and add them to the <em>predictions</em> table:</p>
+<p>If you’ve calculated Favourability, which is directly comparable among species with different prevalences, you can then use <strong>fuzzy logic</strong> to combine the predictions of different models thorough <strong>intersection</strong>, <strong>union</strong> and <strong>other logical operations</strong>. These can get you, for example, the <strong>favourability for</strong> the <strong>simultaneous occurrence</strong> of a set of species, or the <strong>favourability for occurrence of at least one</strong> of the species in the given set (see e.g. <a href="https://modtools.files.wordpress.com/2012/07/barbosa-real-2012-fuzzy-logic-comparative-modelling-tswj.pdf">this article</a> for illustrated details). You can also calculate the <strong>fuzzy consensus</strong> between a bunch of models, i.e., the fuzzy equivalent of the proportion of models that agree that the species occurs at each site.</p>
 <pre class="r"><code>names(rotif.mods$predictions)  # see which are the favourability (_F) columns; 32:61 in this case
-rotif.mods$predictions$Fav_all &lt;- min(rotif.mods$predictions[ , 32:61])
-rotif.mods$predictions$Fav_any &lt;- max(rotif.mods$predictions[ , 32:61])</code></pre>
-<p>You can also <strong>compare models</strong> with <strong>niche comparison metrics</strong> (such as Schoener’s D and Warren’s I) with the <em>modOverlap</em> function (see <code>help(modOverlap)</code>) or with <strong>fuzzy versions of classic binary similarity indices</strong> (Jaccard, Baroni, Sorensen, Simpson) with the <em>fuzSim</em> function (see <code>help(fuzSim)</code>).</p>
+rotif.mods$predictions$Fav_all &lt;- fuzzyOverlay(rotif.mods$predictions[ , 32:61], op = &quot;intersection&quot;)
+rotif.mods$predictions$Fav_any &lt;- fuzzyOverlay(rotif.mods$predictions[ , 32:61], op = &quot;union&quot;)
+rotif.mods$predictions$consensus &lt;- fuzzyOverlay(rotif.mods$predictions[ , 32:61], op = &quot;consensus&quot;)</code></pre>
+<p>You can also quantify overall similarity between models, e.g. with <strong>niche comparison metrics</strong> (such as Schoener’s D and Warren’s I, which quantify how similar two environmental models are) available in the <em>modOverlap</em> function, or with <strong>fuzzy versions of classic binary similarity indices</strong> (Jaccard, Baroni, Sorensen, Simpson) with the <em>fuzSim</em> function; Jaccard and Baroni’s indices have the advantage of having associated tables of significance, so you can know if the similarity between your models is higher, lower, or similar to what could be expected by chance given your sample size.</p>
+<pre class="r"><code>fav_current &lt;- rotif.mods$predictions$Ttetra_F
+# imagine you have a model prediction for this species in a future time
+# (here we will create one by randomly jittering the current predictions)
+fav_imag &lt;- jitter(fav_current, amount = 0.2)
+fav_imag[fav_imag &lt; 0] &lt;- 0
+fav_imag[fav_imag &gt; 1] &lt;- 1
+# now calculate similarity between current and imaginary predictions:
+modOverlap(fav_current, fav_imag)
+fuzSim(fav_current, fav_imag, method = &quot;Jaccard&quot;)
+fuzSim(fav_current, fav_imag, method = &quot;Baroni&quot;)</code></pre>
+<p>And you can quantify overall range changes (the fuzzy equivalent of expansion area, contraction area, maintenance area and overall balance) based on the predictions of two models for different time periods:</p>
+<pre class="r"><code>fuzzyRangeChange(fav_current, fav_imag)  # results are given as proportion
+# unless otherwise specified:
+fuzzyRangeChange(fav_current, fav_imag, prop = FALSE)</code></pre>
 </div>
 <div id="saving-your-results" class="section level2">
 <h2>Saving your results</h2>

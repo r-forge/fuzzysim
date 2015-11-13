@@ -7,11 +7,15 @@ Row-wise overlay operations based on fuzzy logic
 Logical and set operations are useful for comparative distribution modelling, to assess consensus or mismatches between the predictions of different models, and to quantify differences between models obtained for different time periods. Fuzzy set theory (Zadeh 1965, Barbosa & Real 2012) allows performing such operations without converting the predictions from continuous to binary, with the inherent application of arbitrary thresholds and over-simplification of model predictions. The result is a continuous numerical value quantifying the intersection, union, sum, or other operation among model predictions, whether binary or continuous.
 }
 \usage{
-fuzzyOverlay(data, op = "intersection", na.rm = FALSE, round.digits = 2)
+fuzzyOverlay(data, overlay.cols = 1:ncol(data), op = "intersection", 
+na.rm = FALSE, round.digits = 2)
 }
 \arguments{
   \item{data}{
-matrix or data frame containing (only) the model prediction columns to compare
+matrix or data frame containing the model predictions to compare.
+}
+  \item{overlay.cols}{
+vector of the names or index numbers of the columns to compare. The default is all columns in \code{data}.
 }
   \item{op}{
 character value indicating the operation to perform between the prediction columns in \code{data}. Can be \code{'consensus'} for the arithmetic mean of predictions (or the fuzzy equivalent of the proportion of models that agree that the species occurs at each site), \code{'fuzzy_and'} or \code{'intersection'} for fuzzy intersection; \code{'fuzzy_or'} or \code{'union'} for fuzzy union; \code{'prob_and'} or \code{'prob_or'} for probabilistic and/or, respectively (see Details); \code{'maintenance'} for the values where all predictions for the same row (rounded to the number of digits specified in the next argument) are the same. If \code{data} has only two columns to compare, you can also calculate \code{'xor'} for exclusive or, \code{'AnotB'} for the the occurrence of the species in column 1 in detriment of that in column 2,\code{'expansion'} for the prediction increase in rows where column 2 has higher values than column 1, \code{'contraction'} for the prediction decrease in rows where column 2 has lower values than column 1, or \code{'change'} for a mix of the latter two,  with positive values where there has been an increase and negative values where there was decrease in favourability from columns 1 to 2. For expansion, contraction and maintenance, rows where the values do not satisfy the condition (i.e. second column larger, smaller, or roughly equal to the first column) get a value of zero.
@@ -71,21 +75,23 @@ head(preds)
 # (here we will create one by randomly jittering the current predictions)
 
 preds$Abrigh_imag <- jitter(preds[ , "Abrigh_F"], amount = 0.2)
+preds$Abrigh_imag[preds$Abrigh_imag < 0] <- 0
+preds$Abrigh_imag[preds$Abrigh_imag > 1] <- 1
 
 
 # you can calculate row-wise prediction changes from Abrigh to Abrigh_imag:
 
-preds$Abrigh_exp <- fuzzyOverlay(preds[ , c("Abrigh_F", "Abrigh_imag")], 
-op = "expansion")
+preds$Abrigh_exp <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F", 
+"Abrigh_imag"), op = "expansion")
 
-preds$Abrigh_contr <- fuzzyOverlay(preds[ , c("Abrigh_F", "Abrigh_imag")], 
-op = "contraction")
+preds$Abrigh_contr <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F", 
+"Abrigh_imag"), op = "contraction")
 
-preds$Abrigh_chg <- fuzzyOverlay(preds[ , c("Abrigh_F", "Abrigh_imag")], 
-op = "change")
+preds$Abrigh_chg <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F", 
+"Abrigh_imag"), op = "change")
 
-preds$Abrigh_maint <- fuzzyOverlay(preds[ , c("Abrigh_F", "Abrigh_imag")], 
-op = "maintenance")
+preds$Abrigh_maint <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F", 
+"Abrigh_imag"), op = "maintenance")
 
 head(preds)
 }

@@ -1,5 +1,35 @@
 ============================================
-fuzzySim v1.6 (committed 2015-11-05)
+fuzzySim v1.6.1 (committed 2015-11-13)
+============================================
+
+## Modified functions:
+
+* fuzzyOverlay:
+- added arguments 'prop = TRUE' and 'overlay.cols = 1:ncol(data)'
+- result now includes 4 (not 8) values, either sum or proportion
+- result is now a named vector instead of a list
+- 'na.rm' now TRUE by default
+
+* fuzSim: 
+- added argument 'na.rm = TRUE'
+
+
+## Modified help files:
+
+* fuzzyOverlay: modifications reflecting function changes
+
+* modOverlap: example now provided
+
+* fuzzyOverlay, fuzzyRangeChange, modOverlap:
+- examples containing 'jitter' corrected to avoid values outside the [0, 1] interval
+
+* fuzSim: 
+- examples now provided also for similarity between fuzzy data
+- tables of significance for Jaccard and Baroni's indices now referred
+
+
+============================================
+fuzzySim v1.6 (committed 2015-11-03)
 ============================================
 
 ## New functions:

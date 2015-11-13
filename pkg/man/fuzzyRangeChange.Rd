@@ -4,7 +4,7 @@
 Range change based on continuous (fuzzy) values
 }
 \description{
-This function quantifies overall range change (i.e. the gains, losses, stable cells and overall change or balance) based on the predictions of two models
+This function quantifies overall range change (fuzzy expansion, contraction, maintenance and balance) based on the continuous predictions of two models.
 }
 \usage{
 fuzzyRangeChange(pred1, pred2, prop = TRUE, na.rm = TRUE, round.digits = 2)

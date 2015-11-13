@@ -118,9 +118,10 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     else sel.var.cols <- var.cols  
     
     if (length(sel.var.cols) > 0 && corSelect == TRUE) {
-      corselect <- corSelect(data = train.data, sp.cols = s, var.cols = sel.var.cols, cor.thresh = cor.thresh)
+      corselect <- suppressMessages(corSelect(data = train.data, sp.cols = s, var.cols = sel.var.cols, cor.thresh = cor.thresh))
       corsel.var.cols <- corselect$selected.var.cols
       cat(length(sel.var.cols) - length(corsel.var.cols), "variable(s) excluded by 'corSelect' function\n", corselect$excluded.vars, "\n\n")
+      sel.var.cols <- corsel.var.cols
     }  # end if corSelect
 
     if (length(sel.var.cols) == 0)  model.vars <- 1

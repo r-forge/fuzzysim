@@ -1,5 +1,7 @@
 fuzzyRangeChange <- function(pred1, pred2, prop = TRUE, na.rm = TRUE, round.digits = 2) {
   
+  # version 1.2 (13 Nov 2015)
+  
   stopifnot(ncol(pred1) == ncol(pred2),
             all(pred1[!is.na(pred1)] >= 0 && pred1[!is.na(pred1)] <= 1),
             all(pred2[!is.na(pred2)] >= 0 && pred2[!is.na(pred2)] <= 1)

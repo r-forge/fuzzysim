@@ -13,6 +13,10 @@ fuzzySim v1.6.1 (committed 2015-11-13)
 * fuzSim: 
 - added argument 'na.rm = TRUE'
 
+* multGLM: 
+- bug corrected in corSelect (was reporting but not really eliminating variables)
+- suppressMessages in corSelect
+
 
 ## Modified help files:
 

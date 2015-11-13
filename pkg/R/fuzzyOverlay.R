@@ -5,6 +5,8 @@ fuzzyOverlay <- function(data,
                          round.digits = 2
                          ) {
   
+  # version 1.2 (13 Nov 2015)
+  
   data <- data[ , overlay.cols]
   stopifnot(all(data[!is.na(data), ] >= 0 && data[!is.na(data), ] <= 1))
   

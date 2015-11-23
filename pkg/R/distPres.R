@@ -1,8 +1,7 @@
-distPres <-
-function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, 
-         method = "euclidian", suffix = "_D", p = 1, inv = TRUE) {
+distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, method = "euclidian", suffix = "_D", p = 1, inv = TRUE) {
+  
   stopifnot(
-    as.matrix(data[ , sp.cols]) %in% c(0, 1),
+    as.matrix(data[ , sp.cols]) %in% c(NA, 0, 1),
     length(sp.cols) > 0 & length(sp.cols) <= ncol(data) - length(coord.cols) - length(id.col),
     !is.null(coord.cols) | !is.null(dist.mat),
     is.null(coord.cols) | length(coord.cols) == 2,
@@ -11,30 +10,43 @@ function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL,
     is.null(id.col) | id.col %in% 1:ncol(data) | id.col %in% colnames(data),
     is.null(dist.mat) | nrow(dist.mat) == nrow(data)
   )
+  
   if (is.null(dist.mat)) dist.mat <- dist(data[ , coord.cols], method = method)
+  
   dist.mat <- as.matrix(dist.mat)
-  sp.data <- data[ , sp.cols]
+  sp.data <- data[ , sp.cols, drop = FALSE]
   n.obs <- nrow(dist.mat)
   n.subjects <- length(sp.cols)
-  if (n.subjects == 1) {
-    sp.data <- as.matrix(sp.data)
-    colnames(sp.data) <- colnames(data)[sp.cols]
-  }
-  pres.dist.mat <- matrix(nrow = n.obs, ncol = n.subjects, dimnames = list(rownames(dist.mat), colnames(sp.data)))
+  
+  #if (n.subjects == 1) {
+  #  sp.data <- as.matrix(sp.data)
+  #  colnames(sp.data) <- colnames(data)[sp.cols]
+  #}
+  
+  pres.dist.mat <- matrix(nrow = n.obs, 
+                          ncol = n.subjects, 
+                          dimnames = list(rownames(dist.mat), 
+                                          colnames(sp.data)))
+  
   for (o in 1:n.obs) for (s in 1:n.subjects) {
     pres.dist.mat[o, s] <- min(dist.mat[sp.data[ , s] == 1, o])
   }
+  
   if (inv | p != 1) pres.dist.mat <- pres.dist.mat + 1  # avoids result being smaller than the original when distance < 1 (and larger than the original otherwise)
   pres.dist.mat <- pres.dist.mat ^ p
+
   if (inv) {
     pres.dist.mat <- 1 / pres.dist.mat
     pres.dist.mat[!is.finite(pres.dist.mat)] <- max(is.finite(pres.dist.mat))  # gives 1 to the inverse distance to presence at presence sites
   }
-  colnames(pres.dist.mat) <- paste(colnames(sp.data), suffix, sep = "")
+  
+  colnames(pres.dist.mat) <- paste0(colnames(sp.data), suffix)
+  
   if (!is.null(id.col)) {
     pres.dist.mat <- data.frame(data[ , id.col], pres.dist.mat)
     if (is.character(id.col)) colnames(pres.dist.mat)[1] <- id.col
     else colnames(pres.dist.mat)[1] <- colnames(data)[id.col]
   }
-  return(pres.dist.mat)
+  
+  pres.dist.mat
 }

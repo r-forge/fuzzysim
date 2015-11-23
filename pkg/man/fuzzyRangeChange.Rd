@@ -29,11 +29,13 @@ argument to pass to \code{\link{fuzzyOverlay}}, indicating the number of decimal
 \details{
 }
 \value{
-This function returns a named vector with the following numeric values:
-\item{gain}{sum of the predicted values that have increased from \code{pred1} to \code{pred2} (fuzzy equivalent of the number of gained presences), divided by the total number of values if \code{prop = TRUE} (the default)}
-\item{loss}{sum of the predicted values that have decreased from \code{pred1} to \code{pred2} (fuzzy equivalent of the number of lost presences), divided by the total number of values if \code{prop = TRUE} (the default)}
-\item{stable}{number of predicted values that have remained the same (when rounded to \code{round.digits}) between \code{pred1} and \code{pred2}, divided by the total number of values if \code{prop = TRUE} (the default)}
-\item{total_change}{sum of the change in predicted values from \code{pred1} to \code{pred2} (fuzzy equivalent of the balance of gained and lost presences), divided by the total number of values if \code{prop = TRUE} (the default)}
+This function returns a data frame with the following values in different rows:
+\item{Gain}{sum of the predicted values that have increased from \code{pred1} to \code{pred2} (fuzzy equivalent of the number of gained presences)}
+\item{Loss}{sum of the predicted values that have decreased from \code{pred1} to \code{pred2} (fuzzy equivalent of the number of lost presences)}
+\item{Stable_presence}{fuzzy equivalent of the number of predicted presences that have remained as such (when rounded to \code{round.digits}) between \code{pred1} and \code{pred2}}
+\item{Stable_absence}{fuzzy equivalent of the number of predicted absences that have remained as such (when rounded to \code{round.digits}) between \code{pred1} and \code{pred2})}
+\item{Balance}{sum of the change in predicted values from \code{pred1} to \code{pred2} (fuzzy equivalent of the balance of gained and lost presences)}
+All these values are divided by the total number of reference values (i.e., the fuzzy range or non-range size) if \code{prop = TRUE} (the default).
 }
 \references{
 }

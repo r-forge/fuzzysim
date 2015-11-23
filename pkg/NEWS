@@ -1,4 +1,20 @@
 ============================================
+fuzzySim v1.6.2 (committed 2015-11-23)
+============================================
+
+## Modified functions:
+
+* fuzzyRangeChange:
+- corrected proportional changes to be relative to reference range size, not total study area
+- replaced "stable" with "stable presence" and added (fuzzy equivalent of) "stable absence"
+- replaced "change" with "balance" (overall loss/gain, not amount of changed cells)
+- result is now data frame, not named vector
+
+* distPres:
+- now allows NA values
+
+
+============================================
 fuzzySim v1.6.1 (committed 2015-11-13)
 ============================================
 

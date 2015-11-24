@@ -13,7 +13,7 @@ fuzzyRangeChange <- function(pred1, pred2, prop = TRUE, na.rm = TRUE, round.digi
   stable.abs <- sum(fuzzyOverlay(1 - data.frame(pred1, pred2), op = "maintenance", na.rm = na.rm), na.rm = na.rm)
   balance <- sum(fuzzyOverlay(data.frame(pred1, pred2), op = "change", na.rm = na.rm), na.rm = na.rm)
   
-  result <- data.frame(Measure = c("Gain", "Loss", "Stable_presence", "Stable_absence", "Balance"), Number = c(gain, abs(loss), stable.pres, stable.abs, abs(balance)))
+  result <- data.frame(Measure = c("Gain", "Loss", "Stable_presence", "Stable_absence", "Balance"), Number = c(gain, abs(loss), stable.pres, stable.abs, balance))
   
   if (prop) {
     if (na.rm) n <- length(na.omit(pred1))

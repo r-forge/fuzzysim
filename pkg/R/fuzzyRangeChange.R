@@ -3,8 +3,8 @@ fuzzyRangeChange <- function(pred1, pred2, prop = TRUE, na.rm = TRUE, round.digi
   # version 1.3 (23 Nov 2015)
   
   stopifnot(ncol(pred1) == ncol(pred2),
-            all(pred1[!is.na(pred1)] >= 0 && pred1[!is.na(pred1)] <= 1),
-            all(pred2[!is.na(pred2)] >= 0 && pred2[!is.na(pred2)] <= 1)
+            all(pred1[is.finite(pred1)] >= 0 && pred1[is.finite(pred1)] <= 1),
+            all(pred2[is.finite(pred2)] >= 0 && pred2[is.finite(pred2)] <= 1)
   )
   
   gain <- sum(fuzzyOverlay(data.frame(pred1, pred2), op = "expansion", na.rm = na.rm), na.rm = na.rm)

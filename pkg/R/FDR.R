@@ -2,7 +2,7 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
                  model.type = NULL, family = "auto", correction = "fdr", q = 0.05, 
                  verbose = TRUE, simplif = FALSE) 
   
-  # version 3.4 (27 Out 2014)
+  # version 3.5 (2 Dec 2015)
   
 {
   if (length(sp.cols) > 1) 
@@ -10,9 +10,14 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
   
   if (!is.null(model.type))  warning ("Argument 'model.type' is deprecated and now ignored, as this info is included in 'family' (e.g. 'gaussian' for LM, 'binomial' or 'poisson' for GLM).")
   
-  model.type <- "GLM"
+  model.type <- "GLM"  # it's always GLM, even for LM; family is what may change
   
-  if (family == "auto") {  # NAs not yet implemented! and not all family options available
+  n.init <- nrow(data)
+  data <- data[is.finite(data[ , sp.cols]), ]
+  na.loss <- n.init - nrow(data)
+  if (na.loss > 0) message(na.loss, " cases excluded due to missing or non-finite values.")
+
+  if (family == "auto") {  # not all families are available in auto!
     if (all(data[ , sp.cols] %in% c(0, 1)))  family <- "binomial"
     else if (all(data[ , sp.cols] >= 0 && data[ , sp.cols] %% 1 == 0))  family <- "poisson"
     else family <- "gaussian"
@@ -36,28 +41,28 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
       stop("You need more than one predictor to calculate the FDR.")
     p.bivar <- coef.bivar <- aic.bivar <- vector("numeric", length = ncol(predictors))
     for (i in 1:length(p.bivar)) {
-      if (model.type == "GLM") {
+      #if (model.type == "GLM") {
         model <- glm(response ~ predictors[, i], family = family)
         p.bivar[i] <- anova(model, test = "Chi")[, "Pr(>Chi)"][2]
         coef.bivar[i] <- model[["coefficients"]][2]
         #aic.bivar[i] <- extractAIC(model)[2]
         aic.bivar[i] <- model[["aic"]]
-      }
-      else if (model.type == "LM") {
-        model <- lm(response ~ predictors[, i])
-        p.bivar[i] <- anova(model, test = "Chi")[, "Pr(>F)"][1]
-        coef.bivar[i] <- model[["coefficients"]][2]
-        aic.bivar[i] <- extractAIC(model)[2]
-      }
-      else stop("'model.type' must be either 'LM' or 'GLM'")
-    }
-    if (is.na(p.bivar[i])) 
-      message("A p-value could not be calculated for var.col number", 
-              i)
-    if (is.na(aic.bivar[i])) 
-      message("AIC could not be calculated for var.col number", 
-              i)
+      #}
+      #else if (model.type == "LM") {
+      #  model <- lm(response ~ predictors[, i])
+      #  p.bivar[i] <- anova(model, test = "Chi")[, "Pr(>F)"][1]
+      #  coef.bivar[i] <- model[["coefficients"]][2]
+      #  aic.bivar[i] <- extractAIC(model)[2]
+      #}
+      #else stop("'model.type' must be either 'LM' or 'GLM'")
+      
+      if (is.na(p.bivar[i])) 
+        message("A p-value could not be calculated for var.col number", i)
+      if (is.na(aic.bivar[i])) 
+        message("AIC could not be calculated for var.col number", i)
+    }; rm(i)
   }
+  
   if (coeffs) {
     results <- data.frame(cbind(coef.bivar, aic.bivar, p.bivar), row.names = names(predictors))
     names(results) <- c("bivariate.coeff", "AIC", "p.value")

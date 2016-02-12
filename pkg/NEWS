@@ -1,4 +1,15 @@
 ============================================
+fuzzySim v1.7 (committed 2016-02-12)
+============================================
+
+## New functions:
+
+* pairwiseRangemaps (calculate area of pairwise intersection and union between rangemaps)
+
+* rangemapSim (calculate  rangemap similarity using common similarity indices)
+
+
+============================================
 fuzzySim v1.6.3 (committed 2015-12-02)
 ============================================
 

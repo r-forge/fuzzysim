@@ -1,0 +1,173 @@
+pairwiseRangemaps <- function(rangemaps,
+                              projection,
+                              diag = TRUE,
+                              unions = TRUE,
+                              verbosity = 2,
+                              Ncpu = 1,  # parallel::parSapply if larger
+                              chunks = 1,  # nr chunks to split results
+                              filename = "rangemap_matrix.csv"
+) {
+
+#  if (!requireNamespace("PBSmapping", quietly = TRUE)) {
+#    stop("This function needs R package 'PBSmapping' - please install it first.", call. = FALSE)
+#  }
+
+  require(tools)
+  require(PBSmapping)
+  require(maptools)
+  require(sp)
+#  require(rgeos)
+
+  stopifnot(chunks > 0 || chunks == "decreasing")
+
+  if (!is.null(filename) && file.exists(filename)) stop ("filename '", filename, "' already exists in the working directory - please choose another.")
+
+  if (chunks != 1) {
+    chunks.folder <- "R_chunks_IN-PROGRESS"
+    if (file.exists(chunks.folder)) stop ("Another 'R_chunks_IN-PROGRESS' folder currently exists in the working directory.")
+    dir.create(chunks.folder)
+    on.exit(unlink(chunks.folder, recursive = TRUE))
+  }
+
+  if (Ncpu > 1) {
+    require(parallel)
+    if (Ncpu > parallel::detectCores()) {
+      Ncpu <- parallel::detectCores()
+      message("\nNOTE: 'Ncpu' reduced to ", Ncpu, " to match the existing cores in this machine.")
+    }
+    cluster <- parallel::makeCluster(Ncpu)
+    on.exit(parallel::stopCluster(cluster), add = TRUE)
+  }  # end if Ncpu>1
+
+  n.rangemaps <- length(rangemaps)
+  rangemap.names <- basename(tools::file_path_sans_ext(rangemaps))
+  rangemap.names <- gsub(pattern = " ", replacement = "_", x = rangemap.names)
+  if (verbosity > 0) {
+    message(n.rangemaps, " range maps to intersect. You may need some patience!")
+    if (verbosity > 1) message("\nRange map names: \n", paste(rangemap.names, collapse = "\n"))
+  }
+
+  if (is.numeric(chunks) && chunks > n.rangemaps) stop("'chunks' cannot exceed the number of rangemaps.")
+
+  start.time <- Sys.time()
+  message("\nSTARTED: ", start.time)
+  on.exit(timer(start.time), add = TRUE)
+
+  if (verbosity > 0) message("\nImporting rangemaps to PBSmapping format...")
+  rangemap.list <- vector("list", n.rangemaps)
+  names(rangemap.list) <- rangemap.names
+  for (m in 1:n.rangemaps) {
+    rangemap.list[[m]] <- assign(rangemap.names[m], PBSmapping::importShapefile(rangemaps[m], projection = projection))
+    rm(list = ls(pattern = rangemap.names[m]))  # removes loose rangemap from wkspace
+  }; rm(m)
+  gc()
+
+  n.pairs <- length(combn(n.rangemaps, m = 2)) / 2
+  if (verbosity > 0)  message("\nCalculating ", n.pairs, " pairwise intersections...\n(note that computation time varies with range map size)")
+
+  intArea <- function(x, y) {  # x, y are polygons
+    int.pol <- PBSmapping::joinPolys(x, y, operation = "INT")
+    if (is.null(int.pol)) return(0)
+    sum(PBSmapping::calcArea(int.pol)[ , "area"])
+  }  # end 'intArea' function
+
+  lowerTriangInt <- function(rangemap.name, rangemap.list) {
+    n.rangemaps <- length(rangemap.list)
+    list.names <- names(rangemap.list)
+    if (is.null(list.names) || !(rangemap.name %in% list.names)) stop("rangemap.name must be among names(rangemap.list)")
+    last.intersect <- which(list.names == rangemap.name) - 1
+    if (last.intersect == 0) return(rep(NA, n.rangemaps))
+    intersect.sublist <- rangemap.list[1:last.intersect]
+    if (Ncpu > 1) ints <- parallel::parSapply(cluster, intersect.sublist, intArea, y = rangemap.list[[rangemap.name]])
+    else ints <- sapply(intersect.sublist, intArea, y = rangemap.list[[rangemap.name]])
+    c(ints, rep(NA, n.rangemaps - length(ints)))  # fill rest of matrix row
+  }  # end 'lowerTriangInt' function
+
+  if (chunks == 1) {
+    rangemap.matrix <- t(sapply(rangemap.names, lowerTriangInt, rangemap.list = rangemap.list))  # 't' because sapply works on columns and turns matrix around
+    colnames(rangemap.matrix) <- rownames(rangemap.matrix) <- rangemap.names
+  }
+
+  else {  # if chunks != 1
+
+    if (is.numeric(chunks)) {
+      chunks <- round(chunks)
+      message("\n[Splitting intersections matrix into ", chunks, " chunks of rows. Intermediate results will be saved as 'intersections_chunkX.csv' files in a temporary folder called '", chunks.folder, "' in the working directory - LEAVE IT THERE until this function has finished running!]\n")
+      chunks <- split(rangemap.names, cut(seq_along(rangemap.names), chunks, labels = FALSE))  # http://stackoverflow.com/questions/3318333/split-a-vector-into-chunks-in-r, answer by mathheadinclouds
+    }  # end if numeric chunks
+
+    else if (chunks == "decreasing") {
+
+      growingChunks <- function(n, decreasing = TRUE) {
+        f <- r <- 1
+        while(length(r) <= n) {
+          f <- f + 1
+          r <- c(r, rep(f, each = f))
+        }
+        if (decreasing) r <- rev(r)
+        r[1:n]
+      }  # end growingChunks function
+
+      fac <- growingChunks(n.rangemaps)
+      n.chunks <- length(unique(fac))
+      chunks <- rev(split(rangemap.names, f = fac))
+      message("\n[Splitting intersections matrix into ", n.chunks, " chunks with decreasing number of rows. Intermediate results will be saved as 'intersections_chunkX.csv' files in a temporary folder called '", chunks.folder, "' in the working directory - LEAVE IT THERE until this function has finished running!]\n")
+    } else stop ("Invalid 'chunks' value.")
+
+    for (ch in 1:length(chunks)) {
+      chunk.time <- Sys.time()
+      message("Starting chunk ", ch, " (", chunk.time, ")...", sep = "")
+      chunk.rangemap.names <- rangemap.names[rangemap.names %in% chunks[[ch]]]
+      intersections <- t(sapply(chunk.rangemap.names, lowerTriangInt, rangemap.list = rangemap.list))
+      colnames(intersections) <- rangemap.names
+      rownames(intersections) <- chunk.rangemap.names
+      write.csv(intersections, file = paste0(chunks.folder, "/intersections_chunk", ch, ".csv"), row.names = TRUE)
+      rm(intersections)
+      timer(chunk.time)
+      gc()
+    }  # end for ch
+
+    if (verbosity > 0) message("\nAssembling intersections matrix...")
+    chunk.files <- list.files(chunks.folder, pattern = "*.csv", full.names = TRUE)
+    rangemap.matrix <- do.call(rbind, lapply(chunk.files, read.csv, row.names = 1))
+    rangemap.matrix <- as.matrix(rangemap.matrix)
+  } # end else (if chunks != 1)
+
+  if (diag) {
+    if (verbosity > 0) message("\nCalculating individual range map areas (matrix diagonal)...")
+    for (m in 1:n.rangemaps) {
+      map <- rangemap.list[[rangemap.names[m]]] #get(rangemap.names[m])
+      rangemap.matrix[m, m] <- sum(PBSmapping::calcArea(map)[ , "area"])
+    }  # end for m
+  }  # end if diag
+
+  if (unions) {
+    if (verbosity > 0) message("\nCalculating pairwise unions...")
+
+    uniArea <- function(inds, mat) {  # matrix indices
+      r <- inds[1]
+      c <- inds[2]
+      area1 <- mat[r, r]
+      area2 <- mat[c, c]
+      int <- mat[c, r]
+      area1 + area2 - int
+    }  # end 'uniArea' function
+
+    upper.inds <- triMatInd(rangemap.matrix, lower = FALSE, list = TRUE)
+    unions <- sapply(upper.inds, uniArea, mat = rangemap.matrix)
+    #rangemap.matrix[upper.tri(rangemap.matrix)] <- unions  # this would fill upper diagonal by column, I need it by row
+    for (i in 1:length(upper.inds)) {
+      rangemap.matrix[upper.inds[[i]][1], upper.inds[[i]][2]] <- unions[i]
+    }
+
+  }  # end if unions
+
+  if (!is.null(filename)) {
+    write.csv(rangemap.matrix, filename)
+    message("Results saved also as ", filename, " in the working directory.")
+  }
+
+  message("\nFINISHED: ", Sys.time())
+  rangemap.matrix
+
+}  # end pairwiseRangemaps function

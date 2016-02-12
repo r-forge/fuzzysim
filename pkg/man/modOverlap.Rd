@@ -21,11 +21,11 @@ This function returns a list of 3 metrics:
 \item{HellingerDist}{Hellinger distance (as in van der Vaart 1998, p. 211) between probability distributions, varying between 0 and 2.}
 }
 \references{
-Schoener T.W. (1968) Anolis lizards of Bimini: resource partitioning in a complex fauna. Ecology 49: 704–726
+Schoener T.W. (1968) Anolis lizards of Bimini: resource partitioning in a complex fauna. Ecology 49: 704-726
 
 van der Vaart A.W. (1998)  Asymptotic statistics. Cambridge Univ. Press, Cambridge (UK)
 
-Warren D.L., Glor R.E. & Turelli M. (2008) Environmental niche equivalency versus conservatism: quantitative approaches to niche evolution. Evolution, 62: 2868–83 (and further ERRATUM)
+Warren D.L., Glor R.E. & Turelli M. (2008) Environmental niche equivalency versus conservatism: quantitative approaches to niche evolution. Evolution, 62: 2868-83 (and further ERRATUM)
 }
 \author{A. Marcia Barbosa}
 \note{

@@ -91,7 +91,7 @@ echo $contents; } ?>
 
 <p> There's also a beginners <a href="fuzzySim-modelling-tutorial.html"><b>tutorial on <big>species distribution modelling</big></b></a> with <i>fuzzySim</i> (updated 29 Oct 2015), and a <a href="http://modeva.r-forge.r-project.org/Guia_modelacion_fuzzySim_modEvA.html">course manual on model building with <i>fuzzySim</i> and model evaluation with <i>modEvA</i> (<b>in Spanish</b>)</a>.</p>
 
-Recently, I've added a <a href="http://modeva.r-forge.r-project.org/pairwise_rangemaps_tutorial.html">tutorial on rangemap comparison</a> (updated 12 Feb 2016).
+Recently, I've added a <a href="pairwise_rangemaps_tutorial.html">tutorial on rangemap comparison</a> (updated 12 Feb 2016).
 
 <p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for further info on the package and its origins. </p>
 

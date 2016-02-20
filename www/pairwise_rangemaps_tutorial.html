@@ -10,7 +10,6 @@
 
 <meta name="author" content="A. Marcia Barbosa" />
 
-<meta name="date" content="2016-02-12" />
 
 <title>A brief tutorial on quantifying pairwise similarity between rangemaps</title>
 
@@ -64,25 +63,26 @@ img {
 <div id="header">
 <h1 class="title">A brief tutorial on quantifying pairwise similarity between rangemaps</h1>
 <h4 class="author"><em>A. Marcia Barbosa</em></h4>
-<h4 class="date"><em>12 February 2016</em></h4>
+<h4 class="date"><em>First published 12 February 2016; updated 22 February 2016</em></h4>
 </div>
 
 
-<p>Similarity between rangemaps can allow the detection of <strong>associations among species distributions</strong>, with important applications in macroecology, biogeography and conservation planning. Commonly used similarity indices use species distribution data in discreet localities, regions or grid cells. However, gridding rangemaps distorts species’ distribution limits and can lead to overestimations of their overlap, sometimes overriding important geographical barriers (Barbosa &amp; Estrada, in press). This tutorial shows how to calculate <strong>similarity between ungridded rangemaps</strong> in R.</p>
-<p>The functions to calculate the areas of <strong>pairwise intersection and union between rangemaps</strong> and to assess rangemap similarity are implemented in package <em>fuzzySim</em>. The first of these functions needs some other packages to work. The following code will install all of these packages if they’re not already there:</p>
+<p>Similarity between rangemaps can allow the detection of <strong>associations among species distributions</strong>, with important applications in macroecology, biogeography and conservation planning. Commonly used similarity indices use counts of species co-occurrence in discrete localities, regions or grid cells. However, <strong>gridding rangemaps distorts species’ distribution limits</strong> and can lead to <strong>overestimations of their overlap</strong>, sometimes <strong>overriding important geographical barriers</strong> (Barbosa &amp; Estrada, in press). This tutorial shows how to calculate <strong>similarity between ungridded rangemaps</strong> with R. First, <strong>download, install and open R</strong>, which is freely avaibale <a href="https://cran.rstudio.com">here</a>.</p>
+<p>Functions to calculate the areas of pairwise intersection and union between rangemaps and to assess rangemap similarity are implemented in <strong>R package <em>fuzzySim</em></strong>.</p>
+<p>The first of these functions needs some other packages to work. The following code will install all of these packages if they’re not already there:</p>
 <pre class="r"><code>for (pkg in c(&quot;fuzzySim&quot;, &quot;tools&quot;, &quot;PBSmapping&quot;, &quot;maptools&quot;, &quot;sp&quot;)) {
   if (pkg == &quot;fuzzySim&quot;)  rp &lt;- &quot;http://R-Forge.R-project.org&quot;
-  else  rp &lt;- &quot;http://cran.rstudio.com/&quot;
+  else  rp &lt;- &quot;http://cran.rstudio.com&quot;
   if (!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg, repos = rp)
 }</code></pre>
-<p>Now you’ll need some shapefile rangemaps to compare. You can use my <a href="https://www.dropbox.com/s/3k0ikq5dwlrg5ss/imagine_rangemaps.zip?dl=0"><strong>sample rangemap set</strong></a> for experimenting. <strong>Download</strong> it to your R working directory (or set your working directory to where it’s downloaded) and <strong>unzip it</strong>. You should now have some shapefiles in a <strong>folder called “imagine_rangemaps” in your working directory</strong>. The following code will get you a matrix of pair-wise intersections and unions between the shapefiles in this folder:</p>
+<p>Now you’ll need some shapefile rangemaps to compare. You can use my <a href="https://www.dropbox.com/s/3k0ikq5dwlrg5ss/imagine_rangemaps.zip?dl=0"><strong>sample rangemap set</strong></a> for experimenting. <strong>Download</strong> it to your R working directory (or set your working directory to where it’s downloaded) and <strong>unzip it</strong>. You should now have some shapefiles in a <strong>folder called “imagine_rangemaps” in your working directory</strong>. The following code will get you a <strong>matrix of the areas of pair-wise intersections</strong> (in the lower triangle) <strong>and unions</strong> (in the upper triangle) between the shapefiles in this folder:</p>
 <pre class="r"><code>require(fuzzySim)
 my_rangemaps &lt;- list.files(path = &quot;imagine_rangemaps&quot;, pattern = &quot;.shp&quot;, full.names = TRUE)
 my_rangemaps
 rangemap_matrix &lt;- pairwiseRangemaps(my_rangemaps, projection = 3035, Ncpu = 1, chunks = 1, filename = &quot;rangemap_matrix.csv&quot;)
 rangemap_matrix</code></pre>
-<p>This calculation can be very intensive and slow, especially if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. You can set <code>chunks = &quot;decreasing&quot;</code> for the matrix to be calculated in parts and the memory cleaned between one part and the next; and, if your computer has more than one core that you can use, you can increase <code>Ncpu</code> to get parallel computing.</p>
-<p>After you have your <code>rangemap_matrix</code>, you can use it to calculate pairwise similarity between the rangemaps, using a variety of indices. Jaccard is the one used by default:</p>
+<p>This calculation can be very intensive and slow if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. If your computer has more than one core that you can use, you can <strong>increase <code>Ncpu</code></strong> to get <strong>parallel computing</strong>. If there are many rangemaps, you should also <strong>set <code>chunks = &quot;decreasing&quot;</code></strong> for the matrix to be calculated in parts and the memory cleaned between one part and the next.</p>
+<p>After you have your <code>rangemap_matrix</code>, you can use it to <strong>calculate pairwise similarity</strong> between the rangemaps, using a variety of indices. Jaccard is the one used by default:</p>
 <pre class="r"><code>rangemap_jac &lt;- rangemapSim(rangemap_matrix)
 rangemap_jac</code></pre>
 <p>Check out the help files of these functions (<code>help(pairwiseRangemaps)</code>; <code>help(rangemapSim)</code>) for additional options and information. And that’s it! You can e-mail me with any suggestions or concerns, but first remember to check for updates to the package or this tutorial at <a href="http://fuzzysim.r-forge.r-project.org" class="uri">http://fuzzysim.r-forge.r-project.org</a>. This tutorial was built with <em>RStudio</em> + <em>rmarkdown</em> + <em>knitr</em>. Thanks!</p>

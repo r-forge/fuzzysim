@@ -7,7 +7,8 @@ Pairwise similarity between rangemaps
 Calculate pairwise similarity among rangemaps from a matrix of their areas of intersection and union
 }
 \usage{
-rangemapSim(rangemap.matrix, total.area, method = c("Jaccard", "Sorensen", "Simpson", "Baroni"), 
+rangemapSim(rangemap.matrix, total.area, 
+method = c("Jaccard", "Sorensen", "Simpson", "Baroni"), 
 diag = FALSE, upper = FALSE, verbosity = 2)
 }
 \arguments{

@@ -43,7 +43,7 @@ logical value indicating whether the models obtained from the regressions should
 Trend Surface Analysis is a way to model the spatial structure in species' distributions by regressing occurrence data on the spatial coordinates x and y, for a linear trend, or on polynomial terms of these coordinates (x^2, y^2, x*y, etc.), for curvilinear trends (Legendre & Legendre, 1998; Borcard et al., 2011). Second- and third-degree polynomials are often used. \code{multTSA} allows specifying the degree of the spatial polynomial to use. By default, it uses a 3rd-degree polynomial and performs stepwise AIC selection of the polynomial terms to include.
 }
 \value{
-A matrix or data frame containing the identifier column (if provided in \code{id.col}) and one column per species containing the value predicted by the trend surface analysis.
+This function returns a matrix or data frame containing the identifier column (if provided in \code{id.col}) and one column per species containing the value predicted by the trend surface analysis.
 }
 \references{
 Acevedo P. & Real R. (2012) Favourability: concept, distinctive characteristics and potential usefulness. Naturwissenschaften 99: 515-522
@@ -69,7 +69,7 @@ head(rotif.env)
 
 names(rotif.env)
 
-tsa <- multTSA(rotif.env, sp.cols = 18:47, coord.cols = c("Longitude", "Latitude"),
+tsa <- multTSA(rotif.env, sp.cols = 18:20, coord.cols = c("Longitude", "Latitude"),
 id.col = 1)
 
 head(tsa)

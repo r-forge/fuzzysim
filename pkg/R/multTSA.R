@@ -2,7 +2,7 @@ multTSA <-
 function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
          Favourability = FALSE, suffix = "_TS", save.models = FALSE) {
 
-  # version 2.0 (2 Feb 2015)
+  # version 2.1 (17 Mar 2016)
   
   start.time <- Sys.time()
 
@@ -35,14 +35,13 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
 
   data.input <- data
   data <- cbind(data, coords.poly)
-  attach(data, warn.conflicts = FALSE)  # won't work without attach
 
   for (s in 1:n.subjects) {
     subj.count <- subj.count + 1
     subj.name <- colnames(sp.data)[s]
     message("Computing TSA ", subj.count, " of ", n.subjects, " (", subj.name, ") ...")
     model.formula <- as.formula(paste(subj.name, "~", paste(colnames(coords.poly), collapse = "+")))
-    model.expr <- expression(with(data, glm(model.formula, family = binomial)))
+    model.expr <- expression(with(data, glm(model.formula, family = binomial, data = data)))
     if (step)  model <- step(eval(model.expr), trace = 0)
     else model <- eval(model.expr)
     pred <- predict(model, coords.poly, type = "response")
@@ -59,8 +58,6 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
       names(TSA.models)[[subj.count]] <- subj.name
     }
   }
-
-  detach(data)
 
   predictions <- data.frame(data[ , id.col], data[ , ((ncol(data.input) + 1 + n.poly.terms) : ncol(data))])
 

@@ -1,3 +1,24 @@
+TO DO:
+
+* multGLM:
+- eliminate call to 'attach'
+
+* stepByStep:
+- implement 'direction = both'
+
+
+============================================
+fuzzySim v1.7.2 (committed 2016-03-22)
+============================================
+
+## Modified functions:
+
+* fuzzyRangeChange:
+- user can now choose which measures to calculate
+- 'loss' now reported as originally negative
+- results provided also as a barplot
+
+
 ============================================
 fuzzySim v1.7.1 (committed 2016-03-17)
 ============================================

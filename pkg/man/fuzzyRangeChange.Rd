@@ -7,7 +7,9 @@ Range change based on continuous (fuzzy) values
 This function quantifies overall range change (fuzzy expansion, contraction, maintenance and balance) based on the continuous predictions of two models.
 }
 \usage{
-fuzzyRangeChange(pred1, pred2, prop = TRUE, na.rm = TRUE, round.digits = 2)
+fuzzyRangeChange(pred1, pred2, prop = TRUE, na.rm = TRUE, round.digits = 2, 
+measures = c("Gain", "Loss", "Stable_presence", "Stable_absence", "Balance"), 
+plot = TRUE, ...)
 }
 \arguments{
   \item{pred1}{
@@ -25,17 +27,24 @@ logical value indicating whether NA values should be ignored. The default is TRU
   \item{round.digits}{
 argument to pass to \code{\link{fuzzyOverlay}}, indicating the number of decimal places to which to round \code{pred} for calculating 'maintenance' or 'stability'. The default is 2.
 }
+  \item{measures}{
+character vector listing the range change measures to calculate.
+}
+  \item{plot}{
+logical value indicating whether to make also a barplot with the results. The default is TRUE.
+}
+  \item{\dots}{additional arguments to be passed to the \code{barplot} function (if \code{plot = TRUE}).}
 }
 \details{
 }
 \value{
-This function returns a data frame with the following values in different rows:
+This function returns a data frame with the following values in different rows (among those that are included in \code{measures}):
 \item{Gain}{sum of the predicted values that have increased from \code{pred1} to \code{pred2} (fuzzy equivalent of the number of gained presences)}
 \item{Loss}{sum of the predicted values that have decreased from \code{pred1} to \code{pred2} (fuzzy equivalent of the number of lost presences)}
 \item{Stable_presence}{fuzzy equivalent of the number of predicted presences that have remained as such (when rounded to \code{round.digits}) between \code{pred1} and \code{pred2}}
 \item{Stable_absence}{fuzzy equivalent of the number of predicted absences that have remained as such (when rounded to \code{round.digits}) between \code{pred1} and \code{pred2})}
 \item{Balance}{sum of the change in predicted values from \code{pred1} to \code{pred2} (fuzzy equivalent of the balance of gained and lost presences)}
-All these values are divided by the total number of reference values (i.e., the fuzzy range or non-range size) if \code{prop = TRUE} (the default).
+If \code{prop = TRUE} (the default), there is an additional column named "Proportion" in which these values are divided by the total number of reference values (i.e., the fuzzy range or non-range size). If \code{plot = TRUE} (the default), a barplot is also produced representing the last column of the result data frame.
 }
 \references{
 }

@@ -7,9 +7,10 @@ Range change based on continuous (fuzzy) values
 This function quantifies overall range change (fuzzy expansion, contraction, maintenance and balance) based on the continuous predictions of two models.
 }
 \usage{
-fuzzyRangeChange(pred1, pred2, prop = TRUE, na.rm = TRUE, round.digits = 2, 
+fuzzyRangeChange(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, 
+round.digits = 2, 
 measures = c("Gain", "Loss", "Stable_presence", "Stable_absence", "Balance"), 
-plot = TRUE, ...)
+plot = TRUE, col = colorRampPalette(c("white", "black"))(length(measures)), ...)
 }
 \arguments{
   \item{pred1}{
@@ -18,8 +19,11 @@ numeric vector containing the predictions (between 0 and 1) of the model that wi
   \item{pred2}{
 numeric vector containing the predictions (between 0 and 1) of the model whose change will be calculated. Must be of the same length and in the same order as \code{pred1}.
 }
+  \item{number}{
+logical value indicating if results should include the fuzzy number of cases. The default is TRUE.
+}
   \item{prop}{
-logical value indicating whether results should be given proportionally to the total number of cases.
+logical value indicating if results should include the proportion of the total number of cases. The default is TRUE.
 }
   \item{na.rm}{
 logical value indicating whether NA values should be ignored. The default is TRUE.
@@ -28,10 +32,13 @@ logical value indicating whether NA values should be ignored. The default is TRU
 argument to pass to \code{\link{fuzzyOverlay}}, indicating the number of decimal places to which to round \code{pred} for calculating 'maintenance' or 'stability'. The default is 2.
 }
   \item{measures}{
-character vector listing the range change measures to calculate.
+character vector listing the range change measures to calculate. The default is all available measures.
 }
   \item{plot}{
-logical value indicating whether to make also a barplot with the results. The default is TRUE.
+logical value indicating whether to make a barplot with the results. The default is TRUE.
+}
+  \item{col}{
+vector of \code{\link{colours}} for the bars in the barplot (if \code{plot = TRUE}). Should have the same length as \code{measures}. The default is a greyscale from white to black.
 }
   \item{\dots}{additional arguments to be passed to the \code{barplot} function (if \code{plot = TRUE}).}
 }
@@ -77,7 +84,7 @@ fav_imag[fav_imag > 1] <- 1
 
 fuzzyRangeChange(fav_current, fav_imag)
 
-fuzzyRangeChange(fav_current, fav_imag, prop = FALSE)
+fuzzyRangeChange(fav_current, fav_imag, number = FALSE)
 
 }
 \keyword{  }

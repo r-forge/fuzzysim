@@ -1,5 +1,5 @@
 multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-                    test.sample = 0, FDR = FALSE, corSelect = FALSE, 
+                    test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, 
                     cor.thresh = 0.8, step = TRUE,  trace = 0, start = "null.model",
                     direction = "both", Y.prediction = FALSE, P.prediction = TRUE,
                     Favourability = TRUE, group.preds = TRUE,
@@ -105,7 +105,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     cat(length(var.cols), "input predictor variable(s)\n\n")
 
     if (FDR) {
-      fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, verbose = FALSE)
+      fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, correction = correction, verbose = FALSE)
       if (nrow(fdr$select) == 0) {
         warning(paste0(
           "No variables passed the FDR test (so no variables included in the model)\n for '", response, "'. Consider using FDR = FALSE?"))

@@ -8,6 +8,21 @@ TO DO:
 
 
 ============================================
+fuzzySim v1.7.3 (committed 2016-04-12)
+============================================
+
+## Modified functions:
+
+* corSelect:
+- error message when length(sp.cols) > 1
+- message about excluded missing data
+- added option sp.cols=NULL to get only high.cor.mat
+
+* multGLM:
+- added 'correction' argument to pass to 'FDR'
+
+
+============================================
 fuzzySim v1.7.2 (committed 2016-03-22)
 ============================================
 

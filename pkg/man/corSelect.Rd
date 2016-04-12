@@ -11,7 +11,7 @@ corSelect(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.value", ...)
 }
 \arguments{
   \item{data}{a data frame containing the response and predictor variables.}
-  \item{sp.cols}{index number of the column of \code{data} that contains the response (e.g. species) variable.}
+  \item{sp.cols}{index number of the column of \code{data} that contains the response (e.g. species) variable. Currently, only one \code{sp.col} can be used at the same time, so an error message is returned if \code{length(sp.cols) > 1}. If \code{sp.cols = NULL}, the function returns only the pairs of variables that are correlated over the given threshold.}
   \item{var.cols}{index numbers of the columns of \code{data} that contain the predictor variables.}
   \item{cor.thresh}{threshold value of correlation coefficient above which predictor variables should be excluded. The default is 0.8.}
   \item{select}{character value indicating the criterion for selecting variables (among those that are correlated) based on their relationship with the response variable. Can be "p.value" (the default) or "AIC". A message is displayed saying whether the result would have been different with the alternative criterion.}
@@ -20,11 +20,11 @@ corSelect(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.value", ...)
 \details{
 Correlations among variables are problematic in multivariate models, as they inflate the variance of coefficients and thus may bias the interpretation of the effects of those variables on the response (Legendre & Legendre 2012). One of the strategies to circumvent this problem is to eliminate a priori one from each pair of correlated variables, but it is not always straightforward to choose the right variable. This function selects such variables based on their relationship with the response variable, by building a bivariate model of each individual variable against the response and choosing, among each of two correlated variables, the one with the smaller (best) AIC or p-value.
 
-The function uses only the rows of the dataset where the response variable contains finite values against which the predictor variables can be modelled. Rows with NA or NaN in the response variable are excluded from the calculation of correlations among predictor variables).
+The function uses only the rows of the dataset where the response variable contains finite values against which the predictor variables can be modelled. Rows with NA or NaN in the response variable are excluded from the calculation of correlations among predictor variables.
 }
 \value{
-This function returns a list of 7 elements:
-\item{high.correlations}{data frame showing the pairs of input variables that are correlated above the threshold.}
+This function returns a list of 7 elements (unless \code{sp.cols = NULL}, in which case it returns only the first of these elements):
+\item{high.correlations}{data frame showing the pairs of input variables that are correlated above the given threshold.}
 \item{bivariate.significance}{data frame with the individual AIC (Akaike's Information Criterion) and significance (p-value) of each of the highly correlated variables against the response variable.}
 \item{excluded.vars}{character vector containing the names of the variables to be excluded (i.e., from each highly correlated pair, the variable with larger AIC or p-value against the response).}
 \item{selected.vars}{character vector containing the names of the variables to be selected (i.e., the non-correlated variables and, from each correlated pair, the variable with smaller AIC or p-value against the response).}

@@ -1,8 +1,15 @@
 corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.value", ...) {
   
-  # version 1.2 (29 Oct 2015)
+  # version 1.3 (12 Apr 2016)
   
-  data <- data[is.finite(data[ , sp.cols]), ]
+  if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
+  
+  if(!is.null(sp.cols)) {
+    n.in <- nrow(data)
+    data <- data[is.finite(data[ , sp.cols]), ]
+    n.out <- nrow(data)
+    if (n.out < n.in)  warning (n.in - n.out, " observations removed due to missing data in 'sp.cols'; ", n.out, " observations actually evaluated.")
+  }
   
   cor.mat <- cor(data[ , var.cols], ...)
   cor.mat[upper.tri(cor.mat, diag = TRUE)] <- NA
@@ -15,6 +22,8 @@ corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.val
     high.cor.mat <- data.frame(high.cor.mat, var1 = rownames(cor.mat)[high.cor.mat[ , "row"]], var2 = colnames(cor.mat)[high.cor.mat[ , "col"]])
     high.cor.mat$corr <- NULL
     for (r in 1:nrow(high.cor.mat))  high.cor.mat$corr[r] <- cor.mat[high.cor.mat$row[r], high.cor.mat$col[r]]
+    
+    if (is.null(sp.cols))  return (high.cor.mat[ , -c(1, 2)])
     
     high.cor.vars <- unique(rownames(cor.mat[high.cor.inds, high.cor.inds]))
     bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), simplif = TRUE)[ , c("AIC", "p.value")]
@@ -43,7 +52,7 @@ corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.val
     
   vif <- multicol(data[ , selected.var.cols])
   
-  list(high.correlations = high.cor.mat, 
+  list(high.correlations = high.cor.mat[ , -c(1, 2)], 
        bivariate.significance = bivar.mat, 
        excluded.vars = excluded.vars,
        selected.vars = selected.vars,

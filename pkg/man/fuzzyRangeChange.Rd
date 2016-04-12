@@ -86,5 +86,6 @@ fuzzyRangeChange(fav_current, fav_imag)
 
 fuzzyRangeChange(fav_current, fav_imag, number = FALSE)
 
+fuzzyRangeChange(fav_current, fav_imag, ylim = c(-1, 1), ylab = "Proportional change")
 }
 \keyword{  }

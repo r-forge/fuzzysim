@@ -8,6 +8,32 @@ TO DO:
 
 
 ============================================
+fuzzySim v1.7.5 (committed 2016-04-26)
+============================================
+
+## Modified functions:
+
+* FDR:
+- BIC now also provided
+
+* corSelect:
+- BIC now included as selection criterion
+
+* multGLM:
+- added "select" argument (for 'step') - AIC or BIC
+
+
+============================================
+fuzzySim v1.7.4 (committed 2016-04-15)
+============================================
+
+## Modified functions:
+
+* multGLM:
+- FDR correction now "BY" by default
+
+
+============================================
 fuzzySim v1.7.3 (committed 2016-04-12)
 ============================================
 

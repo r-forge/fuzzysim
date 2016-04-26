@@ -1,10 +1,14 @@
 corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.value", ...) {
   
-  # version 1.3 (12 Apr 2016)
+  # version 1.4 (26 Apr 2016)
+  
+  criteria <- c("p.value", "AIC", "BIC")
+  
+  if (!(select %in% criteria)) stop ("Invalid 'select' criterion.")
   
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
   
-  if(!is.null(sp.cols)) {
+  if (!is.null(sp.cols)) {
     n.in <- nrow(data)
     data <- data[is.finite(data[ , sp.cols]), ]
     n.out <- nrow(data)
@@ -26,9 +30,9 @@ corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.val
     if (is.null(sp.cols))  return (high.cor.mat[ , -c(1, 2)])
     
     high.cor.vars <- unique(rownames(cor.mat[high.cor.inds, high.cor.inds]))
-    bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), simplif = TRUE)[ , c("AIC", "p.value")]
-    if (all(order(bivar.mat[ , c("AIC")]) == order(bivar.mat[ , c("p.value")])))  message("Results identical using whether p-value or AIC to select variables.\n")
-    else message("Results NOT identical using whether p-value or AIC to select variables.\n")
+    bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), simplif = TRUE)[ , c("AIC", "BIC", "p.value")]
+    #if (all(order(bivar.mat[ , c("AIC")]) == order(bivar.mat[ , c("p.value")])))  message("Results identical using whether p-value or AIC to select variables.\n")
+    #else message("Results NOT identical using whether p-value or AIC to select variables.\n")
     
     while (max(abs(cor.mat), na.rm = TRUE) >= cor.thresh) {
       max.cor.ind <- which(abs(cor.mat) == max(abs(cor.mat), na.rm = TRUE), arr.ind = TRUE)
@@ -53,7 +57,7 @@ corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.val
   vif <- multicol(data[ , selected.var.cols])
   
   list(high.correlations = high.cor.mat[ , -c(1, 2)], 
-       bivariate.significance = bivar.mat, 
+       bivariate.value = bivar.mat, 
        excluded.vars = excluded.vars,
        selected.vars = selected.vars,
        selected.var.cols = selected.var.cols,

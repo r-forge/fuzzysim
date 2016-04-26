@@ -1,9 +1,9 @@
 multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-                    test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, 
-                    cor.thresh = 0.8, step = TRUE,  trace = 0, start = "null.model",
-                    direction = "both", Y.prediction = FALSE, P.prediction = TRUE,
-                    Favourability = TRUE, group.preds = TRUE,
-                    trim = TRUE, ...) {
+                    test.sample = 0, FDR = FALSE, correction = "BY", 
+                    corSelect = FALSE, cor.thresh = 0.8, step = TRUE, trace = 0, 
+                    start = "null.model", direction = "both", select = "AIC", 
+                    Y.prediction = FALSE, P.prediction = TRUE, 
+                    Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...) {
 
   # version 3.6 (20 Apr 2015)
 
@@ -23,6 +23,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     is.logical(step),
     start %in% c("null.model", "full.model"),
     direction %in% c("both", "backward", "forward"),
+    select %in% c("AIC", "BIC"),
     is.logical(Y.prediction),
     is.logical(P.prediction),
     is.logical(Favourability),
@@ -132,13 +133,17 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
 
     if (step & length(sel.var.cols) > 0) {
       n.vars.start <- length(sel.var.cols)
+      if (select == "AIC") K <- 2
+      else if (select == "BIC") K <- log(n)
+      
       if (start == "full.model") {
-        model <- step(eval(model.expr), direction = direction, trace = trace)
+        
+        model <- step(eval(model.expr), direction = direction, trace = trace, k = K)
       } else if (start == "null.model") {
         model.scope <- model.formula[-2]  # removes response from formula
         null.formula <- as.formula(paste(response, "~", 1))
         model <- step(glm(null.formula, family = binomial),
-                      direction = direction, scope = model.scope, trace = trace)
+                      direction = direction, scope = model.scope, trace = trace, k = K)
       } else stop ("'start' must be either 'full.model' or 'null.model'")
       n.vars.step <- length(model$coefficients) - 1
       excluded.vars <- setdiff(colnames(data[ , sel.var.cols]), names(model$coefficients)[-1])

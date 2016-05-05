@@ -1,14 +1,11 @@
-corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.value", ...) {
+corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = "p.value", ...) {
   
-  # version 1.4 (26 Apr 2016)
-  
-  criteria <- c("p.value", "AIC", "BIC")
-  
-  if (!(select %in% criteria)) stop ("Invalid 'select' criterion.")
+  # version 1.5 (5 May 2016)
   
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
+  if (!(select %in% c("p.value", "AIC", "BIC"))) stop ("Invalid 'select' criterion.")
   
-  if (!is.null(sp.cols)) {
+  if(!is.null(sp.cols)) {
     n.in <- nrow(data)
     data <- data[is.finite(data[ , sp.cols]), ]
     n.out <- nrow(data)
@@ -20,19 +17,18 @@ corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.val
   
   if (max(abs(cor.mat), na.rm = TRUE) >= cor.thresh) {
     
-    high.cor.mat <- as.matrix(which(abs(cor.mat) >= cor.thresh, arr.ind = TRUE))
-    rownames(high.cor.mat) <- NULL
-    high.cor.inds <- sort(unique(as.vector(high.cor.mat)))
-    high.cor.mat <- data.frame(high.cor.mat, var1 = rownames(cor.mat)[high.cor.mat[ , "row"]], var2 = colnames(cor.mat)[high.cor.mat[ , "col"]])
+    high.cor.rowcol <- as.matrix(which(abs(cor.mat) >= cor.thresh, arr.ind = TRUE))
+    high.cor.inds <- sort(unique(as.vector(high.cor.rowcol)))
+    high.cor.mat <- data.frame(var1 = rownames(cor.mat)[high.cor.rowcol[ , "row"]], var2 = colnames(cor.mat)[high.cor.rowcol[ , "col"]])
     high.cor.mat$corr <- NULL
-    for (r in 1:nrow(high.cor.mat))  high.cor.mat$corr[r] <- cor.mat[high.cor.mat$row[r], high.cor.mat$col[r]]
+    for (r in 1:nrow(high.cor.mat))  high.cor.mat$corr[r] <- cor.mat[high.cor.rowcol[ ,"row"][r], high.cor.rowcol[ ,"col"][r]]
     
-    if (is.null(sp.cols))  return (high.cor.mat[ , -c(1, 2)])
+    if (is.null(sp.cols))  return (high.cor.mat)
     
     high.cor.vars <- unique(rownames(cor.mat[high.cor.inds, high.cor.inds]))
-    bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), simplif = TRUE)[ , c("AIC", "BIC", "p.value")]
-    #if (all(order(bivar.mat[ , c("AIC")]) == order(bivar.mat[ , c("p.value")])))  message("Results identical using whether p-value or AIC to select variables.\n")
-    #else message("Results NOT identical using whether p-value or AIC to select variables.\n")
+    bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), simplif = TRUE)[ , c("p.value", "AIC", "BIC")]
+    if (all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")])))  message("Results identical using whether p-value, AIC or BIC to select variables.\n")
+    else message("Results NOT identical using whether p-value, AIC or BIC to select variables.\n")
     
     while (max(abs(cor.mat), na.rm = TRUE) >= cor.thresh) {
       max.cor.ind <- which(abs(cor.mat) == max(abs(cor.mat), na.rm = TRUE), arr.ind = TRUE)
@@ -53,11 +49,11 @@ corSelect <- function(data, sp.cols, var.cols, cor.thresh = 0.8, select = "p.val
   selected.vars <- colnames(cor.mat)
   selected.var.cols <- match(colnames(cor.mat), colnames(data))
   excluded.vars <- colnames(data)[var.cols][!(colnames(data)[var.cols] %in% colnames(cor.mat))]
-    
+  
   vif <- multicol(data[ , selected.var.cols])
   
-  list(high.correlations = high.cor.mat[ , -c(1, 2)], 
-       bivariate.value = bivar.mat, 
+  list(high.correlations = high.cor.mat, 
+       bivariate.significance = bivar.mat, 
        excluded.vars = excluded.vars,
        selected.vars = selected.vars,
        selected.var.cols = selected.var.cols,

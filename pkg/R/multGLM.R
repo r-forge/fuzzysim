@@ -1,11 +1,11 @@
 multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-                    test.sample = 0, FDR = FALSE, correction = "BY", 
+                    test.sample = 0, FDR = FALSE, correction = "fdr", 
                     corSelect = FALSE, cor.thresh = 0.8, step = TRUE, trace = 0, 
                     start = "null.model", direction = "both", select = "AIC", 
                     Y.prediction = FALSE, P.prediction = TRUE, 
                     Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...) {
 
-  # version 3.6 (20 Apr 2015)
+  # version 3.7 (5 May 2016)
 
   start.time <- Sys.time()
   input.ncol <- ncol(data)
@@ -109,7 +109,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
       fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, correction = correction, verbose = FALSE)
       if (nrow(fdr$select) == 0) {
         warning(paste0(
-          "No variables passed the FDR test (so no variables included in the model)\n for '", response, "'. Consider using FDR = FALSE?"))
+          "No variables passed the FDR test (so no variables included in the model)\n for '", response, "'. Consider using 'FDR = FALSE' or choosing a less stringent 'correction' procedure."))
         #next
       } #else {
         cat(length(var.cols) - nrow(fdr$select), "variable(s) excluded by 'FDR' function\n", paste(row.names(fdr$exclude), collapse = ", "), "\n\n")

@@ -8,6 +8,20 @@ TO DO:
 
 
 ============================================
+fuzzySim v1.7.6 (committed 2016-05-05)
+============================================
+
+## Modified functions:
+
+* corSelect:
+- removed error when no corrs above threshold
+- sp.cols now NULL by default (to avoid error when missing)
+
+* multGLM:
+- FDR correction reverted to "fdr" by default
+
+
+============================================
 fuzzySim v1.7.5 (committed 2016-04-26)
 ============================================
 

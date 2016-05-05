@@ -8,7 +8,7 @@ This function calculates generalized linear models for a set of (species) presen
 }
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-test.sample = 0, FDR = FALSE, correction = "BY", corSelect = FALSE, 
+test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, 
 cor.thresh = 0.8, step = TRUE, trace = 0, start = "null.model", 
 direction = "both", select = "AIC", Y.prediction = FALSE, 
 P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
@@ -21,7 +21,7 @@ P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
   \item{family}{argument to be passed to the \code{\link{glm}} function; only 'binomial' is implemented in \code{multGLM} so far.}
   \item{test.sample}{a subset of data to set aside for subsequent model testing. Can be a value between 0 and 1 for a proportion of the data to choose randomly (e.g. 0.2 for 20\%), or an  integer number for a particular number of cases to choose randomly among the records in \code{data}, or a vector of integers for the index numbers of the particular rows to set aside, or "Huberty" for his rule of thumb based on the number of variables (Huberty 1994, Fielding & Bell 1997).}
   \item{FDR}{logical value indicating whether to do a preliminary exclusion of variables based on the false discovery rate (see \code{\link{FDR}}). The default is \code{FALSE}.}
-  \item{correction}{argument to pass to the \code{\link{FDR}} function if \code{FDR = TRUE}. The default is \code{"BY"} for dealing with dependencies among statistics (Benjamini & Yekutieli 2001), but see \code{\link{p.adjust}} for more options.}
+  \item{correction}{argument to pass to the \code{\link{FDR}} function if \code{FDR = TRUE}. The default is \code{"fdr"}, but see \code{\link{p.adjust}} for more options.}
   \item{corSelect}{logical value indicating whether to do a preliminary exclusion of highly correlated variables (see \code{\link{corSelect}}). The default is \code{FALSE}.}
   \item{cor.thresh}{numerical value indicating the correlation threshold to pass to \code{\link{corSelect}} (used only if \code{corSelect = TRUE}).}
   \item{step}{logical, whether to use the \code{\link{step}} function to perform a stepwise variable selection (based on AIC or BIC).}
@@ -54,8 +54,6 @@ This function returns a list with the following components:
 }
 \references{
 Akaike, H. (1973) Information theory and an extension of the maximum likelihood principle. In: Petrov B.N. & Csaki F., 2nd International Symposium on Information Theory, Tsahkadsor, Armenia, USSR, September 2-8, 1971, Budapest: Akademiai Kiado, p. 267-281.
-
-Benjamini Y. & Yekutieli D. (2001) The control of the false discovery rate in multiple testing under dependency. Annals of Statistics 29: 1165-1188.
 
 Fielding A.H. & Bell J.F. (1997) A review of methods for the assessment of prediction errors in conservation presence/absence models. Environmental Conservation 24: 38-49
 

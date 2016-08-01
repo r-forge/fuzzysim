@@ -8,6 +8,17 @@ TO DO:
 
 
 ============================================
+fuzzySim v1.7.7 (committed 2016-08-01)
+============================================
+
+## Modified functions:
+
+* pairwiseRangemaps:
+- argument 'chunks' replaced with 'nchunks' for operative reasons
+- added 'subchunks' argument for continuing interrupted runs
+
+
+============================================
 fuzzySim v1.7.6 (committed 2016-05-05)
 ============================================
 

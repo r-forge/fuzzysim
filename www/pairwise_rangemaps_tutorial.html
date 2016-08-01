@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">A brief tutorial on quantifying pairwise similarity between rangemaps</h1>
 <h4 class="author"><em>A. Marcia Barbosa</em></h4>
-<h4 class="date"><em>First published 12 February 2016; updated 23 February 2016</em></h4>
+<h4 class="date"><em>First published 12 February 2016; last updated 1 August 2016</em></h4>
 </div>
 
 
@@ -78,9 +78,9 @@ img {
 <pre class="r"><code>require(fuzzySim)
 my_rangemaps &lt;- list.files(path = &quot;imagine_rangemaps&quot;, pattern = &quot;.shp&quot;, full.names = TRUE)
 my_rangemaps
-rangemap_matrix &lt;- pairwiseRangemaps(my_rangemaps, projection = 3035, Ncpu = 1, chunks = 1, filename = &quot;rangemap_matrix.csv&quot;)
+rangemap_matrix &lt;- pairwiseRangemaps(my_rangemaps, projection = 3035, Ncpu = 1, nchunks = 1, filename = &quot;rangemap_matrix.csv&quot;)
 rangemap_matrix</code></pre>
-<p>This calculation can be very intensive and slow if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. If your computer has more than one core that you can use, you can <strong>increase <code>Ncpu</code></strong> (e.g., replace <code>Ncpu = 1</code> with <code>Ncpu = 3</code> in the command above; you can find out the number of cores in your machine by typing <code>parallel::detectCores()</code>) to get <strong>parallel computing</strong>. If there are many rangemaps, you should also <strong>set <code>chunks = &quot;decreasing&quot;</code></strong> for the matrix to be calculated in parts and the memory cleaned between one part and the next.</p>
+<p>This calculation can be very intensive and slow if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. If your computer has more than one core that you can use, you can <strong>increase <code>Ncpu</code></strong> (e.g., replace <code>Ncpu = 1</code> with <code>Ncpu = 3</code> in the command above; you can find out the number of cores in your machine by typing <code>parallel::detectCores()</code>) to get <strong>parallel computing</strong>. If there are many rangemaps, you should also <strong>set <code>nchunks = &quot;decreasing&quot;</code></strong> for the matrix to be calculated in parts and the memory cleaned between one part and the next.</p>
 <p>Once you have your <code>rangemap_matrix</code>, you can use it to <strong>calculate pairwise similarity</strong> between the rangemaps, using a variety of indices. Jaccard is the one used by default:</p>
 <pre class="r"><code>rangemap_jac &lt;- rangemapSim(rangemap_matrix)
 rangemap_jac</code></pre>

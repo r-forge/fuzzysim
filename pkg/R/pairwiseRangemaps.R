@@ -4,7 +4,8 @@ pairwiseRangemaps <- function(rangemaps,
                               unions = TRUE,
                               verbosity = 2,
                               Ncpu = 1,  # parallel::parSapply if larger
-                              chunks = 1,  # nr chunks to split results
+                              nchunks = 1,  # nr chunks to split results
+                              subchunks = NULL,  # chunks for partial pwrm
                               filename = "rangemap_matrix.csv"
 ) {
 
@@ -18,15 +19,15 @@ pairwiseRangemaps <- function(rangemaps,
   require(sp)
 #  require(rgeos)
 
-  stopifnot(chunks > 0 || chunks == "decreasing")
+  stopifnot(nchunks > 0 || nchunks == "decreasing")
 
   if (!is.null(filename) && file.exists(filename)) stop ("filename '", filename, "' already exists in the working directory; please choose another 'filename' or (re)move/rename the existing matrix.")
 
-  if (chunks != 1) {
+  if (nchunks != 1) {
     chunks.folder <- "R_chunks_IN-PROGRESS"
-    chunks.folder.finish <- "R_chunks_FINISHED"
+    chunks.folder.finish <- "R_chunks_FINISH"
     if (file.exists(chunks.folder)) stop ("Another 'R_chunks_IN-PROGRESS' folder currently exists in the working directory; please (re)move it or rename it first.")
-    if (file.exists(chunks.folder.finish)) stop ("Another 'R_chunks_FINISHED' folder currently exists in the working directory; please (re)move it or rename it first.")
+    if (file.exists(chunks.folder.finish)) stop ("Another 'R_chunks_FINISH' folder currently exists in the working directory; please (re)move it or rename it first.")
     dir.create(chunks.folder)
     #on.exit(unlink(chunks.folder, recursive = TRUE))
     on.exit(file.rename(chunks.folder, chunks.folder.finish))
@@ -50,7 +51,7 @@ pairwiseRangemaps <- function(rangemaps,
     if (verbosity > 1) message("\nRange map names: \n", paste(rangemap.names, collapse = "\n"))
   }
 
-  if (is.numeric(chunks) && chunks > n.rangemaps) stop("'chunks' cannot exceed the number of rangemaps.")
+  if (is.numeric(nchunks) && nchunks > n.rangemaps) stop("'nchunks' cannot exceed the number of rangemaps.")
 
   start.time <- Sys.time()
   message("\nSTARTED: ", start.time)
@@ -86,20 +87,20 @@ pairwiseRangemaps <- function(rangemaps,
     c(ints, rep(NA, n.rangemaps - length(ints)))  # fill rest of matrix row
   }  # end 'lowerTriangInt' function
 
-  if (chunks == 1) {
+  if (nchunks == 1) {
     rangemap.matrix <- t(sapply(rangemap.names, lowerTriangInt, rangemap.list = rangemap.list))  # 't' because sapply works on columns and turns matrix around
     colnames(rangemap.matrix) <- rownames(rangemap.matrix) <- rangemap.names
   }
 
-  else {  # if chunks != 1
+  else {  # if nchunks != 1
 
-    if (is.numeric(chunks)) {
-      chunks <- round(chunks)
-      message("\n[Splitting intersections matrix into ", chunks, " chunks of rows. Intermediate results will be saved as 'intersections_chunkX.csv' files in a temporary folder called '", chunks.folder, "' in the working directory - LEAVE IT THERE until this function has finished running!]\n")
-      chunks <- split(rangemap.names, cut(seq_along(rangemap.names), chunks, labels = FALSE))  # http://stackoverflow.com/questions/3318333/split-a-vector-into-chunks-in-r, answer by mathheadinclouds
+    if (is.numeric(nchunks)) {
+      nchunks <- round(nchunks)
+      message("\n[Splitting intersections matrix into ", nchunks, " chunks of rows. Intermediate results will be saved as 'intersections_chunkX.csv' files in a temporary folder called '", chunks.folder, "' in the working directory - LEAVE IT THERE until this function has finished running!]\n")
+      chunks <- split(rangemap.names, cut(seq_along(rangemap.names), nchunks, labels = FALSE))  # http://stackoverflow.com/questions/3318333/split-a-vector-into-chunks-in-r, answer by mathheadinclouds
     }  # end if numeric chunks
 
-    else if (chunks == "decreasing") {
+    else if (nchunks == "decreasing") {
 
       growingChunks <- function(n, decreasing = TRUE) {
         f <- r <- 1
@@ -115,9 +116,13 @@ pairwiseRangemaps <- function(rangemaps,
       n.chunks <- length(unique(fac))
       chunks <- rev(split(rangemap.names, f = fac))
       message("\n[Splitting intersections matrix into ", n.chunks, " chunks with decreasing number of rows. Intermediate results will be saved as 'intersections_chunkX.csv' files in a temporary folder called '", chunks.folder, "' in the working directory - LEAVE IT THERE until this function has finished running!]\n")
-    } else stop ("Invalid 'chunks' value.")
-
+    } else stop ("Invalid 'nchunks' value.")
+    
+    #if (!is.null(subchunks)) chunks <- chunks[subchunks]
+    if (is.null(subchunks)) subchunks <- 1:length(chunks)
+    
     for (ch in 1:length(chunks)) {
+      if (!(ch %in% subchunks)) next
       chunk.time <- Sys.time()
       message("Computing chunk ", ch, " (started ", chunk.time, ")...", sep = "")
       chunk.rangemap.names <- rangemap.names[rangemap.names %in% chunks[[ch]]]
@@ -138,6 +143,7 @@ pairwiseRangemaps <- function(rangemaps,
 
   if (diag) {
     if (verbosity > 0) message("\nCalculating individual range map areas (matrix diagonal)...")
+    #for (m in subchunks[1]:n.rangemaps) for (n in 1:n.rangemaps) {
     for (m in 1:n.rangemaps) {
       map <- rangemap.list[[rangemap.names[m]]] #get(rangemap.names[m])
       rangemap.matrix[m, m] <- sum(PBSmapping::calcArea(map)[ , "area"])

@@ -8,7 +8,7 @@ This function takes a set of rangemaps and returns a matrix containing the areas
 }
 \usage{
 pairwiseRangemaps(rangemaps, projection, diag = TRUE, unions = TRUE, 
-verbosity = 2, Ncpu = 1, chunks = 1, filename = "rangemap_matrix.csv")
+verbosity = 2, Ncpu = 1, nchunks = 1, subchunks = NULL, filename = "rangemap_matrix.csv")
 }
 \arguments{
   \item{rangemaps}{
@@ -29,15 +29,18 @@ integer number indicating the amount of messages to display.
   \item{Ncpu}{
 integer indicating the number of CPUs (central processing units) to employ if parallel computing is to be used. The default is 1 CPU, which implies no parallel computing, but you might want to increase this if you have many and/or large rangemaps and your machine has more cores that can be used simultaneously. You can find out the total number of cores in you machine with the \code{detectCores} function of package \pkg{parallel}; a usually wise option is to use all cores except one (i.e., \code{Ncpu = parallel::detectCores()-1}).
 }
-  \item{chunks}{
-either an integer indicating the number of chunks of rows in which to divide the results matrix for calculations, or character value "decreasing" indicating that the matrix should be divided into chunks of decreasing number of rows (as intersections are calculated in the lower triangle, rows further down the matrix are increasingly cumputationally intensive). The default is 1 (no division of the matrix) but, if you have many rangemaps, the memory can get clogged. With chunks, each set of rows of the matrix is calculated and saved to disk, and the memory is cleaned before the next chunk begins.
+  \item{nchunks}{
+either an integer indicating the number of chunks of rows in which to divide the results matrix for calculations, or character value "decreasing" indicating that the matrix should be divided into chunks of decreasing number of rows (as intersections are calculated in the lower triangle, rows further down the matrix have an increasing number of intersections to compute; note, however, that rangemap size, not rangemap number, is the main determinant of computation time). The default is 1 (no division of the matrix) but, if you have many rangemaps, the memory can get clogged. With chunks, each set of rows of the matrix is calculated and saved to disk, and the memory is cleaned before the next chunk begins.
+}
+  \item{subchunks}{
+  optional integer vector specifying which chunks to actually calculate. This is useful if a previous, time-consuming run of pairwiseRangemaps was interrupted (e.g. by a power outage) and you want to calculate only the remaining chunks.
 }
   \item{filename}{
 optional character vector indicating the name of the file to save the resulting matrix to.
 }
 }
 \details{
-This calculation can be very intensive and slow, especially if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. You can set \code{chunks = "decreasing"} for the matrix to be calculated in parts and the memory cleaned between one part and the next; and, if your computer has more than one core that you can use, you can increase \code{Ncpu} to get parallel computing.
+This calculation can be very intensive and slow, especially if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. You can set \code{nchunks = "decreasing"} for the matrix to be calculated in parts and the memory cleaned between one part and the next; and, if your computer has more than one core that you can use, you can increase \code{Ncpu} to get parallel computing.
 }
 \value{
 This function returns a square matrix containing, in the lower triangle, the area of the pair-wise intersections among the input \code{rangemaps}; in the diagonal (if \code{diag = TRUE} or \code{union = TRUE}), the area of each rangemap; and in the upper triangle (if \code{union = TRUE}), the area of the pair-wise unions among the rangemaps.

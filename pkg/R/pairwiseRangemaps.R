@@ -20,13 +20,16 @@ pairwiseRangemaps <- function(rangemaps,
 
   stopifnot(chunks > 0 || chunks == "decreasing")
 
-  if (!is.null(filename) && file.exists(filename)) stop ("filename '", filename, "' already exists in the working directory - please choose another.")
+  if (!is.null(filename) && file.exists(filename)) stop ("filename '", filename, "' already exists in the working directory; please choose another 'filename' or (re)move/rename the existing matrix.")
 
   if (chunks != 1) {
     chunks.folder <- "R_chunks_IN-PROGRESS"
-    if (file.exists(chunks.folder)) stop ("Another 'R_chunks_IN-PROGRESS' folder currently exists in the working directory.")
+    chunks.folder.finish <- "R_chunks_FINISHED"
+    if (file.exists(chunks.folder)) stop ("Another 'R_chunks_IN-PROGRESS' folder currently exists in the working directory; please (re)move it or rename it first.")
+    if (file.exists(chunks.folder.finish)) stop ("Another 'R_chunks_FINISHED' folder currently exists in the working directory; please (re)move it or rename it first.")
     dir.create(chunks.folder)
-    on.exit(unlink(chunks.folder, recursive = TRUE))
+    #on.exit(unlink(chunks.folder, recursive = TRUE))
+    on.exit(file.rename(chunks.folder, chunks.folder.finish))
   }
 
   if (Ncpu > 1) {
@@ -116,7 +119,7 @@ pairwiseRangemaps <- function(rangemaps,
 
     for (ch in 1:length(chunks)) {
       chunk.time <- Sys.time()
-      message("Starting chunk ", ch, " (", chunk.time, ")...", sep = "")
+      message("Computing chunk ", ch, " (started ", chunk.time, ")...", sep = "")
       chunk.rangemap.names <- rangemap.names[rangemap.names %in% chunks[[ch]]]
       intersections <- t(sapply(chunk.rangemap.names, lowerTriangInt, rangemap.list = rangemap.list))
       colnames(intersections) <- rangemap.names

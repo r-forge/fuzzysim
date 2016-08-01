@@ -27,7 +27,7 @@ logical, whether to fill the upper triangle of the resulting matrix with the are
 integer number indicating the amount of messages to display.
 }
   \item{Ncpu}{
-integer indicating the number of CPUs (central processing units) to employ if parallel computing is to be used. The default is 1 CPU, which implies no parallel computing, but you might want to increase this if you have many and/or large rangemaps and your machine has more cores that can be used simultaneously.
+integer indicating the number of CPUs (central processing units) to employ if parallel computing is to be used. The default is 1 CPU, which implies no parallel computing, but you might want to increase this if you have many and/or large rangemaps and your machine has more cores that can be used simultaneously. You can find out the total number of cores in you machine with the \code{detectCores} function of package \pkg{parallel}; a usually wise option is to use all cores except one (i.e., \code{Ncpu = parallel::detectCores()-1}).
 }
   \item{chunks}{
 either an integer indicating the number of chunks of rows in which to divide the results matrix for calculations, or character value "decreasing" indicating that the matrix should be divided into chunks of decreasing number of rows (as intersections are calculated in the lower triangle, rows further down the matrix are increasingly cumputationally intensive). The default is 1 (no division of the matrix) but, if you have many rangemaps, the memory can get clogged. With chunks, each set of rows of the matrix is calculated and saved to disk, and the memory is cleaned before the next chunk begins.

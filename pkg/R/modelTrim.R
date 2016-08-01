@@ -1,8 +1,6 @@
 modelTrim <-
 function(model, method = "summary", alpha = 0.05) {
   # version 1.8 (16 Apr 2013)
-  # model: a model object of class lm or glm
-  # method: whether to use the significance of the coefficients (if method = 'summary', the default) or the significance of the variables themselves (if method = 'anova', better when there are categorical variables in the model).
   
   stopifnot(
     class(model) %in% c("glm", "lm"),

@@ -4,13 +4,13 @@
 Range change based on continuous (fuzzy) values
 }
 \description{
-This function quantifies overall range change (fuzzy expansion, contraction, maintenance and balance) based on the continuous predictions of two models.
+This function quantifies overall range change (expansion, contraction, maintenance and balance) based on either presence-absence data or the continuous predictions of two models.
 }
 \usage{
 fuzzyRangeChange(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, 
 round.digits = 2, 
-measures = c("Gain", "Loss", "Stable_presence", "Stable_absence", "Balance"), 
-plot = TRUE, col = colorRampPalette(c("white", "black"))(length(measures)), ...)
+measures = c("Gain", "Loss", "Stable presence", "Stable absence", "Balance"), 
+plot = TRUE, ...)
 }
 \arguments{
   \item{pred1}{
@@ -37,12 +37,7 @@ character vector listing the range change measures to calculate. The default is 
   \item{plot}{
 logical value indicating whether to make a barplot with the results. The default is TRUE.
 }
-  \item{col}{
-vector of \code{\link{colours}} for the bars in the barplot (if \code{plot = TRUE}). Should have the same length as \code{measures}. The default is a greyscale from white to black.
-}
   \item{\dots}{additional arguments to be passed to the \code{barplot} function (if \code{plot = TRUE}).}
-}
-\details{
 }
 \value{
 This function returns a data frame with the following values in different rows (among those that are included in \code{measures}):
@@ -53,11 +48,7 @@ This function returns a data frame with the following values in different rows (
 \item{Balance}{sum of the change in predicted values from \code{pred1} to \code{pred2} (fuzzy equivalent of the balance of gained and lost presences)}
 If \code{prop = TRUE} (the default), there is an additional column named "Proportion" in which these values are divided by the total number of reference values (i.e., the fuzzy range or non-range size). If \code{plot = TRUE} (the default), a barplot is also produced representing the last column of the result data frame.
 }
-\references{
-}
 \author{A. Marcia Barbosa}
-\note{
-}
 \seealso{
 \code{\link{fuzSim}}, \code{\link{modOverlap}} for other ways to compare models; \code{\link{fuzzyOverlay}} for row-wise model comparisons
 }
@@ -88,4 +79,3 @@ fuzzyRangeChange(fav_current, fav_imag, number = FALSE)
 
 fuzzyRangeChange(fav_current, fav_imag, ylim = c(-1, 1), ylab = "Proportional change")
 }
-\keyword{  }

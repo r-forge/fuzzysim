@@ -10,16 +10,10 @@ timer(start.time)
 \arguments{
   \item{start.time}{A date-time object of class \code{\link{POSIXct}}, e.g. as given by \code{\link{Sys.time}}.}
 }
-\details{
-}
 \value{
 The function returns a message informing of the time elapsed since the input \code{start.time}.
 }
-\references{
-}
 \author{A. Marcia Barbosa}
-\note{
-}
 \seealso{
 \code{\link{Sys.time}}, \code{\link{proc.time}}, \code{\link{difftime}}
 }
@@ -33,4 +27,3 @@ sapply(rnorm(50000), function(x) x*5)
 # see how long it took:
 timer(start)
 }
-\keyword{  }

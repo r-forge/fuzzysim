@@ -9,10 +9,7 @@ multicol(vars = NULL, model = NULL, reorder = TRUE)
 }
 \arguments{
   \item{vars}{
-A matrix or data frame containing the numeric variables for which to calculate
-multicollinearity. Only the 'independent' (predictor, explanatory, right hand side)
-variables should be entered, as the result obtained for each variable depends on all
-the other variables present in the analysed data set.
+A matrix or data frame containing the numeric variables for which to calculate multicollinearity. Only the 'independent' (predictor, explanatory, right hand side) variables should be entered, as the result obtained for each variable depends on all the other variables present in the analysed data set.
 }
   \item{model}{
 Alternatively to \code{vars}, a \code{glm} model object to calculate \code{multicol} among the included variables.
@@ -40,9 +37,8 @@ Zuur A.F., Ieno E.N. & Elphick C.S. (2010) A protocol for data exploration to av
 \author{
 A. Marcia Barbosa
 }
-\note{
-}
 \seealso{
+\code{vif} in package \pkg{HH}, \code{vif} in package \pkg{usdm}
 }
 \examples{
 data(rotif.env)

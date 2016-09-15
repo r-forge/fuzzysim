@@ -1,6 +1,7 @@
-fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss", "Stable_presence", "Stable_absence", "Balance"), plot = TRUE, col = colorRampPalette(c("white", "black"))(length(measures)), ...) {
+fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss", "Stable presence", "Stable absence", "Balance"), plot = TRUE, ...) #col = colorRampPalette(c("white", "black"))(length(measures)) 
+  {
   
-  # version 1.4 (23 Mar 2016)
+  # version 1.5 (12 Sep 2016)
   
   stopifnot(ncol(pred1) == ncol(pred2),
             all(pred1[is.finite(pred1)] >= 0 && pred1[is.finite(pred1)] <= 1),
@@ -13,8 +14,8 @@ fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = T
   names(values) <- measures
   if ("Gain" %in% measures)  values["Gain"] <- sum(fuzzyOverlay(data.frame(pred1, pred2), op = "expansion", na.rm = na.rm), na.rm = na.rm)
   if ("Loss" %in% measures)  values["Loss"] <- sum(fuzzyOverlay(data.frame(pred1, pred2), op = "contraction", na.rm = na.rm), na.rm = na.rm)
-  if ("Stable_presence" %in% measures)  values["Stable_presence"] <- sum(fuzzyOverlay(data.frame(pred1, pred2), op = "maintenance", na.rm = na.rm), na.rm = na.rm)
-  if ("Stable_absence" %in% measures)  values["Stable_absence"] <- sum(fuzzyOverlay(1 - data.frame(pred1, pred2), op = "maintenance", na.rm = na.rm), na.rm = na.rm)
+  if ("Stable presence" %in% measures)  values["Stable presence"] <- sum(fuzzyOverlay(data.frame(pred1, pred2), op = "maintenance", na.rm = na.rm), na.rm = na.rm)
+  if ("Stable absence" %in% measures)  values["Stable absence"] <- sum(fuzzyOverlay(1 - data.frame(pred1, pred2), op = "maintenance", na.rm = na.rm), na.rm = na.rm)
   if ("Balance" %in% measures)  values["Balance"] <- sum(fuzzyOverlay(data.frame(pred1, pred2), op = "change", na.rm = na.rm), na.rm = na.rm)
   
   result <- data.frame(Measure = measures, Number = values)
@@ -23,9 +24,9 @@ fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = T
     if (na.rm) n <- length(na.omit(pred1))
     else n <- length(pred1)
     range.size <- sum(pred1, na.rm = na.rm)
-    stable.abs <- result[result$Measure == "Stable_absence", "Number"]
+    stable.abs <- result[result$Measure == "Stable absence", "Number"]
     result$Proportion <- result[ , "Number"] / range.size
-    result[result$Measure == "Stable_absence", "Proportion"] <- stable.abs / (n - range.size)
+    result[result$Measure == "Stable absence", "Proportion"] <- stable.abs / (n - range.size)
   }
   
   if (!number) {
@@ -33,7 +34,7 @@ fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = T
   }
   
   if (plot) {
-    barplot(result[ , ncol(result)], legend.text = rownames(result), col = col, ...)
+    barplot(result[ , ncol(result)], names.arg = gsub(x = rownames(result), pattern = " ", replacement = "\n"), ...)
     abline(h = 0)
   }
   

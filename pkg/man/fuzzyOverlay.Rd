@@ -43,8 +43,6 @@ Real R., Barbosa A.M. & Vargas J.M. (2006) Obtaining environmental favourability
 Zadeh, L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353
 }
 \author{A. Marcia Barbosa}
-\note{
-}
 \seealso{
 \code{\link{fuzSim}}, \code{\link{modOverlap}} and \code{\link{fuzzyRangeChange}} for overall (not row-wise) comparisons among model predictions.
 }
@@ -95,4 +93,3 @@ preds$Abrigh_maint <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F",
 
 head(preds)
 }
-\keyword{  }

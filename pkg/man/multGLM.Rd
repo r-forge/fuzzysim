@@ -67,8 +67,6 @@ Schwarz, G.E. (1978) Estimating the dimension of a model. Annals of Statistics, 
 \author{
 A. Marcia Barbosa
 }
-\note{
-}
 \seealso{
 \code{\link{glm}}, \code{\link{Fav}}, \code{\link{step}}, \code{\link{modelTrim}}, \code{\link{multicol}}, \code{\link{corSelect}}
 }

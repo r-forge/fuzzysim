@@ -14,18 +14,12 @@ integerCols(data)
 \arguments{
   \item{data}{a data frame containing possibly integer columns classified as \code{numeric}.}
 }
-\details{
-}
 \value{
 The function returns a data frame with the same columns as \code{data}, but with
 those that are numeric and contain only whole numbers (possibly including NA)
 now classified as \code{integer}.
 }
-\references{
-}
 \author{A. Marcia Barbosa}
-\note{
-}
 \seealso{
 \code{\link{is.integer}}, \code{\link{as.integer}}, \code{\link{multConvert}}
 }

@@ -59,14 +59,8 @@ These data were extracted from a database of monogonont rotifer species presence
     \item{\code{Ttetra}}{a numeric vector}
   }
 }
-\details{
-}
 \source{
 Fontaneto D., Barbosa A.M., Segers H. & Pautasso M. (2012) The 'rotiferologist' effect and other global correlates of species richness in monogonont rotifers. Ecography, 35: 174-182.
-}
-\references{
-}
-\seealso{
 }
 \examples{
 data(rotif.env)

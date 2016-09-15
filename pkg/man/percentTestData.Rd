@@ -12,8 +12,6 @@ percentTestData(nvar)
 \arguments{
   \item{nvar}{the number of variables in the model.}
 }
-\details{
-}
 \value{
 A numeric value of the percentage of data to leave out of the model for further model testing.
 }
@@ -26,8 +24,6 @@ Fielding A.H. & Bell J.F. (1997) A review of methods for the assessment of predi
 }
 \author{
 A. Marcia Barbosa
-}
-\note{
 }
 \seealso{
 \code{\link{multGLM}}}

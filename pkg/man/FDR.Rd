@@ -55,8 +55,6 @@ Schwarz, G.E. (1978) Estimating the dimension of a model. Annals of Statistics, 
 \author{
 A. Marcia Barbosa
 }
-\note{
-}
 \seealso{
 \code{\link{p.adjust}}
 }

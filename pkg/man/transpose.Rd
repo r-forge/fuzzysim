@@ -20,17 +20,11 @@ names or index numbers of the columns containing the species occurrences in \cod
 name or index number of the column in \code{data} containing the region names, to be used as column names in the transposed result.
 }
 }
-\details{
-}
 \value{
 This function returns the transposed \code{sp.cols} of \code{data}, with the column specified in \code{reg.names} as column names.
 }
-\references{
-}
 \author{
 A. Marcia Barbosa
-}
-\note{
 }
 \seealso{
 \code{\link{t}}

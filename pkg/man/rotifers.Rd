@@ -17,12 +17,8 @@ These data were extracted from a database of monogonont rotifer species records 
     the (sub)species recorded in at least 100 different TDWG level 4 regions}
   }
 }
-\details{
-}
 \source{
 Fontaneto D., Barbosa A.M., Segers H. & Pautasso M. (2012) The 'rotiferologist' effect and other global correlates of species richness in monogonont rotifers. Ecography, 35: 174-182.
-}
-\references{
 }
 \examples{
 data(rotifers)

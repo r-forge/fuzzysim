@@ -57,8 +57,6 @@ Real R., Barbosa A.M. & Vargas J.M. (2006) Obtaining environmental favourability
 \author{
 A. Marcia Barbosa
 }
-\note{
-}
 \seealso{
 \code{\link{glm}}, \code{\link{multGLM}}
 }

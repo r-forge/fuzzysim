@@ -34,8 +34,6 @@ Hosmer D. W. & Lemeshow S. (2000) Applied Logistic Regression (2nd ed). John Wil
 \author{
 A. Marcia Barbosa
 }
-\note{
-}
 \seealso{
 \code{\link{step}}
 }

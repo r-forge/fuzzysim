@@ -57,4 +57,3 @@ fav_imag[fav_imag > 1] <- 1
 
 modOverlap(fav_current, fav_imag)
 }
-\keyword{  }

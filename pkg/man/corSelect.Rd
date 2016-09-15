@@ -40,8 +40,6 @@ Legendre P. & Legendre L. (2012) Numerical ecology (3rd edition). Elsevier, Amst
 Schwarz, G.E. (1978) Estimating the dimension of a model. Annals of Statistics, 6 (2): 461-464.
 }
 \author{A. Marcia Barbosa}
-\note{
-}
 \seealso{
 \code{\link{multicol}}, \code{\link{FDR}}, \code{\link{cor}}
 }

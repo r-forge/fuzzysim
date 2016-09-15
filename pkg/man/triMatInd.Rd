@@ -20,8 +20,6 @@ logical indicating whether the indices should correspond to the lower triangle. 
 logical indicating whether the results should be output as a list instead of a matrix. The default is FALSE.
 }
 }
-\details{
-}
 \value{
 The indices (row, column) of the elements of the matrix that belong to the requested triangle.
 }
@@ -30,8 +28,6 @@ http://stackoverflow.com/questions/20898684/how-to-efficiently-generate-lower-tr
 }
 \author{
 A. Marcia Barbosa
-}
-\note{
 }
 \seealso{
 \code{\link{lower.tri}}, \code{\link{upper.tri}}
@@ -42,4 +38,3 @@ mat
 triMatInd(mat)
 triMatInd(mat, list = TRUE)
 }
-\keyword{}

@@ -23,18 +23,12 @@ the name or index number of the column containing the localities in \code{data}.
 logical value indicating whether to get in the resulting table the number of times each species appears in each locality; if \code{FALSE} (the default), only presence (1) or absence (0) is recorded.
 }
 }
-\details{
-}
 \value{
 A data frame containing the localities in the first column and then one column per species indicating their presence (or their number of records if \code{keep.n = TRUE)} and absence. Type \code{data(rotif.env); 
 head(rotif.env[,18:47])} for an example.
 }
-\references{
-}
 \author{
 A. Marcia Barbosa
-}
-\note{
 }
 \seealso{
 \code{\link{table}}

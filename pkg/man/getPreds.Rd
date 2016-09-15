@@ -33,17 +33,11 @@ logical, whether to include Favourability in the predictions (see \code{\link{Fa
 logical, whether to include input columns in the output. The default is FALSE.
 }
 }
-\details{
-}
 \value{
 This function returns a data frame containing the model predictions, next to the \code{id.col} if provided, and to the input data if \code{incl.input = TRUE}.
 }
-\references{
-}
 \author{
 A. Marcia Barbosa
-}
-\note{
 }
 \seealso{
 \code{\link{multGLM}}, \code{\link{predict}}

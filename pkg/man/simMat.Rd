@@ -35,9 +35,6 @@ Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices 
 \author{
 A. Marcia Barbosa
 }
-\note{
-}
-
 \seealso{
 \code{\link{fuzSim}}
 }
@@ -110,4 +107,3 @@ main = "Fuzzy cluster dendrogram")
 # so that localities are in columns and species in rows)
 # using the \pkg{RMACOQUI} package (Olivero et al. 2011)
 }
-\keyword{  }

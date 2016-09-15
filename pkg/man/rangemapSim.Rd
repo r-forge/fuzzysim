@@ -51,14 +51,6 @@ Sorensen T. (1948) A method of establishing groups of equal amplitude in plant s
 \author{
 A. Marcia Barbosa
 }
-\note{
-}
 \seealso{
 \code{\link{pairwiseRangemaps}}; \code{\link{simFromSetOps}}; \code{\link{simMat}}
 }
-\examples{
-\dontrun{
-
-}
-}
-\keyword{ }

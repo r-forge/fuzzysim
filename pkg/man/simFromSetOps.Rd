@@ -51,8 +51,6 @@ Sorensen T. (1948) A method of establishing groups of equal amplitude in plant s
 \author{
 A. Marcia Barbosa
 }
-\note{
-}
 \seealso{
 \code{\link{fuzSim}}, \code{\link{simMat}}
 }
@@ -80,4 +78,3 @@ simFromSetOps(sp1, sp2, int, uni, method = "Simpson")
 
 simFromSetOps(sp1, sp2, int, uni, total = 100, method = "Baroni")
 }
-\keyword{}

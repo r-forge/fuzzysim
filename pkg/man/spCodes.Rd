@@ -30,18 +30,12 @@ the character that separates genus, specific and subspecific names in \code{spec
 the character you want separating genus and species abbreviations in the resulting species codes. The default is an empty character (no separator).
 }
 }
-\details{
-}
 \value{
 This function returns a character vector containing the species codes resulting from the abbreviation. If the numbers of characters specified do not make for unique codes, an error message is displayed showing which \code{species} names caused it, so that you can try again with different \code{nchar.gen}, \code{nchar.sp} and/or
 \code{nchar.ssp}.
 }
-\references{
-}
 \author{
 A. Marcia Barbosa
-}
-\note{
 }
 \seealso{
 \code{\link{substr}}, \code{\link{strsplit}}

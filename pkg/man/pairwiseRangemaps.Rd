@@ -57,6 +57,3 @@ This function uses the \pkg{PBSmapping} package to import and intersect the poly
 \seealso{
 \code{\link{rangemapSim}}
 }
-\examples{
-}
-\keyword{ }

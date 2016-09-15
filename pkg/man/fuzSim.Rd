@@ -82,6 +82,4 @@ fuzSim(fav[ , "Abrigh_F"], fav[ , "Afissa_F"], method = "Jaccard")
 fuzSim(fav[ , "Abrigh_F"], fav[ , "Afissa_F"], method = "Sorensen")
 fuzSim(fav[ , "Abrigh_F"], fav[ , "Afissa_F"], method = "Simpson")
 fuzSim(fav[ , "Abrigh_F"], fav[ , "Afissa_F"], method = "Baroni")
-
 }
-\keyword{  }

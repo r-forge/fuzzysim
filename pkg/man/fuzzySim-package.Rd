@@ -13,7 +13,7 @@ Functions to calculate fuzzy versions of species' occurrence patterns based on p
 Package: \tab fuzzySim\cr
 Type: \tab Package\cr
 Version: \tab 1.7.8\cr
-Date: \tab 2016-09-15\cr
+Date: \tab 2016-09-30\cr
 License: \tab GPL-3\cr
 }
 }
@@ -26,9 +26,6 @@ Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
 Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, 6: 853-858.
 }
 \keyword{ package }
-\seealso{
-\pkg{RMACOQUI}
-}
 \examples{
 data(rotifers)
 

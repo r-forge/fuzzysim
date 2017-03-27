@@ -7,8 +7,8 @@ Favourability
 Environmental (prevalence-independent) favourability for a species' presence
 }
 \usage{
-Fav(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preval = NULL,
-method = "RBV", true.preval = NULL)
+Fav(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, 
+sample.preval = NULL, method = "RBV", true.preval = NULL)
 }
 \arguments{
   \item{model}{
@@ -68,8 +68,9 @@ data(rotif.env)
 
 names(rotif.env)
 
-mod <- with(rotif.env, glm(Abrigh ~ Area + Altitude + AltitudeRange +
-HabitatDiversity + HumanPopulation, family = binomial))
+mod <- with(rotif.env, glm(Abrigh ~ Area + Altitude + 
+AltitudeRange + HabitatDiversity + HumanPopulation, 
+family = binomial))
 
 prob <- predict(mod, data = rotif.env, type = "response")
 

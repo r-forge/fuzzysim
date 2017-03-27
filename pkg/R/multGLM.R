@@ -5,7 +5,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
                     Y.prediction = FALSE, P.prediction = TRUE, 
                     Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...) {
 
-  # version 3.7 (5 May 2016)
+  # version 3.8 (24 Mar 2017)
 
   start.time <- Sys.time()
   input.ncol <- ncol(data)
@@ -118,7 +118,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     }  # end if FDR
     else sel.var.cols <- var.cols  
     
-    if (length(sel.var.cols) > 0 && corSelect == TRUE) {
+    if (length(sel.var.cols) > 1 && corSelect == TRUE) {
       corselect <- suppressMessages(corSelect(data = train.data, sp.cols = s, var.cols = sel.var.cols, cor.thresh = cor.thresh, use = "pairwise.complete.obs"))
       corsel.var.cols <- corselect$selected.var.cols
       cat(length(sel.var.cols) - length(corsel.var.cols), "variable(s) excluded by 'corSelect' function\n", corselect$excluded.vars, "\n\n")

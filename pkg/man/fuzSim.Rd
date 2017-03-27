@@ -17,7 +17,7 @@ a vector of (optionally fuzzy) presence-absence data, with 1 meaning presence, 0
 a vector similar to \code{x}, of the same length and in the same order.
 }
   \item{method}{
-the similarity index to use. Currently available options are \code{'Jaccard'}, \code{'Sorensen'}, \code{'Simpson'} and \code{'Baroni'} (see Details).
+the similarity index to use. Currently available options are "Jaccard", "Sorensen", "Simpson" and "Baroni" (see Details).
 }
   \item{na.rm}{
 logical value indicating whether \code{NA} values should be ignored. The default is \code{TRUE}.

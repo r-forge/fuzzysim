@@ -46,7 +46,8 @@ dat <- integerCols(dat)
 
 str(dat)
 # var2 and var3 now classified as 'integer'
-# var4 remains as numeric because contains infinite and NaN (not integer) values
+# var4 remains as numeric because contains infinite and NaN 
+# (not integer) values
 # var5 remains as factor
 }
 \keyword{ classes }

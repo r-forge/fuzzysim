@@ -8,7 +8,8 @@ This function calculates pair-wise similarity based on the results of set operat
 }
 \usage{
 simFromSetOps(size1, size2, intersection, union, total.size = NULL, 
-method = c("Jaccard", "Sorensen", "Simpson", "Baroni"), verbosity = 1)
+method = c("Jaccard", "Sorensen", "Simpson", "Baroni"), 
+verbosity = 1)
 }
 \arguments{
   \item{size1}{
@@ -64,7 +65,8 @@ int <- 8
 uni <- sp1 + sp2 - int
 
 
-# calculate similarity between their distributions based on different indices:
+# calculate similarity between their distributions based on 
+# different indices:
 
 simFromSetOps(intersection = int, union = uni, method = "Jaccard")
 

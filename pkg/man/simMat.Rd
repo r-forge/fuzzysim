@@ -61,13 +61,14 @@ head(bin.sim.mat)
 # based on inverse distance to presences:
 
 rotifers.invd <- distPres(rotif.env, sp.cols = 18:47,
-coord.cols = c("Longitude", "Latitude"), id.col = 1, suffix = ".d", p = 1, inv = TRUE)
+coord.cols = c("Longitude", "Latitude"), id.col = 1, suffix = ".d", 
+p = 1, inv = TRUE)
 
 head(rotifers.invd)
 
 
-# build a matrix of fuzzy similarity among these fuzzy distribution data,
-# using the fuzzy version of Jaccard's index:
+# build a matrix of fuzzy similarity among these fuzzy 
+# distribution data, using the fuzzy version of Jaccard's index:
 
 fuz.sim.mat <- simMat(rotifers.invd[ , -1], method = "Jaccard")
 
@@ -76,17 +77,17 @@ head(fuz.sim.mat)
 
 # plot the similarity matrices as colours:
 
-image(x = 1:ncol(bin.sim.mat), y = 1:nrow(bin.sim.mat), z = bin.sim.mat,
-col = rev(heat.colors(256)), xlab = "", ylab = "", axes = FALSE,
-main = "Binary similarity")
+image(x = 1:ncol(bin.sim.mat), y = 1:nrow(bin.sim.mat), 
+z = bin.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "", 
+axes = FALSE, main = "Binary similarity")
 axis(side = 1, at = 1:ncol(bin.sim.mat), tick = FALSE,
 labels = colnames(bin.sim.mat), las = 2)
 axis(side = 2, at = 1:nrow(bin.sim.mat), tick = FALSE,
 labels = rownames(bin.sim.mat), las = 2)
 
-image(x = 1:ncol(fuz.sim.mat), y = 1:nrow(fuz.sim.mat), z = fuz.sim.mat,
-col = rev(heat.colors(256)), xlab = "", ylab = "", axes = FALSE,
-main = "Fuzzy similarity")
+image(x = 1:ncol(fuz.sim.mat), y = 1:nrow(fuz.sim.mat), 
+z = fuz.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "", 
+axes = FALSE, main = "Fuzzy similarity")
 axis(side = 1, at = 1:ncol(fuz.sim.mat), tick = FALSE,
 labels = colnames(fuz.sim.mat), las = 2, cex = 0.5)
 axis(side = 2, at = 1:nrow(fuz.sim.mat), tick = FALSE,
@@ -103,7 +104,7 @@ main = "Fuzzy cluster dendrogram")
 
 
 # you can get fuzzy chorotypes from these similarity matrices
-# (or fuzzy biotic regions if your \code{\link{transpose}} \code{data},
+# (or fuzzy biotic regions if you \code{\link{transpose}} 'data'),
 # so that localities are in columns and species in rows)
 # using the \pkg{RMACOQUI} package (Olivero et al. 2011)
 }

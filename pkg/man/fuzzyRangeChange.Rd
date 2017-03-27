@@ -7,10 +7,9 @@ Range change based on continuous (fuzzy) values
 This function quantifies overall range change (expansion, contraction, maintenance and balance) based on either presence-absence data or the continuous predictions of two models.
 }
 \usage{
-fuzzyRangeChange(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, 
-round.digits = 2, 
-measures = c("Gain", "Loss", "Stable presence", "Stable absence", "Balance"), 
-plot = TRUE, ...)
+fuzzyRangeChange(pred1, pred2, number = TRUE, prop = TRUE, 
+na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss", 
+"Stable presence", "Stable absence", "Balance"), plot = TRUE, ...)
 }
 \arguments{
   \item{pred1}{
@@ -59,8 +58,9 @@ data(rotif.env)
 
 names(rotif.env)
 
-fav_current <- multGLM(rotif.env, sp.cols = 18, var.cols = 5:17, step = TRUE, 
-FDR = TRUE, trim = TRUE, P = FALSE, Fav = TRUE) $ predictions
+fav_current <- multGLM(rotif.env, sp.cols = 18, var.cols = 5:17, 
+step = TRUE, FDR = TRUE, trim = TRUE, P = FALSE, Fav = TRUE) $
+predictions
 
 
 # imagine you have a model prediction for this species in a future time
@@ -77,5 +77,6 @@ fuzzyRangeChange(fav_current, fav_imag)
 
 fuzzyRangeChange(fav_current, fav_imag, number = FALSE)
 
-fuzzyRangeChange(fav_current, fav_imag, ylim = c(-1, 1), ylab = "Proportional change")
+fuzzyRangeChange(fav_current, fav_imag, ylim = c(-1, 1), 
+ylab = "Proportional change")
 }

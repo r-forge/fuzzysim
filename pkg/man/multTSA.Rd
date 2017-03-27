@@ -7,8 +7,9 @@ Trend Surface Analysis for multiple species
 This function performs trend surface analysis for multiple species at a time. It converts categorical presence-absence (1-0) data into continuous surfaces denoting the spatial trend in species' occurrence patterns.
 }
 \usage{
-multTSA(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
-Favourability = FALSE, suffix = "_TS", save.models = FALSE)
+multTSA(data, sp.cols, coord.cols, id.col = NULL, degree = 3, 
+step = TRUE, Favourability = FALSE, suffix = "_TS", 
+save.models = FALSE)
 }
 \arguments{
   \item{data}{
@@ -67,8 +68,8 @@ head(rotif.env)
 
 names(rotif.env)
 
-tsa <- multTSA(rotif.env, sp.cols = 18:20, coord.cols = c("Longitude", "Latitude"),
-id.col = 1)
+tsa <- multTSA(rotif.env, sp.cols = 18:20, 
+coord.cols = c("Longitude", "Latitude"), id.col = 1)
 
 head(tsa)
 }

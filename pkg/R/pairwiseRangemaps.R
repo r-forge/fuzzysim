@@ -13,11 +13,11 @@ pairwiseRangemaps <- function(rangemaps,
 #    stop("This function needs R package 'PBSmapping' - please install it first.", call. = FALSE)
 #  }
 
-  require(tools)
-  require(PBSmapping)
-  require(maptools)
-  require(sp)
-#  require(rgeos)
+  requireNamespace("tools")
+  requireNamespace("PBSmapping")
+  requireNamespace("maptools")
+  requireNamespace("sp")
+#  requireNamespace("rgeos")
 
   stopifnot(nchunks > 0 || nchunks == "decreasing")
 
@@ -34,7 +34,7 @@ pairwiseRangemaps <- function(rangemaps,
   }
 
   if (Ncpu > 1) {
-    require(parallel)
+    requireNamespace("parallel")
     if (Ncpu > parallel::detectCores()) {
       Ncpu <- parallel::detectCores()
       message("\nNOTE: 'Ncpu' reduced to ", Ncpu, " to match the existing cores in this machine.")

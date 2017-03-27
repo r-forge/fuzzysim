@@ -7,8 +7,9 @@ False Discovery Rate
 Calculate the false discovery rate (type I error) under repeated testing and determine which variables to select and to exclude from multivariate analysis.
 }
 \usage{
-FDR(data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL, model.type = NULL,
-family = "auto", correction = "fdr", q = 0.05, verbose = TRUE, simplif = FALSE)
+FDR(data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,  
+model.type = NULL, family = "auto", correction = "fdr", q = 0.05, 
+verbose = TRUE, simplif = FALSE)
 }
 \arguments{
   \item{data}{a data frame containing the response and predictor variables

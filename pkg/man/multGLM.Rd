@@ -8,10 +8,11 @@ This function calculates generalized linear models for a set of (species) presen
 }
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, 
+test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE,
 cor.thresh = 0.8, step = TRUE, trace = 0, start = "null.model", 
 direction = "both", select = "AIC", Y.prediction = FALSE, 
-P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
+P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, 
+trim = TRUE, ...)
 }
 \arguments{
   \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
@@ -33,7 +34,8 @@ P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, trim = TRUE, ...)
   \item{P.prediction}{logical, whether to include output predictions in the scale of the response variable, i.e. probability (\code{type = "response"} in \code{\link{predict.glm}}).}
   \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to extract the effect of prevalence on probability (Real et al. 2006) and include its results in the output.}
   \item{group.preds}{logical, whether to group together predictions of similar type (\code{Y}, \code{P} or \code{F}) in the output \code{predictions} table (e.g. if \code{FALSE}: sp1_Y, sp1_P, sp1_F, sp2_Y, sp2_P, sp2_F; if \code{TRUE}: sp1_Y, , sp2_Y, sp1_P, sp2_P, sp1_F, sp2_F).}
-  \item{trim}{logical, whether to trim non-significant variables off the models using the \code{\link{modelTrim}} function; can be used whether or not \code{step} is TRUE; works as a backward variable elimination procedure based on significance.}
+  \item{trim}{logical, whether to trim non-significant variables off the models using the 
+  \code{\link{modelTrim}} function; can be used whether or not \code{step} is TRUE; works as a backward variable elimination procedure based on significance.}
   \item{\dots}{additional arguments to be passed to \code{\link{modelTrim}}.}
 }
 \details{
@@ -49,7 +51,7 @@ The \code{multGLM} function will create a list of the resulting models (each wit
 }
 \value{
 This function returns a list with the following components:
-\item{predictions}{a data frame with the model predictions (if either of \code{Y.prediction}, \code{P.prediction}, or \code{Favourability} are \code{TRUE}).}
+\item{predictions}{a data frame with the model predictions (if either of Y.prediction, P.prediction or Favourability are TRUE).}
 \item{models}{a list of the resulting model objects.}
 }
 \references{

@@ -2,6 +2,8 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
   
   # version 1.5 (5 May 2016)
   
+  if (missing(data)) stop("'data' must be provided.")
+  if (!is.data.frame(data)) stop("'data' must be a data frame.")
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
   if (!(select %in% c("p.value", "AIC", "BIC"))) stop ("Invalid 'select' criterion.")
   

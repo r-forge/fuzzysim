@@ -8,7 +8,8 @@ This function takes a set of rangemaps and returns a matrix containing the areas
 }
 \usage{
 pairwiseRangemaps(rangemaps, projection, diag = TRUE, unions = TRUE, 
-verbosity = 2, Ncpu = 1, nchunks = 1, subchunks = NULL, filename = "rangemap_matrix.csv")
+verbosity = 2, Ncpu = 1, nchunks = 1, subchunks = NULL, 
+filename = "rangemap_matrix.csv")
 }
 \arguments{
   \item{rangemaps}{
@@ -40,7 +41,7 @@ optional character vector indicating the name of the file to save the resulting 
 }
 }
 \details{
-This calculation can be very intensive and slow, especially if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. You can set \code{nchunks = "decreasing"} for the matrix to be calculated in parts and the memory cleaned between one part and the next; and, if your computer has more than one core that you can use, you can increase \code{Ncpu} to get parallel computing.
+This calculation can be very intensive and slow, especially if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. You can set nchunks = "decreasing" for the matrix to be calculated in parts and the memory cleaned between one part and the next; and, if your computer has more than one core that you can use, you can increase \code{Ncpu} to get parallel computing.
 }
 \value{
 This function returns a square matrix containing, in the lower triangle, the area of the pair-wise intersections among the input \code{rangemaps}; in the diagonal (if \code{diag = TRUE} or \code{union = TRUE}), the area of each rangemap; and in the upper triangle (if \code{union = TRUE}), the area of the pair-wise unions among the rangemaps.

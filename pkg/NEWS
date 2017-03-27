@@ -8,6 +8,24 @@ TO DO:
 
 
 ============================================
+fuzzySim v1.7.9 (committed 2017-03-27)
+============================================
+
+## Modified functions:
+
+* multGLM:
+- fixed bug when only one variabe passed to corSelect
+
+* corSelect:
+- added check that 'data' is not missing and is a data frame
+- help file now states that corSelect is included as option in multGLM
+- added 'use = "pairwise.complete.obs"' to examples
+
+* PDF manual: 
+- reduced several code line lengths to avoid overboard
+
+
+============================================
 fuzzySim v1.7.8 (committed 2016-09-15)
 ============================================
 

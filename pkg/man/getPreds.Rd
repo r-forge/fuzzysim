@@ -7,8 +7,8 @@ Get model predictions
 This function allows getting the predictions of multiple models when applied to a given dataset. It can be useful if you have a list of model objects (e.g. resulting from \code{\link{multGLM}}) and want to apply them to a new data set containing the same variables for another region or time period. There are options to include the logit link (\code{Y}) and/or \code{Favourability} (see \code{\link{Fav}}).
 }
 \usage{
-getPreds(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE,
-incl.input = FALSE)
+getPreds(data, models, id.col = NULL, Y = FALSE, P = TRUE, 
+Favourability = TRUE, incl.input = FALSE)
 }
 \arguments{
   \item{data}{
@@ -69,13 +69,14 @@ west.hem <- rotif.env[rotif.env$HEMISPHERE == "Western", ]
 # make models for 3 of the species in rotif.env based on their distribution
 # in the Eastern hemisphere:
 
-mods <- multGLM(east.hem, sp.cols = 18:20, var.cols = 5:17, id.col = 1,
-step = FALSE, FDR = FALSE, trim = FALSE)
+mods <- multGLM(east.hem, sp.cols = 18:20, var.cols = 5:17, 
+id.col = 1, step = FALSE, FDR = FALSE, trim = FALSE)
 
 
 # get the models' predictions for the Western hemisphere dataset:
 
-preds <- getPreds(west.hem, models = mods$models, P = TRUE, Favourability = TRUE)
+preds <- getPreds(west.hem, models = mods$models, P = TRUE, 
+Favourability = TRUE)
 
 head(preds)
 

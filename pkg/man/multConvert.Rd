@@ -26,7 +26,8 @@ data(rotif.env)
 str(rotif.env)
 
 # convert the first 4 columns to character:
-converted.rotif.env <- multConvert(data = rotif.env, conversion = as.character, cols = 1:4)
+converted.rotif.env <- multConvert(data = rotif.env, 
+conversion = as.character, cols = 1:4)
 
 str(converted.rotif.env)
 
@@ -37,7 +38,8 @@ names(rotif.env)
 
 div100 <- function(x) x / 100
 
-rotif.env.cent <- multConvert(data = rotif.env, conversion = div100, cols = c(6:10, 12:17))
+rotif.env.cent <- multConvert(data = rotif.env, 
+conversion = div100, cols = c(6:10, 12:17))
 
 head(rotif.env.cent)
 }

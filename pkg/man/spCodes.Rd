@@ -7,8 +7,8 @@ Obtain unique abbreviations of species names
 This function takes a vector of species names and converts them to abbreviated species codes containing the specified numbers of characters from the genus, the specific and optionally also the subspecific name. Separators can be specified by the user. The function checks that the resulting codes are unique.
 }
 \usage{
-spCodes(species, nchar.gen = 3, nchar.sp = 3, nchar.ssp = 0, sep.species = " ",
-sep.spcode = "")
+spCodes(species, nchar.gen = 3, nchar.sp = 3, nchar.ssp = 0, 
+sep.species = " ", sep.spcode = "")
 }
 \arguments{
   \item{species}{
@@ -48,14 +48,14 @@ head(rotifers)
 ## add a column to 'rotifers' with shorter versions of the species names:
 
 \dontrun{
-rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", nchar.gen = 1,
-nchar.sp = 4, nchar.ssp = 0, sep.spcode = ".")
+rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", 
+nchar.gen = 1, nchar.sp = 4, nchar.ssp = 0, sep.spcode = ".")
 
 # this produces an error due to resulting species codes not being unique
 }
 
-rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", nchar.gen = 1,
-nchar.sp = 5, nchar.ssp = 0, sep.spcode = ".")
+rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", 
+nchar.gen = 1, nchar.sp = 5, nchar.ssp = 0, sep.spcode = ".")
 
 # with a larger number of characters from the specific name,
 # resulting codes are now unique

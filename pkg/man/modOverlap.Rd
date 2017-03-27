@@ -41,8 +41,9 @@ data(rotif.env)
 
 names(rotif.env)
 
-fav_current <- multGLM(rotif.env, sp.cols = 18, var.cols = 5:17, step = TRUE, 
-FDR = TRUE, trim = TRUE, P = FALSE, Fav = TRUE) $ predictions
+fav_current <- multGLM(rotif.env, sp.cols = 18, var.cols = 5:17,  
+step = TRUE, FDR = TRUE, trim = TRUE, P = FALSE, Fav = TRUE) $
+predictions
 
 
 # imagine you have a model prediction for this species in a future time

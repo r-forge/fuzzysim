@@ -48,7 +48,7 @@ data(rotif.env)
 names(rotif.env)
 
 
-# identify rotifer data corresponding to the Eastern and Western hemispheres:
+# identify rotifer data in the Eastern and Western hemispheres:
 
 unique(rotif.env$CONTINENT)
 

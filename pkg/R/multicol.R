@@ -8,6 +8,8 @@ multicol <- function(vars = NULL, model = NULL, reorder = TRUE) {
   
   if (!(all(class(vars) %in% c("matrix", "data.frame")))) stop ("'vars' must be a matrix or data frame")
   vars <- as.data.frame(vars)
+  if (ncol(vars) < 2)  return (message("Cannot calculate collinearity with less than two variables."))
+  
   result <- matrix(NA, nrow = ncol(vars), ncol = 3)
   rownames(result) <- colnames(vars)
   colnames(result) <- c("Rsquared", "Tolerance", "VIF")

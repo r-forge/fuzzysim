@@ -6,6 +6,33 @@ TO DO:
 * stepByStep:
 - implement 'direction = both'
 
+* getPreds:
+- accept data as raster stack
+
+
+============================================
+fuzzySim v1.8.1 (committed 2018-05-15)
+============================================
+
+## Modified functions:
+
+* multTSA:
+- fixed bug when only one species was used
+
+
+## webpage:
+- added articles citing fuzzySim
+
+
+============================================
+fuzzySim v1.8.0 (committed 2017-07-07)
+============================================
+
+## Modified functions:
+
+* corSelect:
+- included 'VIF' criterion
+
 
 ============================================
 fuzzySim v1.7.9 (committed 2017-03-27)

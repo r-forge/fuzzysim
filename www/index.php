@@ -75,12 +75,30 @@ echo $contents; } ?>
 
 <p> If you use <i>fuzzySim</i> in publications, please <strong><big>cite</big> the following paper</strong>:
 
-<p> Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. <i>Methods in Ecology and Evolution</i>, 6: 853-858 (DOI: <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract">10.1111/2041-210X.12372)</a></p>
+<p> <big>Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. <i>Methods in Ecology and Evolution</i>, 6: 853-858 (DOI: <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract">10.1111/2041-210X.12372)</a></big></p>
 
 
 <p> To see how to cite the package itself, load it in R and type <big><code>citation(package="fuzzySim")</code></big>.</p>
 
 <br />
+
+
+<h2> Articles citing <i>fuzzySim</i> </h2>
+
+<p> A number of <strong>articles</strong> have already <strong>used or cited <i>fuzzySim</i></strong> in diverse studies, from ecology and biogeography to robotics -- here are just a few examples, excluding self-citations:</p>
+
+<p> Caraveo C., Valdez F. & Castillo O. (2017) A New Meta-Heuristics of Optimization with Dynamic Adaptation of Parameters Using Type-2 Fuzzy Logic for Trajectory Control of a Mobile Robot. <i>Algorithms</i>, 10(3): 85. doi:10.3390/a10030085</p>
+
+<p> Caravaggi A., Leach K., Santilli F., Rintala J., Helle P., Tiainen J., Bisi F., Martinoli A., Montgomery W.I. & Reid N. (2017) Niche Overlap of Mountain Hare Subspecies and the Vulnerability of Their Ranges to Invasion by the European Hare; the (Bad) Luck of the Irish. <i>Biological Invasions</i>, 19: 655-674. https://doi.org/10.1007/s10530-016-1330-z
+
+<p> Coelho L., Romero D., Queirolo D. & Guerrero J.C. (2018) Understanding factors affecting the distribution of the maned wolf (<i>Chrysocyon brachyurus</i>) in South America: Spatial dynamics and environmental drivers. <i>Mammalian Biology</i>, 92: 54-61. https://doi.org/10.1016/j.mambio.2018.04.006</p>
+
+<p> Herkt K.M.B., Skidmore A.K., Fahr J. (2017) Macroecological conclusions based on IUCN expert maps: A call for caution. <i>Global Ecology and Biogeography</i>, 26: 930-941. https://doi.org/10.1111/geb.12601</p>
+
+<p> Title, P.O. & Bemmels, J. (2018) ENVIREM: an expanded set of bioclimatic and topographic variables increases flexibility and improves performance of ecological niche modeling. <i>Ecography</i>, 41: 291-307. doi:10.1111/ecog.02880
+
+<br />
+
 
 
 <h2>Find out more</h2>

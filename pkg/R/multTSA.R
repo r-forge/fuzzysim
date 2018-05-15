@@ -2,7 +2,7 @@ multTSA <-
 function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
          Favourability = FALSE, suffix = "_TS", save.models = FALSE) {
 
-  # version 2.1 (17 Mar 2016)
+  # version 2.2 (5 May 2018)
   
   start.time <- Sys.time()
 
@@ -28,7 +28,7 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
                                  c(1:n.poly.terms))
 
   sp.data <- as.matrix(data[ , sp.cols])
-  colnames(sp.data) <- colnames(data[ , sp.cols])
+  colnames(sp.data) <- colnames(data[ , sp.cols, drop = FALSE])
   n.subjects <- length(sp.cols)
   if (save.models) TSA.models <- vector("list", n.subjects)
   subj.count <- 0
@@ -59,7 +59,7 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
     }
   }
 
-  predictions <- data.frame(data[ , id.col], data[ , ((ncol(data.input) + 1 + n.poly.terms) : ncol(data))])
+  predictions <- data.frame(data[ , id.col], data[ , ((ncol(data.input) + 1 + n.poly.terms) : ncol(data)), drop = FALSE])
 
   if (!is.null(id.col)) {
     if (is.character(id.col)) colnames(predictions)[1] <- id.col

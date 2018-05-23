@@ -1,9 +1,47 @@
 getPreds <-
 function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE, incl.input = FALSE) {
-  # version 1.6 (28 May 2015)
+  # version 1.7 (23 May 2018)
 
+  if (!Y & !P & !Favourability) stop("There are no predictions to get
+if all Y, P and Favourability are set to FALSE.")
+  
   start.time <- Sys.time()
+  
+  if (class(data) == "RasterStack") {
+    preds <- stack()
+    mod.count <- 0
+      
+    for (m in 1:length(models)) {
+      mod.count <- mod.count + 1
+      mod <- models[[m]]
+      mod.name <- names(models)[m]
+      message("Predicting with model ", mod.count, " of " , length(models), " (", mod.name, ")...")
 
+      if (Y == TRUE) {
+        preds <- raster::addLayer(preds, raster::predict(data, mod))
+        names(preds)[raster::nlayers(preds)] <- paste(mod.name, "Y", sep = "_")
+      }  # end if Y
+      
+      if (P == TRUE | Favourability == TRUE) {
+        p <- raster::predict(data, mod, type = "response")
+        
+        if (P == TRUE) {
+          preds <- raster::addLayer(preds, p)
+          names(preds)[raster::nlayers(preds)] <- paste(mod.name, "P", sep = "_")
+        }  # end if P
+      }  # end if P or F
+      
+      if (Favourability == TRUE) {
+        n1 <- sum(mod$y == 1)
+        n0 <- sum(mod$y == 0)
+        preds <- raster::addLayer(preds, (p/(1 - p))/((n1/n0) + (p/(1 - p))))
+        names(preds)[raster::nlayers(preds)] <- paste(mod.name, "F", sep = "_")
+      }  # end if Fav
+    }  # end for m
+    
+    return(preds)  
+  }
+  
   stopifnot(
     is.data.frame(data),
     is.list(models),
@@ -13,9 +51,6 @@ function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE,
     is.logical(Favourability),
     is.logical(incl.input)
   )
-
-  if (!Y & !P & !Favourability) stop("There are no predictions to get
-if all Y, P and Favourability are set to FALSE.")
 
   input.data <- data
 

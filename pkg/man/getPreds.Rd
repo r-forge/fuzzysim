@@ -12,13 +12,13 @@ Favourability = TRUE, incl.input = FALSE)
 }
 \arguments{
   \item{data}{
-the data frame to which to apply the \code{models} to get their predictions; must contain all variables (with the same names, case-sensitive) included in any of the \code{models}.
+a data frame or RasterStack to which to apply the \code{models} to get their predictions; must contain all variables (with the same names, case-sensitive) included in any of the \code{models}.
 }
   \item{models}{
-a list of model objects obtained e.g. with function \code{\link{glm}} or \code{\link{multGLM}}.
+an object of class 'list' containing one or more model objects, obtained e.g. with function \code{\link{glm}} or \code{\link{multGLM}}.
 }
   \item{id.col}{
-optionally, the index number of a column of \code{data} containing row identifiers, to be included in the result. Ignored if \code{incl.input = TRUE}.
+optionally, the index number of a column of 'data' containing row identifiers, to be included in the result. Ignored if \code{incl.input = TRUE}, or if 'data' is a RasterStack rather than a data frame.
 }
   \item{Y}{
 logical, whether to include the logit link (y) value in the predictions.
@@ -30,11 +30,11 @@ logical, whether to include the probability value in the predictions.
 logical, whether to include Favourability in the predictions (see \code{\link{Fav}}).
 }
   \item{incl.input}{
-logical, whether to include input columns in the output. The default is FALSE.
+logical, whether to include input columns in the output data frame (if the 'data' input is a data frame as well). The default is FALSE.
 }
 }
 \value{
-This function returns a data frame containing the model predictions, next to the \code{id.col} if provided, and to the input data if \code{incl.input = TRUE}.
+This function returns the model predictions in an object of the same class as the input 'data', i.e. either a data frame or a RasterStack.
 }
 \author{
 A. Marcia Barbosa

@@ -85,7 +85,7 @@ echo $contents; } ?>
 
 <h2> Articles citing <i>fuzzySim</i> </h2>
 
-<p> A number of <strong>articles</strong> have already <strong>used or cited <i>fuzzySim</i></strong> in diverse studies, from biogeography and evolutionary ecology to robotics -- here are just a few examples, <strong>excluding self-citations</strong>:</p>
+<p> A number of <strong>articles</strong> have already <strong>used or cited <i>fuzzySim</i></strong> in diverse studies, from biogeography and evolutionary ecology to climatology or robotics -- here are just a few examples, <strong>excluding self-citations</strong>:</p>
 
 <p> Broeckhoven C., El Adak Y., Hui C., Van Damme R. & Stankowich T. (2018) On dangerous ground: the evolution of body armour in cordyline lizards. <i>Proceedings of the Royal Society B: Biological Sciences/<i> 285(1880): 20180513. DOI: 10.1098/rspb.2018.0513</p>
 
@@ -94,6 +94,8 @@ echo $contents; } ?>
 <p> Caraveo C., Valdez F. & Castillo O. (2017) A new meta-heuristics of optimization with dynamic adaptation of parameters using type-2 fuzzy logic for trajectory control of a mobile robot. <i>Algorithms</i>, 10(3): 85. DOI: 10.3390/a10030085</p>
 
 <p> Coelho L., Romero D., Queirolo D. & Guerrero J.C. (2018) Understanding factors affecting the distribution of the maned wolf (<i>Chrysocyon brachyurus</i>) in South America: Spatial dynamics and environmental drivers. <i>Mammalian Biology</i>, 92: 54-61. DOI: 10.1016/j.mambio.2018.04.006</p>
+
+<p> Dick, DG & Laflamme, M (2018) Fuzzy ecospace modelling. <i>Methods in Ecology and Evolution</i>, 9(6): 1442-1452 (DOI: 10.1111/2041-210X.13010) </p>
 
 <p> Herkt K.M.B., Skidmore A.K., Fahr J. (2017) Macroecological conclusions based on IUCN expert maps: A call for caution. <i>Global Ecology and Biogeography</i>, 26: 930-941. DOI: 10.1111/geb.12601</p>
 

@@ -6,8 +6,29 @@ TO DO:
 * stepByStep:
 - implement 'direction = both'
 
-* getPreds:
-- accept data as raster stack
+
+============================================
+fuzzySim v1.8.3 (committed 2018-07-6)
+============================================
+
+## Modified functions:
+
+* multTSA:
+- added argument 'type' which can be "Y", "P" (the default, for back-compatibility) or "F" (which substitutes the deprecated argument below)
+- deprecated argument 'Favourability = FALSE'
+
+
+## Modified .Rd files:
+
+* multTSA:
+- documented argument changes described above
+
+* pairwiseRangemaps:
+- updated literature reference
+
+
+## webpage:
+- added additional article citing fuzzySim
 
 
 ============================================

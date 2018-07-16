@@ -4,11 +4,11 @@
 Trend Surface Analysis for multiple species
 }
 \description{
-This function performs trend surface analysis for multiple species at a time. It converts categorical presence-absence (1-0) data into continuous surfaces denoting the spatial trend in species' occurrence patterns.
+This function performs trend surface analysis for one or more species at a time. It converts categorical presence-absence (1-0) data into continuous surfaces denoting the spatial trend in species' occurrence patterns.
 }
 \usage{
 multTSA(data, sp.cols, coord.cols, id.col = NULL, degree = 3, 
-step = TRUE, Favourability = FALSE, suffix = "_TS", 
+step = TRUE, type = "P", Favourability = FALSE, suffix = "_TS", 
 save.models = FALSE)
 }
 \arguments{
@@ -30,36 +30,35 @@ the degree of the spatial polynomial to use (see Details). The default is 3.
   \item{step}{
 logical value indicating whether the regression of presence-absence on the spatial polynomial should do a stepwise inclusion of the polynomial terms (using the \code{\link{step}} function with default settings, namely backward AIC selection), rather than forcing all terms into the equation. The default is \code{TRUE}.
 }
+  \item{type}{
+the type of trend surface to obtain. Can be either "Y" for the raw polynomial equation (i.e. in the scale of the predictors, e.g. if you want to use the spatial trend as a predictor variable in a model), "P" for the logit-transformed probability (e.g. if you want to use the output as a prediction of presence probability based on spatial trend alone), or "F" for spatial favourability, i.e., prevalence-independent probability (see \code{\link{Fav}}).
+}
   \item{Favourability}{
-logical value indicating whether the probability values obtained from the regression should be converted to favourability, so that they are more directly comparable among species with different prevalence (see Real et al. 2006, Acevedo & Real 2012). The default is \code{FALSE}.
+deprecated argument; link{type} should now be used instead, although (at least for the timebeing) this argument will still be accepted (with Favourability = TRUE internally resulting in type = "F") for back-compatibility.
 }
   \item{suffix}{
 character indicating the suffix to add to the trend surface columns in the resulting data frame. The default is \code{"_TS"}.
 }
   \item{save.models}{
-logical value indicating whether the models obtained from the regressions should be saved in the results. The default is \code{FALSE}.
+logical value indicating whether the models obtained from the regressions should be saved and included in the output. The default is \code{FALSE}.
 }
 }
 \details{
 Trend Surface Analysis is a way to model the spatial structure in species' distributions by regressing occurrence data on the spatial coordinates x and y, for a linear trend, or on polynomial terms of these coordinates (x^2, y^2, x*y, etc.), for curvilinear trends (Legendre & Legendre, 1998; Borcard et al., 2011). Second- and third-degree polynomials are often used. \code{multTSA} allows specifying the degree of the spatial polynomial to use. By default, it uses a 3rd-degree polynomial and performs stepwise AIC selection of the polynomial terms to include.
 }
 \value{
-This function returns a matrix or data frame containing the identifier column (if provided in \code{id.col}) and one column per species containing the value predicted by the trend surface analysis.
+This function returns a matrix or data frame containing the identifier column (if provided in \code{id.col}) and one column per species containing the value predicted by the trend surface analysis. If save.models = TRUE, the output is a list containing this dataframe plus a list of the model objects.
 }
 \references{
-Acevedo P. & Real R. (2012) Favourability: concept, distinctive characteristics and potential usefulness. Naturwissenschaften 99: 515-522
-
 Borcard D., Gillet F. & Legendre P. (2011) Numerical Ecology with R. Springer, New York.
 
 Legendre P. & Legendre L. (1998) Numerical Ecology. Elsevier, Amsterdam.
-
-Real R., Barbosa A.M. & Vargas J.M. (2006) Obtaining environmental favourability functions from logistic regression. Environmental and Ecological Statistics 13: 237-245
 }
 \author{
 A. Marcia Barbosa
 }
 \seealso{
-\code{\link{distPres}}, \code{\link{poly}}
+\code{\link{distPres}}, \code{\link{poly}}, \code{\link{multGLM}}
 }
 \examples{
 data(rotif.env)

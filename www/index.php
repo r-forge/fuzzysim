@@ -85,11 +85,13 @@ echo $contents; } ?>
 
 <h2> Articles citing <i>fuzzySim</i> </h2>
 
-<p> A number of <strong>articles</strong> have already <strong>used or cited <i>fuzzySim</i></strong> in diverse studies, from ecology and biogeography to robotics -- here are just a few examples, excluding self-citations:</p>
+<p> A number of <strong>articles</strong> have already <strong>used or cited <i>fuzzySim</i></strong> in diverse studies, from biogeography and evolutionary ecology to robotics -- here are just a few examples, <strong>excluding self-citations</strong>:</p>
 
-<p> Caraveo C., Valdez F. & Castillo O. (2017) A new meta-heuristics of optimization with dynamic adaptation of parameters using type-2 fuzzy logic for trajectory control of a mobile robot. <i>Algorithms</i>, 10(3): 85. DOI: 10.3390/a10030085</p>
+<p> Broeckhoven C., El Adak Y., Hui C., Van Damme R. & Stankowich T. (2018) On dangerous ground: the evolution of body armour in cordyline lizards. <i>Proceedings of the Royal Society B: Biological Sciences/<i> 285(1880): 20180513. DOI: 10.1098/rspb.2018.0513</p>
 
 <p> Caravaggi A., Leach K., Santilli F., Rintala J., Helle P., Tiainen J., Bisi F., Martinoli A., Montgomery W.I. & Reid N. (2017) Niche overlap of mountain hare subspecies and the vulnerability of their ranges to invasion by the European hare; the (bad) luck of the Irish. <i>Biological Invasions</i>, 19: 655-674. DOI: 10.1007/s10530-016-1330-z
+
+<p> Caraveo C., Valdez F. & Castillo O. (2017) A new meta-heuristics of optimization with dynamic adaptation of parameters using type-2 fuzzy logic for trajectory control of a mobile robot. <i>Algorithms</i>, 10(3): 85. DOI: 10.3390/a10030085</p>
 
 <p> Coelho L., Romero D., Queirolo D. & Guerrero J.C. (2018) Understanding factors affecting the distribution of the maned wolf (<i>Chrysocyon brachyurus</i>) in South America: Spatial dynamics and environmental drivers. <i>Mammalian Biology</i>, 92: 54-61. DOI: 10.1016/j.mambio.2018.04.006</p>
 

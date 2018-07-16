@@ -1,8 +1,8 @@
 multTSA <-
-function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
+function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, type = "P",
          Favourability = FALSE, suffix = "_TS", save.models = FALSE) {
 
-  # version 2.2 (5 May 2018)
+  # version 2.3 (16 Jul 2018)
   
   start.time <- Sys.time()
 
@@ -17,9 +17,15 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
     is.null(id.col) | id.col %in% 1:ncol(data) | id.col %in% colnames(data),
     degree %% 1 == 0,
     is.logical(step),
+    type %in% c("Y", "P", "F"),
     is.logical(Favourability),
     is.logical(save.models)
   )
+  
+  if (Favourability == TRUE) {
+    warning("Argument 'Favourability' is deprecated; internally converted to type = 'F'.")
+    type <- "F"
+  }
 
   coords.poly <- as.data.frame(poly(as.matrix(data[ , coord.cols]),
                                     degree = degree, raw = TRUE))
@@ -44,8 +50,13 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE,
     model.expr <- expression(with(data, glm(model.formula, family = binomial, data = data)))
     if (step)  model <- step(eval(model.expr), trace = 0)
     else model <- eval(model.expr)
-    pred <- predict(model, coords.poly, type = "response")
-    if (Favourability) {
+    
+    if (type == "Y")  tp = "link"
+    else if (type == "P" | type == "F")  tp = "response"
+    
+    pred <- predict(model, coords.poly, type = tp)
+    
+    if (type == "F") {
       #n1 <- sum(sp.data[ , s] == 1)
       #n0 <- sum(sp.data[ , s] == 0)
       #pred <- (pred / (1 - pred)) / ((n1 / n0) + (pred / (1 - pred)))

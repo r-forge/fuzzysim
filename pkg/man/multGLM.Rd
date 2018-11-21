@@ -10,9 +10,9 @@ This function calculates generalized linear models for a set of (species) presen
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
 test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE,
 cor.thresh = 0.8, step = TRUE, trace = 0, start = "null.model", 
-direction = "both", select = "AIC", Y.prediction = FALSE, 
+direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, 
 P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, 
-trim = TRUE, ...)
+TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, ...)
 }
 \arguments{
   \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
@@ -30,12 +30,15 @@ trim = TRUE, ...)
   \item{start}{character, whether to start with the 'null.model' (so that variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if \code{step = TRUE}.}
   \item{direction}{argument to be passed to \code{\link{step}} specifying the direction of variable selection ('forward', 'backward' or 'both'). Used only if \code{step = TRUE}.}
   \item{select}{character string specifying the criterion for stepwise selection of variables. Options are "AIC" (Akaike's Information Criterion; Akaike, 1973), the default; or BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC; Schwarz, 1978). Used only if \code{step = TRUE}.}
+  \item{trim}{logical, whether to trim non-significant variables off the models using the \code{\link{modelTrim}} function; can be used whether or not \code{step} is TRUE; works as a backward variable elimination procedure based on significance.}
   \item{Y.prediction}{logical, whether to include output predictions in the scale of the predictor variables (\code{type = "link"} in \code{\link{predict.glm}}).}
   \item{P.prediction}{logical, whether to include output predictions in the scale of the response variable, i.e. probability (\code{type = "response"} in \code{\link{predict.glm}}).}
   \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to extract the effect of prevalence on probability (Real et al. 2006) and include its results in the output.}
   \item{group.preds}{logical, whether to group together predictions of similar type (\code{Y}, \code{P} or \code{F}) in the output \code{predictions} table (e.g. if \code{FALSE}: sp1_Y, sp1_P, sp1_F, sp2_Y, sp2_P, sp2_F; if \code{TRUE}: sp1_Y, , sp2_Y, sp1_P, sp2_P, sp1_F, sp2_F).}
-  \item{trim}{logical, whether to trim non-significant variables off the models using the 
-  \code{\link{modelTrim}} function; can be used whether or not \code{step} is TRUE; works as a backward variable elimination procedure based on significance.}
+  \item{TSA}{logical, whether to add a trend surface analysis (calculated individually for each species) as a spatial variable in each model. See \code{\link{multTSA}} for more details. The default is FALSE.}
+  \item{coord.cols}{argument to pass to \code{\link{multTSA}} (if \code{TSA=TRUE}).}
+  \item{degree}{argument to pass to \code{\link{multTSA}} (if \code{TSA=TRUE}).}
+  \item{verbosity}{integer value indicating the amount of messages to display; currently implemented values are from 0 to 2 (the default).}
   \item{\dots}{additional arguments to be passed to \code{\link{modelTrim}}.}
 }
 \details{

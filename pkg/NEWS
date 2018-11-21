@@ -1,14 +1,35 @@
 TO DO:
 
-* multGLM:
-- eliminate call to 'attach'
-
 * stepByStep:
 - implement 'direction = both'
 
 
 ============================================
-fuzzySim v1.8.3 (committed 2018-07-6)
+fuzzySim v1.9 (committed 2018-11-20)
+============================================
+
+## Modified functions:
+
+* distPres
+- 'inv' now subtracts from 1 (after standardizing) rather than dividing by 1
+
+* multTSA:
+- added 'criterion' argument, which can be 'AIC' (to use 'step') or 'significance' (to use 'modelTrim')
+- added '...' argument to pass to modelTrim
+- introduced more informative coordinate polynomial names (visible if 'save.models = TRUE')
+- added 'simple = TRUE' to 'poly' for speedup
+
+* modelTrim:
+- added 'data' argument to 'update', to avoid 'attach'
+
+* multGLM:
+- added arguments 'verbosity', 'TSA' and 'coord.cols'
+- added 'data = train.data' to 'step', and 'with(train.data' to 'model.formula', so finally got rid of 'attach'
+- "Building model 1..." 'message' instances replaced with 'cat' so that they are saved if 'sink' is used
+
+
+============================================
+fuzzySim v1.8.3 (committed 2018-07-06)
 ============================================
 
 ## Modified functions:

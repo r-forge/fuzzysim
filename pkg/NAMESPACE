@@ -1,1 +1,7 @@
 exportPattern("^[[:alpha:]]+")
+importFrom("graphics", "abline", "barplot")
+importFrom("stats", "anova", "as.formula", "binomial", "cor", "dist",
+           "extractAIC", "glm", "lm", "na.omit", "nobs", "p.adjust",
+           "p.adjust.methods", "poly", "predict", "step", "update")
+importFrom("utils", "combn", "read.csv", "stack", "write.csv")
+

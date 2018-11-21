@@ -1,10 +1,9 @@
-multTSA <-
-function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, type = "P",
-         Favourability = FALSE, suffix = "_TS", save.models = FALSE) {
+multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, ...) {
 
-  # version 2.3 (16 Jul 2018)
-  
+  # version 2.4 (13 Nov 2018)
+
   start.time <- Sys.time()
+  on.exit(timer(start.time))
 
   stopifnot (
     na.omit(as.matrix(data[ , sp.cols])) %in% c(0,1),
@@ -18,20 +17,24 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, type
     degree %% 1 == 0,
     is.logical(step),
     type %in% c("Y", "P", "F"),
+    criterion %in% c("AIC", "significance"),  # new
     is.logical(Favourability),
     is.logical(save.models)
   )
-  
+
   if (Favourability == TRUE) {
     warning("Argument 'Favourability' is deprecated; internally converted to type = 'F'.")
     type <- "F"
   }
 
   coords.poly <- as.data.frame(poly(as.matrix(data[ , coord.cols]),
-                                    degree = degree, raw = TRUE))
+                                    degree = degree, raw = TRUE, simple = TRUE))
   n.poly.terms <- ncol(coords.poly)
-  colnames(coords.poly) <- paste0(rep("poly", n.poly.terms),
-                                 c(1:n.poly.terms))
+
+  coord.names <- ifelse(is.character(coord.cols), coord.cols, colnames(data)[coord.cols])
+  colnames(coords.poly) <- gsub(pattern = "\\.", replacement = "_", x = colnames(coords.poly))
+  colnames(coords.poly) <- paste0(coord.names[1], colnames(coords.poly))
+  colnames(coords.poly) <- gsub(pattern = "_", replacement = paste0("_", coord.names[2]), x = colnames(coords.poly))
 
   sp.data <- as.matrix(data[ , sp.cols])
   colnames(sp.data) <- colnames(data[ , sp.cols, drop = FALSE])
@@ -48,14 +51,17 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, type
     message("Computing TSA ", subj.count, " of ", n.subjects, " (", subj.name, ") ...")
     model.formula <- as.formula(paste(subj.name, "~", paste(colnames(coords.poly), collapse = "+")))
     model.expr <- expression(with(data, glm(model.formula, family = binomial, data = data)))
-    if (step)  model <- step(eval(model.expr), trace = 0)
+    if (step) {
+      if (criterion == "AIC") model <- step(eval(model.expr), trace = 0)
+      else if (criterion == "significance") model <- modelTrim(eval(model.expr), ...)
+    }
     else model <- eval(model.expr)
-    
+
     if (type == "Y")  tp = "link"
     else if (type == "P" | type == "F")  tp = "response"
-    
+
     pred <- predict(model, coords.poly, type = tp)
-    
+
     if (type == "F") {
       #n1 <- sum(sp.data[ , s] == 1)
       #n0 <- sum(sp.data[ , s] == 0)
@@ -78,7 +84,6 @@ function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, type
   }
 
   message("Finished!")
-  timer(start.time)
 
   if (save.models) return(list(predictions = data.frame(predictions), TSA.models = TSA.models))
   else return (predictions)

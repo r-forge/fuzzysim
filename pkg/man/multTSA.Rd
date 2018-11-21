@@ -8,8 +8,8 @@ This function performs trend surface analysis for one or more species at a time.
 }
 \usage{
 multTSA(data, sp.cols, coord.cols, id.col = NULL, degree = 3, 
-step = TRUE, type = "P", Favourability = FALSE, suffix = "_TS", 
-save.models = FALSE)
+step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, 
+suffix = "_TS", save.models = FALSE, ...)
 }
 \arguments{
   \item{data}{
@@ -30,6 +30,9 @@ the degree of the spatial polynomial to use (see Details). The default is 3.
   \item{step}{
 logical value indicating whether the regression of presence-absence on the spatial polynomial should do a stepwise inclusion of the polynomial terms (using the \code{\link{step}} function with default settings, namely backward AIC selection), rather than forcing all terms into the equation. The default is \code{TRUE}.
 }
+  \item{criterion}{
+character value indicating whether the backward stepwise selection of variables (if step = TRUE) should be made according to "AIC" (the default, using the \code{\link{step}} function) or to "significance" (using the \code{\link{modelTrim}} function).
+}
   \item{type}{
 the type of trend surface to obtain. Can be either "Y" for the raw polynomial equation (i.e. in the scale of the predictors, e.g. if you want to use the spatial trend as a predictor variable in a model), "P" for the logit-transformed probability (e.g. if you want to use the output as a prediction of presence probability based on spatial trend alone), or "F" for spatial favourability, i.e., prevalence-independent probability (see \code{\link{Fav}}).
 }
@@ -42,6 +45,9 @@ character indicating the suffix to add to the trend surface columns in the resul
   \item{save.models}{
 logical value indicating whether the models obtained from the regressions should be saved and included in the output. The default is \code{FALSE}.
 }
+  \item{\dots}{
+  additional arguments to be passed to \code{\link{modelTrim}} (if step=TRUE and criterion="significance").
+  }
 }
 \details{
 Trend Surface Analysis is a way to model the spatial structure in species' distributions by regressing occurrence data on the spatial coordinates x and y, for a linear trend, or on polynomial terms of these coordinates (x^2, y^2, x*y, etc.), for curvilinear trends (Legendre & Legendre, 1998; Borcard et al., 2011). Second- and third-degree polynomials are often used. \code{multTSA} allows specifying the degree of the spatial polynomial to use. By default, it uses a 3rd-degree polynomial and performs stepwise AIC selection of the polynomial terms to include.

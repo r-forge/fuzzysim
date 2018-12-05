@@ -1,6 +1,6 @@
 multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, ...) {
 
-  # version 2.4 (13 Nov 2018)
+  # version 2.5 (5 Dec 2018)
 
   start.time <- Sys.time()
   on.exit(timer(start.time))
@@ -31,7 +31,8 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
                                     degree = degree, raw = TRUE, simple = TRUE))
   n.poly.terms <- ncol(coords.poly)
 
-  coord.names <- ifelse(is.character(coord.cols), coord.cols, colnames(data)[coord.cols])
+  if (is.character(coord.cols))  coord.names <- coord.cols
+  else  coord.names <- colnames(data)[coord.cols]
   colnames(coords.poly) <- gsub(pattern = "\\.", replacement = "_", x = colnames(coords.poly))
   colnames(coords.poly) <- paste0(coord.names[1], colnames(coords.poly))
   colnames(coords.poly) <- gsub(pattern = "_", replacement = paste0("_", coord.names[2]), x = colnames(coords.poly))
@@ -39,7 +40,7 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
   sp.data <- as.matrix(data[ , sp.cols])
   colnames(sp.data) <- colnames(data[ , sp.cols, drop = FALSE])
   n.subjects <- length(sp.cols)
-  if (save.models) TSA.models <- vector("list", n.subjects)
+  if (save.models) models <- vector("list", n.subjects)
   subj.count <- 0
 
   data.input <- data
@@ -71,8 +72,8 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
     data[ , ncol(data) + 1] <- pred
     colnames(data)[ncol(data)] <- paste0(subj.name, suffix)
     if (save.models) {
-      TSA.models[[subj.count]] <- model
-      names(TSA.models)[[subj.count]] <- subj.name
+      models[[subj.count]] <- model
+      names(models)[[subj.count]] <- subj.name
     }
   }
 
@@ -85,7 +86,7 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
 
   message("Finished!")
 
-  if (save.models) return(list(predictions = data.frame(predictions), TSA.models = TSA.models))
+  if (save.models) return(list(predictions = data.frame(predictions), models = models))
   else return (predictions)
 
 }

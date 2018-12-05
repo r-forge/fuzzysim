@@ -5,6 +5,17 @@ TO DO:
 
 
 ============================================
+fuzzySim v2.0 (committed 2018-12-05)
+============================================
+
+## Modified functions:
+
+* multTSA:
+- resulting model object now named 'models' rather than 'TSA.models'
+- corrected bug in coordinate polynomial names (if save.models = TRUE)
+
+
+============================================
 fuzzySim v1.9 (committed 2018-11-20)
 ============================================
 

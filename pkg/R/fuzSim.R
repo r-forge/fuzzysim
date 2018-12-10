@@ -11,7 +11,12 @@ function(x, y, method, na.rm = TRUE) {
     y <- data[ , 2]
   }
 
-  stopifnot (length(x) == length(y), x >= 0 & x <= 1, y >= 0 & y <= 1)
+  stopifnot (length(x) == length(y), 
+             #x >= 0 & x <= 1, 
+             #y >= 0 & y <= 1
+             min(c(x, y, na.rm = TRUE)) >= 0,
+             max(c(x, y, na.rm = TRUE)) <= 1
+             )
 
   A <- sum(x)
   B <- sum(y)

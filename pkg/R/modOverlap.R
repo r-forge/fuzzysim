@@ -1,10 +1,13 @@
 modOverlap <- function(pred1, pred2, na.rm = TRUE) {
   
-  # version 1.1 (27 Oct 2015)
+  # version 1.2 (10 Dec 2018)
   
-  #stopifnot(length(pred1) == length(pred2),
-  #          pred1 >= 0 && pred1 <=1,
-  #          pred2 >= 0 && pred2 <=1)
+  stopifnot(length(pred1) == length(pred2),
+            #pred1 >= 0 && pred1 <=1,
+            #pred2 >= 0 && pred2 <=1
+            min(c(pred1, pred2, na.rm = TRUE)) >= 0,
+            max(c(pred1, pred2, na.rm = TRUE)) <= 1
+            )
   
   p1 <- pred1 / sum(pred1, na.rm = na.rm)
   p2 <- pred2 / sum(pred2, na.rm = na.rm)

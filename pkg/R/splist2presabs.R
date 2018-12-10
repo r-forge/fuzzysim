@@ -4,8 +4,8 @@ function(data, sites.col, sp.col, keep.n = FALSE) {
     length(sites.col) == 1,
     length(sp.col) == 1,
     sites.col != sp.col,
-    sites.col %in% 1 : ncol(data) | sites.col %in% names(data),
-    sp.col %in% 1 : ncol(data) | sp.col %in% names(data),
+    sites.col %in% 1:ncol(data) | sites.col %in% colnames(data),
+    sp.col %in% 1:ncol(data) | sp.col %in% colnames(data),
     is.logical(keep.n)
   )
   presabs <- table(data[ , c(sites.col, sp.col)])

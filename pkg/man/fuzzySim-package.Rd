@@ -107,7 +107,7 @@ head(rot.fuz.reg)
 # get matrix of fuzzy similarity between (some) regions' 
 # species compositions:
 
-reg.fuz.sim.mat <- simMat(rot.fuz.reg[ , 1:20], method = "Jaccard")
+reg.fuz.sim.mat <- simMat(rot.fuz.reg[ , 1:10], method = "Jaccard")
 
 head(reg.fuz.sim.mat)
 }

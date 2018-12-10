@@ -1,12 +1,13 @@
 multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, ...) {
 
-  # version 2.5 (5 Dec 2018)
+  # version 2.6 (10 Dec 2018)
 
   start.time <- Sys.time()
   on.exit(timer(start.time))
 
   stopifnot (
     na.omit(as.matrix(data[ , sp.cols])) %in% c(0,1),
+    #data[ , sp.cols] %in% c(NA, 0, 1),
     length(sp.cols) > 0,
     length(sp.cols) <= ncol(data) - length(coord.cols) - length(id.col),
     sp.cols %in% 1:ncol(data) | sp.cols %in% colnames(data),

@@ -3,7 +3,8 @@ distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat =
 
   stopifnot(
     as.matrix(data[ , sp.cols]) %in% c(NA, 0, 1),
-    length(sp.cols) > 0 & length(sp.cols) <= ncol(data) - length(coord.cols) - length(id.col),
+    length(sp.cols) > 0,
+    length(sp.cols) <= ncol(data) - length(coord.cols) - length(id.col),
     !is.null(coord.cols) | !is.null(dist.mat),
     is.null(coord.cols) | length(coord.cols) == 2,
     is.null(coord.cols) | coord.cols %in% 1:ncol(data) | coord.cols %in% colnames(data),
@@ -38,8 +39,8 @@ distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat =
 
   if (inv) {
     #pres.dist.mat[!is.finite(pres.dist.mat)] <- max(is.finite(pres.dist.mat))  # gives 1 to the inverse distance to presence at presence sites
-    x <- pres.dist.mat  # new (to shorten line below)
-    pres.dist.mat <- (x - min(x, na.rm = T))/(max(x, na.rm = T) - min(x, na.rm = T))  # new: standardize to 01
+    d <- pres.dist.mat  # new (to shorten line below)
+    pres.dist.mat <- (d - min(d, na.rm = T)) / (max(d, na.rm = T) - min(d, na.rm = T))  # new: standardize to 01
     pres.dist.mat <- 1 - pres.dist.mat  # new
   }
 

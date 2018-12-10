@@ -1,11 +1,14 @@
 fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss", "Stable presence", "Stable absence", "Balance"), plot = TRUE, ...) #col = colorRampPalette(c("white", "black"))(length(measures)) 
   {
   
-  # version 1.5 (12 Sep 2016)
+  # version 1.6 (10 Dec 2018)
   
-  stopifnot(ncol(pred1) == ncol(pred2),
-            all(pred1[is.finite(pred1)] >= 0 && pred1[is.finite(pred1)] <= 1),
-            all(pred2[is.finite(pred2)] >= 0 && pred2[is.finite(pred2)] <= 1)
+  stopifnot(#ncol(pred1) == ncol(pred2),
+            #all(pred1[is.finite(pred1)] >= 0 && pred1[is.finite(pred1)] <= 1),
+            #all(pred2[is.finite(pred2)] >= 0 && pred2[is.finite(pred2)] <= 1)
+            length(pred1) == length(pred2),
+            min(c(pred1, pred2), na.rm = TRUE) >= 0,
+            max(c(pred1, pred2), na.rm = TRUE) <= 1
   )
 
   if (!number & !prop) stop ("Nothing to calculate if both 'number' and 'prop' are FALSE.")

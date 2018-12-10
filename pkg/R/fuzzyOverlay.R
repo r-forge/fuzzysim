@@ -5,10 +5,11 @@ fuzzyOverlay <- function(data,
                          round.digits = 2
                          ) {
   
-  # version 1.2 (13 Nov 2015)
+  # version 1.3 (10 Dec 2018)
   
   data <- data[ , overlay.cols]
-  stopifnot(all(data[!is.na(data), ] >= 0 && data[!is.na(data), ] <= 1))
+  #stopifnot(all(data[!is.na(data), ] >= 0 && data[!is.na(data), ] <= 1))
+  stopifnot(all(data[!is.na(data)] >= 0 && data[!is.na(data)] <= 1))
   
   if (op == "consensus") rowSums(data, na.rm = na.rm) / ncol(data)
   else if (op %in% c("fuzzy_and", "intersection")) apply(data, MARGIN = 1, FUN = min, na.rm = na.rm)

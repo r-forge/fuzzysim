@@ -49,13 +49,13 @@ sp.col = "spcode", keep.n = FALSE)
 head(rotifers.presabs)
 
 
-# get 3rd-degree spatial trend surface for each species' distribution:
+# get 3rd-degree spatial trend surface for some species distributions:
 
 data(rotif.env)
 
 names(rotif.env)
 
-rotifers.tsa <- multTSA(rotif.env, sp.cols = 18:47,
+rotifers.tsa <- multTSA(rotif.env, sp.cols = 18:20,
 coord.cols = c("Longitude", "Latitude"), id.col = 1)
 
 head(rotifers.tsa)
@@ -63,7 +63,7 @@ head(rotifers.tsa)
 
 # get inverse squared distance to presence for each species:
 
-rotifers.isqd <- distPres(rotif.env, sp.cols = 18:47,
+rotifers.isqd <- distPres(rotif.env, sp.cols = 18:20,
 coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 2, inv = TRUE)
 
 head(rotifers.isqd)
@@ -76,20 +76,19 @@ data(rotif.env)
 
 names(rotif.env)
 
-rotifers.fav <- multGLM(data = rotif.env, sp.cols = 18:47, 
+rotifers.fav <- multGLM(data = rotif.env, sp.cols = 18:20, 
 var.cols = 5:17, id.col = 1, step = FALSE, trim = TRUE, 
 Favourability = TRUE)
 
 
-# get matrix of fuzzy similarity between rotifer species distributions:
+# get matrix of fuzzy similarity between species distributions:
 
 # either based on inverse squared distance to presence:
 rot.fuz.sim.mat <- simMat(rotifers.isqd[ , -1], method = "Jaccard")
 
 # or on environmental favourability for presence:
-rot.fuz.sim.mat <- simMat(rotifers.fav$predictions[ , 32:61], 
+rot.fuz.sim.mat <- simMat(rotifers.fav$predictions[ , 5:7], 
 method = "Jaccard")
-
 
 head(rot.fuz.sim.mat)
 
@@ -99,7 +98,7 @@ head(rot.fuz.sim.mat)
 
 names(rotifers.isqd)
 
-rot.fuz.reg <- transpose(rotifers.fav$predictions, sp.cols = 32:61,
+rot.fuz.reg <- transpose(rotifers.fav$predictions, sp.cols = 5:7,
 reg.names = 1)
 
 head(rot.fuz.reg)
@@ -108,7 +107,7 @@ head(rot.fuz.reg)
 # get matrix of fuzzy similarity between (some) regions' 
 # species compositions:
 
-reg.fuz.sim.mat <- simMat(rot.fuz.reg[ , 1:100], method = "Jaccard")
+reg.fuz.sim.mat <- simMat(rot.fuz.reg[ , 1:20], method = "Jaccard")
 
 head(reg.fuz.sim.mat)
 }

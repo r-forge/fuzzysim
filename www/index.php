@@ -55,10 +55,12 @@ echo $contents; } ?>
 
 <p>Some of the <i>fuzzySim</i> functions are also being implemented within a <b>graphical-interface extension</b> for the <strong><a href="http://www.qgis.org">QGIS</a></strong> Processing Toolbox - you can download their current versions from <a href="https://copy.com/GQSTy9GngfRGfLeS">here</a>, place them in your "<i>.qgis2/processing/rscripts</i>" folder (search for it in your computer; you may need to toggle "show hidden files" to see it) and give them a try. You need to have installed QGIS > 2.0, R with the <i>fuzzySim</i> package, and tell QGIS (under Processing - Options and configuration - Providers) where your R instalation is. Feedback welcome!</p>
 
-<br />
+<font color="green">
+<h3> Package <i>fuzzySim</i> (v2.0) is now on CRAN!</h3>
+</font>
 
 <h2> Install and load </h2>
-<p>To <big><strong>install</strong></big> <i>fuzzySim</i> directly from R-Forge, paste the following command in the R console (when connected to the internet):</p>
+<p>To install a <b>developing version</b> (with new features, but possibly also new bugs) of <i>fuzzySim</i> from R-Forge, paste the following command in the R console (when connected to the internet):</p>
 <code>install.packages("fuzzySim", repos="http://R-Forge.R-project.org")</code><br />
 
 <p>This should work if you have the <b>latest version of R</b>; otherwise, it may either fail (producing a message like "<i>package 'fuzzySim' is not available for your R version</i>") or install an older version of <i>fuzzySim</i>. To <b>check the version that you have actually installed</b>, type <big><b><code>citation(package="fuzzySim")</code></b></big>. To install the latest version of the package, you can either upgrade R <i>or</i> download the compressed <i>fuzzySim</i> <b>package source files</b> to your disk (<i>.zip</i> or <i>.tar.gz</i> available <a href="https://r-forge.r-project.org/R/?group_id=1853">here</a> or <a href="https://www.dropbox.com/sh/9068priyuve14qo/AACaCFuRK9Q5FVaV9mZrlbTCa?dl=0">here</a>) and then install the package from there, e.g. with R menu "<i>Packages - Install packages from local zip files</i>" (Windows), or "<i>Packages & Data - Package installer, Packages repository - Local source package</i>" (Mac), or "<i>Tools - Install packages - Install from: Package Archive File</i>" (RStudio).</p>

@@ -56,7 +56,7 @@ echo $contents; } ?>
 <p>Some of the <i>fuzzySim</i> functions are also being implemented within a <b>graphical-interface extension</b> for the <strong><a href="http://www.qgis.org">QGIS</a></strong> Processing Toolbox - you can download their current versions from <a href="https://copy.com/GQSTy9GngfRGfLeS">here</a>, place them in your "<i>.qgis2/processing/rscripts</i>" folder (search for it in your computer; you may need to toggle "show hidden files" to see it) and give them a try. You need to have installed QGIS > 2.0, R with the <i>fuzzySim</i> package, and tell QGIS (under Processing - Options and configuration - Providers) where your R instalation is. Feedback welcome!</p>
 
 <font color="green">
-<h3> Package <i>fuzzySim</i> (v2.0) is now on CRAN!</h3>
+<h3> Package <i>fuzzySim</i> (v2.0) is now on <a href="https://CRAN.R-project.org/package=fuzzySim">CRAN</a>!</h3>
 </font>
 
 <h2> Install and load </h2>

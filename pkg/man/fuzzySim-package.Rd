@@ -12,15 +12,15 @@ Functions to calculate fuzzy versions of species' occurrence patterns based on p
 \tabular{ll}{
 Package: \tab fuzzySim\cr
 Type: \tab Package\cr
-Version: \tab 2.0\cr
-Date: \tab 2018-12-05\cr
+Version: \tab 2.1\cr
+Date: \tab 2019-03-06\cr
 License: \tab GPL-3\cr
 }
 }
 \author{
 A. Marcia Barbosa
 
-Maintainer: A. Marcia Barbosa <barbosa@uevora.pt>
+Maintainer: A. Marcia Barbosa <ana.marcia.barbosa@gmail.com>
 }
 \references{
 Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, 6: 853-858.

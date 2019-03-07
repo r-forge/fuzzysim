@@ -81,21 +81,25 @@ data(rotif.env)
 names(rotif.env)
 
 
-# make models for 3 of the species in rotif.env:
+# make models for 2 of the species in rotif.env:
 
-mods <- multGLM(rotif.env, sp.cols = 45:47, var.cols = 5:17, id.col = 1,
+mods <- multGLM(rotif.env, sp.cols = 46:47, var.cols = 5:17, id.col = 1,
 step = TRUE, FDR = TRUE, trim = TRUE)
 
 names(mods)
-
 head(mods$predictions)
-
 names(mods$models)
-
 mods$models[[1]]
-
 mods$models[["Ttetra"]]
 
+
+# include each species' spatial trend in the models:
+
+mods <- multGLM(rotif.env, sp.cols = 46:47, var.cols = 5:17, id.col = 1,
+step = TRUE, FDR = TRUE, trim = TRUE, TSA = TRUE, coord.cols = c(11, 10))
+
+mods$models[[1]]
+mods$models[["Ttetra"]]
 }
 \keyword{ models }
 \keyword{ regression }

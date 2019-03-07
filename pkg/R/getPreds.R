@@ -7,7 +7,7 @@ if all Y, P and Favourability are set to FALSE.")
   
   start.time <- Sys.time()
   
-  if (class(data) == "RasterStack") {
+  if ("RasterStack" %in% class(data)) {
     preds <- stack()
     mod.count <- 0
       

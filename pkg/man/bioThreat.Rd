@@ -1,0 +1,45 @@
+\name{bioThreat}
+\alias{bioThreat}
+\title{
+Biotic threat of a stronger over a weaker species based on their favourability values.
+}
+\description{
+This function takes two vectors of favourability values at different localities for, respectively, a stronger and a weaker species (e.g., a superior vs. an inferior competitor, or an invasive predator vs. an unadapted native prey), and calculates the level of threat that the former may potentially pose to the latter in each locality.
+}
+\usage{
+bioThreat(strong_F, weak_F, character = FALSE, ...)
+}
+\arguments{
+  \item{strong_F}{a numeric vector of favourability values (obtained, e.g., with functions \code{\link{Fav}} or \code{\link{multGLM}}) for the stronger species.}
+  \item{weak_F}{a numeric vector of favourability values for the weaker species. Must be of the same lenght and in the same order as strong_F.}
+  \item{character}{logical value indicating whether the result should be returned in character rather numeric form. Defaults to FALSE.}
+  \item{\dots}{additional arguments to pass to \code{\link{favClass}}, namely the breaks for separating favourability values into low, intermediate and high (see Details).}
+}
+\details{
+Based on the notion of "favorableness" by Richerson & Lum (1980), according to which competing species may or may not be able to coexist depending on their relative environmental fitnesses, Munoz et al. (2015) proposed possible outcomes of different combinations of favourability values for two species (see also Chamorro et al. 2019). This function builds on those proposals by including some additional possible combinations, producing the following classification of biotic threat across a set of analysed localities:
+0 ('white'): areas where favourability is low for both species (abiotic exclusion), so biotic threat does not apply.
+1 ('green'): areas where favourability is high for both species, so they should be able to coexist and biotic threat is low.
+2 ('yellow'): areas where favourability is high for the weaker species and not for the stronger species, so the level of threat is moderate.
+3 ('orange'): areas where favourability is intermediate for both species, so the stronger one potentially prevails and the level of threat is high.
+4 ('red'): areas where favourability is high for the stronger species and not for the weaker species, in which case the level of threat is very high (biotic exclusion).
+}
+\value{
+This function returns either an integer or a character vector (following the 'character' argument, which is set to FALSE by default) of the same length as strong_F and weak_F, classifying each locality with the level of biotic threat posed by the former on the latter (see Details).
+}
+\references{
+Chamorro D., Munoz A.R., Martinez-Freiria F. & Real R. (2019) Using the fuzzy logic in the distribution modelling of competitive interactions. Poster, IBS Malaga 2019 - 9th Biennial Conference of the International Biogeography Society: https://www.researchgate.net/publication/329352324_Using_the_fuzzy_logic_in_the_distribution_modelling_of_competitive_interactions
+Munoz A.R., Real R. & Marquez A.L. (2015) Interacciones a escala nacional entre rapaces rupicolas en base a modelos de distribucion espacial. Los casos del buitre leonado, alimoche y aguila perdicera. Informe tecnico, Universidad de Malaga & Fundacion EDP: https://www.edpr.com/sites/default/files/portal.edpr/documents/edpr_2015_edpr-spain_interacciones-entre-rapaces-rupicolas_sp1.pdf
+Richerson P.J. & Lum K. (1980) Patterns of plant species and diversity in California: relation to weather and topography. American Naturalist 116:504-536
+}
+\author{A. Marcia Barbosa}
+\seealso{
+\code{\link{Fav}}, \code{\link{favClass}}
+}
+\examples{
+data(rotif.env)
+mods <- multGLM(rotif.env, sp.cols = 20:21, var.cols = 5:17)
+names(mods$predictions)
+favs <- mods$predictions[ , 3:4]
+data.frame(favs, threat_num = bioThreat(strong_F = favs[,1], weak_F = favs[,2]),
+threat_chr = bioThreat(strong_F = favs[,1], weak_F = favs[,2], character = TRUE))
+}

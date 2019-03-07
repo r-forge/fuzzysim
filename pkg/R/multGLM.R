@@ -111,8 +111,11 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     if (TSA) {
       if (verbosity > 1)  cat("...plus the spatial trend variable\n\n")
       tsa <- suppressMessages(multTSA(data = data, sp.cols = s, coord.cols = coord.cols, degree = degree, type = "Y"))
-      data <- data.frame(data, spatial_trend = tsa[ , ncol(tsa)])
-      train.data <- data.frame(train.data, spatial_trend = tsa[which(data$sample == "train"), ncol(tsa)])
+      tsa_name <- paste("sptrend", response, sep = "_")
+      data <- data.frame(data, tsa[ , ncol(tsa)])
+      names(data)[ncol(data)] <- tsa_name
+      train.data <- data.frame(train.data, tsa[which(data$sample == "train"), ncol(tsa)])
+      names(train.data)[ncol(train.data)] <- tsa_name
       var.cols <- c(var.cols, ncol(train.data))
     }  # end if TSA
 

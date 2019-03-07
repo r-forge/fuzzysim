@@ -5,6 +5,36 @@ TO DO:
 
 
 ============================================
+fuzzySim v2.1 (committed 2019-03-07)
+============================================
+
+## New functions:
+
+* favClass
+* bioThreat
+
+
+## Modified functions:
+
+* multGLM:
+- spatial_trend variable in models (when TSA=TRUE and the spatial trend is selected) now named after the response variable (e.g. 'sptrend_giraffe')
+
+* getPreds:
+- fixed new bug by replacing 'if (class(data) == "RasterStack")' with 'if ("RasterStack" %in% class(data))'
+
+
+## Modified .Rd files:
+
+* multGLM:
+- added example with TSA=TRUE
+
+
+## Other changes:
+
+- updated maintainer e-mail address
+
+
+============================================
 fuzzySim v2.0 (committed 2018-12-05)
 ============================================
 

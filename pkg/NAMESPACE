@@ -2,6 +2,10 @@ exportPattern("^[[:alpha:]]+")
 importFrom("graphics", "abline", "barplot")
 importFrom("stats", "anova", "as.formula", "binomial", "cor", "dist",
            "extractAIC", "glm", "lm", "na.omit", "nobs", "p.adjust",
-           "p.adjust.methods", "poly", "predict", "step", "update")
+           "p.adjust.methods", "poly", "predict", "step", "update", 
+           "na.pass", "t.test")
 importFrom("utils", "combn", "read.csv", "stack", "write.csv")
+importFrom("graphics", "arrows", "axis", "lines", "mtext", "par",
+           "points", "polygon")
+
 

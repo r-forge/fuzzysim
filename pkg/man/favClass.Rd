@@ -23,9 +23,9 @@ This function returns either an integer or a character vector (following the 'ch
 \references{
 Hosmer D.W. Jr & Lemeshow S. (1989) Applied logistic regression. John Wiley & Sons, New York
 
-Munoz A.R. & Real R. (2006) Assessing the potential range expansion of the exotic monk parakeet in Spain. Diversity and Distributions 12: 656-665
+Munoz A.R. & Real R. (2006) Assessing the potential range expansion of the exotic monk parakeet in Spain. Diversity and Distributions, 12: 656-665
 
-Olivero J., Fa J.E., Real R., Farfan M.A., Marquez A.L., Vargas J.M., Gonzalez J.P., Cunningham A.A. & Nasi R. (2017) Mammalian biogeography and the Ebola virus in Africa. Mammal Review 47: 24-37
+Olivero J., Fa J.E., Real R., Farfan M.A., Marquez A.L., Vargas J.M., Gonzalez J.P., Cunningham A.A. & Nasi R. (2017) Mammalian biogeography and the Ebola virus in Africa. Mammal Review, 47: 24-37
 }
 \author{A. Marcia Barbosa}
 \seealso{

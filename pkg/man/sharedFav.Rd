@@ -28,7 +28,7 @@ Acevedo P., Ward A.I., Real R. & Smith G.C. (2010) Assessing biogeographical rel
 
 Acevedo P., Jimenez-Valverde A., Melo-Ferreira J., Real R. & Alves, P.C. (2012) Parapatric species and the implications for climate change studies: a case study on hares in Europe. Global Change Biology, 18: 1509-1519
 
-Richerson P.J. & Lum K. (1980) Patterns of plant species and diversity in California: relation to weather and topography. American Naturalist 116:504-536
+Richerson P.J. & Lum K. (1980) Patterns of plant species and diversity in California: relation to weather and topography. American Naturalist 116: 504-536
 }
 \author{A. Marcia Barbosa}
 \seealso{

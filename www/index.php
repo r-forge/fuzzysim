@@ -97,9 +97,11 @@ echo $contents; } ?>
 
 <p> Coelho L., Romero D., Queirolo D. & Guerrero J.C. (2018) Understanding factors affecting the distribution of the maned wolf (<i>Chrysocyon brachyurus</i>) in South America: Spatial dynamics and environmental drivers. <i>Mammalian Biology</i>, 92: 54-61. DOI: 10.1016/j.mambio.2018.04.006</p>
 
-<p> Dick, DG & Laflamme, M (2018) Fuzzy ecospace modelling. <i>Methods in Ecology and Evolution</i>, 9(6): 1442-1452 (DOI: 10.1111/2041-210X.13010) </p>
+<p> Dick D.G. & Laflamme M. (2018) Fuzzy ecospace modelling. <i>Methods in Ecology and Evolution</i>, 9(6): 1442-1452. DOI: 10.1111/2041-210X.13010 </p>
 
 <p> Herkt K.M.B., Skidmore A.K., Fahr J. (2017) Macroecological conclusions based on IUCN expert maps: A call for caution. <i>Global Ecology and Biogeography</i>, 26: 930-941. DOI: 10.1111/geb.12601</p>
+
+<p> Romero D., Olivero J., Real R. & Guerrero J.C. (2019) Applying fuzzy logic to assess the biogeographical risk of dengue in South America. <i>Parasites & Vectors</i>, 12: 428. DOI: 10.1186/s13071-019-3691-5</p>
 
 <p> Title, P.O. & Bemmels, J. (2018) ENVIREM: an expanded set of bioclimatic and topographic variables increases flexibility and improves performance of ecological niche modeling. <i>Ecography</i>, 41: 291-307. DOI:10.1111/ecog.02880</p>
 

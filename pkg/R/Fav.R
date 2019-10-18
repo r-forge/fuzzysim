@@ -43,7 +43,11 @@ in favour of 'model'.")
 
   else stop("You need to provide either 'model', or 'obs' plus either one of
             'pred', 'n1n0' or 'sample.preval'.")
-
+  
+  # slightly reduce probabilities of exactly 1, which would cause division by zero:
+  # (resulting favourability is still 1)
+  pred[pred == 1] <- 1 - 2.2e-16
+  
   if(method == "RBV") {  # Real, Barbosa & Vargas 2006
     fav <- (pred / (1 - pred)) / ((n1 / n0) + (pred / (1 - pred)))
   }

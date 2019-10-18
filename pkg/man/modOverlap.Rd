@@ -29,7 +29,7 @@ Warren D.L., Glor R.E. & Turelli M. (2008) Environmental niche equivalency versu
 }
 \author{A. Marcia Barbosa}
 \note{
-A function providing similar measures, \code{niche.overlap}, is available in package \pkg{phyloclim}, but it requires complex and software-specific input data formats.
+Thanks to Heidi Mod for reporting a typo in a previous version of the function. Another function providing similar measures, \code{niche.overlap}, is available in package \pkg{phyloclim}, but it requires complex and software-specific input data formats.
 }
 \seealso{
 \code{\link{fuzSim}}; \code{niche.overlap} in package \pkg{phyloclim}

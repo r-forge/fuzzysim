@@ -5,6 +5,19 @@ TO DO:
 
 
 ============================================
+fuzzySim v2.2.1 (committed 2019-10-18)
+============================================
+
+## Modified functions:
+
+* modOverlap:
+- corrected typo in na.rm closing parentheses (reported by Heidi Mod)
+
+* Fav:
+- slightly reduced probabilities of exactly 1, which would cause division by zero (resulting Fav is still 1)
+
+
+============================================
 fuzzySim v2.2 (committed 2019-03-10)
 ============================================
 

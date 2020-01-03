@@ -36,11 +36,11 @@ Acevedo P., Ward A.I., Real R. & Smith G.C. (2010) Assessing biogeographical rel
 
 Acevedo P., Jimenez-Valverde A., Melo-Ferreira J., Real R. & Alves, P.C. (2012) Parapatric species and the implications for climate change studies: a case study on hares in Europe. Global Change Biology, 18: 1509-1519
 
-Chamorro D., Munoz A.R., Martinez-Freiria F. & Real R. (2019) Using the fuzzy logic in the distribution modelling of competitive interactions. Poster, IBS Malaga 2019 - 9th Biennial Conference of the International Biogeography Society: https://www.researchgate.net/publication/329352324_Using_the_fuzzy_logic_in_the_distribution_modelling_of_competitive_interactions
+Chamorro D., Munoz A.R., Martinez-Freiria F. & Real R. (2019) Using the fuzzy logic in the distribution modelling of competitive interactions. Poster, IBS Malaga 2019 - 9th Biennial Conference of the International Biogeography Society
 
 Munoz A.R. & Real R. (2006) Assessing the potential range expansion of the exotic monk parakeet in Spain. Diversity and Distributions, 12: 656-665
 
-Munoz A.R., Real R. & Marquez A.L. (2015) Interacciones a escala nacional entre rapaces rupicolas en base a modelos de distribucion espacial. Los casos del buitre leonado, alimoche y aguila perdicera. Informe tecnico, Universidad de Malaga & Fundacion EDP: https://www.edpr.com/sites/default/files/portal.edpr/documents/edpr_2015_edpr-spain_interacciones-entre-rapaces-rupicolas_sp1.pdf
+Munoz A.R., Real R. & Marquez A.L. (2015) Interacciones a escala nacional entre rapaces rupicolas en base a modelos de distribucion espacial. Los casos del buitre leonado, alimoche y aguila perdicera. Informe tecnico, Universidad de Malaga & Fundacion EDP
 
 Richerson P.J. & Lum K. (1980) Patterns of plant species diversity in California: relation to weather and topography. American Naturalist, 116:504-536
 

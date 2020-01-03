@@ -35,5 +35,6 @@ Olivero J., Fa J.E., Real R., Farfan M.A., Marquez A.L., Vargas J.M., Gonzalez J
 data(rotif.env)
 mods <- multGLM(rotif.env, sp.cols = 20, var.cols = 5:17)
 fav <- mods$predictions[ , 2]
-data.frame(fav = fav, favcl_num = favClass(fav), favcl_chr = favClass(fav, character = TRUE))
+data.frame(fav = fav, favcl_num = favClass(fav), 
+favcl_chr = favClass(fav, character = TRUE))
 }

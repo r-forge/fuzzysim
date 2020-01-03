@@ -12,8 +12,8 @@ Functions to calculate fuzzy versions of species' occurrence patterns based on p
 \tabular{ll}{
 Package: \tab fuzzySim\cr
 Type: \tab Package\cr
-Version: \tab 2.2.1\cr
-Date: \tab 2019-10-18\cr
+Version: \tab 2.2.2\cr
+Date: \tab 2020-01-03\cr
 License: \tab GPL-3\cr
 }
 }

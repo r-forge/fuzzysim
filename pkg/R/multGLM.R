@@ -6,18 +6,20 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
                     Favourability = TRUE, group.preds = TRUE, TSA = FALSE,
                     coord.cols = NULL, degree = 3, verbosity = 2, ...) {
 
-  # version 4.0 (16 Nov 2018)
+  # version 5.0 (3 Jan 2020)
 
   start.time <- Sys.time()
   on.exit(timer(start.time))
+  
   input.ncol <- ncol(data)
-
+  input.names <- colnames(data)
+  
   stopifnot (
-    as.vector(na.omit(as.matrix(data[ , sp.cols]))) %in% c(0,1),
-    sp.cols %in% (1 : input.ncol),
-    var.cols %in% (1 : input.ncol),
-    is.null(id.col) || id.col %in% (1 : input.ncol),
-    is.null(coord.cols) || coord.cols %in% (1 : input.ncol),
+    as.vector(na.omit(as.matrix(data[ , sp.cols]))) %in% c(0, 1),
+    all(sp.cols %in% (1 : input.ncol)) || all(sp.cols %in% input.names),
+    all(var.cols %in% (1 : input.ncol)) || all(var.cols %in% input.names),
+    is.null(id.col) || (length(id.col) == 1 && (id.col %in% (1 : input.ncol) || id.col %in% input.names)),
+    is.null(coord.cols) || all(coord.cols %in% (1 : input.ncol)) || all(coord.cols %in% input.names),
     family == "binomial",
     test.sample >= 0 | test.sample == "Huberty",
     length(test.sample) == 1 | (is.integer(test.sample) & test.sample > 0),
@@ -36,7 +38,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     !Favourability | exists("Fav"),
     !trim | exists("modelTrim")
   )
-
+  
   data$sample <- "train"
   n <- nrow(data)  # [is.finite(data[ , sp.cols]), ]  # but this can differ among spp
   data.row <- 1:n
@@ -102,6 +104,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   pred.count <- 0
 
   for (s in sp.cols) {
+    if (!is.numeric(s)) s <- grep(s, colnames(train.data))
     model.count <- model.count + 1
     response <- colnames(train.data)[s]
     if (verbosity > 0)  cat("\n\n=> Building model ", model.count, " of ", n.models,
@@ -119,13 +122,13 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
       var.cols <- c(var.cols, ncol(train.data))
     }  # end if TSA
 
-    #attach(train.data, warn.conflicts = FALSE)  # won't work without attach... I think it's because train.data is not in the 'formula' environment
+    #attach(train.data, warn.conflicts = FALSE)
     #on.exit(detach(train.data), add = TRUE)
 
     if (FDR) {
       fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, correction = correction, verbose = FALSE)
       if (nrow(fdr$select) == 0) {
-        warning(paste0(
+        message(paste0(
           "No variables passed the FDR test (so no variables included in the model)\n for '", response, "'. Consider using 'FDR = FALSE' or choosing a less stringent 'correction' procedure."))
         #next
       } #else {
@@ -249,14 +252,17 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     }  # end if groups.preds
 
     if (!is.null(id.col)) {
-      colnames(predictions)[1] <- colnames(data)[id.col]
+      colnames(predictions)[1] <- input.names[id.col]
     }
 
   }  # end if pred.types 0 else
 
   if (test.sample.input == 0)
     predictions <- predictions[ , - match("sample", colnames(predictions))]
+  
+  selected_variables <- lapply(models, function (x) names(x$model)[-1])
+
   message("Finished!")
-  return(list(predictions = predictions, models = models))
+  return(list(predictions = predictions, models = models, variables = selected_variables))
 
   }  # end multGLM function

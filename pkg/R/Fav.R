@@ -1,7 +1,7 @@
 Fav <-
 function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, 
          sample.preval = NULL, method = "RBV", true.preval = NULL) {
-  # version 1.2 (25 Mar 2014)
+  # version 1.3 (18 Oct 2019)
 
   if (!is.null(model)) {
     if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")

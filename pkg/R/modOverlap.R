@@ -1,6 +1,6 @@
 modOverlap <- function(pred1, pred2, na.rm = TRUE) {
   
-  # version 1.2 (10 Dec 2018)
+  # version 1.3 (18 Oct 2019)
   
   stopifnot(length(pred1) == length(pred2),
             #pred1 >= 0 && pred1 <=1,

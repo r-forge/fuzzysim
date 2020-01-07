@@ -1,0 +1,19 @@
+citHeader("To cite fuzzySim in publications use:")
+
+citEntry(entry = "Article",
+  title        = "{fuzzySim}: applying fuzzy logic to binary similarity indices in ecology",
+  author       = personList(as.person("A. Marcia Barbosa")),
+  journal      = "Methods in Ecology and Evolution",
+  year         = "2015",
+  volume       = "6",
+  number       = "7",
+  pages        = "853--858",
+  url          = "https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12372",
+
+  textVersion  =
+  paste("Barbosa, A.M. (2015).",
+        "fuzzySim: applying fuzzy logic to binary similarity indices in ecology.",
+        "Methods in Ecology and Evolution, 6(7), 853-858.",
+        "URL https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.12372.")
+)
+

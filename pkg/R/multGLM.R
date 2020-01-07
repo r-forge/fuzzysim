@@ -6,7 +6,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
                     Favourability = TRUE, group.preds = TRUE, TSA = FALSE,
                     coord.cols = NULL, degree = 3, verbosity = 2, ...) {
 
-  # version 5.0 (3 Jan 2020)
+  # version 5.1 (6 Jan 2020)
 
   start.time <- Sys.time()
   on.exit(timer(start.time))
@@ -42,6 +42,9 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   data$sample <- "train"
   n <- nrow(data)  # [is.finite(data[ , sp.cols]), ]  # but this can differ among spp
   data.row <- 1:n
+  
+  # UNDER CONSTRUCTION:
+  #if (test.sample != 0 && n != nrow(na.omit(data[ , c(sp.cols, var.cols, coord.cols)]))) warning("'data' include missing values, thus 'test.sample' may not always conta  in the expected amount of actual data.")  # new
 
   test.sample.input <- test.sample
 
@@ -93,6 +96,11 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     }  # end if family != binomial (for when other families are implemented)
     }  # end if Fav
 
+  if (!is.numeric(sp.cols)) sp.cols <- which(colnames(data) %in% sp.cols)  # new
+  if (!is.numeric(var.cols)) var.cols <- which(colnames(data) %in% var.cols)  # new
+  if (!is.null(coord.cols) && !is.numeric(coord.cols)) coord.cols <- which(colnames(data) %in% coord.cols)  # new
+  if (!is.null(id.col) && !is.numeric(id.col)) id.col <- which(colnames(data) %in% id.col)  # new
+  
   keeP <- P.prediction  # keep P only if the user wants it
   if (Favourability)  P.prediction <- TRUE  # P is necessary to calculate Fav
   n.models <- length(sp.cols)
@@ -104,13 +112,11 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   pred.count <- 0
 
   for (s in sp.cols) {
-    if (!is.numeric(s)) s <- grep(s, colnames(train.data))
     model.count <- model.count + 1
     response <- colnames(train.data)[s]
-    if (verbosity > 0)  cat("\n\n=> Building model ", model.count, " of ", n.models,
-            " (", response, ")...\n\n", sep = "")
+    if (verbosity > 0)  cat("\n\n=> Building model ", model.count, " of ", n.models, " (", response, ")...\n\n", sep = "")
     if (verbosity > 1)  cat(length(var.cols), "input predictor variable(s)\n\n")
-
+    
     if (TSA) {
       if (verbosity > 1)  cat("...plus the spatial trend variable\n\n")
       tsa <- suppressMessages(multTSA(data = data, sp.cols = s, coord.cols = coord.cols, degree = degree, type = "Y"))
@@ -125,6 +131,13 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     #attach(train.data, warn.conflicts = FALSE)
     #on.exit(detach(train.data), add = TRUE)
 
+    # UNDER CONSTRUCTION:
+    #data_noNA <- na.omit(train.data[ , c(s, var.cols, id.col)])  # new
+    #n_noNA <- nrow(data_noNA)
+    #if (n_noNA != n) {
+    #  cat(n - n_noNA, " rows omitted due to missing data for ", response)
+    #}
+    
     if (FDR) {
       fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, correction = correction, verbose = FALSE)
       if (nrow(fdr$select) == 0) {
@@ -257,11 +270,16 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
 
   }  # end if pred.types 0 else
 
-  if (test.sample.input == 0)
+  if (test.sample.input == 0) {
     predictions <- predictions[ , - match("sample", colnames(predictions))]
+  }
+  
+  if (!is.null(id.col)) {
+    colnames(predictions)[1] <- colnames(data)[id.col]
+  } # new
   
   selected_variables <- lapply(models, function (x) names(x$model)[-1])
-
+  
   message("Finished!")
   return(list(predictions = predictions, models = models, variables = selected_variables))
 

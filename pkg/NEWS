@@ -3,6 +3,41 @@ TO DO:
 * stepByStep:
 - implement 'direction = both'
 
+* multGLM:
+- omit NAs for each species with a warning (to avoid error if 'step')
+- warning if NAs may cause test.sample to contain less actual data
+
+============================================
+fuzzySim v2.2.3 (committed 2020-01-06)
+============================================
+
+## Modified functions:
+
+* multGLM:
+- fixed id.col name in 'predictions' when id.col input as character
+
+## Other changes:
+
+- added 'inst' folder with article citation information
+- removed 'onAttach' function with citation message on load
+- added package URLs to DESCRIPTION file
+
+
+============================================
+fuzzySim v2.2.2 (committed 2020-01-03)
+============================================
+
+## Modified functions:
+
+* multGLM:
+- output now includes list of selected variables per model
+- sp.cols, var.cols and id.col can now optionally be input as column names rather than index numbers
+
+
+## Other changes:
+
+- fixed length of some lines along the PDF manual
+
 
 ============================================
 fuzzySim v2.2.1 (committed 2019-10-18)

@@ -7,8 +7,6 @@ rangemapSim <- function(rangemap.matrix,
   # rangemap.matrix: a matrix resulting from the pairwiseRangemaps function, with the areas of the range maps in the diagonal, their pair-wise intersections in the lower triangle, and their pair-wise unions in the upper triangle
   # total.area: total size of the study area
 
-  #require(fuzzySim)  # >= 1.1
-
   n.rangemaps <- ncol(rangemap.matrix)
   rangemap.names <- colnames(rangemap.matrix)
   sim.matrix <- matrix(nrow = n.rangemaps, ncol = n.rangemaps, dimnames = list(rangemap.names, rangemap.names))

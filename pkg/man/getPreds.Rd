@@ -12,7 +12,7 @@ Favourability = TRUE, incl.input = FALSE)
 }
 \arguments{
   \item{data}{
-a data frame or RasterStack to which to apply the \code{models} to get their predictions; must contain all variables (with the same names, case-sensitive) included in any of the \code{models}.
+an object of class either 'data.frame' or 'RasterStack' to which to apply the 'models' (below) to get their predictions; must contain all variables (with the same names, case-sensitive) included in any of the 'models'.
 }
   \item{models}{
 an object of class 'list' containing one or more model objects, obtained e.g. with function \code{\link{glm}} or \code{\link{multGLM}}.

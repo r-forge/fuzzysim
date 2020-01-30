@@ -1,11 +1,19 @@
-TO DO:
+============================================
+fuzzySim v2.2.4 (committed 2020-01-30)
+============================================
 
-* stepByStep:
-- implement 'direction = both'
+## New functions:
 
-* multGLM:
-- omit NAs for each species with a warning (to avoid error if 'step')
-- warning if NAs may cause test.sample to contain less actual data
+* gridRecords
+
+
+## Modified functions:
+
+* getPreds:
+- replaced 'if("raster" %in% class(data))' (no longer working) with 'if (is(data, "RasterStack"))'
+- added 'Imports: methods' to DESCRIPTION and 'importFrom("methods", "is")' to NAMESPACE
+- if 'data' are raster, added 'raster::' before 'stack'
+
 
 ============================================
 fuzzySim v2.2.3 (committed 2020-01-06)

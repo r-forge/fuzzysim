@@ -5,12 +5,9 @@ gridRecords <- function(rst,
   if (!requireNamespace("raster")) stop("This function requires installing the 'raster' package first.")
   
   if (is.null(abs.coords)) abs.coords <- raster::coordinates(rst)
-  
-  p <- pres.coords
-  a <- abs.coords
-  
-  p_extract <- raster::extract(rst, p, cellnumbers = TRUE, df = TRUE)[ , -1]
-  a_extract <- raster::extract(rst, a, cellnumbers = TRUE, df = TRUE)[ , -1]
+
+  p_extract <- raster::extract(rst, pres.coords, cellnumbers = TRUE, df = TRUE)[ , -1]
+  a_extract <- raster::extract(rst, abs.coords, cellnumbers = TRUE, df = TRUE)[ , -1]
   
   p_extract <- unique(p_extract)
   a_extract <- unique(a_extract)

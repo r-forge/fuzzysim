@@ -4,7 +4,7 @@
 Get model predictions
 }
 \description{
-This function allows getting the predictions of multiple models when applied to a given dataset. It can be useful if you have a list of model objects (e.g. resulting from \code{\link{multGLM}}) and want to apply them to a new data set containing the same variables for another region or time period. There are options to include the logit link (\code{Y}) and/or \code{Favourability} (see \code{\link{Fav}}).
+This function allows getting the predictions of multiple models when applied to a given dataset. It can be useful if you have a list of model objects (e.g. resulting from \code{\link{multGLM}}) and want to apply them to a new data set containing the same variables for another region or time period. There are options to include the logit link ('Y') and/or 'Favourability' (see \code{\link{Fav}}).
 }
 \usage{
 getPreds(data, models, id.col = NULL, Y = FALSE, P = TRUE, 
@@ -18,7 +18,7 @@ an object of class either 'data.frame' or 'RasterStack' to which to apply the 'm
 an object of class 'list' containing one or more model objects, obtained e.g. with function \code{\link{glm}} or \code{\link{multGLM}}.
 }
   \item{id.col}{
-optionally, the index number of a column of 'data' containing row identifiers, to be included in the result. Ignored if \code{incl.input = TRUE}, or if 'data' is a RasterStack rather than a data frame.
+optionally, the index number of a column of 'data' containing row identifiers, to be included in the result. Ignored if incl.input = TRUE, or if 'data' is a RasterStack rather than a data frame.
 }
   \item{Y}{
 logical, whether to include the logit link (y) value in the predictions.

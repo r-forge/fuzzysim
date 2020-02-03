@@ -13,7 +13,7 @@ verbosity = 1)
 }
 \arguments{
   \item{size1}{
-size of subject 1 (e.g., area of the distribution range of a species, or its number of presences within a grid). Not needed if \code{method = "Jaccard"}.
+size of subject 1 (e.g., area of the distribution range of a species, or its number of presences within a grid). Not needed if method = "Jaccard".
 }
   \item{size2}{
 the same for subject 2.
@@ -25,10 +25,10 @@ size of the intersection among subjects 1 and 2 (area of the intersection among 
 size of the union of subjects 1 and 2.
 }
   \item{total.size}{
-total size of the study area. Needed only when calculating a similarity index that takes shared absences into account (i.e., \code{method = "Baroni"}).
+total size of the study area. Needed only when calculating a similarity index that takes shared absences into account (i.e., method = "Baroni").
 }
   \item{method}{
-the similarity index to use. Currently implemented options are \code{'Jaccard'}, \code{'Sorensen'}, \code{'Simpson'} and \code{'Baroni'}.
+the similarity index to use. Currently implemented options are "Jaccard", "Sorensen", "Simpson" or "Baroni".
 }
   \item{verbosity}{
 integer indicating whether to display messages.

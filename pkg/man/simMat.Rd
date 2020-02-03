@@ -104,7 +104,7 @@ main = "Fuzzy cluster dendrogram")
 
 
 # you can get fuzzy chorotypes from these similarity matrices
-# (or fuzzy biotic regions if you \code{\link{transpose}} 'data'),
+# (or fuzzy biotic regions if you transpose 'data'),
 # so that localities are in columns and species in rows)
-# using the \pkg{RMACOQUI} package (Olivero et al. 2011)
+# using the RMACOQUI package (Olivero et al. 2011)
 }

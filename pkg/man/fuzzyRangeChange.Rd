@@ -16,7 +16,7 @@ na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss",
 numeric vector containing the predictions (between 0 and 1) of the model that will serve as reference.
 }
   \item{pred2}{
-numeric vector containing the predictions (between 0 and 1) of the model whose change will be calculated. Must be of the same length and in the same order as \code{pred1}.
+numeric vector containing the predictions (between 0 and 1) of the model whose change will be calculated. Must be of the same length and in the same order as 'pred1'.
 }
   \item{number}{
 logical value indicating if results should include the fuzzy number of cases. The default is TRUE.
@@ -28,7 +28,7 @@ logical value indicating if results should include the proportion of the total n
 logical value indicating whether NA values should be ignored. The default is TRUE.
 }
   \item{round.digits}{
-argument to pass to \code{\link{fuzzyOverlay}}, indicating the number of decimal places to which to round \code{pred} for calculating 'maintenance' or 'stability'. The default is 2.
+argument to pass to \code{\link{fuzzyOverlay}}, indicating the number of decimal places to which to round 'pred' for calculating 'maintenance' or 'stability'. The default is 2.
 }
   \item{measures}{
 character vector listing the range change measures to calculate. The default is all available measures.
@@ -36,16 +36,16 @@ character vector listing the range change measures to calculate. The default is 
   \item{plot}{
 logical value indicating whether to make a barplot with the results. The default is TRUE.
 }
-  \item{\dots}{additional arguments to be passed to the \code{barplot} function (if \code{plot = TRUE}).}
+  \item{\dots}{additional arguments to be passed to the \code{\link{barplot}} function (if plot = TRUE.}
 }
 \value{
-This function returns a data frame with the following values in different rows (among those that are included in \code{measures}):
-\item{Gain}{sum of the predicted values that have increased from \code{pred1} to \code{pred2} (fuzzy equivalent of the number of gained presences)}
-\item{Loss}{sum of the predicted values that have decreased from \code{pred1} to \code{pred2} (fuzzy equivalent of the number of lost presences)}
-\item{Stable_presence}{fuzzy equivalent of the number of predicted presences that have remained as such (when rounded to \code{round.digits}) between \code{pred1} and \code{pred2}}
-\item{Stable_absence}{fuzzy equivalent of the number of predicted absences that have remained as such (when rounded to \code{round.digits}) between \code{pred1} and \code{pred2})}
-\item{Balance}{sum of the change in predicted values from \code{pred1} to \code{pred2} (fuzzy equivalent of the balance of gained and lost presences)}
-If \code{prop = TRUE} (the default), there is an additional column named "Proportion" in which these values are divided by the total number of reference values (i.e., the fuzzy range or non-range size). If \code{plot = TRUE} (the default), a barplot is also produced representing the last column of the result data frame.
+This function returns a data frame with the following values in different rows (among those that are included in 'measures'):
+\item{Gain}{sum of the predicted values that have increased from 'pred1' to 'pred2' (fuzzy equivalent of the number of gained presences)}
+\item{Loss}{sum of the predicted values that have decreased from 'pred1' to 'pred2' (fuzzy equivalent of the number of lost presences)}
+\item{Stable_presence}{fuzzy equivalent of the number of predicted presences that have remained as such (when rounded to 'round.digits') between 'pred1' and 'pred2'}
+\item{Stable_absence}{fuzzy equivalent of the number of predicted absences that have remained as such (when rounded to 'round.digits') between 'pred1' and 'pred2')}
+\item{Balance}{sum of the change in predicted values from 'pred1' to 'pred2' (fuzzy equivalent of the balance of gained and lost presences)}
+If prop = TRUE (the default), there is an additional column named "Proportion" in which these values are divided by the total number of reference values (i.e., the fuzzy range or non-range size). If plot = TRUE (the default), a barplot is also produced representing the last column of the result data frame.
 }
 \author{A. Marcia Barbosa}
 \seealso{

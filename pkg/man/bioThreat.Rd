@@ -11,7 +11,7 @@ bioThreat(strong_F, weak_F, character = FALSE, ...)
 }
 \arguments{
   \item{strong_F}{a numeric vector of favourability values (obtained, e.g., with functions \code{\link{Fav}} or \code{\link{multGLM}}) for the stronger species.}
-  \item{weak_F}{a numeric vector of favourability values for the weaker species. Must be of the same lenght and in the same order as strong_F.}
+  \item{weak_F}{a numeric vector of favourability values for the weaker species. Must be of the same lenght and in the same order as 'strong_F'.}
   \item{character}{logical value indicating whether the result should be returned in character rather numeric form. Defaults to FALSE.}
   \item{\dots}{additional arguments to pass to \code{\link{favClass}}, namely the breaks for separating favourability values into low, intermediate and high (see Details).}
 }
@@ -20,7 +20,7 @@ Based on the notion of "favorableness" by Richerson & Lum (1980), according to w
 
 0 ('white'): areas where favourability is low for at least one of the species (abiotic exclusion), so biotic threat does not apply.
 
-1 ('green'): areas where favourability is high for both species, so they should be able to co-ocur (sympatric coexistence) and biotic threat is low.
+1 ('green'): areas where favourability is high for both species, so they should both be able to thrive and therefore co-occur (sympatric coexistence), hence biotic threat is low.
 
 2 ('yellow'): areas where favourability is high for the weaker species and intermediate for the stronger species, so the level of threat is moderate.
 
@@ -29,7 +29,7 @@ Based on the notion of "favorableness" by Richerson & Lum (1980), according to w
 4 ('red'): areas where favourability is high for the stronger species and intermediate for the weaker species, in which case the level of threat is very high (biotic exclusion).
 }
 \value{
-This function returns either an integer or a character vector (following the 'character' argument, which is set to FALSE by default) of the same length as strong_F and weak_F, classifying each locality with the level of biotic threat posed by the former on the latter (see Details).
+This function returns either an integer or a character vector (following the 'character' argument, which is set to FALSE by default) of the same length as 'strong_F' and 'weak_F', classifying each locality with the level of biotic threat posed by the former on the latter (see Details).
 }
 \references{
 Acevedo P., Ward A.I., Real R. & Smith G.C. (2010) Assessing biogeographical relationships of ecologically related species using favourability functions: a case study on British deer. Diversity and Distributions, 16: 515-528

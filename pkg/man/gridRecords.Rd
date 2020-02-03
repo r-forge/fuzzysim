@@ -1,13 +1,13 @@
 \name{gridRecords}
 \alias{gridRecords}
 \title{
-Grid species occurrence records onto a raster
+Grid point occurrence records onto a raster
 }
 \description{
-This function takes a raster stack and a set of geographic coordinates of a species' presence (and optionally absence) records, and returns a table with the presences and absences and the values of the rasters in the grid of pixels. If absence coordinates are not supplied, all pixels without any presence point will be returned as absences.
+This function takes a raster stack and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences, as well as the corresponding values of the rasters in the grid of pixels (cells). If absence coordinates are not supplied, all pixels without any presence point will be returned as absences.
 }
 \usage{
-gridRecords(rst, pres.coords, abs.coords = NULL)
+gridRecords(rst, pres.coords, abs.coords = NULL, na.rm = TRUE)
 }
 \arguments{
   \item{rst}{
@@ -17,7 +17,10 @@ a Raster* object with the desired spatial resolution and extent for the species 
 a matrix or data frame with two columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst') of the points where species presence was detected.
 }
   \item{abs.coords}{
-same as 'pres.coords' but for points where the species was not detected. If kept NULL, all pixels that are not intersected by 'pres.coords' will be output as absence grid cells.
+same as 'pres.coords' but for points where the species was not detected. If NULL (the default), all pixels that are not intersected by 'pres.coords' will be output as absence cells.
+}
+  \item{na.rm}{
+Logical value indicating whether pixels without values in any of the 'rst' layers should be removed from the resulting data frame. The default is TRUE.
 }
 }
 \details{
@@ -27,12 +30,12 @@ This function was used e.g. in Baez et al. (2020) to get unique presences and ab
 This function returns a data frame with the following columns:
 \item{'presence'}{integer, 1 for the cells with at least one presence point, and 0 for the cells 
 with absence points (if provided) AND with no presence points}
-\item{'x', 'y'}{centroid coordinates of each pixel}
+\item{'x', 'y'}{centroid coordinates of each pixel (cell)}
 \item{'cellnumber'}{the pixel identifier in 'rst'}
 \item{one column for each layer in 'rst'}{with the value of each pixel for that layer.}
 }
 \note{
-This function requires having the \pkg{raster} package installed.
+This function requires the \pkg{raster} package.
 }
 \references{
 Baez J.C., Barbosa A.M., Pascual P., Ramos M.L. & Abascal F. (2020) Ensemble modelling of the potential distribution of the whale shark in the Atlantic Ocean. Ecology and Evolution, 10: 175-184

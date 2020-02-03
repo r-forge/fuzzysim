@@ -11,7 +11,7 @@ timer(start.time)
   \item{start.time}{A date-time object of class \code{\link{POSIXct}}, e.g. as given by \code{\link{Sys.time}}.}
 }
 \value{
-The function returns a message informing of the time elapsed since the input \code{start.time}.
+The function returns a message informing of the time elapsed since the input 'start.time'.
 }
 \author{A. Marcia Barbosa}
 \seealso{

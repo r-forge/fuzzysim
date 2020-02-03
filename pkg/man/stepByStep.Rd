@@ -15,10 +15,10 @@ Favourability = FALSE, trace = 0, cor.method = "pearson")
 a data frame containing your target and predictor variables.
 }
   \item{sp.col}{
-index number of the column of \code{data} that contains the target variable.
+index number of the column of 'data' that contains the target variable.
 }
   \item{var.cols}{
-index numbers of the columns of \code{data} that contain the predictor variables.
+index numbers of the columns of 'data' that contain the predictor variables.
 }
   \item{family}{
 argument to be passed to the \code{\link{glm}} function indicating the family (and error distribution) to use in modelling. The default is binomial distribution with logit link (for binary target variables).
@@ -34,7 +34,7 @@ character string to pass to function \code{\link{cor}} indicating which coeffici
 }
 }
 \details{
-Stepwise variable selection often includes more variables than would a model selected after examining all possible combinations of the variables (e.g. with packages \pkg{MuMIn} and \pkg{glmulti}). The \code{stepByStep} function can be useful to assess if a stepwise model with just the first few variables could already provide predictions very close to the final ones (see e.g. Fig. 3 in Munoz et al., 2005). It can also be useful to see which variables determine the more general trends in the model predictions, and which just add (local) additional nuances.
+Stepwise variable selection often includes more variables than would a model selected after examining all possible combinations of the variables (e.g. with packages \pkg{MuMIn} and \pkg{glmulti}). The 'stepByStep' function can be useful to assess if a stepwise model with just the first few variables could already provide predictions very close to the final ones (see e.g. Fig. 3 in Munoz et al., 2005). It can also be useful to see which variables determine the more general trends in the model predictions, and which just add (local) additional nuances.
 }
 \value{
 This function returns a list of the following components:

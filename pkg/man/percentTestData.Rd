@@ -4,7 +4,7 @@
 Percent test data
 }
 \description{
-Based on the work of Schaafsma & van Vark (1979), Huberty (1994) provided a heuristic ("rule of thumb") for determining an adequate proportion of data to set aside for testing species presence/absence models, based on the number of predictor variables that are used (Fielding & Bell 1997). The \code{percentTestData} function calculates this proportion as a percentage.
+Based on the work of Schaafsma & van Vark (1979), Huberty (1994) provided a heuristic ("rule of thumb") for determining an adequate proportion of data to set aside for testing species presence/absence models, based on the number of predictor variables that are used (Fielding & Bell 1997). The 'percentTestData' function calculates this proportion as a percentage.
 }
 \usage{
 percentTestData(nvar)

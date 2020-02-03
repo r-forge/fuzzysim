@@ -11,21 +11,21 @@ splist2presabs(data, sites.col, sp.col, keep.n = FALSE)
 }
 \arguments{
   \item{data}{
-a matrix or data frame with localities in one column and species in another column. Type \code{data(rotifers); head(rotifers)} for an example.
+a matrix or data frame with localities in one column and species in another column. Type or paste 'data(rotifers); head(rotifers)' (without the quote marks) in the R console for an example.
 }
   \item{sites.col}{
-the name or index number of the column containing the localities in \code{data}.
+the name or index number of the column containing the localities in 'data'.
 }
   \item{sp.col}{
- the name or index number of the column containing the species names or codes in  \code{data}.
+ the name or index number of the column containing the species names or codes in  'data'.
 }
   \item{keep.n}{
-logical value indicating whether to get in the resulting table the number of times each species appears in each locality; if \code{FALSE} (the default), only presence (1) or absence (0) is recorded.
+logical value indicating whether to get in the resulting table the number of times each species appears in each locality; if FALSE (the default), only presence (1) or absence (0) is recorded.
 }
 }
 \value{
-A data frame containing the localities in the first column and then one column per species indicating their presence (or their number of records if \code{keep.n = TRUE)} and absence. Type \code{data(rotif.env); 
-head(rotif.env[,18:47])} for an example.
+A data frame containing the localities in the first column and then one column per species indicating their presence or absence (or their number of records if keep.n = TRUE). Type 'data(rotif.env); 
+head(rotif.env[,18:47])' (without the quote marks) in the R console for an example.
 }
 \author{
 A. Marcia Barbosa

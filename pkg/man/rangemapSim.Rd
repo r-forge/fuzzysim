@@ -16,7 +16,7 @@ diag = FALSE, upper = FALSE, verbosity = 2)
 a matrix like the one produced by function \code{\link{pairwiseRangemaps}}, containing the areas of pairwise intersection among rangemaps in the lower triangle, individual rangemap areas in the diagonal, and pairwise union areas in the upper diagonal.
 }
   \item{total.area}{
-numeric value indicating the total size of the study area, in the same units as the areas in the \code{rangemap.matrix}. Used only if the \code{method} uses shared absences (as is the case of \code{"Baroni"})
+numeric value indicating the total size of the study area, in the same units as the areas in the \code{rangemap.matrix}. Used only if 'method' uses shared absences (as is the case of "Baroni")
 }
   \item{method}{
 character value indicating the similarity index to use. Currently implemented indices are "Jaccard", "Sorensen", "Simpson" and "Baroni". The default is the first one.

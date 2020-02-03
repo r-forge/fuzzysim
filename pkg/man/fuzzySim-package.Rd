@@ -6,14 +6,14 @@
 Fuzzy Similarity in Species Distributions
 }
 \description{
-Functions to calculate fuzzy versions of species' occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis and prevalence-independent favourability GLM), and pair-wise fuzzy similarity (based on fuzzy versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), transposing part of a data frame, assessing the false discovery rate, or analysing and dealing with multicollinearity among variables. Includes also sample datasets for providing practical examples. A step-by-step illustrated tutorial is available from the package homepage (http://fuzzysim.r-forge.r-project.org).
+Functions to calculate fuzzy versions of species occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis, and prevalence-independent favourability, obtained from probability of presence), as well as pair-wise fuzzy similarity (based on fuzzy logical versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for data preparation, such as obtaining unique abbreviations of species names, gridding point occurrence data onto raster maps, converting species lists (long format) to presence-absence tables (wide format), transposing part of a data frame, selecting relevant variables for models, assessing the false discovery rate, or analysing and dealing with multicollinearity. Includes also sample datasets for providing practical examples. A step-by-step illustrated tutorial is available from the package homepage (http://fuzzysim.r-forge.r-project.org).
 }
 \details{
 \tabular{ll}{
 Package: \tab fuzzySim\cr
 Type: \tab Package\cr
-Version: \tab 2.5\cr
-Date: \tab 2020-01-31\cr
+Version: \tab 2.6\cr
+Date: \tab 2020-02-03\cr
 License: \tab GPL-3\cr
 }
 }

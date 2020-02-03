@@ -12,25 +12,25 @@ sample.preval = NULL, method = "RBV", true.preval = NULL)
 }
 \arguments{
   \item{model}{
-a model object of class \code{"glm"} and binomial family.
+a model object of class "glm" and binomial family.
 }
   \item{obs}{
-a vector of the 1/0 values of the modelled binary variable. This argument is ignored if \code{model} is provided.
+a vector of the 1 and 0 values of the modelled binary variable. This argument is ignored if 'model' is provided.
 }
   \item{pred}{
-a vector of predicted probability values for \code{obs}, given e.g. by logistic regression. This argument is ignored if \code{model} is provided.
+a vector of predicted probability values for 'obs', given e.g. by logistic regression. This argument is ignored if 'model' is provided.
 }
   \item{n1n0}{
-alternatively to \code{obs}, an integer vector of length 2 providing the total numbers of modelled ones and zeros, in this order. Ignored if \code{obs} or \code{model} is provided.
+alternatively to 'obs', an integer vector of length 2 providing the total numbers of modelled ones and zeros, in this order. Ignored if 'obs' or 'model' is provided.
 }
   \item{sample.preval}{
-alternatively to \code{obs} or \code{n1n0}, the prevalence (proportion of positive cases) of the modelled binary variable in the modelled data. Ignored if \code{model} is provided.
+alternatively to 'obs' or 'n1n0', the prevalence (proportion of positive cases) of the modelled binary variable in the modelled data. Ignored if 'model' is provided.
 }
   \item{method}{
-either \code{"RBV"} for the original Real, Barbosa & Vargas (2006) procedure, or \code{"AT"}" for the modification proposed by Albert & Thuiller (2008) (but see Details).
+either "RBV" for the original Real, Barbosa & Vargas (2006) procedure, or "AT" if you want to try out the modification proposed by Albert & Thuiller (2008) (but see Details).
   }
   \item{true.preval}{
-the true prevalence (as opposed to sample prevalence), necessary if you want to use the AT method.
+the true prevalence (as opposed to sample prevalence), necessary if you want to use the "AT" method.
 }
 }
 \details{
@@ -38,7 +38,7 @@ Logistic regression (Generalised Linear Model with binomial error distribution a
 
 Using simulated data, Albert & Thuiller (2008) proposed a modification to the favourability function, but it requires knowing the true prevalence of the species (not just the prevalence in the studied sample), which is rarely possible in real-world modelling. Besides, this suggestion was based on the misunderstanding that the favourability function was a way to obtain the probability of occurrence when prevalence differs from 50\%, which is incorrect (see Acevedo & Real 2012).
 
-To get environmental favourability with either the Real, Barbosa & Vargas ("RBV") or the Albert & Thuiller ("AT") method, you just need to get a probabilistic model (e.g. logistic regression) from your data and then use the \code{Fav} function. Input data for this function are either a model object resulting from the \code{\link{glm}} function, or the presences-absences (1-0) of your species and the corresponding presence probability values, obtained e.g. with predict(mymodel, mydata, type = "response"). Alternatively to the presences-absences, you can provide either the sample prevalence or the numbers of presences and absences. In case you want to use the "AT" method, you also need to provide the true (absolute) prevalence of your species.
+To get environmental favourability with either the Real, Barbosa & Vargas ("RBV") or the Albert & Thuiller ("AT") method, you just need to get a probabilistic model (e.g. logistic regression) from your data and then use the 'Fav' function. Input data for this function are either a model object resulting from the \code{\link{glm}} function, or the presences-absences (1-0) of your species and the corresponding presence probability values, obtained e.g. with predict(mymodel, mydata, type = "response"). Alternatively to the presences-absences, you can provide either the sample prevalence or the numbers of presences and absences. In case you want to use the "AT" method, you also need to provide the true (absolute) prevalence of your species.
 }
 \value{
 A numeric vector of the favourability values corresponding to the input probability values.

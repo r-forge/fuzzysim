@@ -12,12 +12,12 @@ less space.
 integerCols(data)
 }
 \arguments{
-  \item{data}{a data frame containing possibly integer columns classified as \code{numeric}.}
+  \item{data}{a data frame containing possibly integer columns classified as "numeric".}
 }
 \value{
-The function returns a data frame with the same columns as \code{data}, but with
+The function returns a data frame with the same columns as 'data', but with
 those that are numeric and contain only whole numbers (possibly including NA)
-now classified as \code{integer}.
+now classified as "integer".
 }
 \author{A. Marcia Barbosa}
 \seealso{
@@ -37,7 +37,7 @@ dat <- data.frame(
 dat
 
 str(dat)
-# var2 classified as 'numeric' but contains only whole numbers
+# var2 classified as "numeric" but contains only whole numbers
 # var3 same as var2 but containing also NA values
 # var4 same as var2 but containing also NaN and infinite values
 # var5 contains only whole numbers but initially classified as factor
@@ -45,7 +45,7 @@ str(dat)
 dat <- integerCols(dat)
 
 str(dat)
-# var2 and var3 now classified as 'integer'
+# var2 and var3 now classified as "integer"
 # var4 remains as numeric because contains infinite and NaN 
 # (not integer) values
 # var5 remains as factor

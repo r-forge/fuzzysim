@@ -21,18 +21,17 @@ the number of characters from the genus name to be included in the resulting spe
 the number of characters from the specific name to be included in the resulting species code.
 }
   \item{nchar.ssp}{
-optionally, the number of characters from the subspecific name to be included in the resulting species code. Set it to 0 if you have subspecific names in \code{species} but do not want them included in the resulting species codes.
+optionally, the number of characters from the subspecific name to be included in the resulting species code. Set it to 0 if you have subspecific names in 'species' but do not want them included in the resulting species codes.
 }
   \item{sep.species}{
-the character that separates genus, specific and subspecific names in \code{species}. The default is a white space.
+the character that separates genus, specific and subspecific names in 'species'. The default is a white space.
 }
   \item{sep.spcode}{
 the character you want separating genus and species abbreviations in the resulting species codes. The default is an empty character (no separator).
 }
 }
 \value{
-This function returns a character vector containing the species codes resulting from the abbreviation. If the numbers of characters specified do not make for unique codes, an error message is displayed showing which \code{species} names caused it, so that you can try again with different \code{nchar.gen}, \code{nchar.sp} and/or
-\code{nchar.ssp}.
+This function returns a character vector containing the species codes resulting from the abbreviation. If the numbers of characters specified do not make for unique codes, an error message is displayed showing which 'species' names caused it, so that you can try again with different 'nchar.gen', 'nchar.sp' and/or 'nchar.ssp'.
 }
 \author{
 A. Marcia Barbosa

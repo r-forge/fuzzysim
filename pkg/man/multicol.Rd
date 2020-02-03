@@ -12,7 +12,7 @@ multicol(vars = NULL, model = NULL, reorder = TRUE)
 A matrix or data frame containing the numeric variables for which to calculate multicollinearity. Only the 'independent' (predictor, explanatory, right hand side) variables should be entered, as the result obtained for each variable depends on all the other variables present in the analysed data set.
 }
   \item{model}{
-Alternatively to \code{vars}, a \code{glm} model object to calculate \code{multicol} among the included variables.
+Alternatively to 'vars', a model object of class "glm" to calculate 'multicol' among the included variables.
 }
   \item{reorder}{
 logical, whether variables should be output in decreasing order or VIF value rather than in their input order. The default is TRUE.

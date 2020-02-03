@@ -8,8 +8,8 @@ modOverlap(pred1, pred2, na.rm = TRUE)
 }
 \arguments{
   \item{pred1}{numeric vector of the predictions of a generalized linear model (values between 0 and 1).}
-  \item{pred2}{numeric vector of the predictions of another generalized linear model; must be of the same length and in the same order as \code{pred1}.}
-  \item{na.rm}{logical value indicating whether \code{NA} values should be removed prior to calculation.}
+  \item{pred2}{numeric vector of the predictions of another generalized linear model; must be of the same length and in the same order as 'pred1'.}
+  \item{na.rm}{logical value indicating whether NA values should be removed prior to calculation. The default is TRUE.}
 }
 \details{
 See Warren et al. (2008).

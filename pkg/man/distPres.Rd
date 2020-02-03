@@ -41,10 +41,10 @@ logical value indicating whether distance should be inverted, i.e. standardized 
 }
 }
 \details{
-This functin can be used to calculate a simple spatial interpolation model of a species' distribution (e.g. Barbosa 2015, Areias-Guerreiro et al. 2016).
+This function can be used to calculate a simple spatial interpolation model of a species' distribution (e.g. Barbosa 2015, Areias-Guerreiro et al. 2016).
 }
 \value{
-\code{distPres} returns a matrix or data frame containing the identifier column (if provided in \code{id.col}) and one column per species containing the distance (inverse by default) from each locality to the nearest presence of that species.
+This function returns a matrix or data frame containing the identifier column (if provided in 'id.col') and one column per species containing the distance (inverse by default) from each locality to the nearest presence of that species.
 }
 \references{
 Areias-Guerreiro J., Mira A. & Barbosa A.M. (2016) How well can models predict changes in species distributions? A 13-year-old otter model revisited. Hystrix - Italian Journal of Mammalogy, in press. DOI: http://dx.doi.org/10.4404/hystrix-27.1-11867

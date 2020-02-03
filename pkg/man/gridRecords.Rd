@@ -52,6 +52,7 @@ A. Marcia Barbosa
 # you can run the following code if you have the 'raster' and 'sp' packages installed
 
 # import a system raster with 3 layers and crop it to a smaller extent:
+require(raster)
 rst <- stack(system.file("external/rlogo.grd", package = "raster"))
 ext <- extent(c(0, 15, 25, 40))
 rst <- crop(rst, ext)

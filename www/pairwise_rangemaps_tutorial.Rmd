@@ -1,7 +1,7 @@
 ---
 title: "A brief tutorial on quantifying pairwise similarity between rangemaps"
-author: "A. Marcia Barbosa"
-date: "First published 12 February 2016; updated 23 February 2016"
+author: "A. Marcia Barbosa (https://modtools.wordpress.com)"
+date: "First published 12 February 2016; updated 28 February 2020"
 output: html_document
 ---
 
@@ -37,9 +37,9 @@ rangemap_jac <- rangemapSim(rangemap_matrix)
 rangemap_jac
 ```
 
-Check out the help files of these functions (`help(pairwiseRangemaps)`; `help(rangemapSim)`) for additional options and information. And that's it! You can e-mail me with any suggestions or concerns, but first remember to check for updates to the package or this tutorial at <http://fuzzysim.r-forge.r-project.org>. This tutorial was built with *RStudio* + *rmarkdown* + *knitr*. Thanks!
+Check out the help files of these functions (`help(pairwiseRangemaps)`; `help(rangemapSim)`) for additional options and information. And that's it! You can [contact me](https://modtools.wordpress.com/barbosa) with any suggestions or concerns, but first remember to check for updates to the package or to this tutorial at <http://fuzzysim.r-forge.r-project.org>. This tutorial was built with *RStudio* + *rmarkdown* + *knitr*. Thanks!
 
 ### References
-Barbosa A.M. (2015) `fuzzySim`: applying fuzzy logic to binary similarity indices in ecology. *Methods in Ecology and Evolution*, 6: 853-858 (DOI: [10.1111/2041-210X.12372](http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract))
+Barbosa A.M. (2015) [`fuzzySim`: applying fuzzy logic to binary similarity indices in ecology]( https://doi.org/10.1111/2041-210X.12372). *Methods in Ecology and Evolution*, 6: 853-858
 
-Barbosa A.M. & Estrada A. (in press) Calcular corotipos sin dividir el territorio en OGUs: una adaptacion de los indices de similitud para su utilizacion directa sobre areas de distribucion. In: *Areas de distribucion: entre puentes y barreras*. Universidad de Granada, Spain.
+Barbosa A.M. & Estrada A. (2016) Calcular corotipos sin dividir el territorio en OGUs: una adaptación de los índices de similitud para su utilización directa sobre áreas de distribución. In: Gómez Zotano J., Arias García J., Olmedo Cobo J.A. & Serrano Montes J.L. (eds.), [Avances en Biogeografía. Áreas de Distribución: Entre Puentes y Barreras](https://www.tundraediciones.es/index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=119&virtuemart_category_id=25&Itemid=154&lang=es), pp. 157-163. Editorial Universidad de Granada & Tundra Ediciones, Granada (Spain)

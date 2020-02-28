@@ -1,0 +1,163 @@
+---
+title: "A quick guide to species distribution modelling with *fuzzySim*"
+author: "A. Marcia Barbosa (https://modtools.wordpress.com)"
+date: "updated 28 Feb  2015"
+output: html_document
+---
+
+*fuzzySim* is an R package ultimately designed for calculating fuzzy similarity in species distributions. Meanwhile, it can also produce fuzzy species occurrence data to calculate fuzzy similarity from. Among the most widely used methods to produce such fuzzy occurrence data is **generalized linear modeling of species presence-absence records**, which can provide both **occurrence probability** and **environmental favourability**. This tutorial will explore such modelling and its applications.
+
+
+## Installing and loading *fuzzySim*
+
+The ***fuzzySim*** package works within the free and open-source R statistical software, so you first need to **download, install and open R** (available at <http://www.r-project.org>). In this tutorial, in `monospaced` font are the commands that you need to type (or copy and paste) into the R console (and then press the *enter* key to execute them). For commands that generate visible results in R, these are usually shown below them, preceded by hash marks (##). Note that all **commands are case-sensitive**, so you must respect upper- and lower-case letters; that you must always use **straight** (`'`, `"`) **rather than curly quotes and apostrophes**; and that **R is only ready to receive a new command when there's a prompt sign (>) at the end of the R console**; if not, it's still waiting for an operation to be finished or for you to complete a previous command -- watch out for unclosed parentheses or such.
+
+**Install *fuzzySim*** by pasting the command below in the R console (when connected to the internet):
+
+```{r, eval=FALSE}
+install.packages("fuzzySim")
+```
+
+You only need to install the package once (unless a new version becomes available), but you need to **load it every time you open a new R session** in which you intend to use *fuzzySim* (no need for an internet connection anymore), by getting it from your R library with the following command in R:
+
+```{r, warning=FALSE, message=FALSE}
+library(fuzzySim)
+```
+
+
+## Preparing and modelling the data
+
+>**NOTE**: This package works with species occurrence data in presence-absence tables. If your data are point occurrences and raster maps, check out [this blog post](https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/) on how to convert them into tabular presence-absence data.
+
+For species distribution modelling, you'll need a table with species presences and absences in *wide* format, i.e., one species per column and their presences and absences as ones and zeros; if your data are in *long* format, with all species in the same column, check out `help(splist2presabs)` for a way to convert them. You'll also need the values of a set of predictor variables to use in the model(s). For an example of how your data should be organised, look at the *rotif.env* sample dataset that comes with *fuzzySim* (a global dataset of rotifer distribution records published with [this article](http://onlinelibrary.wiley.com/doi/10.1111/j.1600-0587.2011.06850.x/abstract)). The following command will load this dataset in your R session:
+
+```{r}
+data(rotif.env)
+```
+
+You can get more information on this dataset with the following command, which should open an R Documentation window:
+
+```{r, eval=FALSE}
+help(rotif.env)
+```
+
+Now **look at the first rows** of this dataset:
+
+```{r}
+head(rotif.env)
+```
+
+Show the **column names** of this dataset, to see which columns contain the species data and which contain the variables:
+
+```{r}
+names(rotif.env)
+```
+
+You can see that predictor variables are in columns 5 to 17 and species presence/absence data are in columns 18 to 47. You can **get distribution models for multiple species simultaneously** with the *multGLM* function of *fuzzySim*. You must specify the name of the dataset, the names or index numbers of the columns containing the species data and the variables, and optionally the name or index number of the column containing the row identifiers. There are a number of additional options on how to select variables for the models; the following command will create an object named *rotif.mods* containing models built for each of these species with the default *multGLM* settings:
+
+```{r, results='hide', message=FALSE}
+rotif.mods <- multGLM(data = rotif.env, sp.cols = 18:47, var.cols = 5:17, id.col = 1)
+```
+
+The object output by *multGLM* is a list containing three elements: a dataframe with the resulting *predictions* (of which you can see the first rows by typing `head(rotif.mods$predictions)`), a list named *models* with the model objects (which you can call by typing `rotif.mods$models`), and a list of vectors naming the *variables* included in each model (`rotif.mods$variables`). Let's check out one of the models, for example the first one in the list:
+
+```{r}
+summary(rotif.mods$models[[1]])
+```
+
+You can also call a model by the name of the species in the modelled dataset (result will be the same as above):
+
+```{r, eval=FALSE}
+summary(rotif.mods$models[["Abrigh"]])
+```
+
+## Additional modelling options
+
+Let's now take a closer look at the different modelling options available in *multGLM*. If you type `help(multGLM)`, under Usage, you can see which are the default parameters:
+ 
+```{r, eval=FALSE}
+multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, cor.thresh = 0.8, step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2)
+```
+
+So, the command above should produce the same results as the *multGLM* command executed before, where most of these arguments were not speficied explicitly. The first three arguments (*data*, *sp.cols* and *var.cols*) do not have default values, so they always need to be specified by the user; but the remaining parameters have their default values set, so for example you can keep *id.col* as *NULL* if you don't have or don't want to use an ID column. The *family* argument currently has only one option available in *multGLM*, so the function will produce an error message if you try to specify a different one.
+
+The ***test.sample*** argument is 0 by default, but it can be increased if you want part of the data to be reserved for further testing of the model, and thus not used for model building. You can specify either a value between 0 and 1, for a **proportion** of the data to choose randomly (e.g. 0.2 for 20%); an integer number, for a particular **number of cases** to choose randomly among the rows in data; a vector of integers, for the **index numbers** of the particular rows to set aside; or **"Huberty"**, for his **rule of thumb** on how many data should be set aside based on the number of variables.
+
+The ***FDR*** argument, which is FALSE by default, indicates whether there should be a pre-selection of variables based on the significance of their bivariate relationship with the species' occurrence. If you set it to TRUE, the *FDR* function is called automatically -- see `help(FDR)` for more info on the procedure, though you don't need to use this function directly.
+
+The ***corSelect*** argument, which is also FALSE by default, indicates whether there should be a pre-selection of variables with pair-wise correlations above the threshold given in the next argument (*cor.thresh*). If you set it to TRUE, the *corSelect* function is called automatically -- see `help(corSelect)` for more info on the procedure, though you don't need to use this function directly.
+
+The ***step*** argument, which is TRUE by default, defines whether variables should be included in the models with a stepwise selection procedure based on Akaike's Information Criterion (AIC), using the *step* function of R. The three following arguments are relevant only when *step = TRUE*: ***trace*** shows (or not, if FALSE) the intermediate results of the stepwise inclusion of model variables; ***start*** defines whether the inclusion of the variables should start forward (with "null.model") or backward (with "full.model)"; and ***direction*** specifies in which direction the variable selection should proceed ("forward", "backward", or "both"; see `help(step)` for more info.)
+
+Arguments ***Y.prediction***, ***P.prediction*** and ***Favourability*** define the type of predictions you want in the output *predictions* table. *Y* (FALSE by default) is the prediction in the scale of the predictor variables (i.e. the logit equation); *P* is the prediction in the scale of the response variable (i.e. probability, varying between 0 and 1); and *Favourability* is the prevalence-independent version of probability (also between 0 and 1), which can be directly compared across species (see Details in `help(Fav)` for more info).
+
+Argument ***TSA***, which is FALSE by default, lets you define whether you want a trend surface analysis (calculated individually for each species) to be automatically added as an additional spatial variable in each model. The two following arguments, ***coord.cols*** and ***degree***, are used when *TSA = TRUE*. See `help(multTSA)` for more information.
+
+
+## Model evaluation
+
+You can **analyse these models and evaluate their performance** with the ***modEvA* R package**, which is also available on [CRAN](https://CRAN.R-project.org/package=modEvA) and on [R-Forge](http://modeva.r-forge.r-project.org/) together with [another short tutorial](http://modeva.r-forge.r-project.org/modEvA-tutorial.html).
+
+
+## Model extrapolation and comparison
+
+You can **apply all these models at once to a different dataset** (which can be either a table or a raster stack) containing the same variables (with the same names) but for another region or time period: see the Examples in `help(getPreds)` for how to do this.
+
+If you've calculated Favourability, which is directly comparable among species with different prevalences, you can then use **fuzzy logic** to combine the predictions of different models thorough **intersection**, **union** and **other logical operations**. These can get you, for example, the **favourability for** the **simultaneous occurrence** of a set of species, or the **favourability for occurrence of at least one** of the species in the given set (see e.g. [this article](https://modtools.files.wordpress.com/2012/07/barbosa-real-2012-fuzzy-logic-comparative-modelling-tswj.pdf) for illustrated details). You can also calculate the **fuzzy consensus** between a bunch of models, i.e., the fuzzy equivalent of the proportion of models that agree that the species occurs at each site.
+
+```{r, eval=FALSE}
+names(rotif.mods$predictions)  # see which are the favourability (_F) columns; 32:61 in this case
+rotif.mods$predictions$Fav_all <- fuzzyOverlay(rotif.mods$predictions[ , 32:61], op = "intersection")
+rotif.mods$predictions$Fav_any <- fuzzyOverlay(rotif.mods$predictions[ , 32:61], op = "union")
+rotif.mods$predictions$consensus <- fuzzyOverlay(rotif.mods$predictions[ , 32:61], op = "consensus")
+
+```
+
+You can also quantify overall similarity between models, e.g. with **niche comparison metrics** (such as Schoener's D and Warren's I, which quantify how similar two environmental models are) available in the *modOverlap* function, or with **fuzzy versions of classic binary similarity indices** (Jaccard, Baroni, Sorensen, Simpson) with the *fuzSim* function; Jaccard and Baroni's indices have the advantage of having associated tables of significance, so you can know if the similarity between your models is higher, lower, or similar to what could be expected by chance given your sample size.
+
+```{r, eval=FALSE}
+fav_current <- rotif.mods$predictions$Ttetra_F
+# imagine you have a model prediction for this species in a future time
+# (here we will create one by randomly jittering the current predictions)
+fav_imag <- jitter(fav_current, amount = 0.2)
+fav_imag[fav_imag < 0] <- 0
+fav_imag[fav_imag > 1] <- 1
+# now calculate similarity between current and imaginary predictions:
+modOverlap(fav_current, fav_imag)
+fuzSim(fav_current, fav_imag, method = "Jaccard")
+fuzSim(fav_current, fav_imag, method = "Baroni")
+```
+
+And you can quantify overall range changes (the fuzzy equivalent of expansion area, contraction area, maintenance area and overall balance) based on the predictions of two models for different time periods:
+
+```{r, eval=FALSE}
+fuzzyRangeChange(fav_current, fav_imag)  # results are given as proportion
+# unless otherwise specified:
+fuzzyRangeChange(fav_current, fav_imag, prop = FALSE)
+```
+
+
+## Saving your results
+
+You can save your model predictions to disk, for example in CSV format, with the following command:
+
+```{r, eval=FALSE}
+write.csv(rotif.mods$predictions, file = "predictions.csv")
+```
+
+
+## Modelling your own data
+
+If you want to try this out with your own species data, get the data into R -- e.g. save your **table in a text file**, with **column names in the first row** and columns **separated by tabulators**, name the file *mydata.txt*, save it in your R working directory (type `getwd()` to find out where it is), and then import it to R with the following command:
+
+```{r, eval=FALSE}
+mydata <- read.table("mydata.txt", header = TRUE, sep = "\t")
+```
+
+As noted above, if your data are point occurrences and raster maps, you can check out [this blog post](https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/) on how to convert them into tabular presence-absence data.
+
+Then reproduce the operations above, but replacing *rotif.env* with *mydata* (or whatever name you've assigned in the above command) and specifying your column index numbers accordingly. If you use *fuzzySim* in publications, please **cite the paper**:
+
+> Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. *Methods in Ecology and Evolution*, 6: 853-858 (DOI: [10.1111/2041-210X.12372](http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract)).
+
+That's it! You can [contact me](https://modtools.wordpress.com/barbosa) with any suggestions or concerns, but first remember to check for updates to the package or to this tutorial at <http://fuzzysim.r-forge.r-project.org>. This tutorial was built with *RStudio* + *rmarkdown* + *knitr*. Thanks!

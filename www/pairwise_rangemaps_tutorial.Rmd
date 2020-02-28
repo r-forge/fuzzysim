@@ -1,0 +1,45 @@
+---
+title: "A brief tutorial on quantifying pairwise similarity between rangemaps"
+author: "A. Marcia Barbosa"
+date: "First published 12 February 2016; updated 23 February 2016"
+output: html_document
+---
+
+Similarity between rangemaps can allow the detection of **associations among species distributions**, with important applications in macroecology, biogeography and conservation planning. Commonly used similarity indices use counts of species occurrences and co-occurrences in discrete localities, regions or grid cells. However, **gridding rangemaps distorts species' distribution limits**, generally **overestimating their overlap** and sometimes **overriding important geographical barriers** (Barbosa & Estrada, in press). This tutorial shows how to calculate **similarity between ungridded rangemaps** with R. First, **download, install and open R**, which is freely available at [CRAN](https://cran.rstudio.com).
+
+Functions to calculate the areas of pairwise intersection and union between rangemaps and to assess rangemap similarity are implemented in **R package *fuzzySim*** (Barbosa, 2015). The first of these functions needs some other packages to work. You can paste the following code in the R console (and then press *enter*) to install all of these packages if they're not already there:
+
+```{r, warning=FALSE, message=FALSE}
+for (pkg in c("fuzzySim", "tools", "PBSmapping", "maptools", "sp")) {
+  if (pkg == "fuzzySim")  rp <- "http://R-Forge.R-project.org"
+  else  rp <- "http://cran.rstudio.com"
+  if (!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg, repos = rp)
+}
+```
+
+Now you'll need some shapefile rangemaps to compare. You can use my [**sample rangemap set**](https://www.dropbox.com/s/3k0ikq5dwlrg5ss/imagine_rangemaps.zip?dl=0) for experimenting. **Download** it to your R working directory -- find out which it is by typing `getwd()` -- and **unzip it**. You should now have some shapefiles in a **folder called "*imagine_rangemaps*" in your R working directory**. The following code will get you a matrix containing the **areas of pair-wise intersection** (in the lower triangle) **and union** (in the upper triangle) of the shapefiles in this folder (the diagonal contains the area of each individual rangemap):
+
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+require(fuzzySim)
+my_rangemaps <- list.files(path = "imagine_rangemaps", pattern = ".shp", full.names = TRUE)
+my_rangemaps
+rangemap_matrix <- pairwiseRangemaps(my_rangemaps, projection = 3035, Ncpu = 1, chunks = 1, filename = "rangemap_matrix.csv")
+rangemap_matrix
+```
+
+This calculation can be very intensive and slow if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. If your computer has more than one core that you can use, you can **increase `Ncpu`** (e.g., replace `Ncpu = 1` with `Ncpu = 3` in the command above; you can find out the number of cores in your machine by typing `parallel::detectCores()`) to get **parallel computing**. If there are many rangemaps, you should also **set `chunks = "decreasing"`** for the matrix to be calculated in parts and the memory cleaned between one part and the next.
+
+Once you have your `rangemap_matrix`, you can use it to **calculate pairwise similarity** between the rangemaps, using a variety of indices. Jaccard is the one used by default:
+
+```{r, eval=FALSE}
+rangemap_jac <- rangemapSim(rangemap_matrix)
+rangemap_jac
+```
+
+Check out the help files of these functions (`help(pairwiseRangemaps)`; `help(rangemapSim)`) for additional options and information. And that's it! You can e-mail me with any suggestions or concerns, but first remember to check for updates to the package or this tutorial at <http://fuzzysim.r-forge.r-project.org>. This tutorial was built with *RStudio* + *rmarkdown* + *knitr*. Thanks!
+
+### References
+Barbosa A.M. (2015) `fuzzySim`: applying fuzzy logic to binary similarity indices in ecology. *Methods in Ecology and Evolution*, 6: 853-858 (DOI: [10.1111/2041-210X.12372](http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract))
+
+Barbosa A.M. & Estrada A. (in press) Calcular corotipos sin dividir el territorio en OGUs: una adaptacion de los indices de similitud para su utilizacion directa sobre areas de distribucion. In: *Areas de distribucion: entre puentes y barreras*. Universidad de Granada, Spain.

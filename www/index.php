@@ -89,6 +89,8 @@ echo $contents; } ?>
 
 <p> A number of <strong>articles</strong> have already <strong>used or cited <i>fuzzySim</i></strong> in diverse studies, from biogeography and evolutionary ecology to climatology or robotics -- here are just a few examples, <strong>excluding self-citations</strong>:</p>
 
+<p> Aximoff I., Carvalho W.D., Romero D., Lustosa Esberard C.E., Guerrero L.M. & Rosalino L.M. (2020) Unravelling the drivers of maned wolf activity along an elevational gradient in the Atlantic Forest, south-eastern Brazil. Mamm Biol 100, 187-201. DOI: 10.1007/s42991-020-00017-x</p>
+
 <p> Broeckhoven C., El Adak Y., Hui C., Van Damme R. & Stankowich T. (2018) On dangerous ground: the evolution of body armour in cordyline lizards. <i>Proceedings of the Royal Society B: Biological Sciences/<i> 285(1880): 20180513. DOI: 10.1098/rspb.2018.0513</p>
 
 <p> Caravaggi A., Leach K., Santilli F., Rintala J., Helle P., Tiainen J., Bisi F., Martinoli A., Montgomery W.I. & Reid N. (2017) Niche overlap of mountain hare subspecies and the vulnerability of their ranges to invasion by the European hare; the (bad) luck of the Irish. <i>Biological Invasions</i>, 19: 655-674. DOI: 10.1007/s10530-016-1330-z
@@ -100,6 +102,8 @@ echo $contents; } ?>
 <p> Dick D.G. & Laflamme M. (2018) Fuzzy ecospace modelling. <i>Methods in Ecology and Evolution</i>, 9(6): 1442-1452. DOI: 10.1111/2041-210X.13010 </p>
 
 <p> Herkt K.M.B., Skidmore A.K., Fahr J. (2017) Macroecological conclusions based on IUCN expert maps: A call for caution. <i>Global Ecology and Biogeography</i>, 26: 930-941. DOI: 10.1111/geb.12601</p>
+
+<p>Moreno‐Zarate L., Estrada A., Peach W. & Arroyo B. (2020) Spatial heterogeneity in population change of the globally threatened European turtle dove in Spain: The role of environmental favourability and land use. Diversity & Distributions, https://doi.org/10.1111/ddi.13067</p>
 
 <p> Romero D., Olivero J., Real R. & Guerrero J.C. (2019) Applying fuzzy logic to assess the biogeographical risk of dengue in South America. <i>Parasites & Vectors</i>, 12: 428. DOI: 10.1186/s13071-019-3691-5</p>
 

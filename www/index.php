@@ -91,7 +91,7 @@ echo $contents; } ?>
 
 <p> Aximoff I., Carvalho W.D., Romero D., Lustosa Esberard C.E., Guerrero L.M. & Rosalino L.M. (2020) Unravelling the drivers of maned wolf activity along an elevational gradient in the Atlantic Forest, south-eastern Brazil. Mamm Biol 100, 187-201. DOI: 10.1007/s42991-020-00017-x</p>
 
-<p> Broeckhoven C., El Adak Y., Hui C., Van Damme R. & Stankowich T. (2018) On dangerous ground: the evolution of body armour in cordyline lizards. <i>Proceedings of the Royal Society B: Biological Sciences/<i> 285(1880): 20180513. DOI: 10.1098/rspb.2018.0513</p>
+<p> Broeckhoven C., El Adak Y., Hui C., Van Damme R. & Stankowich T. (2018) On dangerous ground: the evolution of body armour in cordyline lizards. <i>Proceedings of the Royal Society B: Biological Sciences/</i> 285(1880): 20180513. DOI: 10.1098/rspb.2018.0513</p>
 
 <p> Caravaggi A., Leach K., Santilli F., Rintala J., Helle P., Tiainen J., Bisi F., Martinoli A., Montgomery W.I. & Reid N. (2017) Niche overlap of mountain hare subspecies and the vulnerability of their ranges to invasion by the European hare; the (bad) luck of the Irish. <i>Biological Invasions</i>, 19: 655-674. DOI: 10.1007/s10530-016-1330-z
 

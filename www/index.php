@@ -109,7 +109,9 @@ echo $contents; } ?>
 
 <p>Petrosyan V., Osipov F., Bobrov V., Dergunova N., Omelchenko A., Varshavskiy A., Danielyan F. & Arakelyan M. (2020) Species Distribution Models and Niche Partitioning among Unisexual <i>Darevskia dahli</i> and Its Parental Bisexual (<i>D. portschinskii</i>, <i>D. mixta</i>) Rock Lizards in the Caucasus. <i>Mathematics</i>, 8: 1329. DOI: 10.3390/math8081329</p>
 
-<p> Romero D., Olivero J., Real R. & Guerrero J.C. (2019) Applying fuzzy logic to assess the biogeographical risk of dengue in South America. <i>Parasites & Vectors</i>, 12: 428. DOI: 10.1186/s13071-019-3691-5</p>
+<p>Romero D., Olivero J., Real R. & Guerrero J.C. (2019) Applying fuzzy logic to assess the biogeographical risk of dengue in South America. <i>Parasites & Vectors</i>, 12: 428. DOI: 10.1186/s13071-019-3691-5</p>
+
+<p>Silva Mendes S., Antunes de Mello Affonso P.R., de Oliveira Alves R.M., Batalha-Filho H. & Waldschmidt A.M. (2020) Integrative approach untangles the misconceptions about the range and identity of two stingless bees from the Brazilian semiarid region. <i>Journal of Apicultural Research</i>, 59(4):592-59</p>
 
 <p> Title, P.O. & Bemmels, J. (2018) ENVIREM: an expanded set of bioclimatic and topographic variables increases flexibility and improves performance of ecological niche modeling. <i>Ecography</i>, 41: 291-307. DOI:10.1111/ecog.02880</p>
 

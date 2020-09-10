@@ -1,3 +1,13 @@
+====================================
+fuzzySim v3.1 (committed 2020-09-10)
+====================================
+
+## Modified functions:
+
+* gridRecords
+- added 'absences' logical argument
+
+
 ============================================
 fuzzySim v3.0 (committed 2020-02-03) -> CRAN
 ============================================

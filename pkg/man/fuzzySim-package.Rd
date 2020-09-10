@@ -12,8 +12,8 @@ Functions to calculate fuzzy versions of species occurrence patterns based on pr
 \tabular{ll}{
 Package: \tab fuzzySim\cr
 Type: \tab Package\cr
-Version: \tab 3.0\cr
-Date: \tab 2020-02-03\cr
+Version: \tab 3.1\cr
+Date: \tab 2020-09-10\cr
 License: \tab GPL-3\cr
 }
 }
@@ -34,13 +34,13 @@ head(rotifers)
 
 # add column with species name abbreviations:
 
-rotifers$spcode <- spCodes(rotifers$species, sep.species = "_", 
+rotifers$spcode <- spCodes(rotifers$species, sep.species = "_",
 nchar.gen = 1, nchar.sp = 5, nchar.ssp = 0)
 
 head(rotifers)
 
 
-# convert species list (long format) to presence-absence table 
+# convert species list (long format) to presence-absence table
 # (wide format):
 
 rotifers.presabs <- splist2presabs(rotifers, sites.col = "TDWG4",
@@ -69,15 +69,15 @@ coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 2, inv = TRUE)
 head(rotifers.isqd)
 
 
-# get prevalence-independent environmental favourability models 
+# get prevalence-independent environmental favourability models
 # for each species:
 
 data(rotif.env)
 
 names(rotif.env)
 
-rotifers.fav <- multGLM(data = rotif.env, sp.cols = 18:20, 
-var.cols = 5:17, id.col = 1, step = FALSE, trim = TRUE, 
+rotifers.fav <- multGLM(data = rotif.env, sp.cols = 18:20,
+var.cols = 5:17, id.col = 1, step = FALSE, trim = TRUE,
 Favourability = TRUE)
 
 
@@ -87,7 +87,7 @@ Favourability = TRUE)
 rot.fuz.sim.mat <- simMat(rotifers.isqd[ , -1], method = "Jaccard")
 
 # or on environmental favourability for presence:
-rot.fuz.sim.mat <- simMat(rotifers.fav$predictions[ , 5:7], 
+rot.fuz.sim.mat <- simMat(rotifers.fav$predictions[ , 5:7],
 method = "Jaccard")
 
 head(rot.fuz.sim.mat)
@@ -104,7 +104,7 @@ reg.names = 1)
 head(rot.fuz.reg)
 
 
-# get matrix of fuzzy similarity between (some) regions' 
+# get matrix of fuzzy similarity between (some) regions'
 # species compositions:
 
 reg.fuz.sim.mat <- simMat(rot.fuz.reg[ , 1:10], method = "Jaccard")

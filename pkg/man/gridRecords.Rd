@@ -4,7 +4,7 @@
 Grid point occurrence records onto a raster
 }
 \description{
-This function takes a raster stack and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences, as well as the corresponding values of the rasters in the grid of pixels (cells). If absences = TRUE (the default) and absence coordinates are not supplied, all pixels without any presence point are returned as absences.
+This function takes a raster stack and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). If absences = TRUE (the default) and absence coordinates are not supplied, all pixels without any presence point are returned as absences.
 }
 \usage{
 gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE, na.rm = TRUE)
@@ -20,14 +20,14 @@ a matrix or data frame with two columns containing, respectively, the x and y, o
 same as 'pres.coords' but for points where the species was not detected. If NULL (the default), all pixels that are not intersected by 'pres.coords' will be output as absence cells.
 }
   \item{absences}{
-Logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.
+logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.
 }
   \item{na.rm}{
 Logical value indicating whether pixels without values in any of the 'rst' layers should be removed from the resulting data frame. The default is TRUE.
 }
 }
 \details{
-See e.g. Baez et al. (2020), where this function was used to get unique presences and abs  ences from point occurrence data at the spatial resolution of marine raster variables.
+See e.g. Baez et al. (2020), where this function was used to get unique presences and absences from point occurrence data at the spatial resolution of marine raster variables.
 }
 \value{
 This function returns a data frame with the following columns:

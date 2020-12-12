@@ -1,4 +1,19 @@
 ====================================
+fuzzySim v3.2 (committed 2020-12-12)
+====================================
+
+## Modified functions:
+
+* favClass (benefitting also bioThreat)
+- added 'is.na(fav) | ' to 'stopifnot' to avoid NA fail
+
+
+## Other changes:
+
+- added Linero et al. (2020) to references of papers using fuzzySim
+
+
+====================================
 fuzzySim v3.1 (committed 2020-09-18)
 ====================================
 

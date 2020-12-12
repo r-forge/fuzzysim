@@ -105,6 +105,8 @@ echo $contents; } ?>
 
 <p> Herkt K.M.B., Skidmore A.K., Fahr J. (2017) Macroecological conclusions based on IUCN expert maps: A call for caution. <i>Global Ecology and Biogeography</i>, 26: 930-941. DOI: 10.1111/geb.12601</p>
 
+<p> Linero D., Cuervo-Robayo A.P. & Etter A. (2020) Assessing the future conservation potential of the Amazon and Andes Protected Areas: Using the woolly monkey (<i>Lagothrix lagothricha</i>) as an umbrella species. <i>Journal for Nature Conservation</i>, 58: 125926</p>
+
 <p>Moreno‐Zarate L., Estrada A., Peach W. & Arroyo B. (2020) Spatial heterogeneity in population change of the globally threatened European turtle dove in Spain: The role of environmental favourability and land use. Diversity & Distributions, https://doi.org/10.1111/ddi.13067</p>
 
 <p>Petrosyan V., Osipov F., Bobrov V., Dergunova N., Omelchenko A., Varshavskiy A., Danielyan F. & Arakelyan M. (2020) Species Distribution Models and Niche Partitioning among Unisexual <i>Darevskia dahli</i> and Its Parental Bisexual (<i>D. portschinskii</i>, <i>D. mixta</i>) Rock Lizards in the Caucasus. <i>Mathematics</i>, 8: 1329. DOI: 10.3390/math8081329</p>

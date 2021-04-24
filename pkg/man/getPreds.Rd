@@ -8,7 +8,7 @@ This function allows getting the predictions of multiple models when applied to 
 }
 \usage{
 getPreds(data, models, id.col = NULL, Y = FALSE, P = TRUE, 
-Favourability = TRUE, incl.input = FALSE)
+Favourability = TRUE, incl.input = FALSE, verbosity = 2)
 }
 \arguments{
   \item{data}{
@@ -30,8 +30,9 @@ logical, whether to include the probability value in the predictions.
 logical, whether to include Favourability in the predictions (see \code{\link{Fav}}).
 }
   \item{incl.input}{
-logical, whether to include input columns in the output data frame (if the 'data' input is a data frame as well). The default is FALSE.
+logical, whether to include input columns in the output data frame (if the 'data' input is a data frame too). The default is FALSE.
 }
+  \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}
 }
 \value{
 This function returns the model predictions in an object of the same class as the input 'data', i.e. either a data frame or a RasterStack.

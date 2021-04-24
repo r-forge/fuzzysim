@@ -38,7 +38,7 @@ TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, ...)
   \item{TSA}{logical, whether to add a trend surface analysis (calculated individually for each species) as a spatial variable in each model. See \code{\link{multTSA}} for more details. The default is FALSE.}
   \item{coord.cols}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{degree}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
-  \item{verbosity}{integer value indicating the amount of messages to display; currently implemented values are from 0, 1, and 2 (the default).}
+  \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}
   \item{\dots}{additional arguments to be passed to \code{\link{modelTrim}}.}
 }
 \details{

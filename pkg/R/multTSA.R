@@ -1,10 +1,12 @@
-multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, ...) {
+multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, verbosity = 2, ...) {
 
   # version 2.6 (10 Dec 2018)
 
-  start.time <- Sys.time()
-  on.exit(timer(start.time))
-
+  if (verbosity > 1) {
+    start.time <- Sys.time()
+    on.exit(timer(start.time))
+  }
+  
   stopifnot (
     na.omit(as.matrix(data[ , sp.cols])) %in% c(0,1),
     #data[ , sp.cols] %in% c(NA, 0, 1),
@@ -50,7 +52,7 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
   for (s in 1:n.subjects) {
     subj.count <- subj.count + 1
     subj.name <- colnames(sp.data)[s]
-    message("Computing TSA ", subj.count, " of ", n.subjects, " (", subj.name, ") ...")
+    if (verbosity > 0) message("Computing TSA ", subj.count, " of ", n.subjects, " (", subj.name, ") ...")
     model.formula <- as.formula(paste(subj.name, "~", paste(colnames(coords.poly), collapse = "+")))
     model.expr <- expression(with(data, glm(model.formula, family = binomial, data = data)))
     if (step) {
@@ -85,7 +87,7 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
     else colnames(predictions)[1] <- colnames(data)[id.col]
   }
 
-  message("Finished!")
+  if (verbosity > 1)  message("Finished!")
 
   if (save.models) return(list(predictions = data.frame(predictions), models = models))
   else return (predictions)

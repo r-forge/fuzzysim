@@ -1,6 +1,50 @@
-====================================
+======
+TO DO:
+======
+
+- sharedFav: fix fail when bins don't have enough sample size for t.test
+- add "data" argument in 'sharedFav' and others
+- add references of papers using fuzzySim
+
+## New functions:
+* gridRecords_mult
+* (rarity_single)
+* rarity
+* vulnerability
+* overlap
+* maintenance
+* shift
+* increment
+* expansion
+* netloss
+
+
+============================================
+fuzzySim v3.3 (committed 2021-04-24)
+============================================
+
+
+## Modified functions:
+
+* simMat
+- added 'verbosity' argument
+- replaced "25%-50%-75% done" with 'utils::txtProgressBar'
+
+* multTSA
+- added 'verbosity' argument
+
+* getPreds
+- added 'verbosity' argument
+- 'data' can now also be a RasterBrick (not only dataframe or a RasterStack)
+
+* Fav
+- added 'verbosity' argument
+- 'pred' can now also be a RasterLayer (not only a numeric vector)
+
+
+============================================
 fuzzySim v3.2 (committed 2020-12-12)
-====================================
+============================================
 
 ## Modified functions:
 
@@ -13,9 +57,9 @@ fuzzySim v3.2 (committed 2020-12-12)
 - added Linero et al. (2020) to references of papers using fuzzySim
 
 
-====================================
+============================================
 fuzzySim v3.1 (committed 2020-09-18)
-====================================
+============================================
 
 ## Modified functions:
 

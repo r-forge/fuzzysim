@@ -9,7 +9,7 @@ This function performs trend surface analysis for one or more species at a time.
 \usage{
 multTSA(data, sp.cols, coord.cols, id.col = NULL, degree = 3, 
 step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, 
-suffix = "_TS", save.models = FALSE, ...)
+suffix = "_TS", save.models = FALSE, verbosity = 2, ...)
 }
 \arguments{
   \item{data}{
@@ -44,6 +44,9 @@ character indicating the suffix to add to the trend surface columns in the resul
 }
   \item{save.models}{
 logical value indicating whether the models obtained from the regressions should be saved and included in the output. The default is FALSE.
+}
+  \item{verbosity}{
+integer value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).
 }
   \item{\dots}{
   additional arguments to be passed to \code{\link{modelTrim}} (if step = TRUE and criterion = "significance").

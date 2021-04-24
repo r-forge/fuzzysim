@@ -7,7 +7,7 @@ Pair-wise (fuzzy) similarity matrix
 \code{simMat} takes a matrix or data frame containing species occurrence data or regional species composition, either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the \code{\link{fuzSim}} function to calculate a square matrix of pair-wise similarities between them, using a fuzzy logic version (Barbosa, 2015) of the specified similarity index.
 }
 \usage{
-simMat(data, method, diag = TRUE, upper = TRUE)
+simMat(data, method, diag = TRUE, upper = TRUE, verbosity = 2)
 }
 \arguments{
   \item{data}{
@@ -21,6 +21,9 @@ logical value indicating whether the diagonal of the matrix should be filled (wi
 }
   \item{upper}{
 logical value indicating whether the upper triangle of the matrix (symmetric to the lower triangle) should be filled. Defaults to TRUE.
+}
+  \item{verbosity}{
+integer value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).
 }
 }
 \details{

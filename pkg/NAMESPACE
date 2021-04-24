@@ -8,5 +8,7 @@ importFrom("stats", "anova", "as.formula", "binomial", "cor", "dist",
            "na.pass", "t.test")
 importFrom("utils", "combn", "installed.packages", "read.csv", "stack",
            "write.csv")
+importFrom("utils", "setTxtProgressBar", "txtProgressBar")
+
 
 

@@ -31,7 +31,7 @@ gridRecords <- function(rst,
   result <- rbind(p_extract, a_extract)
 
   if (na.rm) {
-    result_NA <- which(apply(result[ , 5:ncol(result)], MARGIN = 1, FUN = function(x) all(is.na(x))))
+    result_NA <- which(apply(result[ , 5:ncol(result), drop = FALSE], MARGIN = 1, FUN = function(x) all(is.na(x))))
     if (length(result_NA) > 0) {
       result <- result[-result_NA, ]
     }

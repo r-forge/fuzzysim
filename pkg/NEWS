@@ -2,9 +2,14 @@
 TO DO:
 ======
 
-- sharedFav: fix fail when bins don't have enough sample size for t.test
+- 'sharedFav': fix fail when bins don't have enough sample size for t.test
 - add "data" argument in 'sharedFav' and others
 - add references of papers using fuzzySim
+
+* corSelect
+- add Dsquared as criterion
+- add option for quadratic relationships
+
 
 ## New functions:
 * gridRecords_mult
@@ -20,9 +25,18 @@ TO DO:
 
 
 ============================================
-fuzzySim v3.3 (committed 2021-04-24)
+fuzzySim v3.4 (committed 2021-09-02)
 ============================================
 
+## Modified functions:
+
+* gridRecords
+- fixed bug when only one raster layer [ , drop = FALSE]
+
+
+============================================
+fuzzySim v3.3 (committed 2021-04-24)
+============================================
 
 ## Modified functions:
 

@@ -24,10 +24,10 @@ function(data, method, diag = TRUE, upper = TRUE, verbosity = 2) {
   
   pair <- 0
   for (ind in inds) {
+    pair <- pair + 1
     if (verbosity > 0) {
       setTxtProgressBar(progbar, pair)
     }
-    pair <- pair + 1
     row <- rownames(sim.mat)[ind[1]]
     col <- colnames(sim.mat)[ind[2]]
     sim.mat[ind[1], ind[2]] <- fuzSim(x = data[ , row], y = data[ , col], method = method)

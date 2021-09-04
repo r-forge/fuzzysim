@@ -25,6 +25,16 @@ TO DO:
 
 
 ============================================
+fuzzySim v3.5 (committed 2021-09-04)
+============================================
+
+## Modified functions:
+
+* FDR
+- fixed bug when using 'pvalues' as input (following bug report by Stephen via modTools contact form)
+
+
+============================================
 fuzzySim v3.4 (committed 2021-09-02)
 ============================================
 

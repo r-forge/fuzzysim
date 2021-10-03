@@ -4,20 +4,20 @@
 Grid point occurrence records onto a raster
 }
 \description{
-This function takes a raster stack and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). If absences = TRUE (the default) and absence coordinates are not supplied, all pixels without any presence point are returned as absences.
+This function takes a Raster* or SpatRaster object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). If absences = TRUE (the default) and absence coordinates are not supplied, all pixels without any presence point are returned as absences.
 }
 \usage{
 gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE, na.rm = TRUE)
 }
 \arguments{
   \item{rst}{
-a Raster* object with the desired spatial resolution and extent for the species presence-absence data, and the layer(s) whose values to extract for those data. The raster should be masked so that pixels have values only in relevant and reasonably surveyed areas.
+a Raster* or SpatRaster object (the latter is processed faster) with the desired spatial resolution and extent for the species presence-absence data, and the layer(s) whose values to extract for those data.
 }
   \item{pres.coords}{
 a matrix or data frame with two columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst') of the points where species presence was detected.
 }
   \item{abs.coords}{
-same as 'pres.coords' but for points where the species was not detected. If NULL (the default), all pixels that are not intersected by 'pres.coords' will be output as absence cells.
+(optional) same as 'pres.coords' but for points where the species was not detected. If NULL (the default), all pixels that are not intersected by 'pres.coords' will be output as absence cells.
 }
   \item{absences}{
 logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.
@@ -31,13 +31,13 @@ See e.g. Baez et al. (2020), where this function was used to get unique presence
 }
 \value{
 This function returns a data frame with the following columns:
-\item{'presence'}{integer, 1 for the cells with at least one presence point, and 0 for the cells without any presence point (if absences = TRUE) or with at least one absence point (if provided) AND with no presence points}
-\item{'x', 'y'}{centroid coordinates of each pixel (cell)}
-\item{'cellnumber'}{the pixel identifier in 'rst'}
+\item{'presence'}{integer, 1 for the cells (pixels) with at least one presence point, and 0 for the cells without any presence point (if absences = TRUE) or with at least one absence point (if 'abs.coords' are provided) AND with no presence points}
+\item{'x', 'y'}{centroid coordinates of each cell (pixel))}
+\item{'cell'}{the pixel identifier in 'rst'}
 \item{one column for each layer in 'rst'}{value of each pixel for each layer.}
 }
 \note{
-This function requires the \pkg{raster} package.
+This function requires either the \pkg{raster} or the \pkg{terra} package.
 }
 \references{
 Baez J.C., Barbosa A.M., Pascual P., Ramos M.L. & Abascal F. (2020) Ensemble modelling of the potential distribution of the whale shark in the Atlantic Ocean. Ecology and Evolution, 10: 175-184
@@ -46,12 +46,12 @@ Baez J.C., Barbosa A.M., Pascual P., Ramos M.L. & Abascal F. (2020) Ensemble mod
 A. Marcia Barbosa
 }
 \seealso{
-'extract' in package \pkg{raster}
+'extract' in package \pkg{raster} or in package \pkg{terra}
 }
 \examples{
 \dontrun{
 
-# you can run the following code if you have the 'raster' and 'sp' packages installed
+# you can run the following code if you have the 'raster' package installed
 
 # import a system raster with 3 layers and crop it to a smaller extent:
 require(raster)

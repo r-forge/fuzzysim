@@ -3,12 +3,11 @@ importFrom("graphics", "abline", "arrows", "axis", "barplot", "lines",
 "mtext", "par", "points", "polygon")
 importFrom("methods", "is")
 importFrom("stats", "anova", "as.formula", "binomial", "cor", "dist",
-           "extractAIC", "glm", "lm", "na.omit", "nobs", "p.adjust",
+           "extractAIC", "fitted", "glm", "lm", "na.omit", "nobs", "p.adjust",
            "p.adjust.methods", "poly", "predict", "step", "update", 
            "na.pass", "t.test")
 importFrom("utils", "combn", "installed.packages", "read.csv", "stack",
-           "write.csv")
-importFrom("utils", "setTxtProgressBar", "txtProgressBar")
+           "write.csv", "setTxtProgressBar", "txtProgressBar")
 
 
 

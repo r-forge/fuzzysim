@@ -25,6 +25,21 @@ TO DO:
 
 
 ============================================
+fuzzySim v3.6 (committed 2021-09-29)
+============================================
+
+## Modified functions:
+
+* Fav
+- 'model' argument can now be of class 'glm', 'gam', 'gbm', 'randomForest' or 'bart'
+- 'pred' can now also be a 'SpatRaster' ('terra' pkg) object
+
+* gridRecords
+- 'rst' can now also be a 'SpatRaster' ('terra' pkg) object
+- Raster* 'rst' coerced to SpatRaster if 'terra' pkg is installed
+
+
+============================================
 fuzzySim v3.5 (committed 2021-09-04)
 ============================================
 

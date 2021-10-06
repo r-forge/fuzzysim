@@ -4,13 +4,13 @@ gridRecords <- function(rst,
                         absences = TRUE,
                         na.rm = TRUE) {
   
-  # version 2.1 (10 Sep 2020)
+  # version 2.2 (6 Oct 2020)
   
   if (!requireNamespace("raster") && !requireNamespace("terra")) stop("This function requires having either the 'raster' or the 'terra' package installed.")
   
   if (inherits(rst, "Raster")) {
-    if (requireNamespace("terra"))  rst <- terra::rast(rst)  # for faster processing
-    else {
+    #if (requireNamespace("terra"))  rst <- terra::rast(rst)  # for faster processing
+    #else {
       p_extract <- raster::extract(rst, pres.coords, cellnumbers = TRUE, df = TRUE)[ , -1]
       p_extract <- unique(p_extract)
       p_centroids <- raster::xyFromCell(rst, p_extract$cells)
@@ -30,7 +30,7 @@ gridRecords <- function(rst,
       } else {
         a_extract <- NULL
       }
-    }  # end if !terra
+    #}  # end if !terra
   }  # end if Raster*
   
   else if (inherits(rst, "SpatRaster")) {
@@ -67,7 +67,7 @@ gridRecords <- function(rst,
     }
   }
 
-  colnames(result) <- sub("cells", "cell", colnames(result))  # for uniformity between 'raster' and 'terra' output
+  colnames(result) <- sub("cell$", "cells", colnames(result))  # for uniformity between 'raster' and 'terra' output
   
   return(result)
 }

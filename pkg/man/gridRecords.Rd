@@ -1,10 +1,10 @@
 \name{gridRecords}
 \alias{gridRecords}
 \title{
-Grid point occurrence records onto a raster
+Grid (or thin) point occurrence records to the resolution of a raster map
 }
 \description{
-This function takes a Raster* or SpatRaster object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). If absences = TRUE (the default) and absence coordinates are not supplied, all pixels without any presence point are returned as absences.
+This function takes a Raster* or SpatRaster object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). This is analogous to removing duplicates and thinning the points with a distance equal to the raster pixel size. If absences = TRUE (the default) and absence coordinates are not supplied, all pixels without any presence point are returned as absences.
 }
 \usage{
 gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE, na.rm = TRUE)

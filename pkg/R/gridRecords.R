@@ -6,7 +6,7 @@ gridRecords <- function(rst,
   
   # version 2.2 (6 Oct 2020)
   
-  if (!requireNamespace("raster") && !requireNamespace("terra")) stop("This function requires having either the 'raster' or the 'terra' package installed.")
+  if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
   
   if (inherits(rst, "Raster")) {
     #if (requireNamespace("terra"))  rst <- terra::rast(rst)  # for faster processing

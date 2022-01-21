@@ -1,12 +1,13 @@
 Package: fuzzySim
 Type: Package
 Title: Fuzzy Similarity in Species Distributions
-Version: 3.6
-Date: 2021-09-29
+Version: 3.7
+Date: 2022-01-21
 Author: Barbosa A.M.
 Maintainer: A. Marcia Barbosa <ana.marcia.barbosa@gmail.com>
 Imports: graphics,
          methods,
+         modEvA,
          stats, 
          utils
 Suggests: 

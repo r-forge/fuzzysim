@@ -1,5 +1,5 @@
 Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preval = NULL, method = "RBV", true.preval = NULL, verbosity = 2) {
-  # version 1.5 (30 Sep 2021)
+  # version 1.6 (21 Jan 2022)
   
   if (!is.null(model)) {
     if (verbosity > 0) {
@@ -9,21 +9,25 @@ Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preva
       if (!is.null(sample.preval)) message("Argument 'sample.preval' ignored in favour of 'model'.")
     }  # end if verbosity
     
-    if (is(model, "glm") || is(model, "gam")) {
-      obs <- model$y
-      pred <- model$fitted.values
-    } else if (is(model, "gbm")) {
-      obs <- model$data$y
-      exp_y <- exp(model$fit)  # gbm provides 'fit' on the predictors' scale
-      pred <- exp_y / (1 + exp_y)  # logit to probability
-    } else if (is(model, "randomForest")) {
-      obs <- as.integer(as.character(model$y))
-      pred <- predict(model, type = "prob")[ , "1"]
-    } else if (is(model, "bart")) {
-      if (is.null(model$fit$data)) stop("'$fit$data' section not available in 'model'. Try computing the 'bart' model with 'keeptrees=TRUE', or providing other arguments here instead of 'model', i.e. 'pred' plus one of 'obs', 'n1n0' or 'sample.preval'.")
-      obs <- model$fit$data@y  # requires model ran with keeptrees=TRUE
-      pred <- stats::fitted(model, type = "response")
-    } else stop("'model' is of a non-implemented class.")
+    #   if (is(model, "glm") || is(model, "gam")) {
+    #     obs <- model$y
+    #     pred <- model$fitted.values
+    #   } else if (is(model, "gbm")) {
+    #     obs <- model$data$y
+    #     exp_y <- exp(model$fit)  # gbm provides 'fit' on the predictors' scale
+    #     pred <- exp_y / (1 + exp_y)  # logit to probability
+    #   } else if (is(model, "randomForest")) {
+    #     obs <- as.integer(as.character(model$y))
+    #     pred <- predict(model, type = "prob")[ , "1"]
+    #   } else if (is(model, "bart")) {
+    #     if (is.null(model$fit$data)) stop("'$fit$data' section not available in 'model'. Try computing the 'bart' model with 'keeptrees=TRUE', or providing other arguments here instead of 'model', i.e. 'pred' plus one of 'obs', 'n1n0' or 'sample.preval'.")
+    #     obs <- model$fit$data@y  # requires model ran with keeptrees=TRUE
+    #     pred <- stats::fitted(model, type = "response")
+    #   } else stop("'model' is of a non-implemented class.")
+    
+    obspred <- modEvA::mod2obspred(model)
+    obs <- obspred[ , "obs"]
+    pred <- obspred[ , "pred"]
   }  # end if model
   
   # if(!is.null(obs) & !is.null(pred) & !class(pred) == "RasterLayer" & length(obs) != length(pred)) {

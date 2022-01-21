@@ -1,27 +1,21 @@
-======
-TO DO:
-======
 
-- 'sharedFav': fix fail when bins don't have enough sample size for t.test
-- add "data" argument in 'sharedFav' and others
-- add references of papers using fuzzySim
+============================================
+fuzzySim v3.7 (committed 2022-01-21)
+============================================
+
+## Modified functions:
 
 * corSelect
-- add Dsquared as criterion
-- add option for quadratic relationships
+- fixed new CRAN check error (with 'all.equal' in 'corSelect') on r-devel-linux-x86_64-fedora-clang and r-devel-linux-x86_64-fedora-gcc (by manually setting the 'tolerance' argument for 'all.equal')
+
+* Fav
+- added import modEvA::mod2obspred
 
 
-## New functions:
-* gridRecords_mult
-* (rarity_single)
-* rarity
-* vulnerability
-* overlap
-* maintenance
-* shift
-* increment
-* expansion
-* netloss
+## Other modified files:
+
+* fuzsim.Rd
+- updated Sorensen wikipedia link with 'https'
 
 
 ============================================

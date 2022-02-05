@@ -1,6 +1,18 @@
+============================================
+fuzzySim v3.8 (committed 2022-02-05)
+============================================
+
+## Modified functions:
+
+* gridRecords
+- added 'species' argument for multi-species gridding
+- 'pres.coords' (and 'abs.coords' if not NULL) automatically converted with 'as.data.frame'
+- changed 'raster' to 'terra' in help file "Examples"
+- fixed bug that did ot grid absence.coords (if not NULL)
+
 
 ============================================
-fuzzySim v3.7 (committed 2022-01-21)
+fuzzySim v3.7 (committed 2022-01-21) -> CRAN
 ============================================
 
 ## Modified functions:

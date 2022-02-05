@@ -29,7 +29,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
     high.cor.mat <- high.cor.mat[order(abs(high.cor.mat$corr), decreasing = TRUE), ]
 
     if (is.null(sp.cols) & select %in% bivar.criteria) {
-      message(select, "'select' criterion not assessable without a response variable ('sp.cols'). Returning high pairwise correlations among 'var.cols'.")
+      message(select, " 'select' criterion not assessable without a response variable ('sp.cols'). Returning high pairwise correlations among 'var.cols'.")
       return (high.cor.mat)
     }
 

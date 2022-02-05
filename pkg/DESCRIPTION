@@ -1,8 +1,8 @@
 Package: fuzzySim
 Type: Package
 Title: Fuzzy Similarity in Species Distributions
-Version: 3.7
-Date: 2022-01-21
+Version: 3.8
+Date: 2022-02-05
 Author: Barbosa A.M.
 Maintainer: A. Marcia Barbosa <ana.marcia.barbosa@gmail.com>
 Imports: graphics,
@@ -18,7 +18,7 @@ Suggests:
         sp,
         terra,
         tools
-Description: Functions to calculate fuzzy versions of species' occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis and prevalence-independent favourability GLM), and pair-wise fuzzy similarity (based on fuzzy versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for model comparison (overlap and fuzzy similarity, loss or gain), and for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), transposing part of a data frame, assessing the false discovery rate, or analysing and dealing with multicollinearity among variables. Includes also sample datasets for providing practical examples.
+Description: Functions to calculate fuzzy versions of species occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis and prevalence-independent favourability GLM), and pair-wise fuzzy similarity (based on fuzzy versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for model comparison (overlap and fuzzy similarity, loss or gain), and for data preparation, such as obtaining unique abbreviations of species names, converting species lists (long format) to presence-absence tables (wide format), transposing part of a data frame, assessing the false discovery rate, or analysing and dealing with multicollinearity among variables. Includes also sample datasets for providing practical examples.
 License: GPL-3
 URL: fuzzysim.r-forge.r-project.org,
      https://CRAN.R-project.org/package=fuzzySim

@@ -7,7 +7,8 @@ Grid (or thin) point occurrence records to the resolution of a raster map
 This function takes a Raster* or SpatRaster object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). This is analogous to removing duplicates and thinning the points with a distance equal to the raster pixel size. If absences = TRUE (the default) and absence coordinates are not supplied, all pixels without any presence point are returned as absences.
 }
 \usage{
-gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE, na.rm = TRUE)
+gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE, 
+species = NULL, na.rm = TRUE)
 }
 \arguments{
   \item{rst}{
@@ -21,6 +22,9 @@ a matrix or data frame with two columns containing, respectively, the x and y, o
 }
   \item{absences}{
 logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.
+}
+  \item{species}{
+character vector of the same length as 'nrow(pres.coords)' indicating the species to which each pair of coordinates corresponds. If specified, 'abs.coords' cannot be used.
 }
   \item{na.rm}{
 Logical value indicating whether pixels without values in any of the 'rst' layers should be removed from the resulting data frame. The default is TRUE.
@@ -51,39 +55,49 @@ A. Marcia Barbosa
 \examples{
 \dontrun{
 
-# you can run the following code if you have the 'raster' package installed
+# you can run these examples if you have the 'terra' package installed
+require(terra)
 
 # import a system raster with 3 layers and crop it to a smaller extent:
-require(raster)
-rst <- stack(system.file("external/rlogo.grd", package = "raster"))
-ext <- extent(c(0, 15, 25, 40))
-rst <- crop(rst, ext)
+rst <- terra::rast(system.file("ex/logo.tif", package="terra"))
+ext <- terra::ext(c(0, 15, 25, 40))
+rst <- terra::crop(rst, ext)
 plot(rst)
 plot(rst[[1]])
 
 # generate some random presence and absence points:
 set.seed(123)
-presences <- sp::spsample(as(ext, "SpatialPolygons"), 50, type = "random")
-absences <- sp::spsample(as(ext, "SpatialPolygons"), 50, type = "random")
-points(presences, pch = 20, cex = 0.2, col = "black")
-points(absences, pch = 20, cex = 0.2, col = "white")
+presences <- terra::spatSample(as.polygons(ext), 100, method = "random")
+absences <- terra::spatSample(as.polygons(ext), 70, method = "random")
+plot(rst[[1]])
+points(presences, pch = 20, cex = 0.3, col = "black")
+points(absences, pch = 20, cex = 0.3, col = "white")
 
 # use 'gridRecords' on these random points:
-gridded_pts <- gridRecords(rst, coordinates(presences), coordinates(absences))
+gridded_pts <- gridRecords(rst, terra::crds(presences), terra::crds(absences))
 head(gridded_pts)  # 'red', 'green' and 'blue' are the names of the layers in 'rst'
 
-# plot them to check the result:
+# plot them to check the result (presences black, absences white):
 pres_coords <- gridded_pts[gridded_pts$presence == 1, c("x", "y")]
 abs_coords <- gridded_pts[gridded_pts$presence == 0, c("x", "y")]
-points(gridded_pts[ , c("x", "y")], pch = 4, cex = 0.6, col = gridded_pts$presence)
+points(gridded_pts[ , c("x", "y")], col = gridded_pts$presence)
 
-# you can also do it with only presence (no absence) records:
-gridded_pres <- gridRecords(rst, coordinates(presences))
+
+# you can also do it with only presence (no absence) records
+# in this case, by default (with 'absences = TRUE'),
+# all pixels without presence points are returned as absences:
+
+gridded_pres <- gridRecords(rst, terra::crds(presences))
 head(gridded_pres)
 plot(rst[[1]])
 points(presences, pch = 20, cex = 0.2, col = "black")
 pres_coords <- gridded_pres[gridded_pres$presence == 1, c("x", "y")]
 abs_coords <- gridded_pres[gridded_pres$presence == 0, c("x", "y")]
-points(gridded_pres[ , c("x", "y")], pch = 4, cex = 0.6, col = gridded_pres$presence)
+points(gridded_pres[ , c("x", "y")], col = gridded_pres$presence)
+
+
+# with only presence (no absence) records
+# you can grid records for multiple species at a time by adding a 'species' argument
+
 }
 }

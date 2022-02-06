@@ -50,7 +50,7 @@ gridRecords <- function(rst,
 
       if (absences == TRUE) {
         if (is.null(abs.coords)) {
-          abs.coords <- terra::crds(rst)
+          abs.coords <- terra::crds(rst, df = TRUE)
           #abs.coords <- terra::xyFromCell(rst, cells(rst))
         }  # presence coordinates removed below
         a_extract <- terra::extract(rst, abs.coords, cells = TRUE, xy = FALSE)[ , -1]

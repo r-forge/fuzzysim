@@ -14,15 +14,15 @@ verbose = TRUE, simplif = FALSE)
 \arguments{
   \item{data}{a data frame containing the response and predictor variables
   (one in each column).}
-  \item{sp.cols}{index number of the column containing the response variable
+  \item{sp.cols}{name or index number of the column containing the response variable
   (currently implemented for only one response variable at a time).}
-  \item{var.cols}{index numbers of the columns containing the predictor variables.}
+  \item{var.cols}{names or index numbers of the columns containing the predictor variables.}
   \item{pvalues}{optionally, instead of 'data', 'sp.cols' and 'var.cols',
   a data frame with the names of the predictor variables in the first column and
   their bivariate p-values (obtained elsewhere) in the second column. Example:
   pvalues <- data.frame(var = letters[1:5], pval = c(0.02, 0.004, 0.07, 0.03, 0.05)).}
   \item{model.type}{this argument (previously a character value, either "LM" or "GLM") is now deprecated and ignored with a warning if provided. This information is now included in argument 'family' -- e.g., if you want linear models (LM), you can set 'family = "gaussian"'.}
-  \item{family}{The error distribution and (optionally) the link function to use (see \code{\link{glm}} or \code{\link{family}} for details). The default "auto" automatically uses "binomial" family for response variables containing only values of 0 and 1; "poisson" for positive integer responses (i.e. count data); and "gaussian" (i.e., linear models) otherwise.}
+  \item{family}{The error distribution and (optionally) the link function to use (see \code{\link{glm}} or \code{\link{family}} for details). The default "auto" automatically uses "binomial" family for response variables containing only values of 0 and 1; "poisson" for positive integer responses (i.e. count data); "Gamma" for positive non-integer; and "gaussian" (i.e., linear models) otherwise.}
   \item{correction}{the correction procedure to apply to the p-values; see
   \code{\link{p.adjust.methods}} for available options and \code{\link{p.adjust}}
   for more information. The default is "fdr".}

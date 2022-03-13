@@ -4,7 +4,7 @@
 Grid (or thin) point occurrence records to the resolution of a raster map
 }
 \description{
-This function takes a Raster* or SpatRaster object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). This is analogous to removing duplicates and thinning the points with a distance equal to the raster pixel size. If absences = TRUE (the default) and absence coordinates are not supplied, all pixels without any presence point are returned as absences.
+This function takes a Raster* or SpatRaster object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). This is analogous to removing duplicates and thinning points (both presences and absences) with a distance equal to the pixel size of the raster map(s) on which analysis will be based.
 }
 \usage{
 gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE, 
@@ -12,19 +12,19 @@ species = NULL, na.rm = TRUE)
 }
 \arguments{
   \item{rst}{
-a Raster* or SpatRaster object (the latter is processed faster) with the desired spatial resolution and extent for the species presence-absence data, and the layer(s) whose values to extract for those data.
+a Raster* or SpatRaster object (the latter is processed faster) with the desired spatial resolution and extent for the species presence-(pseudo)absence data, and the layer(s) whose values to extract for those data.
 }
   \item{pres.coords}{
 a matrix or data frame with two columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst') of the points where species presence was detected.
 }
   \item{abs.coords}{
-(optional) same as 'pres.coords' but for points where the species was not detected. If NULL (the default), all pixels that are not intersected by 'pres.coords' will be output as absence cells.
+(optional) same as 'pres.coords' but for points where the species was not detected. If NULL and if absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as absence cells.
 }
   \item{absences}{
 logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.
 }
   \item{species}{
-character vector of the same length as 'nrow(pres.coords)' indicating the species to which each pair of coordinates corresponds. If specified, 'abs.coords' cannot be used.
+(optional) character vector, of the same length as 'nrow(pres.coords)', indicating the species to which each pair of coordinates corresponds. Useful for gridding records of more than one species at a time. If specified, 'abs.coords' cannot be used.
 }
   \item{na.rm}{
 Logical value indicating whether pixels without values in any of the 'rst' layers should be removed from the resulting data frame. The default is TRUE.
@@ -35,13 +35,13 @@ See e.g. Baez et al. (2020), where this function was used to get unique presence
 }
 \value{
 This function returns a data frame with the following columns:
-\item{'presence'}{integer, 1 for the cells (pixels) with at least one presence point, and 0 for the cells without any presence point (if absences = TRUE) or with at least one absence point (if 'abs.coords' are provided) AND with no presence points}
-\item{'x', 'y'}{centroid coordinates of each cell (pixel))}
-\item{'cell'}{the pixel identifier in 'rst'}
+\item{'presence'}{integer, 1 for the cells (pixels) with at least one presence point, and 0 for the cells without any presence point (if absences = TRUE) or with at least one absence point (if 'abs.coords' are provided) AND with no presence points. If the 'species' argument is provided, instead of 'presence' you get one column named as each species.}
+\item{'x', 'y'}{centroid coordinates of each cell (pixel).}
+\item{'cell'}{the pixel identifier in 'rst'.}
 \item{one column for each layer in 'rst'}{value of each pixel for each layer.}
 }
 \note{
-This function requires either the \pkg{raster} or the \pkg{terra} package.
+This function requires either the \pkg{raster} or the \pkg{terra} package, depending on the class of 'rst'.
 }
 \references{
 Baez J.C., Barbosa A.M., Pascual P., Ramos M.L. & Abascal F. (2020) Ensemble modelling of the potential distribution of the whale shark in the Atlantic Ocean. Ecology and Evolution, 10: 175-184
@@ -58,28 +58,24 @@ A. Marcia Barbosa
 # you can run these examples if you have the 'terra' package installed
 require(terra)
 
-# import a system raster with 3 layers and crop it to a smaller extent:
-rst <- terra::rast(system.file("ex/logo.tif", package="terra"))
-ext <- terra::ext(c(0, 15, 25, 40))
-rst <- terra::crop(rst, ext)
-plot(rst)
-plot(rst[[1]])
+# import a raster map and aggregate it to a coarser resolution:
+r <- rast(system.file("ex/elev.tif", package = "terra"))
+r <- aggregate(r, 6)
+plot(r)
 
 # generate some random presence and absence points:
 set.seed(123)
-presences <- terra::spatSample(as.polygons(ext), 100, method = "random")
-absences <- terra::spatSample(as.polygons(ext), 70, method = "random")
-plot(rst[[1]])
+presences <- terra::spatSample(as.polygons(r), 100)
+set.seed(456)
+absences <- terra::spatSample(as.polygons(r), 70)
 points(presences, pch = 20, cex = 0.3, col = "black")
 points(absences, pch = 20, cex = 0.3, col = "white")
 
 # use 'gridRecords' on these random points:
-gridded_pts <- gridRecords(rst, terra::crds(presences), terra::crds(absences))
-head(gridded_pts)  # 'red', 'green' and 'blue' are the names of the layers in 'rst'
+gridded_pts <- gridRecords(rst = r, pres.coords = terra::crds(presences), abs.coords = terra::crds(absences))
+head(gridded_pts)
 
-# plot them to check the result (presences black, absences white):
-pres_coords <- gridded_pts[gridded_pts$presence == 1, c("x", "y")]
-abs_coords <- gridded_pts[gridded_pts$presence == 0, c("x", "y")]
+# map the gridded points (presences black, absences white):
 points(gridded_pts[ , c("x", "y")], col = gridded_pts$presence)
 
 
@@ -87,17 +83,22 @@ points(gridded_pts[ , c("x", "y")], col = gridded_pts$presence)
 # in this case, by default (with 'absences = TRUE'),
 # all pixels without presence points are returned as absences:
 
-gridded_pres <- gridRecords(rst, terra::crds(presences))
+gridded_pres <- gridRecords(rst = r, pres.coords = terra::crds(presences))
 head(gridded_pres)
-plot(rst[[1]])
+plot(r)
 points(presences, pch = 20, cex = 0.2, col = "black")
-pres_coords <- gridded_pres[gridded_pres$presence == 1, c("x", "y")]
-abs_coords <- gridded_pres[gridded_pres$presence == 0, c("x", "y")]
 points(gridded_pres[ , c("x", "y")], col = gridded_pres$presence)
 
 
-# with only presence (no absence) records
-# you can grid records for multiple species at a time by adding a 'species' argument
+# with only presence (no absence) records, as in this latter case,
+# you can grid records for multiple species at a time
+# by adding a 'species' argument
 
+presences$species <- rep(c("species1", "species2", "species3"), each = 33)
+data.frame(presences)
+plot(r)
+plot(presences, col = as.factor(presences$species), add = TRUE)
+gridded_pres_mult <- gridRecords(rst = r, pres.coords = terra::crds(presences), species = presences$species)
+head(gridded_pres_mult)
 }
 }

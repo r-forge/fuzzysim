@@ -1,4 +1,23 @@
 ============================================
+fuzzySim v3.9 (committed 2022-03-13)
+============================================
+
+## Modified functions:
+
+* gridRecords
+- result now ordered by "cells" column, instead of presences then absences
+- help file "Examples" changed to "elev" raster for more clarity
+- included also example with multiple species
+
+* corSelect
+- added 'family' argument (to pass to FDR when 'sp.col' is not NULL)
+- fixed NA 'excluded.vars' output when input 'var.cols' is character
+
+* FDR
+- added 'Gamma' for positive non-integer responses when family = "auto"
+
+
+============================================
 fuzzySim v3.8 (committed 2022-02-05)
 ============================================
 
@@ -8,7 +27,7 @@ fuzzySim v3.8 (committed 2022-02-05)
 - added 'species' argument for multi-species gridding
 - 'pres.coords' (and 'abs.coords' if not NULL) automatically converted with 'as.data.frame'
 - changed 'raster' to 'terra' in help file "Examples"
-- fixed bug that did ot grid absence.coords (if not NULL)
+- fixed bug that did not grid absence.coords (if not NULL)
 
 
 ============================================

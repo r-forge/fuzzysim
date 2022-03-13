@@ -1,6 +1,6 @@
-corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = "p.value", ...) {
+corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = "p.value", family = "auto", ...) {
 
-  # version 1.7 (21 Jan 2021)
+  # version 1.8 (10 Mar 2022)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 
@@ -36,7 +36,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
     high.cor.vars <- unique(rownames(cor.mat[high.cor.inds, high.cor.inds]))
 
     if (select %in% bivar.criteria) {
-      bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), simplif = TRUE)[ , c("p.value", "AIC", "BIC")]
+      bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), family = family, simplif = TRUE)[ , c("p.value", "AIC", "BIC")]
       if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), tolerance = 1.5e-8)))  message("Results identical whether using p-value, AIC or BIC to select variables.\n")
       else message("Results NOT identical whether using p-value, AIC or BIC to select variables.\n")
     }  # end if select in bivar
@@ -67,6 +67,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
 
     selected.vars <- colnames(cor.mat)
     selected.var.cols <- match(colnames(cor.mat), colnames(data))
+    if (is.character(var.cols)) var.cols <- which(colnames(data) %in% var.cols)  # new
     excluded.vars <- colnames(data)[var.cols][!(colnames(data)[var.cols] %in% colnames(cor.mat))]
 
   vif2 <- multicol(data[ , selected.var.cols, drop = FALSE])

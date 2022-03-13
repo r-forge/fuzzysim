@@ -2,7 +2,7 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
                  model.type = NULL, family = "auto", correction = "fdr", q = 0.05,
                  verbose = TRUE, simplif = FALSE)
   
-  # version 3.7 (3 Sep 2021)
+  # version 3.8 (10 Mar 2022)
   
 {
   if (length(sp.cols) > 1)
@@ -18,9 +18,11 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
   # if (na.loss > 0) message(na.loss, " cases excluded due to missing or non-finite values.")
   # -> MOVED FURTHER BELOW (if null pvalues)
   
-  if (family == "auto" & is.null(pvalues)) {  # not all families are available in auto!
-    if (all(data[ , sp.cols] %in% c(0, 1)))  family <- "binomial"
-    else if (all(data[ , sp.cols] >= 0 && data[ , sp.cols] %% 1 == 0))  family <- "poisson"
+  if (family == "auto" && is.null(pvalues)) {  # not all families are available in auto!
+    vals <- which(is.finite(data[ , sp.cols]))
+    if (all(data[vals, sp.cols] %in% c(0, 1)))  family <- "binomial"
+    else if (all(data[vals, sp.cols] >= 0) && all(data[vals, sp.cols] %% 1 == 0))  family <- "poisson"
+    else if (all(data[vals, sp.cols] >= 0))  family <- "Gamma"
     else family <- "gaussian"
     if (verbose) message("\nUsing generalized linear models of family '", family, "'.\n")
   }

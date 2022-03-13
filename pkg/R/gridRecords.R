@@ -3,9 +3,9 @@ gridRecords <- function(rst,
                         abs.coords = NULL,
                         absences = TRUE,
                         species = NULL,  # new
-                        na.rm = TRUE) {
+                        na.rm = TRUE) {  # new
 
-  # version 3.0 (31 Jan 2022)
+  # version 3.1 (28 Feb 2022)
 
   if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -78,19 +78,22 @@ gridRecords <- function(rst,
 
   if (!is.null(species)) {
     species_result <- result[ , "cells", drop = FALSE]
+    
     for (s in species_list[-1]) {  # species 1 already gridded above
       if (inherits(rst, "Raster"))  species_cells <- raster::cellFromXY(rst, as.matrix(pres.coords.in[species == s, ]))
       if (inherits(rst, "SpatRaster"))  species_cells <- terra::cellFromXY(rst, as.matrix(pres.coords.in[species == s, ]))
       species_result[ , s] <- 0
       species_result[result$cells %in% species_cells, s] <- 1
-    }
+    }  # end for species
 
     result <- data.frame(result[ , 1, drop = FALSE],  # "presence"
-                         species_result[ , -1],  # except "cells"
-                         result[ , -1]  # except "presence"
+                         species_result[ , -1, drop = FALSE],  # except "cells"
+                         result[ , -1, drop = FALSE]  # except "presence"
     )
-    names(result)[1] <- species_list[1]
-  }
+    names(result)[1] <- species_list[1]  # species 1 gridded before as "presence"
+  }  # end if !null species
+  
+  result <- result[order(result$cells), ]  # new
 
   return(result)
 }

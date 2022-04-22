@@ -1,4 +1,34 @@
 ============================================
+fuzzySim v3.95 (committed 2022-03-22)
+============================================
+
+## New functions:
+
+* rarity
+
+* vulnerability
+
+* entropy
+
+
+## Modified functions:
+
+* spCodes
+- added 'verbosity' argument
+- 'cat' now used instead of red 'message' when OK no dupl codes
+
+* corSelect
+- replaced '...' with arguments 'use' and 'method', the former defaulting to "pairwise.complete.obs"
+
+* simMat
+- added 'na.omit' to 'data' in 'stopifnot', to avoid error when NAs
+
+* sharedFav
+- added 'bin_interval' argument, for now accepting only '0.1' (the default, for back-compatibility) or 'quantiles'
+- added Note to help file about possible error when overly small bins
+
+
+============================================
 fuzzySim v3.9 (committed 2022-03-13)
 ============================================
 

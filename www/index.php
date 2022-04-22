@@ -53,10 +53,8 @@ echo $contents; } ?>
 
 <p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>. Currently available similarity indices are Jaccard, S&oslash;rensen, Simpson, and Baroni-Urbani & Buser.</p>
 
-<p>Some of the <i>fuzzySim</i> functions are also being implemented within a <b>graphical-interface extension</b> for the <strong><a href="http://www.qgis.org">QGIS</a></strong> Processing Toolbox - you can download their current versions from <a href="https://copy.com/GQSTy9GngfRGfLeS">here</a>, place them in your "<i>.qgis2/processing/rscripts</i>" folder (search for it in your computer; you may need to toggle "show hidden files" to see it) and give them a try. You need to have installed QGIS > 2.0, R with the <i>fuzzySim</i> package, and tell QGIS (under Processing - Options and configuration - Providers) where your R instalation is. Feedback welcome!</p>
-
 <font color="green">
-<h3> Package <i>fuzzySim</i> (v3.0) is on <a href="https://CRAN.R-project.org/package=fuzzySim">CRAN</a>! Check out <a href="https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/">this post</a> for what's new.</h3>
+<h3> Package <i>fuzzySim</i> (v3.7) is on <a href="https://CRAN.R-project.org/package=fuzzySim">CRAN</a>! Check out <a href="https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/">this post</a> for some of the new features.</h3>
 </font>
 
 <h2> Install and load </h2>

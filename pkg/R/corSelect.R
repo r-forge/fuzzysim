@@ -1,6 +1,6 @@
-corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = "p.value", family = "auto", ...) {
+corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = "p.value", family = "auto", use = "pairwise.complete.obs", method = "pearson") {
 
-  # version 1.8 (10 Mar 2022)
+  # version 1.9 (19 Mar 2022)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 
@@ -16,7 +16,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
     if (n.out < n.in)  warning (n.in - n.out, " observations removed due to missing data in 'sp.cols'; ", n.out, " observations actually evaluated.")
   }
 
-  cor.mat <- cor(data[ , var.cols], ...)
+  cor.mat <- cor(data[ , var.cols], use = use, method = method)
   cor.mat[upper.tri(cor.mat, diag = TRUE)] <- NA
   high.cor.mat <- bivar.mat <- numeric(0)
 

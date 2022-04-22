@@ -1,9 +1,10 @@
-simMat <-
-  # version 2.0 (23 Apr 2021)
+simMat <- function(data, method, diag = TRUE, upper = TRUE, verbosity = 2) {
+
+  # version 2.1 (21 Apr 2022)
   
-function(data, method, diag = TRUE, upper = TRUE, verbosity = 2) {
   if (verbosity > 1)  start.time <- Sys.time()
-  stopifnot(data >= 0, data <= 1,
+  stopifnot(na.omit(data) >= 0,
+            na.omit(data) <= 1,
             method %in% c("Jaccard", "Sorensen", "Simpson", "Baroni"))
   n.subjects <- ncol(data)
   sim.mat <- matrix(nrow = n.subjects, ncol = n.subjects,

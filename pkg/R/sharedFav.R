@@ -1,4 +1,7 @@
-sharedFav <- function(strong_F, weak_F, conf = 0.95, main = "Shared favourability") {
+sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", main = "Shared favourability") {
+  
+  # version 1.1 (22 Apr 2022)
+  
   stopifnot(length(strong_F) == length(weak_F))
   opar <- par(no.readonly = T)
   par(mar = c(4, 4, 2, 4.5))
@@ -7,10 +10,14 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, main = "Shared favourabilit
   F_union <- fuzzyOverlay(cbind(strong_F, weak_F), op = "union")
   Fovl <- sum(F_intersection, na.rm = TRUE) / sum(F_union, na.rm = TRUE)
   
-  brks <- seq(0, 1, by = 0.1)
   bins <- 1:10
-  bin <- cut(F_intersection, breaks = brks, labels = bins)
   
+  if (bin_interval == "0.1")  brks <- seq(0, 1, by = 0.1)
+  else if (bin_interval == "quantiles")  brks <- quantile(na.omit(c(strong_F, weak_F)), seq(0, 1, 0.1))
+  else stop ("Invalid 'bin_interval'.")
+  
+  bin <- cut(F_intersection, breaks = brks, labels = bins)
+
   strong_mean <- tapply(strong_F, INDEX = bin, FUN = mean)
   weak_mean <- tapply(weak_F, INDEX = bin, FUN = mean)
   strong_ci <- tapply(strong_F, INDEX = bin, FUN = function(x) t.test(x, conf.level = conf, na.action = na.pass)$conf.int)
@@ -27,7 +34,7 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, main = "Shared favourabilit
   props <- bin_size / length(bin)
   bin <- as.integer(bin)
   
-  bar_plot <- barplot(rep(NA, length(bins)), ylim = c(0, 1), xlab = "Favourability intersection", ylab = "Mean favourability", names.arg = brks[-1], main = main)
+  bar_plot <- barplot(rep(NA, length(bins)), ylim = c(0, 1), xlab = "Favourability intersection", ylab = "Mean favourability", names.arg = round(brks[-1], 2), main = main)
   col_bar <- "grey50"
   col_ci <- "grey"
   poly_left <- mean(bar_plot[2:3])

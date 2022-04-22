@@ -8,7 +8,7 @@ This function takes a vector of species names and converts them to abbreviated s
 }
 \usage{
 spCodes(species, nchar.gen = 3, nchar.sp = 3, nchar.ssp = 0, 
-sep.species = " ", sep.spcode = "")
+sep.species = " ", sep.spcode = "", verbosity = 2)
 }
 \arguments{
   \item{species}{
@@ -28,6 +28,9 @@ the character that separates genus, specific and subspecific names in 'species'.
 }
   \item{sep.spcode}{
 the character you want separating genus and species abbreviations in the resulting species codes. The default is an empty character (no separator).
+}
+  \item{verbosity}{
+integer value indicating the amount of messages to display. Defaults to 2, for showing all messages.
 }
 }
 \value{

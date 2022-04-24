@@ -2,9 +2,12 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...) 
   
   # version 1.2 (24 Apr 2022)
   
-  stopifnot(length(strong_F) == length(weak_F))
-  opar <- par(no.readonly = T)
+  stopifnot(length(strong_F) == length(weak_F),
+            bin_interval %in% c("0.1", "quantiles"))
+  
+  opar <- par(no.readonly = TRUE)
   par(mar = c(4, 4, 2, 4.5))
+  on.exit(par(opar))
   
   F_int <- fuzzyOverlay(cbind(strong_F, weak_F), op = "intersection")
   F_uni <- fuzzyOverlay(cbind(strong_F, weak_F), op = "union")
@@ -13,7 +16,6 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...) 
   bins <- 1:10
   if (bin_interval == "0.1")  brks <- seq(0, 1, by = 0.1)
   else if (bin_interval == "quantiles")  brks <- quantile(F_int, seq(0, 1, 0.1))
-  else stop ("Invalid 'bin_interval'.")
   bin <- cut(F_int, breaks = brks, labels = bins)
   
   bin_size <- table(bin)
@@ -66,8 +68,6 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...) 
   #sharedF[bin <= 2] <- 0
   #sharedF[bin > 8] <- 1
   #sharedF[strong_F >= 0.8 & weak_F < 0.8 & weak_F >= 0.2] <- 3
-  
-  par(opar)
   
   bins_table <- cbind(bin = bins, bin_max = brks[-1], bin_size = bin_size, bin_prop = props, Fmean_strong = strong_mean, Fmean_weak = weak_mean)
   rownames(bins_table) <- NULL

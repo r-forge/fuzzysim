@@ -1,59 +1,66 @@
-sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", main = "Shared favourability") {
+sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...) {
   
-  # version 1.1 (22 Apr 2022)
+  # version 1.2 (24 Apr 2022)
   
   stopifnot(length(strong_F) == length(weak_F))
   opar <- par(no.readonly = T)
   par(mar = c(4, 4, 2, 4.5))
   
-  F_intersection <- fuzzyOverlay(cbind(strong_F, weak_F), op = "intersection")
-  F_union <- fuzzyOverlay(cbind(strong_F, weak_F), op = "union")
-  Fovl <- sum(F_intersection, na.rm = TRUE) / sum(F_union, na.rm = TRUE)
+  F_int <- fuzzyOverlay(cbind(strong_F, weak_F), op = "intersection")
+  F_uni <- fuzzyOverlay(cbind(strong_F, weak_F), op = "union")
+  F_ovl <- sum(F_int, na.rm = TRUE) / sum(F_uni, na.rm = TRUE)
   
   bins <- 1:10
-  
   if (bin_interval == "0.1")  brks <- seq(0, 1, by = 0.1)
   else if (bin_interval == "quantiles")  brks <- quantile(na.omit(c(strong_F, weak_F)), seq(0, 1, 0.1))
   else stop ("Invalid 'bin_interval'.")
-  
-  bin <- cut(F_intersection, breaks = brks, labels = bins)
-
-  strong_mean <- tapply(strong_F, INDEX = bin, FUN = mean)
-  weak_mean <- tapply(weak_F, INDEX = bin, FUN = mean)
-  strong_ci <- tapply(strong_F, INDEX = bin, FUN = function(x) t.test(x, conf.level = conf, na.action = na.pass)$conf.int)
-  weak_ci <- tapply(weak_F, INDEX = bin, FUN = function(x) t.test(x, conf.level = conf)$conf.int)
-  strong_ci[names(Filter(is.null, strong_ci))] <- NA
-  weak_ci[names(Filter(is.null, weak_ci))] <- NA
-  strong_ci_up <- unlist(lapply(strong_ci, `[`, 2))
-  strong_ci_dn <- unlist(lapply(strong_ci, `[`, 1))
-  weak_ci_up <- unlist(lapply(weak_ci, `[`, 2))
-  weak_ci_dn <- unlist(lapply(weak_ci, `[`, 1))
+  bin <- cut(F_int, breaks = brks, labels = bins)
   
   bin_size <- table(bin)
-  names(bin_size) <- names(bins)
+  #names(bin_size) <- names(bins)
   props <- bin_size / length(bin)
-  bin <- as.integer(bin)
+  #bin <- as.integer(bin)
   
-  bar_plot <- barplot(rep(NA, length(bins)), ylim = c(0, 1), xlab = "Favourability intersection", ylab = "Mean favourability", names.arg = round(brks[-1], 2), main = main)
+  # plot bin props:
+  bar_plot <- barplot(rep(NA, length(bins)), ylim = c(0, 1), xlab = "Favourability intersection", ylab = "Mean favourability", names.arg = round(brks[-1], 2), ...)
   col_bar <- "grey50"
-  col_ci <- "grey"
+  col_ax <- "grey40"
   poly_left <- mean(bar_plot[2:3])
   poly_right <- mean(bar_plot[8:9])
   polygon(x = c(poly_left, poly_left, poly_right, poly_right), y = c(0, 1, 1, 0), col = "lightgrey", border = NA, density = 25, angle = -45)
   par(new = TRUE)
   barplot(props, col = col_bar, border = FALSE, xaxt = "n", yaxt = "n", add = TRUE)
-  axis(side = 4, col = col_bar, col.axis = col_bar, col.ticks = col_bar, col.lab = col_bar)
-  mtext(side = 4, line = 3, "Proportion of localities", col = col_bar)
+  axis(side = 4, col = col_ax, col.axis = col_ax, col.ticks = col_ax, col.lab = col_ax)
+  mtext(side = 4, line = 3, "Proportion of localities", col = col_ax)
   abline(h = 0.8, col = "grey", lty = 3)
   
-  strong_x <- bar_plot - 0.1
+  # compute fav means:
+  strong_mean <- tapply(strong_F, INDEX = bin, FUN = mean)
+  weak_mean <- tapply(weak_F, INDEX = bin, FUN = mean)
+  
+  # add fav means to plot:
+  strong_x <- bar_plot - 0.1  # shift so that CIs don't overlap
   weak_x <- bar_plot + 0.1
-  arrows(strong_x, strong_ci_dn, strong_x, strong_ci_up, code = 3, length = 0.03, angle = 90, col = col_ci)
-  arrows(weak_x, weak_ci_dn, weak_x, weak_ci_up, code = 3, length = 0.03, angle = 90, col = col_ci)
   lines(x = strong_x, y = strong_mean, lwd = 2, lty = 1)
   lines(x = weak_x, y = weak_mean, lwd = 2, lty = 2)
   points(x = strong_x, y = strong_mean, pch = 20)
   points(x = weak_x, y = weak_mean, pch = 15, cex = 0.8)
+  
+  # compute confidence intervals:
+  if (is.finite(conf)) {
+    strong_ci <- tapply(strong_F, INDEX = bin, FUN = function(x) t.test(x, conf.level = conf, na.action = na.pass)$conf.int)
+    weak_ci <- tapply(weak_F, INDEX = bin, FUN = function(x) t.test(x, conf.level = conf)$conf.int)
+    strong_ci[names(Filter(is.null, strong_ci))] <- NA
+    weak_ci[names(Filter(is.null, weak_ci))] <- NA
+    strong_ci_up <- unlist(lapply(strong_ci, `[`, 2))
+    strong_ci_dn <- unlist(lapply(strong_ci, `[`, 1))
+    weak_ci_up <- unlist(lapply(weak_ci, `[`, 2))
+    weak_ci_dn <- unlist(lapply(weak_ci, `[`, 1))
+    
+    # add confidence intervals to plot:
+    arrows(strong_x, strong_ci_dn, strong_x, strong_ci_up, code = 3, length = 0.03, angle = 90, col = "grey")
+    arrows(weak_x, weak_ci_dn, weak_x, weak_ci_up, code = 3, length = 0.03, angle = 90, col = "grey")
+  }  # end if conf
   
   #sharedF <- rep(2, length(strong_F))
   #sharedF[bin <= 2] <- 0
@@ -61,5 +68,5 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", main 
   #sharedF[strong_F >= 0.8 & weak_F < 0.8 & weak_F >= 0.2] <- 3
   
   par(opar)
-  return(Fovl)
+  return(F_ovl)
 }

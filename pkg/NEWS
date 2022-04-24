@@ -1,4 +1,15 @@
 ============================================
+fuzzySim v3.96 (committed 2022-03-22)
+============================================
+
+* sharedFav
+- improved help file and corrected a mistake (bug report by Alba Estrada)
+- replaced 'main' argument with '...' for barplot (to accept also 'las')
+- plot now produced in phases as computations are made, to have something plotted even in case of error
+- 'conf' can be set to NA, to avoid error and sill get value and plot (without CIs)
+
+
+============================================
 fuzzySim v3.95 (committed 2022-03-22)
 ============================================
 

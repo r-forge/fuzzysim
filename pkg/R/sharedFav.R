@@ -12,7 +12,7 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...) 
   
   bins <- 1:10
   if (bin_interval == "0.1")  brks <- seq(0, 1, by = 0.1)
-  else if (bin_interval == "quantiles")  brks <- quantile(na.omit(c(strong_F, weak_F)), seq(0, 1, 0.1))
+  else if (bin_interval == "quantiles")  brks <- quantile(F_int, seq(0, 1, 0.1))
   else stop ("Invalid 'bin_interval'.")
   bin <- cut(F_int, breaks = brks, labels = bins)
   
@@ -22,7 +22,7 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...) 
   #bin <- as.integer(bin)
   
   # plot bin props:
-  bar_plot <- barplot(rep(NA, length(bins)), ylim = c(0, 1), xlab = "Favourability intersection", ylab = "Mean favourability", names.arg = round(brks[-1], 2), ...)
+  bar_plot <- barplot(rep(NA, length(bins)), ylim = c(0, 1), xlab = "Favourability intersection", ylab = "Mean favourability", names.arg = paste0(round(brks[-1], 2), "]"), ...)
   col_bar <- "grey50"
   col_ax <- "grey40"
   poly_left <- mean(bar_plot[2:3])
@@ -68,5 +68,10 @@ sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...) 
   #sharedF[strong_F >= 0.8 & weak_F < 0.8 & weak_F >= 0.2] <- 3
   
   par(opar)
-  return(F_ovl)
+  
+  bins_table <- cbind(bin = bins, bin_max = brks[-1], bin_size = bin_size, bin_prop = props, Fmean_strong = strong_mean, Fmean_weak = weak_mean)
+  rownames(bins_table) <- NULL
+  bins_table <- as.data.frame(bins_table)
+  
+  return(list(FOvI = F_ovl, bins_table = bins_table))
 }

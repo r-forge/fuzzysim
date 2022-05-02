@@ -73,6 +73,6 @@ Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preva
       ((sample.preval / true.preval) + (pred / (1 - pred)))
   } else stop("method must be either 'RBV' or 'AT'")
   
-  #if (!is.null(names(fav)))  names(fav) <- NULL  # in case input was tibble
+  if (is.vector(fav) && !is.null(names(fav)))  names(fav) <- NULL  # in case input was tibble
   return(fav)
 }

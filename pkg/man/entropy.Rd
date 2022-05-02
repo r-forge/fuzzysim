@@ -7,7 +7,8 @@
 This function computes fuzzy entropy (Kosko 1986, Estrada & Real 2021), or optionally Shannon's (1948) entropy.
 }
 \usage{
-entropy(data, sp.cols = 1:ncol(data), method = "fuzzy", base = exp(1), plot = TRUE, na.rm = TRUE, ...)
+entropy(data, sp.cols = 1:ncol(data), method = "fuzzy", base = exp(1), 
+plot = TRUE, na.rm = TRUE, ...)
 }
 \arguments{
   \item{data}{a vector, matrix or data frame containing the data to analyse.}
@@ -21,7 +22,7 @@ entropy(data, sp.cols = 1:ncol(data), method = "fuzzy", base = exp(1), plot = TR
 \details{
 Fuzzy entropy (Kosko 1986) applies to fuzzy systems (such as \code{\link{Fav}}ourability) and it can take values between zero and one. Fuzzy entropy equals one when the distribution of the values is uniform, i.e. 0.5 in all localities. The smaller the entropy, the more orderly the distribution of the values, i.e. the closer they are to 0 or 1, distinguishing (potential) presences and absences more clearly. Fuzzy entropy can reflect the overall degree of uncertainty in a species' distribution model predictions, and it is directly comparable across species and study areas (Estrada & Real 2021).
 
-Shannon's entropy requires that the input values are probabilities and sum up to 1 (Shannon 1948). This makes sense when analysing the probability that a unique event occurs in a finite universe. However, if a species has more than one presence, the sum of probabilities in all localities equals the number of presences. To satisfy the condition that the inputs sum up to 1, this function divides each value by the sum of values when this is not the case (if method="Shannon"). Notice that this has a mathematical justification but not a biogeographical sense, and (unlike fuzzy entropy) the results are comparable only between models based on the same number of data points (presences + absences) (Estrada & Real 2021).
+Shannon's entropy requires that the input values are probabilities and sum up to 1 (Shannon 1948). This makes sense when analysing the probability that a unique event occurs in a finite universe. However, if a species has more than one presence, the sum of probabilities in all localities equals the number of presences. To satisfy the condition that the inputs sum up to 1, this function divides each value by the sum of values when this is not the case (if method="Shannon"). Notice that this has a mathematical justification but not a biogeographical sense, and (unlike fuzzy entropy) the results are comparable only between models based on the same number of presences + absences, e.g. in a context of selection of variables for a model (Estrada & Real 2021).
 }
 \value{
 This function returns a numeric value of entropy for 'data' (if it is a numeric vector) or for each of 'sp.cols' in 'data' (if it is a matrix or data frame). Optionally (and by default), a barplot is also produced with these values (if there is more than one column) for visual comparison.

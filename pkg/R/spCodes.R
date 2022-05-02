@@ -1,7 +1,8 @@
 spCodes <-
 function(species, nchar.gen = 3, nchar.sp = 3, nchar.ssp = 0, sep.species = " ", sep.spcode = "", verbosity = 2) {
+  # version 1.1 (2 May 2022)
   
-  species <- as.character(species)
+  species <- as.character(unlist(species))
   splits <- strsplit(species, split = sep.species)
   gen <- sp <- vector("character", length(splits))
   for (i in 1:length(splits)) {

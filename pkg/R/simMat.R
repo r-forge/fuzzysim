@@ -1,8 +1,11 @@
 simMat <- function(data, method, diag = TRUE, upper = TRUE, verbosity = 2) {
 
-  # version 2.1 (21 Apr 2022)
+  # version 2.2 (2 May 2022)
   
   if (verbosity > 1)  start.time <- Sys.time()
+  
+  data <- as.data.frame(data)
+  
   stopifnot(na.omit(data) >= 0,
             na.omit(data) <= 1,
             method %in% c("Jaccard", "Sorensen", "Simpson", "Baroni"))

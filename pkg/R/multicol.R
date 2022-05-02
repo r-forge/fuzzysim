@@ -1,14 +1,16 @@
 multicol <- function(vars = NULL, model = NULL, reorder = TRUE) {
   
+  # version 1.2 (2 May 2022)
+  
   if (is.null(vars)) {
     if (is.null(model)) stop ("You must provide either 'vars' or 'model'.")
     if (!("glm" %in% class(model))) stop ("'model' must be an object of class 'glm'.")
     vars <- model$model[ , -1]
   }
   
-  if (!(all(class(vars) %in% c("matrix", "data.frame")))) stop ("'vars' must be a matrix or data frame")
+  #if (!(all(class(vars) %in% c("matrix", "data.frame")))) stop ("'vars' must be a matrix or data frame")
   vars <- as.data.frame(vars)
-  if (ncol(vars) < 2)  return (message("Cannot calculate collinearity with less than two variables."))
+  if (ncol(vars) < 2)  return (message("Cannot compute collinearity with less than two variables."))
   
   result <- matrix(NA, nrow = ncol(vars), ncol = 3)
   rownames(result) <- colnames(vars)

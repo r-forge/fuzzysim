@@ -50,5 +50,6 @@ favs <- mods$predictions[ , 3:4]
 # get shared favourability:
 sharedFav(strong_F = favs[,1], weak_F = favs[,2], main = "Shared favourability")
 
-sharedFav(strong_F = favs[,1], weak_F = favs[,2], bin_interval = "quantiles", main = "Shared favourability", las = 2)
+sharedFav(strong_F = favs[,1], weak_F = favs[,2], bin_interval = "quantiles", 
+main = "Shared favourability", las = 2)
 }

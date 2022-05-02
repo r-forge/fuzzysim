@@ -1,6 +1,6 @@
 corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = "p.value", family = "auto", use = "pairwise.complete.obs", method = "pearson") {
 
-  # version 1.9 (19 Mar 2022)
+  # version 2.9 (2 May 2022)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 
@@ -9,6 +9,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
 
   if (!(select %in% c(univar.criteria, bivar.criteria))) stop ("Invalid 'select' criterion.")
 
+  data <- as.data.frame(data)
   if (!is.null(sp.cols) & select %in% bivar.criteria) {
     n.in <- nrow(data)
     data <- data[is.finite(data[ , sp.cols]), ]

@@ -18,7 +18,7 @@ bioThreat(strong_F, weak_F, character = FALSE, ...)
 \details{
 Based on the notion of "favorableness" by Richerson & Lum (1980), according to which competing species may or may not be able to coexist depending on their relative environmental fitnesses, Acevedo et al. (2010, 2012) and some subsequent studies (e.g. Romero et al. 2014, Munoz et al. 2015, Chamorro et al. 2019) proposed possible biotic interaction outcomes of different combinations of favourability values for two species. Favourability has the advantage, in contrast with other types of potential distribution metrics, of being directly comparable among diferent species, independently of their relative occurrence frequencies (see \code{\link{Fav}}). This function builds on those proposals by including additional possible combinations of higher, intermediate or low favourability values (following Munoz & Real 2006), producing the following classification of biotic threat across a set of analysed localities:
 
-0 ('white'): areas where favourability is low for at least one of the species (abiotic exclusion), so biotic threat does not apply.
+0 ('grey'): areas where favourability is low for at least one of the species (abiotic exclusion), so biotic threat does not apply.
 
 1 ('green'): areas where favourability is high for both species, so they should both be able to thrive and therefore co-occur (sympatric coexistence), hence biotic threat is low.
 

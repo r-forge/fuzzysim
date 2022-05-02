@@ -6,10 +6,12 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
                     Favourability = TRUE, group.preds = TRUE, TSA = FALSE,
                     coord.cols = NULL, degree = 3, verbosity = 2, ...) {
 
-  # version 5.1 (6 Jan 2020)
+  # version 5.2 (2 May 2022)
 
   start.time <- Sys.time()
   on.exit(timer(start.time))
+  
+  data <- as.data.frame(data)
   
   input.ncol <- ncol(data)
   input.names <- colnames(data)

@@ -4,7 +4,7 @@
 GLMs with variable selection for multiple species
 }
 \description{
-This function performs selection of variables and calculates generalized linear models for a set of (species) presence/absence records in a data frame, with a range of options for data partition, variable selection, and output form.
+This function performs selection of variables and calculates generalized linear models for a set of presence/absence records in a data frame, with a range of options for data partition, variable selection, and output form.
 }
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
@@ -57,6 +57,8 @@ This function returns a list with the following components:
 \item{predictions}{a data frame with the model predictions (if either of Y.prediction, P.prediction or Favourability are TRUE).}
 \item{models}{a list of the resulting model objects.}
 \item{variables}{a list of character vectors naming the variables finally included in each model according to the specified selection criteria.}
+}
+\note{With step=TRUE (the default), an error may occur if there are missing values in some of the variables that are selected (see "Warning" in \code{\link{step}}). If this happens, you can use something like data=na.omit(data[ , var.cols]).
 }
 \references{
 Akaike, H. (1973) Information theory and an extension of the maximum likelihood principle. In: Petrov B.N. & Csaki F., 2nd International Symposium on Information Theory, Tsahkadsor, Armenia, USSR, September 2-8, 1971, Budapest: Akademiai Kiado, p. 267-281.

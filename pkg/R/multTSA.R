@@ -1,12 +1,14 @@
 multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, verbosity = 2, ...) {
 
-  # version 2.6 (10 Dec 2018)
+  # version 2.7 (2 May 2022)
 
   if (verbosity > 1) {
     start.time <- Sys.time()
     on.exit(timer(start.time))
   }
   
+  data <- as.data.frame(data)
+
   stopifnot (
     na.omit(as.matrix(data[ , sp.cols])) %in% c(0,1),
     #data[ , sp.cols] %in% c(NA, 0, 1),

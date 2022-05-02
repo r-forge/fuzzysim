@@ -1,6 +1,7 @@
 distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, method = "euclidian", suffix = "_D", p = 1, inv = TRUE) {
-  # version 2.0 (10 Oct 2018)
+  # version 2.1 (2 May 2022)
 
+  data <- as.data.frame(data)
   stopifnot(
     as.matrix(data[ , sp.cols]) %in% c(NA, 0, 1),
     length(sp.cols) > 0,

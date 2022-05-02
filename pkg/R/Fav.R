@@ -1,5 +1,5 @@
 Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preval = NULL, method = "RBV", true.preval = NULL, verbosity = 2) {
-  # version 1.6 (21 Jan 2022)
+  # version 1.7 (29 Apr 2022)
   
   if (!is.null(model)) {
     if (verbosity > 0) {
@@ -33,6 +33,11 @@ Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preva
   # if(!is.null(obs) & !is.null(pred) & !class(pred) == "RasterLayer" & length(obs) != length(pred)) {
   #   stop("'obs' and 'pred' must have the same length (and be in the same order).")
   # }
+  
+  #if (!is.vector(obs)) stop("'obs' must be of class 'vector'.")
+  #if (!(is.vector(pred) || inherits(pred, "SpatRaster") || inherits(rast(pred), "SpatRaster"))) stop("'pred' must be of class 'vector', 'Raster' or 'SpatRaster'.")
+  obs <- unlist(obs)  # in case input was tibble
+  pred <- unlist(pred)  # in case input was tibble
   
   vals <- na.omit(obs)
   if (is(model, "randomForest"))  vals <- as.integer(as.character(vals))
@@ -68,5 +73,6 @@ Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preva
       ((sample.preval / true.preval) + (pred / (1 - pred)))
   } else stop("method must be either 'RBV' or 'AT'")
   
+  if (!is.null(names(fav)))  names(fav) <- NULL  # in case input was tibble
   return(fav)
 }

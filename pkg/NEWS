@@ -1,4 +1,25 @@
 ============================================
+fuzzySim v4.0 (committed 2022-05-02) -> CRAN
+============================================
+
+## New functions:
+
+* prevalence (copied from 'modEvA' pkg)
+
+
+## Modified functions:
+
+* bioThreat
+- "white" changed to "grey" for 0-values to be visible on the map
+
+* corSelect, FDR, fuzzyOverlay, integerCols, multConvert, multGLM, multicol, multTSA, simMat, splist2presabs, stepByStep, transpose
+- added data=as.data.frame(data), to avoid errors when input is tibble
+
+* bioThreat, Fav, favClass, fuzSim, fuzzyRangeChange, modOverlap, sharedFav, spCodes
+- added 'unlist' to avoid obscure error when input is one-column tibble instead of vector
+
+
+============================================
 fuzzySim v3.96 (committed 2022-03-22)
 ============================================
 

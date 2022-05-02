@@ -2,15 +2,18 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
                  model.type = NULL, family = "auto", correction = "fdr", q = 0.05,
                  verbose = TRUE, simplif = FALSE)
   
-  # version 3.8 (10 Mar 2022)
+  # version 3.9 (2 May 2022)
   
 {
+  
   if (length(sp.cols) > 1)
     stop("Sorry, FDR is currently implemented for only one response variable at a time, so 'sp.cols' must indicate only one column")
   
   if (!is.null(model.type))  warning ("Argument 'model.type' is deprecated and now ignored, as this info is included in 'family' (e.g. 'gaussian' for LM, 'binomial' or 'poisson' for GLM).")
   
   model.type <- "GLM"  # it's always GLM, even for LM; family is what may change
+  
+  data <- as.data.frame(data)
   
   # n.init <- nrow(data)
   # data <- data[is.finite(data[ , sp.cols]), ]

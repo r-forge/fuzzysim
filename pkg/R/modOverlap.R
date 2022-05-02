@@ -1,7 +1,10 @@
 modOverlap <- function(pred1, pred2, na.rm = TRUE) {
   
-  # version 1.3 (18 Oct 2019)
+  # version 1.4 (2 May 2022)
   
+  pred1 <- unlist(pred1)
+  pred2 <- unlist(pred2)
+
   stopifnot(length(pred1) == length(pred2),
             #pred1 >= 0 && pred1 <=1,
             #pred2 >= 0 && pred2 <=1

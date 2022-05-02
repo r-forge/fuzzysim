@@ -1,6 +1,11 @@
 bioThreat <- function(strong_F, weak_F, character = FALSE, ...) {
-  stopifnot(length(strong_F) == length(weak_F))
+  # version 1.3 (2 May 2022)
   
+  strong_F <- unlist(strong_F)
+  weak_F <- unlist(weak_F)
+  
+  stopifnot(length(strong_F) == length(weak_F))
+
   strong_F <- favClass(strong_F, ...)
   weak_F <- favClass(weak_F, ...)
   
@@ -16,7 +21,7 @@ bioThreat <- function(strong_F, weak_F, character = FALSE, ...) {
     threat[!is.na(threat) & threat == 3] <- "orange"
     threat[!is.na(threat) & threat == 2] <- "yellow"
     threat[!is.na(threat) & threat == 1] <- "green"
-    threat[!is.na(threat) & threat == 0] <- "white"
+    threat[!is.na(threat) & threat == 0] <- "grey"
   }
   else threat <- as.integer(threat)
   

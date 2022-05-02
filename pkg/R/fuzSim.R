@@ -1,6 +1,11 @@
 fuzSim <-
 function(x, y, method, na.rm = TRUE) {
   
+  # version 1.1 (2 May 2022)
+  
+  x <- unlist(x)
+  y <- unlist(y)
+  
   method <- match.arg(method, c("Jaccard", "Sorensen", "Simpson", "Baroni"))
   dab.methods <- c("Baroni")
   

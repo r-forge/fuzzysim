@@ -1,7 +1,10 @@
 fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss", "Stable presence", "Stable absence", "Balance"), plot = TRUE, ...) #col = colorRampPalette(c("white", "black"))(length(measures)) 
   {
   
-  # version 1.6 (10 Dec 2018)
+  # version 1.7 (2 May 2022)
+  
+  pred1 <- unlist(pred1)
+  pred2 <- unlist(pred2)
   
   stopifnot(#ncol(pred1) == ncol(pred2),
             #all(pred1[is.finite(pred1)] >= 0 && pred1[is.finite(pred1)] <= 1),

@@ -38,7 +38,8 @@ rarity(rotif.env[ , 18])
 
 rarity(rotif.env, sp.cols = "Abrigh")
 
-rarity(rotif.env, sp.cols = 18:47)  # yields one value of combined rarity for each row in 'data'
+rarity(rotif.env, sp.cols = 18:47)
+# yields one value of combined rarity for each row in 'data'
 
 
 # fuzzy rarity (from favourability values):
@@ -49,5 +50,6 @@ head(pred)
 
 rarity(pred, sp.cols = "Abrigh_F")
 
-rarity(pred, sp.cols = c("Abrigh_F", "Afissa_F", "Apriod_F"))  # yields one value of combined rarity for each row in 'data'
+rarity(pred, sp.cols = c("Abrigh_F", "Afissa_F", "Apriod_F"))
+# yields one value of combined rarity for each row in 'data'
 }

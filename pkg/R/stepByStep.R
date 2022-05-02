@@ -6,7 +6,9 @@ stepByStep <- function(data,
                        trace = 0, 
                        cor.method = "pearson") {
   
-  # version 1.3 (22 Jul 2015)
+  # version 1.4 (2 May 2022)
+  
+  data <- as.data.frame(data)
   
   n.init <- nrow(data)
   data <- na.omit(data)

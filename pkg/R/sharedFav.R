@@ -1,7 +1,10 @@
 sharedFav <- function(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...) {
   
-  # version 1.2 (24 Apr 2022)
+  # version 1.3 (2 May 2022)
   
+  strong_F <- unlist(strong_F)
+  weak_F <- unlist(weak_F)
+
   stopifnot(length(strong_F) == length(weak_F),
             bin_interval %in% c("0.1", "quantiles"))
   

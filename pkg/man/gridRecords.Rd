@@ -72,7 +72,8 @@ points(presences, pch = 20, cex = 0.3, col = "black")
 points(absences, pch = 20, cex = 0.3, col = "white")
 
 # use 'gridRecords' on these random points:
-gridded_pts <- gridRecords(rst = r, pres.coords = terra::crds(presences), abs.coords = terra::crds(absences))
+gridded_pts <- gridRecords(rst = r, pres.coords = terra::crds(presences), 
+abs.coords = terra::crds(absences))
 head(gridded_pts)
 
 # map the gridded points (presences black, absences white):
@@ -98,7 +99,8 @@ presences$species <- rep(c("species1", "species2", "species3"), each = 33)
 data.frame(presences)
 plot(r)
 plot(presences, col = as.factor(presences$species), add = TRUE)
-gridded_pres_mult <- gridRecords(rst = r, pres.coords = terra::crds(presences), species = presences$species)
+gridded_pres_mult <- gridRecords(rst = r, pres.coords = terra::crds(presences), 
+species = presences$species)
 head(gridded_pres_mult)
 }
 }

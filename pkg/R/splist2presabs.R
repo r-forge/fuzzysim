@@ -1,5 +1,10 @@
 splist2presabs <-
 function(data, sites.col, sp.col, keep.n = FALSE) {
+  
+  # version 1.1 (2 May 2022)
+
+  data <- as.data.frame(data)
+  
   stopifnot(
     length(sites.col) == 1,
     length(sp.col) == 1,

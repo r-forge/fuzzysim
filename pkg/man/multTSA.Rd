@@ -37,7 +37,7 @@ character value indicating whether the backward stepwise selection of variables 
 the type of trend surface to obtain. Can be either "Y" for the raw polynomial equation (i.e. in the scale of the predictors, e.g. if you want to use the spatial trend as a predictor variable in a model), "P" for the logit-transformed probability (e.g. if you want to use the output as a prediction of presence probability based on spatial trend alone), or "F" for spatial favourability, i.e., prevalence-independent probability (see \code{\link{Fav}}).
 }
   \item{Favourability}{
-deprecated argument; link{type} should now be used instead, although (at least for the timebeing) this argument will still be accepted (with Favourability = TRUE internally resulting in type = "F") for back-compatibility.
+deprecated argument; link{type} should now be used instead, although (at least for the timebeing) this argument will still be accepted (with Favourability=TRUE internally resulting in type="F") for back-compatibility.
 }
   \item{suffix}{
 character indicating the suffix to add to the trend surface columns in the resulting data frame. The default is "_TS".

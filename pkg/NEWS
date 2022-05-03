@@ -59,7 +59,7 @@ fuzzySim v3.95 (committed 2022-03-22)
 - added 'na.omit' to 'data' in 'stopifnot', to avoid error when NAs
 
 * sharedFav
-- added 'bin_interval' argument, for now accepting only '0.1' (the default, for back-compatibility) or 'quantiles'
+- added 'bin_interval' argument, currently accepting '0.1' (the default, for back-compatibility) or 'quantiles'
 - added Note to help file about possible error when overly small bins
 
 
@@ -79,7 +79,7 @@ fuzzySim v3.9 (committed 2022-03-13)
 - fixed NA 'excluded.vars' output when input 'var.cols' is character
 
 * FDR
-- added 'Gamma' for positive non-integer responses when family = "auto"
+- added 'Gamma' for positive non-integer responses when family="auto"
 
 
 ============================================
@@ -92,7 +92,7 @@ fuzzySim v3.8 (committed 2022-02-05)
 - added 'species' argument for multi-species gridding
 - 'pres.coords' (and 'abs.coords' if not NULL) automatically converted with 'as.data.frame'
 - changed 'raster' to 'terra' in help file "Examples"
-- fixed bug that did not grid absence.coords (if not NULL)
+- fixed bug that did not grid abs.coords (if not NULL)
 
 
 ============================================

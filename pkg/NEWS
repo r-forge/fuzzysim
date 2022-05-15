@@ -1,4 +1,14 @@
 ============================================
+fuzzySim v4.1 (committed 2022-05-15)
+============================================
+
+## Modified functions:
+
+* modOverlap
+- improved help file and removed reference to requiring GLM predictions
+
+
+============================================
 fuzzySim v4.0 (committed 2022-05-02) -> CRAN
 ============================================
 
@@ -278,7 +288,7 @@ fuzzySim v2.2.1 (committed 2019-10-18)
 ## Modified functions:
 
 * modOverlap:
-- corrected typo in na.rm closing parentheses (reported by Heidi Mod)
+- corrected typo in na.rm closing parentheses (reported by Heidi K. Mod)
 
 * Fav:
 - slightly reduced probabilities of exactly 1, which would cause division by zero (resulting Fav is still 1)

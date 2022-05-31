@@ -3,7 +3,7 @@ importFrom("graphics", "abline", "arrows", "axis", "barplot", "lines",
 "mtext", "par", "points", "polygon")
 importFrom("methods", "is")
 importFrom("modEvA", "mod2obspred")
-importFrom("stats", "anova", "as.formula", "binomial", "cor", "dist",
+importFrom("stats", "anova", "as.formula", "binomial", "complete.cases", "cor", "dist",
            "extractAIC", "fitted", "glm", "lm", "na.omit", "nobs", "p.adjust",
            "p.adjust.methods", "poly", "prcomp", "predict", "quantile", "step", "update", 
            "na.pass", "t.test", "weighted.mean")

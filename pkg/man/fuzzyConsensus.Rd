@@ -1,12 +1,11 @@
 \name{fuzzyConsensus}
 \alias{fuzzyConsensus}
-\title{Fuzzy consensus among model predictions.}
-\description{This function takes a set of favourability columns (i.e., directly comparable predictions; see \code{\link{Fav}}) and computes the consensus favourability, i.e., a row-wise weighted mean in which larger weights are assigned to models with higher loadings in the first axis of a principal components analysis (Baquero, Barbosa et al. 2021).}
-\usage{fuzzyConsensus(data, fav.cols = 1:ncol(data), weights = "PCA1", 
-simplif = TRUE, plot = TRUE, biplot = TRUE, verbosity = 2, do.par = TRUE)}
+\title{Fuzzy consensus among model predictions}
+\description{This function takes a data frame or a (multilayer) SpatRaster map of favourability predictions (i.e., directly comparable predictions obtained from presence probability; see \code{\link{Fav}}) and it computes the consensus favourability, i.e., a row-wise weighted mean in which larger weights are assigned to models with higher loadings in the first axis of a principal components analysis (Baquero et al. 2021).}
+\usage{fuzzyConsensus(data, weights = "PCA1", simplif = TRUE, plot = TRUE, 
+biplot = TRUE, verbosity = 2, do.par = TRUE)}
 \arguments{
-  \item{data}{matrix or data frame containing the favourability values to compare.}
-  \item{fav.cols}{vector of the names or index numbers of the columns for which to compute the consensus. The default is all columns in \code{data}.}
+  \item{data}{matrix, data frame or (multilayer) 'SpatRaster' map containing the favourability values to combine.}
   \item{weights}{method for computing the weights for the weighted average of favourability values. Currently only "PCA1" is implemented.}
   \item{simplif}{logical value. If TRUE (the default), the output includes only the numeric vector of weighted mean favourability. If set to FALSE, the output will include also the complete PCA result (if weights="PCA1").}
   \item{plot}{logical value indicating whether to produce a barplot of the PCA axis loadings. The default is TRUE.}
@@ -15,10 +14,10 @@ simplif = TRUE, plot = TRUE, biplot = TRUE, verbosity = 2, do.par = TRUE)}
   \item{do.par}{logical value indicating whether to override the current plotting parameters (restoring them on exit). The default is TRUE.}
 }
 \details{
-Species distribution models are often computed using different modelling methods and/or climate scenarios. One way to summarize or combine them is to do a principal components analysis (PCA) of the different model predictions: The first axis of this PCA captures consistent spatial patterns in the predicted values across the different models (Araujo, Pearson, et al. 2005; Araujo, Whittaker, et al. 2005; Marmion et al. 2009; Thuiller 2004). However, the units of the PCA axes are difficult to interpret. Baquero, Barbosa et al. (2021) solved this by computing a weighted average of the favourability values (which are commensurable and therefore directly comparable across species and study areas; Real et al. 2006, Acevedo & Real 2012), using the loadings of the first PCA axis as weights. The result is therefore in the same scale as favourability, and it incorporates the degree of consensus among models, which dictates how much weight each model has in the prediction, thus avoiding disparate predictions to be blindly mixed and averaged out (Baquero, Barbosa et al. 2021).
+Species distribution models are often computed using different modelling methods and/or climate scenarios. One way to summarize or combine them is to do a principal components analysis (PCA) of the different model predictions: The first axis of this PCA captures consistent spatial patterns in the predicted values across the different models (Araujo, Pearson, et al. 2005; Araujo, Whittaker, et al. 2005; Marmion et al. 2009; Thuiller 2004). However, the units of the PCA axes are difficult to interpret. Baquero et al. (2021) solved this by computing a weighted average of the favourability values (which are commensurable and therefore directly comparable across species and study areas; Real et al. 2006, Acevedo & Real 2012), using the loadings of the first PCA axis as weights. The result is therefore in the same scale as favourability, and it incorporates the degree of consensus among models, which dictates how much weight each model has in the prediction, thus avoiding disparate predictions to be blindly mixed and averaged out (Baquero et al. 2021).
 }
 \value{
-If simplif=TRUE (the default), the function returns a numeric vector, with length equal to the number of rows in 'data', containing the row-wise consensus among the input columns. If simplif=FALSE, the function returns a list containing additionally the output of \code{\link{prcomp}}.
+If simplif=TRUE (the default), the function returns a numeric vector with length equal to the number of rows in 'data' (if 'data' is a matrix or data frame), or a 'SpatRaster' layer (if 'data' is a 'SpatRaster' object), with the consensus among the input favourabilities. If simplif=FALSE, the function returns a list containing, additionally, the output of \code{\link{prcomp}}.
 }
 \references{
 Acevedo P. & Real R. (2012) Favourability: Concept, distinctive characteristics and potential usefulness. Naturwissenschaften, 99: 515-522

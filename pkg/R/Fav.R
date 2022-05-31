@@ -1,5 +1,5 @@
 Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preval = NULL, method = "RBV", true.preval = NULL, verbosity = 2) {
-  # version 1.7 (29 Apr 2022)
+  # version 1.8 (31 May 2022)
   
   if (!is.null(model)) {
     if (verbosity > 0) {
@@ -39,7 +39,7 @@ Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preva
   obs <- unlist(obs)  # in case input was tibble
   pred <- unlist(pred)  # in case input was tibble
   
-  if (any(pred < 0) || any(pred > 1)) stop ("'pred' contains values that are not between 0 and 1, as probability must be.")
+  if (any(na.omit(pred[]) < 0) || any(na.omit(pred[]) > 1)) stop ("'pred' contains values that are not between 0 and 1, as probability must be.")  # '[]' in case 'pred' is raster
   
   vals <- na.omit(obs)
   if (is(model, "randomForest"))  vals <- as.integer(as.character(vals))

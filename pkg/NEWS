@@ -1,5 +1,18 @@
 ============================================
-fuzzySim v4.2 (committed 2022-05-31) -> CRAN
+fuzzySim v4.3 (committed 2022-06-01) -> CRAN
+============================================
+
+## Modified functions:
+
+* fuzzyConsensus, entropy, rarity, vulnerability
+- removed unnecessary (and possibly confusing) arguments 'sp.cols' or 'fav.cols' (when no other '*.cols' argument exists)
+
+* fuzzyConsensus
+- 'data' can also be a (multilayer) SpatRaster
+
+
+============================================
+fuzzySim v4.2 (committed 2022-05-31)
 ============================================
 
 ## New functions:

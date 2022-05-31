@@ -11,7 +11,7 @@ rarity(data, sp.cols = 1:ncol(data), na.rm = TRUE)
 }
 \arguments{
   \item{data}{a numeric vector, matrix or data frame containing the presence/absence or the \code{\link{Fav}}ourability (fuzzy presence) values for the target species.}
-  \item{sp.cols}{names or index numbers of the columns of 'data' that contain the species values for which to compute rarity.}
+  \item{sp.cols}{names or index numbers of the columns of 'data' that contain the species values for which to compute rarity. The default is to use all columns.}
   \item{na.rm}{logical value indicating whether NA values should be removed before the computation.}
 }
 \details{

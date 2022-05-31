@@ -54,7 +54,7 @@ echo $contents; } ?>
 <p> It then calculates <b>fuzzy similarity among (fuzzy) species distributions</b> and/or among <b>(fuzzy) regional species compositions</b>. Currently available similarity indices are Jaccard, S&oslash;rensen, Simpson, and Baroni-Urbani & Buser.</p>
 
 <font color="green">
-<h3> Package <i>fuzzySim</i> (v3.7) is on <a href="https://CRAN.R-project.org/package=fuzzySim">CRAN</a>! Check out <a href="https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/">this post</a> for some of the new features.</h3>
+<h3> Package <i>fuzzySim</i> is also available on <a href="https://CRAN.R-project.org/package=fuzzySim">CRAN</a>, although it is more regularly updated here on R-Forge.</h3>
 </font>
 
 <h2> Install and load </h2>

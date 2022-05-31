@@ -71,5 +71,7 @@ fav_gam <- Fav(pred = pred_gam, sample.preval = prevalence(model = mod_gam))
 # compute the consensus favourability of these two models:
 
 fav_consensus <- fuzzyConsensus(cbind(fav_glm, fav_gam))
+
+cor(cbind(fav_glm, fav_gam, fav_consensus))
 }
 }

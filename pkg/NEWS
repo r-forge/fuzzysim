@@ -4,11 +4,9 @@ fuzzySim v4.3 (committed 2022-06-01) -> CRAN
 
 ## Modified functions:
 
-* fuzzyConsensus, entropy, rarity, vulnerability
-- removed unnecessary (and possibly confusing) arguments 'sp.cols' or 'fav.cols' (when no other '*.cols' argument exists)
-
 * fuzzyConsensus
-- 'data' can also be a (multilayer) SpatRaster
+- 'data' can also be SpatRaster
+- removed unnecessary argument 'fav.cols' (as no other '*.cols' argument exists)
 
 
 ============================================
@@ -29,7 +27,7 @@ fuzzySim v4.2 (committed 2022-05-31)
 ## Other modified files:
 
 * DESCRIPTION
-- added reference about the method, as suggested by Uwe Ligges after previous submission
+- added reference about the method, as suggested by Uwe Ligges after previous CRAN submission
 
 
 ============================================

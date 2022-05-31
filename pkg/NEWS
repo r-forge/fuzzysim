@@ -1,5 +1,5 @@
 ============================================
-fuzzySim v4.2 (committed 2022-05-31)
+fuzzySim v4.2 (committed 2022-05-31) -> CRAN
 ============================================
 
 ## New functions:
@@ -10,7 +10,13 @@ fuzzySim v4.2 (committed 2022-05-31)
 ## Modified functions:
 
 * Fav
-- error if any 'pred' is outside the [0, 1] interval (matching 'fuzzyConsensus')
+- stops with error if any 'pred' is outside the [0,1] interval (matching 'fuzzyConsensus')
+
+
+## Other modified files:
+
+* DESCRIPTION
+- added reference about the method, as suggested by Uwe Ligges after previous submission
 
 
 ============================================

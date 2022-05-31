@@ -39,6 +39,8 @@ Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preva
   obs <- unlist(obs)  # in case input was tibble
   pred <- unlist(pred)  # in case input was tibble
   
+  if (any(pred < 0) || any(pred > 1)) stop ("'pred' contains values that are not between 0 and 1, as probability must be.")
+  
   vals <- na.omit(obs)
   if (is(model, "randomForest"))  vals <- as.integer(as.character(vals))
   if (!all(vals %in% c(0, 1))) stop("Favourability is only applicable when the response variable is binary, taking only values of 0 or 1.")

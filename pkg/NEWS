@@ -1,4 +1,19 @@
 ============================================
+fuzzySim v4.2 (committed 2022-05-31)
+============================================
+
+## New functions:
+
+* fuzzyConsensus
+
+
+## Modified functions:
+
+* Fav
+- error if any 'pred' is outside the [0, 1] interval (matching 'fuzzyConsensus')
+
+
+============================================
 fuzzySim v4.1 (committed 2022-05-15)
 ============================================
 

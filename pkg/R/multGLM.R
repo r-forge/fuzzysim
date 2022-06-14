@@ -1,12 +1,6 @@
-multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-                    test.sample = 0, FDR = FALSE, correction = "fdr",
-                    corSelect = FALSE, cor.thresh = 0.8, step = TRUE, trace = 0,
-                    start = "null.model", direction = "both", select = "AIC",
-                    trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE,
-                    Favourability = TRUE, group.preds = TRUE, TSA = FALSE,
-                    coord.cols = NULL, degree = 3, verbosity = 2, ...) {
+multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, ...) {
 
-  # version 5.2 (2 May 2022)
+  # version 5.3 (13 Jun 2022)
 
   start.time <- Sys.time()
   on.exit(timer(start.time))
@@ -112,6 +106,15 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   colnames(predictions) <- rep("", n.preds)
   model.count <- 0
   pred.count <- 0
+  
+  # UNDER CONSTRUCTION [MOVE TO sp.col LOOP]:
+  # exclusions <- c(FDR, corSelect, step, trim)  # this block new
+  # n_exclusions <- sum(exclusions)
+  # if (n_exclusions > 0) {
+  #   excluded <- vector("list", n_exclusions)
+  #   excl_names <- c("FDR", "corSelect", "step", "trim")
+  #   names(excluded) <- excl_names[which(exclusions == TRUE)]
+  # }
 
   for (s in sp.cols) {
     model.count <- model.count + 1
@@ -147,6 +150,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
           "No variables passed the FDR test (so no variables included in the model)\n for '", response, "'. Consider using 'FDR = FALSE' or choosing a less stringent 'correction' procedure."))
         #next
       } #else {
+      #excluded["FDR"] <- row.names(fdr$exclude)
       if (verbosity > 1)  cat(length(var.cols) - nrow(fdr$select), "variable(s) excluded by 'FDR' function\n", paste(row.names(fdr$exclude), collapse = ", "), "\n\n")
       #}
       sel.var.cols <- which(colnames(train.data) %in% rownames(fdr$select))

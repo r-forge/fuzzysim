@@ -1,4 +1,20 @@
 ============================================
+fuzzySim v4.4 (committed 2022-06-14)
+============================================
+
+## Modified functions:
+
+* fuzzyConsensus
+- 'cat' message now mentions the number of input vectors
+
+* multGLM
+- added 'cor.method' argument (for 'cor' via 'corSelect'; default "pearson")
+
+* stepByStep
+- 'sp.col' and 'var.cols' can now be column names, not just index numbers
+
+
+============================================
 fuzzySim v4.3 (committed 2022-06-01) -> CRAN
 ============================================
 

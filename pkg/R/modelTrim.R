@@ -1,5 +1,4 @@
-modelTrim <-
-  function(model, method = "summary", alpha = 0.05) {
+modelTrim <- function(model, method = "summary", alpha = 0.05) {
     # version 1.9 (16 Nov 2018)
 
     stopifnot(

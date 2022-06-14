@@ -6,7 +6,7 @@ stepByStep <- function(data,
                        trace = 0, 
                        cor.method = "pearson") {
   
-  # version 1.4 (2 May 2022)
+  # version 1.5 (14 Jun 2022)
   
   data <- as.data.frame(data)
   
@@ -15,9 +15,11 @@ stepByStep <- function(data,
   na.loss <- n.init - nrow(data)
   if (na.loss > 0) message(na.loss, " cases excluded due to missing values.")
   
-  response <- colnames(data)[sp.col]
+  response <- if (is.numeric(sp.col)) sp.col <- colnames(data)[sp.col] else response <- sp.col
+  vars <- if (is.numeric(var.cols)) var.cols <- colnames(data)[var.cols] else vars <- var.cols
+  
   null.model.formula <- as.formula(paste(response, "~", 1))
-  scope.formula <- as.formula(paste("~", paste(colnames(data)[var.cols], collapse = "+")))
+  scope.formula <- as.formula(paste("~", paste(vars, collapse = "+")))
   mod <- step(glm(null.model.formula, family = family, data = data), scope = scope.formula, direction = "forward", trace = trace)
   pred.final <- mod$fitted.values
   

@@ -29,8 +29,8 @@ fuzzyConsensus <- function(data, weights = "PCA1", simplif = TRUE, plot = TRUE, 
     wmn <- apply(data, 1, weighted.mean, w = rot)
     if (verbosity > 0) {
       prop <- summary(pca)$importance["Proportion of Variance", "PC1"]
-      prop <- 100 * round(prop, 3)
-      cat("PCA axis 1 accounts for ", prop, "% of the variance in the input columns.\n\n", sep = "")
+      perc <- 100 * round(prop, 3)
+      cat("PCA axis 1 accounts for ", perc, "% of the variance in the ", ncol(data), " input vectors.\n\n", sep = "")
       #cor(abs(pca$x[ , "PC1"]), wmn)
     }
     if (plot) plot(pca, main = "PCA")

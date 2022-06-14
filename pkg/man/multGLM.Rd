@@ -9,10 +9,11 @@ This function performs selection of variables and calculates generalized linear 
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
 test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE,
-cor.thresh = 0.8, step = TRUE, trace = 0, start = "null.model", 
-direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, 
-P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, 
-TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, ...)
+cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, 
+start = "null.model", direction = "both", select = "AIC", trim = TRUE, 
+Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, 
+group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3,
+verbosity = 2, ...)
 }
 \arguments{
   \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
@@ -25,6 +26,7 @@ TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, ...)
   \item{correction}{argument to pass to the \code{\link{FDR}} function if FDR = TRUE. The default is "fdr", but see \code{\link{p.adjust}} for other options.}
   \item{corSelect}{logical value indicating whether to do a preliminary exclusion of highly correlated variables (see \code{\link{corSelect}}). The default is FALSE.}
   \item{cor.thresh}{numerical value indicating the correlation threshold to pass to \code{\link{corSelect}} (used only if corSelect = TRUE).}
+  \item{cor.method}{character value to pass to \code{\link{corSelect}} (used only if corSelect = TRUE) specifying the correlation coefficient to use. Can be "pearson" (the default), "kendall" or "spearman".}
   \item{step}{logical, whether to use the \code{\link{step}} function to perform a stepwise variable selection (based on AIC or BIC).}
   \item{trace}{if positive, information is printed during the running of \code{\link{step}}. Larger values may give more detailed information.}
   \item{start}{character string specifying whether to start with the 'null.model' (so that variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if step = TRUE.}

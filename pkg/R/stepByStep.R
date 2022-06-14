@@ -15,8 +15,8 @@ stepByStep <- function(data,
   na.loss <- n.init - nrow(data)
   if (na.loss > 0) message(na.loss, " cases excluded due to missing values.")
   
-  response <- if (is.numeric(sp.col)) sp.col <- colnames(data)[sp.col] else response <- sp.col
-  vars <- if (is.numeric(var.cols)) var.cols <- colnames(data)[var.cols] else vars <- var.cols
+  if (is.numeric(sp.col)) response <- names(data)[sp.col] else response <- sp.col
+  if (is.numeric(var.cols)) vars <- names(data)[var.cols] else vars <- var.cols
   
   null.model.formula <- as.formula(paste(response, "~", 1))
   scope.formula <- as.formula(paste("~", paste(vars, collapse = "+")))

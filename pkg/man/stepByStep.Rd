@@ -8,7 +8,7 @@ This function builds a generalized linear model with forward stepwise inclusion 
 }
 \usage{
 stepByStep(data, sp.col, var.cols, family = binomial(link = "logit"), 
-Favourability = FALSE, trace = 0, cor.method = "pearson")
+Favourability = FALSE, trace = 0, direction = "forward", k = 2, cor.method = "pearson")
 }
 \arguments{
   \item{data}{
@@ -28,6 +28,12 @@ logical, whether to apply the \code{\link{Fav}}ourability function to remove the
 }
   \item{trace}{
 argument to pass to the \code{\link{step}} function. If positive, information is printed during the stepwise procedure. Larger values may give more detailed information. The default is 0 (silent).
+}
+  \item{direction}{
+argument to pass to the \code{\link{step}} function. Implementation contributed by Alba Estrada. Can be "forward" (the default, for back-compatibility with former versions of 'stepByStep'), "backward", or "both".
+}
+  \item{k}{
+argument to pass to the \code{\link{step}} function indicating the multiple of the number of degrees of freedom used for the penalty. The default is 2, which yields the original AIC. You can use larger values for a more stringent selection-- e.g., for a critical p-value of 0.05, use k = qchisq(0.05, 1, lower.tail = F).
 }
   \item{cor.method}{
 character string to pass to \code{\link{cor}} indicating which coefficient to use for correlating predictions at each step with those of the final model. Can be "pearson" (the default), "kendall", or "spearman".

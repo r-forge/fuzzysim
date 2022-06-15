@@ -1,4 +1,15 @@
 ============================================
+fuzzySim v4.5 (committed 2022-06-15)
+============================================
+
+## Modified functions:
+
+* stepByStep
+- added 'k' argument to pass to 'step' (allows approaching p<0.05; https://www.researchgate.net/post/Why-stepAIC-gives-a-model-with-insignificant-variables-in-the-summarymodel)
+- added 'direction' argument to pass to 'step' (implementation by Alba Estrada)
+
+
+============================================
 fuzzySim v4.4 (committed 2022-06-14)
 ============================================
 

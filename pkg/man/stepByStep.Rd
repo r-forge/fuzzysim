@@ -8,7 +8,8 @@ This function builds a generalized linear model with forward stepwise inclusion 
 }
 \usage{
 stepByStep(data, sp.col, var.cols, family = binomial(link = "logit"), 
-Favourability = FALSE, trace = 0, direction = "forward", k = 2, cor.method = "pearson")
+Favourability = FALSE, trace = 0, direction = "forward", k = 2, 
+cor.method = "pearson")
 }
 \arguments{
   \item{data}{
@@ -72,6 +73,3 @@ cor.method = "spearman", Favourability = TRUE)
 stepByStep(data = rotif.env, sp.col = 9, var.cols = c(5:8, 10:17), 
 family = poisson)
 }
-\keyword{models}
-\keyword{regression}
-\keyword{multivariate}

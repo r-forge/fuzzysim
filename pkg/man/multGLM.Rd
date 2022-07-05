@@ -11,9 +11,9 @@ multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
 test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE,
 cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, 
 start = "null.model", direction = "both", select = "AIC", trim = TRUE, 
-Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, 
-group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3,
-verbosity = 2, ...)
+trim.fun = "modelTrim", Y.prediction = FALSE, P.prediction = TRUE, 
+Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, 
+degree = 3, verbosity = 2, ...)
 }
 \arguments{
   \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
@@ -32,7 +32,8 @@ verbosity = 2, ...)
   \item{start}{character string specifying whether to start with the 'null.model' (so that variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if step = TRUE.}
   \item{direction}{argument to be passed to \code{\link{step}} specifying the direction of variable selection ('forward', 'backward' or 'both'). Used only if step = TRUE.}
   \item{select}{character string specifying the criterion for stepwise selection of variables. Options are "AIC" (Akaike's Information Criterion; Akaike, 1973), the default; or BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC; Schwarz, 1978). Used only if step = TRUE.}
-  \item{trim}{logical indicating whether to trim off non-significant variables from the models using \code{\link{modelTrim}} function. Can be used whether or not step = TRUE. Works as a backward variable elimination procedure based on statistical significance.}
+  \item{trim}{logical value indicating whether to trim off non-significant variables from the model(s), using either \code{\link{modelTrim}} or backward \code{\link{stepwise}} selection (depending on the specified 'trim.fun' below). This argument is TRUE by default, and it can be used whether or not step=TRUE -- e.g. Crawley (2005, p. 208) and Crawley (2007, p. 442 and 601) recommend that \code{\link{step}} be followed by significance-based backward elimination).}
+  \item{trim.fun}{character value indicating the name of the function to use for removing non-significant variables if trim=TRUE. Can be "\code{\link{modelTrim}}" (the default) or "\code{\link{stepwise}}" (which will be performed backward).}
   \item{Y.prediction}{logical, whether to include output predictions in the scale of the predictor variables (type = "link" in \code{\link{predict.glm}}).}
   \item{P.prediction}{logical, whether to include output predictions in the scale of the response variable, i.e. probability (type = "response" in \code{\link{predict.glm}}).}
   \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to remove the effect of prevalence on predicted probability (Real et al. 2006) and include its results in the output.}
@@ -41,7 +42,7 @@ verbosity = 2, ...)
   \item{coord.cols}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{degree}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}
-  \item{\dots}{additional arguments to be passed to \code{\link{modelTrim}}.}
+  \item{\dots}{additional arguments for variable selection criteria to pass to the function specified in 'trim.fun'.}
 }
 \details{
 This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function.
@@ -65,6 +66,10 @@ This function returns a list with the following components:
 \references{
 Akaike, H. (1973) Information theory and an extension of the maximum likelihood principle. In: Petrov B.N. & Csaki F., 2nd International Symposium on Information Theory, Tsahkadsor, Armenia, USSR, September 2-8, 1971, Budapest: Akademiai Kiado, p. 267-281.
 
+Crawley, M.J. (2005) Statistics: An introdution using R. John Wiley & Sons, Ltd.
+
+Crawley, M.J. (2007) The R Book. John Wiley & Sons, Ltd.
+
 Fielding A.H. & Bell J.F. (1997) A review of methods for the assessment of prediction errors in conservation presence/absence models. Environmental Conservation 24: 38-49
 
 Huberty C.J. (1994) Applied Discriminant Analysis. Wiley, New York, 466 pp.
@@ -78,7 +83,7 @@ Schwarz, G.E. (1978) Estimating the dimension of a model. Annals of Statistics, 
 A. Marcia Barbosa
 }
 \seealso{
-\code{\link{glm}}, \code{\link{Fav}}, \code{\link{step}}, \code{\link{modelTrim}}, \code{\link{multicol}}, \code{\link{corSelect}}
+\code{\link{glm}}, \code{\link{step}}, \code{\link{stepwise}}
 }
 \examples{
 data(rotif.env)
@@ -88,8 +93,8 @@ names(rotif.env)
 
 # make models for 2 of the species in rotif.env:
 
-  mods <- multGLM(rotif.env, sp.cols = 46:47, var.cols = 5:17, id.col = 1,
-  step = TRUE, FDR = TRUE, trim = TRUE)
+mods <- multGLM(rotif.env, sp.cols = 46:47, var.cols = 5:17, id.col = 1,
+step = TRUE, FDR = TRUE, trim = TRUE)
 
 names(mods)
 head(mods$predictions)

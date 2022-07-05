@@ -1,6 +1,6 @@
 simMat <- function(data, method, diag = TRUE, upper = TRUE, verbosity = 2) {
 
-  # version 2.2 (2 May 2022)
+  # version 2.3 (5 Jul 2022)
   
   if (verbosity > 1)  start.time <- Sys.time()
   

@@ -1,6 +1,6 @@
 multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, verbosity = 2, ...) {
 
-  # version 2.7 (2 May 2022)
+  # version 2.8 (5 Jul 2022)
 
   if (verbosity > 1) {
     start.time <- Sys.time()

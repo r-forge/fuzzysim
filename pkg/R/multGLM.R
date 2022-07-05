@@ -1,4 +1,4 @@
-multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, ...) {
+multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, trim.fun = "modelTrim", Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, ...) {
 
   # version 5.3 (13 Jun 2022)
 
@@ -30,9 +30,8 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     is.logical(Favourability),
     is.logical(group.preds),
     is.logical(trim),
-    is.logical(TSA),
-    !Favourability | exists("Fav"),
-    !trim | exists("modelTrim")
+    trim.fun %in% c("modelTrim", "stepwise"),
+    is.logical(TSA)
   )
   
   data$sample <- "train"
@@ -192,7 +191,8 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     if (trim && length(sel.var.cols) > 0) {
       n.vars.start <- length(model$coefficients) - 1
       names.vars.start <- names(model$coefficients)[-1]
-      model <- suppressMessages(modelTrim(model, ...))
+      if (trim.fun == "modelTrim") model <- suppressMessages(suppressWarnings(modelTrim(model, ...)))
+      else if (trim.fun == "stepwise") model <- stepwise(data = model$model, sp.col = 1, var.cols = 2:ncol(model$model), direction = "backward", Favourability = FALSE, simplif = TRUE, ...)  # NEW
       n.vars.trim <- length(model$coefficients) - 1
       excluded.vars <- setdiff(names.vars.start, names(model$coefficients)[-1])
       if (verbosity > 1)  cat(n.vars.start - n.vars.trim, "variable(s) excluded by 'modelTrim' function\n", paste(excluded.vars, collapse = ", "), "\n\n")

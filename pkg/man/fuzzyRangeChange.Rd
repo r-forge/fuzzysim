@@ -9,7 +9,7 @@ This function quantifies overall range change (expansion, contraction, maintenan
 \usage{
 fuzzyRangeChange(pred1, pred2, number = TRUE, prop = TRUE, 
 na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss", 
-"Stable presence", "Stable absence", "Balance"), plot = TRUE, ...)
+"Stable presence", "Stable absence", "Balance"), plot = TRUE, x.lab = TRUE, ...)
 }
 \arguments{
   \item{pred1}{
@@ -36,7 +36,10 @@ character vector listing the range change measures to calculate. The default is 
   \item{plot}{
 logical value indicating whether to make a barplot with the results. The default is TRUE.
 }
-  \item{\dots}{additional arguments to be passed to the \code{\link{barplot}} function (if plot = TRUE.}
+  \item{x.lab}{
+logical value indicating whether to add the x axis labels to the plot (i.e., the names below each bar). The default is TRUE, but users may set it to FALSE and then add labels differently.
+}
+  \item{\dots}{additional arguments to be passed to the \code{\link{barplot}} function (if plot = TRUE).}
 }
 \value{
 This function returns a data frame with the following values in different rows (among those that are included in 'measures'):

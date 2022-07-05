@@ -2,7 +2,7 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
                  model.type = NULL, family = "auto", correction = "fdr", q = 0.05,
                  verbose = TRUE, simplif = FALSE)
   
-  # version 3.9 (2 May 2022)
+  # version 4.0 (5 Jul 2022)
   
 {
   

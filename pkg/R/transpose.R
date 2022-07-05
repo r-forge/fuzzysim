@@ -1,5 +1,5 @@
 transpose <- function(data, sp.cols = 1:ncol(data), reg.names = NULL) {
-  # version 1.1 (2 May 2022)
+  # version 1.2 (5 Jul 2022)
   
   data <- as.data.frame(data)
   transp <- as.data.frame(t(data[ , sp.cols]))

@@ -4,7 +4,7 @@
 Trim off non-significant variables from a model
 }
 \description{
-This function performs a stepwise removal of non-significant variables from a model.
+This function performs a stepwise removal of non-significant variables from a model, following Crawley (2005, 2007). See \code{\link{stepwise}} for a newer, more complete function that can be used instead.
 }
 \usage{
 modelTrim(model, method = "summary", alpha = 0.05)
@@ -15,7 +15,7 @@ modelTrim(model, method = "summary", alpha = 0.05)
   \item{alpha}{the p-value above which a variable is removed.}
 }
 \details{
-Stepwise variable selection is a common procedure for simplifying models. It maximizes predictive efficiency in an objective and reproducible way, and is useful when the individual importance of the predictors is not known a priori (Hosmer & Lemeshow, 2000). The \code{\link{step}} R function performs such procedure using an information criterion (AIC) to select the variables, but it often leaves variables that are not significant in the model. Such variables can be subsequently removed with a manual stepwise procedure (e.g. Crawley 2007, p. 442; Barbosa & Real 2010, 2012; Estrada & Arroyo 2012). The 'modelTrim' function performs such removal automatically until all remaining variables are significant. It can also be applied to a full model (i.e., without previous use of the step function), as it serves as a backward stepwise selection procedure based on the significance of the coefficients (if method = "summary", the default) or on the significance of the variables themselves (if method = "anova", better when there are categorical variables in the model).
+Stepwise variable selection is a common procedure for simplifying models. It maximizes predictive efficiency in an objective and reproducible way, and is useful when the individual importance of the predictors is not known a priori (Hosmer & Lemeshow, 2000). The \code{\link{step}} R function performs such procedure using an information criterion (AIC) to select the variables, but it often leaves variables that are not significant in the model. Such variables can be subsequently removed with a manual stepwise procedure (e.g. Crawley 2005, p. 208; Crawley 2007, p. 442 and 601; Barbosa & Real 2010, 2012; Estrada & Arroyo 2012). The 'modelTrim' function performs such removal automatically until all remaining variables are significant. It can also be applied to a full model (i.e., without previous use of the 'step' function), as it serves as a backward stepwise selection procedure based on the significance of the coefficients (if method = "summary", the default) or on the significance of the variables (if method = "anova", better when there are categorical variables in the model). See \code{\link{stepwise}} for a more complete stepwise selection procedure.
 }
 \value{
 The input model object after removal of non-significant variables.
@@ -25,7 +25,9 @@ Barbosa A.M. & Real R. (2010) Favourable areas for expansion and reintroduction 
 
 Barbosa A.M. & Real R. (2012) Applying fuzzy logic to comparative distribution modelling: a case study with two sympatric amphibians. The Scientific World Journal, Article ID 428206
 
-Crawley M.J. (2007) The R Book. John Wiley & Sons, Chichester (UK)
+Crawley, M.J. (2005) Statistics: An introdution using R. John Wiley & Sons, Ltd.
+
+Crawley, M.J. (2007) The R Book. John Wiley & Sons, Ltd.
 
 Estrada A. & Arroyo B. (2012) Occurrence vs abundance models: Differences between species with varying aggregation patterns. Biological Conservation, 152: 37-45
 

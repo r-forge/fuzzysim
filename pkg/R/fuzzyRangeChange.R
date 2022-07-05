@@ -1,4 +1,4 @@
-fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss", "Stable presence", "Stable absence", "Balance"), plot = TRUE, ...) #col = colorRampPalette(c("white", "black"))(length(measures)) 
+fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = TRUE, round.digits = 2, measures = c("Gain", "Loss", "Stable presence", "Stable absence", "Balance"), plot = TRUE, x.lab = TRUE, ...) #col = colorRampPalette(c("white", "black"))(length(measures)) 
   {
   
   # version 1.7 (2 May 2022)
@@ -40,7 +40,8 @@ fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE, na.rm = T
   }
   
   if (plot) {
-    barplot(result[ , ncol(result)], names.arg = gsub(x = rownames(result), pattern = " ", replacement = "\n"), ...)
+    if(x.lab) xlab <- gsub(x = rownames(result), pattern = " ", replacement = "\n") else xlab <- ""
+    barplot(result[ , ncol(result)], names.arg = xlab, ...)
     abline(h = 0)
   }
   

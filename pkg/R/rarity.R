@@ -1,5 +1,7 @@
 rarity <- function(data, sp.cols = 1:ncol(data), na.rm = TRUE) {
   
+  # version 1.1 (5 Jul 2022)
+  
   data <- as.data.frame(data)
   
   rarity_single <- function(x) 1 / sum(x, na.rm = na.rm)

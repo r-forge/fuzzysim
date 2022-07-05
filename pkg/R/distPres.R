@@ -1,5 +1,5 @@
 distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, method = "euclidian", suffix = "_D", p = 1, inv = TRUE) {
-  # version 2.1 (2 May 2022)
+  # version 2.2 (5 Jul 2022)
 
   data <- as.data.frame(data)
   stopifnot(

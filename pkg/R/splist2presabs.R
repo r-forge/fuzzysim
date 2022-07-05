@@ -1,7 +1,6 @@
-splist2presabs <-
-function(data, sites.col, sp.col, keep.n = FALSE) {
+splist2presabs <- function(data, sites.col, sp.col, keep.n = FALSE) {
   
-  # version 1.1 (2 May 2022)
+  # version 1.2 (5 Jul 2022)
 
   data <- as.data.frame(data)
   

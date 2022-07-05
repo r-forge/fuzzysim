@@ -5,7 +5,7 @@ gridRecords <- function(rst,
                         species = NULL,  # new
                         na.rm = TRUE) {  # new
 
-  # version 3.1 (28 Feb 2022)
+  # version 3.2 (5 Jul 2022)
 
   if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 

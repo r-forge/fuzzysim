@@ -1,6 +1,6 @@
 multicol <- function(vars = NULL, model = NULL, reorder = TRUE) {
   
-  # version 1.2 (2 May 2022)
+  # version 1.3 (5 Jul 2022)
   
   if (is.null(vars)) {
     if (is.null(model)) stop ("You must provide either 'vars' or 'model'.")

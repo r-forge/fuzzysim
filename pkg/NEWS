@@ -1,4 +1,27 @@
 ============================================
+fuzzySim v4.6 (committed 2022-07-05)
+============================================
+
+## New functions:
+
+* stepwise
+
+* summaryWald
+
+
+## Modified functions:
+
+* fuzzyRangeChange
+- added 'x.lab=TRUE' argument, so user can set to FALSE and add labels differently
+
+* stepByStep
+- added warning("'Favourability' is only applicable when family=binomial(link='logit'), so it was automatically set to FALSE.")
+
+* multGLM
+- added argument 'trim.fun="modelTrim', which can be changed to 'stepwise'
+
+
+============================================
 fuzzySim v4.5 (committed 2022-06-15)
 ============================================
 

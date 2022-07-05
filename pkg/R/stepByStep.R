@@ -8,7 +8,7 @@ stepByStep <- function(data,
                        k = 2, 
                        cor.method = "pearson") {
   
-  # version 1.6 (15 Jun 2022)
+  # version 1.7 (5 Jul 2022)
   
   data <- as.data.frame(data)
   
@@ -25,14 +25,17 @@ stepByStep <- function(data,
   mod <- step(glm(null.model.formula, family = family, data = data), scope = scope.formula, direction = direction, trace = trace, k = k)
   pred.final <- mod$fitted.values
   
-  if (!all(c("binomial", "logit") %in% mod$family))  Favourability <- FALSE
+  if (Favourability == TRUE && !all(c("binomial", "logit") %in% mod$family)) {
+    Favourability <- FALSE
+    warning("'Favourability' is only applicable when family=binomial(link='logit'), so it was automatically set to FALSE.")
+  }
   if (Favourability)  fav.final <- Fav(model = mod)
   
   # model.vars.split <- sapply(mod$anova[ , 1], strsplit, split = " ")
   # model.vars <- lapply(model.vars.split, `[`, 2)
   # model.vars <- as.character(model.vars)[-1]
   model.vars <- mod$anova[ , 1][-1]  # changed by Alba Estrada to accommodate direction="both"
-
+  
   n.steps <- length(model.vars)
   
   preds <- favs <- as.data.frame(matrix(nrow = nrow(data), ncol = n.steps))

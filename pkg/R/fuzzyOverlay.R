@@ -5,7 +5,7 @@ fuzzyOverlay <- function(data,
                          round.digits = 2
                          ) {
   
-  # version 1.5 (2 May 2022)
+  # version 1.6 (5 Jul 2022)
   
   data <- as.data.frame(data)
   data <- data[ , overlay.cols]

@@ -1,6 +1,6 @@
 corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = "p.value", family = "auto", use = "pairwise.complete.obs", method = "pearson") {
 
-  # version 2.9 (2 May 2022)
+  # version 3.0 (5 Jul 2022)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 

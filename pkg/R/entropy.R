@@ -1,5 +1,7 @@
 entropy <- function(data, sp.cols = 1:ncol(data), method = "fuzzy", base = exp(1), plot = TRUE, na.rm = TRUE, ...) {
   
+  # version 1.1 (5 Jul 2022)
+  
   data_in <- data
   data <- as.data.frame(data)
   

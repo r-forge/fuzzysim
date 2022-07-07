@@ -1,4 +1,20 @@
 ============================================
+fuzzySim v4.7 (committed 2022-07-07)
+============================================
+
+* multGLM
+- fixed message about N variables excluded by 'modelTrim' (now by trim.fun)
+- set trace=0 for 'stepwise'
+
+* fuzzyConsensus
+- changed default biplot to FALSE, as it makes things much slower
+
+* fuzzyRangeChange
+- changed "Stable presence" and "Stable absence" to "Stable positive" and "Stable negative" to avoid erroneous interpretation
+- added y axis label
+
+
+============================================
 fuzzySim v4.6 (committed 2022-07-05)
 ============================================
 

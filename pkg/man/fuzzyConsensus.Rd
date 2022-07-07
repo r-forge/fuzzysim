@@ -3,13 +3,13 @@
 \title{Fuzzy consensus among model predictions}
 \description{This function takes a data frame or a (multilayer) SpatRaster map of favourability predictions (i.e., directly comparable predictions obtained from presence probability; see \code{\link{Fav}}) and it computes the consensus favourability, i.e., a row-wise weighted mean in which larger weights are assigned to models with higher loadings in the first axis of a principal components analysis (Baquero et al. 2021).}
 \usage{fuzzyConsensus(data, weights = "PCA1", simplif = TRUE, plot = TRUE, 
-biplot = TRUE, verbosity = 2, do.par = TRUE)}
+biplot = FALSE, verbosity = 2, do.par = TRUE)}
 \arguments{
   \item{data}{matrix, data frame or (multilayer) 'SpatRaster' map containing the favourability values to combine.}
   \item{weights}{method for computing the weights for the weighted average of favourability values. Currently only "PCA1" is implemented.}
   \item{simplif}{logical value. If TRUE (the default), the output includes only the numeric vector of weighted mean favourability. If set to FALSE, the output will include also the complete PCA result (if weights="PCA1").}
   \item{plot}{logical value indicating whether to produce a barplot of the PCA axis loadings. The default is TRUE.}
-  \item{biplot}{logical value indicating whether to produce a \code{\link{biplot}} of the PCA. The default is TRUE.}
+  \item{biplot}{logical value indicating whether to produce a \code{\link{biplot}} of the PCA. The default is FALSE, as it makes computation slower.}
   \item{verbosity}{integer value indicating the amount of messages to display in the console. The default is to emit all messages available.}
   \item{do.par}{logical value indicating whether to override the current plotting parameters (restoring them on exit). The default is TRUE.}
 }

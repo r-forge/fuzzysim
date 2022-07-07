@@ -1,5 +1,5 @@
-fuzzyConsensus <- function(data, weights = "PCA1", simplif = TRUE, plot = TRUE, biplot = TRUE, verbosity = 2, do.par = TRUE) {
-  # version 1.2 (5 Jul 2022)
+fuzzyConsensus <- function(data, weights = "PCA1", simplif = TRUE, plot = TRUE, biplot = FALSE, verbosity = 2, do.par = TRUE) {
+  # version 1.3 (7 Jul 2022)
   
   data_in <- data
   

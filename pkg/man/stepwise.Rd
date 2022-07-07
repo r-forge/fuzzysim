@@ -55,24 +55,30 @@ logical, whether to return also the predictions given by the model at each step.
 logical, whether to convert the predictions (if preds=TRUE) with the \code{\link{Fav}} function. This argument is ignored if simplif=TRUE.
 }
   \item{Wald}{
-logical, whether to report the Wald test statistics (rather than the z test normally returned by \code{\link{summary}}). Used only if trace > 1. Requires the \pkg{aod} package.
+logical, whether to print the Wald test statistics using \code{\link{summaryWald}}, rather than the z test normally returned by \code{\link{summary}}. Used only if trace > 1. Requires the \pkg{aod} package. The default is FALSE.
 }
 }
 \details{
-Stepwise variable selection is a way of selecting a subset of significant variables to get a simple and easily interpretable model (e.g. Munoz et al., 2005). It is more computationally efficient than best subset selection. This function uses \code{\link{add1}} for selecting and \code{\link{drop1}} for excluding variables. The default parameters mimic the "Forward Selection (Conditional)" stepwise procedure implemented in the IBM SPSS software. This is a widely used, but also widely criticized method for variable selection (e.g. Harrell 2001; Flom & Cassell, 2007; Smith 2018), though its AIC-based counterpart (implemented in the \code{\link{step}} function) is also not without flaws (Real et al., in prep.).
+Stepwise variable selection is a way of selecting a subset of significant variables to get a simple and easily interpretable model. It is more computationally efficient than best subset selection. This function uses \code{\link{add1}} for selecting and \code{\link{drop1}} for excluding variables. The default parameters mimic the "Forward Selection (Conditional)" stepwise procedure implemented in the IBM SPSS software. This is a widely used (e.g. Munoz et al. 2005, Olivero et al. 2017, 2020, Garcia-Carrasco et al. 2021) but also widely criticized method for variable selection (e.g. Harrell 2001; Flom & Cassell, 2007; Smith 2018), though its AIC-based counterpart (implemented in the \code{\link{step}} function) is also not without flaws (Real et al. in prep.).
 }
 \value{
 If simplif=TRUE (the default), this function returns the model object obtained after the variable selection procedure. If simplif=FALSE, it returns a list with the following components:
 \item{model}{the model object obtained after the variable selection procedure.}
 \item{steps}{a data frame where each row shows the variable included or excluded at each step.}
-\item{predictions}{(if preds=TRUE) a data frame where each column contains the predictions of the model at each step. These predictions are probabilities by default, or favourabilities if Favourability=TRUE.}
+\item{predictions}{(if preds=TRUE) a data frame where each column contains the predictions of the model obtained at each step. These predictions are probabilities by default, or favourabilities if Favourability=TRUE.}
 }
 \references{
 Flom P.L. & Cassell D.L. (2007) Stopping stepwise: Why stepwise and similar selection methods are bad, and what you should use. NESUG 2007
 
+Garcia-Carrasco J.M., Munoz A.R., Olivero J., Segura M. & Real R. (2021) Predicting the spatio-temporal spread of West Nile virus in Europe. PLoS Neglected Tropical Diseases 15(1):e0009022
+
 Harrell F.E. (2001) Regression modeling strategies: With applications to linear models, logistic regression, and survival analysis. Springer-Verlag, New York
 
 Munoz, A.R., Real R., Barbosa A.M. & Vargas J.M. (2005) Modelling the distribution of Bonelli's Eagle in Spain: Implications for conservation planning. Diversity and Distributions 11: 477-486
+
+Olivero J., Fa J.E., Real R., Marquez A.L., Farfan M.A., Vargas J.M, Gaveau D., Salim M.A., Park D., Suter J., King S., Leendertz S.A., Sheil D. & Nasi R. (2017) Recent loss of closed forests is associated with Ebola virus disease outbreaks. Scientific Reports 7: 14291
+
+Olivero J., Fa J.E., Farfan M.A., Marquez A.L., Real R., Juste F.J., Leendertz S.A. & Nasi R. (2020) Human activities link fruit bat presence to Ebola virus disease outbreaks. Mammal Review 50:1-10
 
 Smith G. (2018) Step away from stepwise. Journal of Big Data 32 (https://doi.org/10.1186/s40537-018-0143-6)
 }

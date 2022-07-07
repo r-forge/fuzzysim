@@ -192,10 +192,10 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
       n.vars.start <- length(model$coefficients) - 1
       names.vars.start <- names(model$coefficients)[-1]
       if (trim.fun == "modelTrim") model <- suppressMessages(suppressWarnings(modelTrim(model, ...)))
-      else if (trim.fun == "stepwise") model <- stepwise(data = model$model, sp.col = 1, var.cols = 2:ncol(model$model), direction = "backward", Favourability = FALSE, simplif = TRUE, ...)  # NEW
+      else if (trim.fun == "stepwise") model <- stepwise(data = model$model, sp.col = 1, var.cols = 2:ncol(model$model), direction = "backward", Favourability = FALSE, simplif = TRUE, trace = 0, ...)
       n.vars.trim <- length(model$coefficients) - 1
       excluded.vars <- setdiff(names.vars.start, names(model$coefficients)[-1])
-      if (verbosity > 1)  cat(n.vars.start - n.vars.trim, "variable(s) excluded by 'modelTrim' function\n", paste(excluded.vars, collapse = ", "), "\n\n")
+      if (verbosity > 1)  cat(n.vars.start - n.vars.trim, " variable(s) excluded by '", trim.fun, "' function\n ", paste(excluded.vars, collapse = ", "), "\n\n", sep = "")
     }
 
     if (step || trim) {

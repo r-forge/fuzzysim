@@ -42,7 +42,7 @@ degree = 3, verbosity = 2, ...)
   \item{coord.cols}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{degree}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}
-  \item{\dots}{additional arguments for variable selection criteria to pass to the function specified in 'trim.fun'.}
+  \item{\dots}{additional arguments for variable selection criteria to pass to the function specified in 'trim.fun' (except "direction", which is here set to "backward").}
 }
 \details{
 This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function.

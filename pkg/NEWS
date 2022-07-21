@@ -1,4 +1,17 @@
 ============================================
+fuzzySim v4.8 (committed 2022-07-21)
+============================================
+
+* multGLM
+- help file notes that 'modelTrim' and 'stepwise' have different default significance thresholds, to explain why 'stepwise' may leave more variables in the model
+
+* gridRecords
+- warning if 'species' (not character or) has leading/trailing spaces
+- added check.names=FALSE to data.frame call, so that output column names are exactly as the unique values of 'species' (even if they are numbers), and the first species name doesn't come out different from the rest
+- added last argument in abs.coords <- terra::crds(rst, df=TRUE, na.rm=FALSE), otherwise some rows with missing data in some variables would be missing from the result (bug report by Alba Estrada)
+
+
+============================================
 fuzzySim v4.7 (committed 2022-07-07)
 ============================================
 
@@ -7,10 +20,10 @@ fuzzySim v4.7 (committed 2022-07-07)
 - set trace=0 for 'stepwise'
 
 * fuzzyConsensus
-- changed default biplot to FALSE, as it makes things much slower
+- changed default biplot to FALSE, as it makes function much slower
 
 * fuzzyRangeChange
-- changed "Stable presence" and "Stable absence" to "Stable positive" and "Stable negative" to avoid erroneous interpretation
+- changed "Stable presence" and "Stable absence" to "Stable positive" and "Stable negative" to avoid erroneous interpretations
 - added y axis label
 
 

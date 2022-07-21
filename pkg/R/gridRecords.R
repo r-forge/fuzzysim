@@ -5,7 +5,7 @@ gridRecords <- function(rst,
                         species = NULL,  # new
                         na.rm = TRUE) {  # new
 
-  # version 3.2 (5 Jul 2022)
+  # version 3.4 (21 Jul 2022)
 
   if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -14,7 +14,10 @@ gridRecords <- function(rst,
 
   if (!is.null(species)) {
     if (length(species) != nrow(pres.coords)) stop ("'species' must have the same length as nrow(pres.coords)")
-    if (!is.null(abs.coords))  stop("Sorry, 'abs.coords' is currently only implemented for one species at a time, i.e. when species=NULL.")
+    if (!is.null(abs.coords)) stop ("Sorry, 'abs.coords' is currently only implemented for one species at a time, i.e. when species=NULL")
+    #if (suppressWarnings(any(is.finite(as.numeric(species))))) warning ("'species' are used as column names, so they should be of class 'character' and not start with a number.")
+    if (length(unique(species)) != length(unique(trimws(species)))) warning ("Some values in 'species' have leading or trailing spaces and are treated separately; consider using trimws() first.")
+    
     species_list <- unique(species)
     pres.coords.in <- pres.coords
     pres.coords <- pres.coords.in[species == species_list[1], ]
@@ -50,7 +53,7 @@ gridRecords <- function(rst,
 
       if (absences == TRUE) {
         if (is.null(abs.coords)) {
-          abs.coords <- terra::crds(rst, df = TRUE)
+          abs.coords <- terra::crds(rst, df = TRUE, na.rm = FALSE)  # added na.rm
           #abs.coords <- terra::xyFromCell(rst, cells(rst))
         }  # presence coordinates removed below
         a_extract <- terra::extract(rst, abs.coords, cells = TRUE, xy = FALSE)[ , -1]
@@ -69,12 +72,12 @@ gridRecords <- function(rst,
   result <- rbind(p_extract, a_extract)
   colnames(result) <- sub("cell$", "cells", colnames(result))  # for uniformity between 'raster' and 'terra' output
 
-  if (na.rm) {
-    result_NA <- which(apply(result[ , 5:ncol(result), drop = FALSE], MARGIN = 1, FUN = function(x) all(is.na(x))))
-    if (length(result_NA) > 0) {
-      result <- result[-result_NA, ]
-    }
-  }
+  # if (na.rm) {
+  #   result_NA <- which(apply(result[ , 5:ncol(result), drop = FALSE], MARGIN = 1, FUN = function(x) all(is.na(x))))
+  #   if (length(result_NA) > 0) {
+  #     result <- result[-result_NA, ]
+  #   }
+  # }  # replaced by shorter code and moved to bottom
 
   if (!is.null(species)) {
     species_result <- result[ , "cells", drop = FALSE]
@@ -88,12 +91,15 @@ gridRecords <- function(rst,
 
     result <- data.frame(result[ , 1, drop = FALSE],  # "presence"
                          species_result[ , -1, drop = FALSE],  # except "cells"
-                         result[ , -1, drop = FALSE]  # except "presence"
+                         result[ , -1, drop = FALSE],  # except "presence"
+                         check.names = FALSE  # NEW
     )
     names(result)[1] <- species_list[1]  # species 1 gridded before as "presence"
   }  # end if !null species
   
   result <- result[order(result$cells), ]  # new
+
+  if (na.rm) result <- result[!apply(is.na(result[ , names(rst)]), 1, all), ]
 
   return(result)
 }

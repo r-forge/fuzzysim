@@ -24,7 +24,7 @@ a matrix or data frame with two columns containing, respectively, the x and y, o
 logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.
 }
   \item{species}{
-(optional) character vector, of the same length as 'nrow(pres.coords)', indicating the species to which each pair of coordinates corresponds. Useful for gridding records of more than one species at a time. If specified, 'abs.coords' cannot be used.
+(optional) character vector, of the same length as 'nrow(pres.coords)', indicating the species to which each pair of coordinates corresponds. Useful for gridding records of more than one species at a time. Its unique values will be used as column names in the output. If 'species' is specified, 'abs.coords' cannot be used.
 }
   \item{na.rm}{
 Logical value indicating whether pixels without values in any of the 'rst' layers should be removed from the resulting data frame. The default is TRUE.
@@ -68,12 +68,15 @@ set.seed(123)
 presences <- terra::spatSample(as.polygons(r), 100)
 set.seed(456)
 absences <- terra::spatSample(as.polygons(r), 70)
+
+# add these points to the map:
 points(presences, pch = 20, cex = 0.3, col = "black")
 points(absences, pch = 20, cex = 0.3, col = "white")
 
-# use 'gridRecords' on these random points:
+# use 'gridRecords' on these points:
 gridded_pts <- gridRecords(rst = r, pres.coords = terra::crds(presences), 
 abs.coords = terra::crds(absences))
+
 head(gridded_pts)
 
 # map the gridded points (presences black, absences white):
@@ -85,7 +88,9 @@ points(gridded_pts[ , c("x", "y")], col = gridded_pts$presence)
 # all pixels without presence points are returned as absences:
 
 gridded_pres <- gridRecords(rst = r, pres.coords = terra::crds(presences))
+
 head(gridded_pres)
+
 plot(r)
 points(presences, pch = 20, cex = 0.2, col = "black")
 points(gridded_pres[ , c("x", "y")], col = gridded_pres$presence)
@@ -96,11 +101,15 @@ points(gridded_pres[ , c("x", "y")], col = gridded_pres$presence)
 # by adding a 'species' argument
 
 presences$species <- rep(c("species1", "species2", "species3"), each = 33)
-data.frame(presences)
+
+values(presences)
+
 plot(r)
 plot(presences, col = as.factor(presences$species), add = TRUE)
+
 gridded_pres_mult <- gridRecords(rst = r, pres.coords = terra::crds(presences), 
 species = presences$species)
+
 head(gridded_pres_mult)
 }
 }

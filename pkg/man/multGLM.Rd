@@ -33,7 +33,7 @@ degree = 3, verbosity = 2, ...)
   \item{direction}{argument to be passed to \code{\link{step}} specifying the direction of variable selection ('forward', 'backward' or 'both'). Used only if step = TRUE.}
   \item{select}{character string specifying the criterion for stepwise selection of variables. Options are "AIC" (Akaike's Information Criterion; Akaike, 1973), the default; or BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC; Schwarz, 1978). Used only if step = TRUE.}
   \item{trim}{logical value indicating whether to trim off non-significant variables from the model(s), using either \code{\link{modelTrim}} or backward \code{\link{stepwise}} selection (depending on the specified 'trim.fun' below). This argument is TRUE by default, and it can be used whether or not step=TRUE -- e.g. Crawley (2005, p. 208) and Crawley (2007, p. 442 and 601) recommend that \code{\link{step}} be followed by significance-based backward elimination).}
-  \item{trim.fun}{character value indicating the name of the function to use for removing non-significant variables if trim=TRUE. Can be "\code{\link{modelTrim}}" (the default) or "\code{\link{stepwise}}" (which will be performed backward).}
+  \item{trim.fun}{character value indicating the name of the function to use for removing non-significant variables if trim=TRUE. Can be "\code{\link{modelTrim}}" (the default) or "\code{\link{stepwise}}" (which will be performed backward). Note that these to functions have different default significance thresholds, though you can change that (via the '...' below) with argument 'alpha' or 'p.out', respectively.}
   \item{Y.prediction}{logical, whether to include output predictions in the scale of the predictor variables (type = "link" in \code{\link{predict.glm}}).}
   \item{P.prediction}{logical, whether to include output predictions in the scale of the response variable, i.e. probability (type = "response" in \code{\link{predict.glm}}).}
   \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to remove the effect of prevalence on predicted probability (Real et al. 2006) and include its results in the output.}
@@ -42,7 +42,7 @@ degree = 3, verbosity = 2, ...)
   \item{coord.cols}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{degree}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}
-  \item{\dots}{additional arguments for variable selection criteria to pass to the function specified in 'trim.fun' (except "direction", which is here set to "backward").}
+  \item{\dots}{additional arguments for variable selection criteria to pass to the function specified in 'trim.fun' (except "direction", which currently is set to "backward" here).}
 }
 \details{
 This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function.

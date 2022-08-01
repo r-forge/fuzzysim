@@ -5,7 +5,7 @@ gridRecords <- function(rst,
                         species = NULL,  # new
                         na.rm = TRUE) {  # new
 
-  # version 3.4 (21 Jul 2022)
+  # version 3.5 (1 Aug 2022)
 
   if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -77,8 +77,9 @@ gridRecords <- function(rst,
   #   if (length(result_NA) > 0) {
   #     result <- result[-result_NA, ]
   #   }
-  # }  # replaced by shorter code and moved to bottom
-
+  # }
+  if (na.rm) result <- result[!apply(is.na(result[ , 5:ncol(result), drop = FALSE]), 1, all), ]  # 5:ncol(result)  # names(rst)
+  
   if (!is.null(species)) {
     species_result <- result[ , "cells", drop = FALSE]
     
@@ -97,9 +98,8 @@ gridRecords <- function(rst,
     names(result)[1] <- species_list[1]  # species 1 gridded before as "presence"
   }  # end if !null species
   
-  result <- result[order(result$cells), ]  # new
-
-  if (na.rm) result <- result[!apply(is.na(result[ , names(rst)]), 1, all), ]
-
+  result <- result[order(result$cell), ]  # new
+  #result <- result[order(as.integer(rownames(result))), ]  # new
+  rownames(result) <- NULL  # new
   return(result)
 }

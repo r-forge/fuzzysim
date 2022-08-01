@@ -104,12 +104,16 @@ presences$species <- rep(c("species1", "species2", "species3"), each = 33)
 
 values(presences)
 
-plot(r)
+plot(r, col = hcl.colors(n = 100, palette = "blues"))
 plot(presences, col = as.factor(presences$species), add = TRUE)
 
-gridded_pres_mult <- gridRecords(rst = r, pres.coords = terra::crds(presences), 
-species = presences$species)
+gridded_pres_mult <- gridRecords(rst = r, pres.coords = terra::crds(presences), species = presences$species)
 
 head(gridded_pres_mult)
+
+# add each each species' gridded presences to the map:
+points(gridded_pres_mult[gridded_pres_mult[ , 1] == 1, c("x", "y")], col = 1, pch = 1)
+points(gridded_pres_mult[gridded_pres_mult[ , 2] == 1, c("x", "y")], col = 2, pch = 2)
+points(gridded_pres_mult[gridded_pres_mult[ , 3] == 1, c("x", "y")], col = 3, pch = 3)
 }
 }

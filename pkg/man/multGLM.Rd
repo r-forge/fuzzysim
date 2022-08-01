@@ -38,7 +38,7 @@ degree = 3, verbosity = 2, ...)
   \item{P.prediction}{logical, whether to include output predictions in the scale of the response variable, i.e. probability (type = "response" in \code{\link{predict.glm}}).}
   \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to remove the effect of prevalence on predicted probability (Real et al. 2006) and include its results in the output.}
   \item{group.preds}{logical, whether to group together predictions of similar type ('Y', 'P' or 'F') in the output 'predictions' table (e.g. if FALSE: sp1_Y, sp1_P, sp1_F, sp2_Y, sp2_P, sp2_F; if TRUE: sp1_Y, , sp2_Y, sp1_P, sp2_P, sp1_F, sp2_F).}
-  \item{TSA}{logical, whether to add a trend surface analysis (calculated individually for each species) as a spatial variable in each model. See \code{\link{multTSA}} for more details. The default is FALSE.}
+  \item{TSA}{logical, whether to add a trend surface analysis (calculated individually for each species) as a spatial variable in each model (with type="Y" -- see \code{\link{multTSA}} for more details). The default is FALSE. If TRUE, this spatial trend will be treated as any other variable, i.e. also considered by arguments 'FDR', 'corSelect', etc.}
   \item{coord.cols}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{degree}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
   \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}

@@ -1,4 +1,17 @@
 ============================================
+fuzzySim v4.81 (committed 2022-08-01)
+============================================
+
+* multGLM
+- help file notes that 'TSA' uses "type="Y" and is included in FDR, corSelect, etc.
+
+* gridRecords
+- moved if(na.rm) uppward to go back to using 5:ncol(result) instead of names(result), which was causing problems with some raster names (bug report by Alba Estrada)
+- ordered result by 'cell' and removed (confusing) row names
+- help file Examples now includes mapping multi-species gridded presences
+
+
+============================================
 fuzzySim v4.8 (committed 2022-07-21)
 ============================================
 

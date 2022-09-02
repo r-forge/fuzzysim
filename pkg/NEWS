@@ -1,6 +1,6 @@
-============================================
-fuzzySim v4.81 (committed 2022-08-01)
-============================================
+==============================================
+fuzzySim v4.8.1 (committed 2022-08-01) -> CRAN
+==============================================
 
 * multGLM
 - help file notes that 'TSA' uses "type="Y" and is included in FDR, corSelect, etc.

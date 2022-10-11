@@ -20,19 +20,18 @@ stepwise <- function(data, sp.col, var.cols, id.col = NULL, family = binomial(li
   }
   
   data <- as.data.frame(data)
-
+  
   if (is.numeric(sp.col)) response <- names(data)[sp.col] else response <- sp.col
   if (is.numeric(var.cols)) vars <- names(data)[var.cols] else vars <- var.cols
   if (is.numeric(id.col)) id <- names(data)[id.col] else if (is.character(id.col)) id <- id.col
   
-  # TO DO: better handle NA values!
   n.init <- nrow(data)
   data <- na.omit(data[ , c(response, vars)])
   na.loss <- n.init - nrow(data)
   if (na.loss > 0) message(na.loss, " cases excluded due to missing values.")
   
   if (preds)  predictions <- data.frame(id = 1:nrow(data))
-
+  
   if (direction %in% c("forward", "both")) {
     form_start <- as.formula(paste(response, "~1"))
     form_scope <- as.formula(paste("~", paste(vars, collapse = "+")))
@@ -48,10 +47,11 @@ stepwise <- function(data, sp.col, var.cols, id.col = NULL, family = binomial(li
     addable <- add1(mod, scope = form_scope, test = test.in)
     
     step_n <- 0
+    
     while (min(addable$Pr, na.rm = TRUE) < p.in)  {
       step_n <- step_n + 1
       addvar <- rownames(addable)[which.min(addable$Pr)]
-      mod <- update(mod, as.formula(paste("~ . +", addvar)), data = data)
+      mod <- update(mod, as.formula(paste("~.+", addvar)), data = data)
       if (!simplif)  steps[step_n, ] <- c("in", addvar)
       if (trace > 1) cat("---------------------------------------------------\n")
       if (trace > 0) cat("Step", step_n, "\n+ adding  ", addvar, "\n")
@@ -59,23 +59,29 @@ stepwise <- function(data, sp.col, var.cols, id.col = NULL, family = binomial(li
         if (Wald) print(summaryWald(mod))
         else print(summary(mod))
       }
+      
       if (preds)  predictions[ , paste0("step", step_n)] <- predict(mod, data, type = "response")
       #scope_updated <- as.formula(paste("~", paste(rownames(addable)[-c(1, grep(addvar, rownames(addable)))], collapse = "+")))
+      
       droppable <- drop1(mod, test = test.out)
       if (direction == "both") {
         while (max(droppable$Pr, na.rm = TRUE) > p.out) {
-          step_n <- step_n + 1
           dropvar <- rownames(droppable)[which.max(droppable$Pr)]
-          mod <- update(mod, as.formula(paste("~.-", dropvar)), data = data)
-          if (!simplif)  steps[step_n, ] <- c("out", dropvar)
-          if (trace > 1) cat("---------------------------------------------------\n")
-          if (trace > 0) cat("Step", step_n, "\n- dropping", dropvar, "\n")
-          if (trace > 1) {
-            if (Wald) print(summaryWald(mod))
-            else print(summary(mod))
-          }
-          if (preds)  predictions[ , paste0("step", step_n)] <- predict(mod, data, type = "response")
-          droppable <- drop1(mod, test = test.out)
+          if (dropvar != addvar) {  # if it's not the last added variable (else it will be added and dropped again and again)
+            step_n <- step_n + 1
+            mod <- update(mod, as.formula(paste("~.-", dropvar)), data = data)
+            if (!simplif)  steps[step_n, ] <- c("out", dropvar)
+            if (trace > 1) cat("---------------------------------------------------\n")
+            if (trace > 0) cat("Step", step_n, "\n- dropping", dropvar, "\n")
+            if (trace > 1) {
+              if (Wald) print(summaryWald(mod))
+              else print(summary(mod))
+            }
+            if (preds)  predictions[ , paste0("step", step_n)] <- predict(mod, data, type = "response")
+            droppable <- drop1(mod, test = test.out)
+          } else {  # end if dropvar != addvar
+            break
+            }
         }  # end while droppable
       }  # end if !forward
       if (nrow(addable) <= 2) break  # if the previous 'addable' had just the intercept and this last added variable (loop runs endlessly otherwise)
@@ -84,23 +90,23 @@ stepwise <- function(data, sp.col, var.cols, id.col = NULL, family = binomial(li
   }  # end if !backward
   
   if (direction == "backward") {
+    droppable <- drop1(mod, test = test.out)
+    step_n <- 0
+    while (max(droppable$Pr, na.rm = TRUE) > p.out) {
+      step_n <- step_n + 1
+      dropvar <- rownames(droppable)[which.max(droppable$Pr)]
+      mod <- update(mod, as.formula(paste("~.-", dropvar)), data = data)
+      if (!simplif)  steps[step_n, ] <- c("out", dropvar)
+      if (trace > 1) cat("---------------------------------------------------\n")
+      if (trace > 0) cat("Step", step_n, "\n- dropping", dropvar, "\n")
+      if (trace > 1) {
+        if (Wald) print(summaryWald(mod))
+        else print(summary(mod))
+      }
+      if (preds)  predictions[ , paste0("step", step_n)] <- predict(mod, data, type = "response")
       droppable <- drop1(mod, test = test.out)
-      step_n <- 0
-      while (max(droppable$Pr, na.rm = TRUE) > p.out) {
-          step_n <- step_n + 1
-          dropvar <- rownames(droppable)[which.max(droppable$Pr)]
-          mod <- update(mod, as.formula(paste("~.-", dropvar)), data = data)
-          if (!simplif)  steps[step_n, ] <- c("out", dropvar)
-          if (trace > 1) cat("---------------------------------------------------\n")
-          if (trace > 0) cat("Step", step_n, "\n- dropping", dropvar, "\n")
-          if (trace > 1) {
-            if (Wald) print(summaryWald(mod))
-            else print(summary(mod))
-          }
-          if (preds)  predictions[ , paste0("step", step_n)] <- predict(mod, data, type = "response")
-          droppable <- drop1(mod, test = test.out)
-        }  # end while droppable
-      #if (nrow(droppable) <= 0) break  # apparently not needed
+    }  # end while droppable
+    #if (nrow(droppable) <= 0) break  # apparently not needed
   }  # end if !backward
   
   if (simplif)  return(mod)

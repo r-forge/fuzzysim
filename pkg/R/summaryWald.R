@@ -16,6 +16,6 @@ summaryWald <- function(model, interceptLast = TRUE) {
     coefs[v, "Wald"] <- w$result$chi2["chi2"]
     coefs[v, "Sig."] <- w$result$chi2["P"]
   }
-  if (interceptLast) coefs <- coefs[c(2:nrow(coefs), 1), ]  # intercept in last row
+  if (interceptLast && nrow(coefs) > 1) coefs <- coefs[c(2:nrow(coefs), 1), ]  # intercept in last row
   return(coefs)
 }

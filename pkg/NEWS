@@ -1,9 +1,28 @@
-==============================================
-fuzzySim v4.8.1 (committed 2022-08-01) -> CRAN
-==============================================
 
-* multGLM
-- help file notes that 'TSA' uses "type="Y" and is included in FDR, corSelect, etc.
+============================================
+fuzzySim v4.9 (committed 2022-10-11)
+============================================
+
+## Modified functions:
+
+* summaryWald
+- fixed bug when model has no variables
+
+* stepwise
+- break loop when a variable simultanously meets the criteria for inclusion and exclusion
+
+
+## Other modified files:
+
+* stepwise
+- help file with new references (two against AIC, and one more against stepwise)
+
+
+============================================
+fuzzySim v4.8.1 (committed 2022-08-01)
+============================================
+
+## Modified functions:
 
 * gridRecords
 - moved if(na.rm) uppward to go back to using 5:ncol(result) instead of names(result), which was causing problems with some raster names (bug report by Alba Estrada)
@@ -11,12 +30,17 @@ fuzzySim v4.8.1 (committed 2022-08-01) -> CRAN
 - help file Examples now includes mapping multi-species gridded presences
 
 
+## Other modified files:
+
+* multGLM
+- help file notes that 'TSA' uses "type="Y" and is included in FDR, corSelect, etc.
+
+
 ============================================
 fuzzySim v4.8 (committed 2022-07-21)
 ============================================
 
-* multGLM
-- help file notes that 'modelTrim' and 'stepwise' have different default significance thresholds, to explain why 'stepwise' may leave more variables in the model
+## Modified functions:
 
 * gridRecords
 - warning if 'species' (not character or) has leading/trailing spaces
@@ -24,9 +48,17 @@ fuzzySim v4.8 (committed 2022-07-21)
 - added last argument in abs.coords <- terra::crds(rst, df=TRUE, na.rm=FALSE), otherwise some rows with missing data in some variables would be missing from the result (bug report by Alba Estrada)
 
 
+## Other modified files:
+
+* multGLM
+- help file notes that 'modelTrim' and 'stepwise' have different default significance thresholds, to explain why 'stepwise' may leave more variables in the model
+
+
 ============================================
 fuzzySim v4.7 (committed 2022-07-07)
 ============================================
+
+## Modified functions:
 
 * multGLM
 - fixed message about N variables excluded by 'modelTrim' (now by trim.fun)

@@ -9,7 +9,7 @@ Calculate the false discovery rate (type I error) under repeated testing and det
 \usage{
 FDR(data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,  
 model.type = NULL, family = "auto", correction = "fdr", q = 0.05, 
-verbose = TRUE, simplif = FALSE)
+verbose = NULL, verbosity = 1, simplif = FALSE)
 }
 \arguments{
   \item{data}{a data frame containing the response and predictor variables
@@ -28,7 +28,8 @@ verbose = TRUE, simplif = FALSE)
   for more information. The default is "fdr".}
   \item{q}{the threshold value of FDR-corrected significance above which to
   reject variables. Defaults to 0.05.}
-  \item{verbose}{logical value indicating whether to display messages.}
+  \item{verbose}{deprecated argument, replaced by 'verbosity' (below).}
+  \item{verbosity}{integer value indicating the amount of messages to display. The default is 1, for a medium amount of messages. Use 2 for more messages.}
   \item{simplif}{logical value indicating if simplified results should be provided (see Value).}
 }
 \details{

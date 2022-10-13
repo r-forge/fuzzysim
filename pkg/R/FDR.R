@@ -1,8 +1,8 @@
 FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
                  model.type = NULL, family = "auto", correction = "fdr", q = 0.05,
-                 verbose = TRUE, simplif = FALSE)
+                 verbose = NULL, verbosity = 1, simplif = FALSE)
   
-  # version 4.0 (5 Jul 2022)
+  # version 4.1 (12 Oct 2022)
   
 {
   
@@ -21,13 +21,26 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
   # if (na.loss > 0) message(na.loss, " cases excluded due to missing or non-finite values.")
   # -> MOVED FURTHER BELOW (if null pvalues)
   
+  if (!is.null(verbose)) {
+    warning("'verbose' argument will be removed; instead, use 'verbosity' in your code from now on.")
+    if (verbose == TRUE) {
+      warning("For now, verbose=TRUE replaced with verbosity=1 (except if simplif=TRUE, in which case verbose=FALSE) for back-compatibility.")
+      verbosity <- 1
+    } else {
+      warning("For now, verbose=FALSE replaced with verbosity=0 for back-compatibility.")
+      verbosity <- 0
+    }
+  }
+  
+  if (simplif)  verbosity <- 0
+
   if (family == "auto" && is.null(pvalues)) {  # not all families are available in auto!
     vals <- which(is.finite(data[ , sp.cols]))
     if (all(data[vals, sp.cols] %in% c(0, 1)))  family <- "binomial"
     else if (all(data[vals, sp.cols] >= 0) && all(data[vals, sp.cols] %% 1 == 0))  family <- "poisson"
     else if (all(data[vals, sp.cols] >= 0))  family <- "Gamma"
     else family <- "gaussian"
-    if (verbose) message("\nUsing generalized linear models of family '", family, "'.\n")
+    if (verbosity > 0) message("\nUsing generalized linear models of family '", family, "'.\n")
   }
   
   if (!(correction %in% p.adjust.methods))
@@ -105,10 +118,19 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
   exclude <- subset(results, p.adjusted > q)
   select <- subset(results, p.adjusted <= q)
   
-  if (verbose) {
-    message("Bivariate p-values adjusted with '", correction,
+  if (verbosity > 0) {
+    message("\nBivariate p-values adjusted with '", correction,
             "' correction;\n", nrow(exclude), " variable(s) excluded, ",
-            nrow(select), " selected (with q = ", q, ")\n")
+            nrow(select), " selected (with q = ", q, ")")
   }
+  
+  if (verbosity > 1) {
+    cat("\nEXCLUDED:\n")
+    cat(rownames(exclude), sep = ", ")
+    cat("\n\nSELECTED:\n")
+    cat(rownames(select), sep = ", ")
+    cat("\n")
+  }
+
   list(exclude = exclude, select = select)
 }

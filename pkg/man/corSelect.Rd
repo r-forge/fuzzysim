@@ -8,7 +8,8 @@ This function calculates pairwise correlations among the variables in a dataset 
 }
 \usage{
 corSelect(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, 
-select = "p.value", family = "auto", use = "pairwise.complete.obs", method = "pearson")
+select = "p.value", family = "auto", use = "pairwise.complete.obs", 
+method = "pearson", verbosity = 1)
 }
 \arguments{
   \item{data}{a data frame containing the response and predictor variables.}
@@ -19,6 +20,7 @@ select = "p.value", family = "auto", use = "pairwise.complete.obs", method = "pe
   \item{family}{If 'sp.col' is not NULL, the error distribution and (optionally) the link function to use for assessing significant / informative variables (see \code{\link{glm}} or \code{\link{family}} for details). The default "auto" automatically uses "binomial" family for response variables containing only values of 0 and 1; "poisson" for positive integer responses (i.e. count data); "Gamma" for positive non-integer; and "gaussian" (i.e., linear models) otherwise.}
   \item{use}{argument to pass to \code{\link{cor}} indicating what to do when there are missing values. Can be "pairwise.complete.obs" (the default here), "everything", "all.obs", "complete.obs", "na.or.complete".}
   \item{method}{argument to pass to \code{\link{cor}} specifying the correlation coefficient to use. Can be "pearson" (the default), "kendall" or "spearman".}
+  \item{verbosity}{integer value indicating the amount of messages to display. The default is 1, for a medium amount of messages. Use 2 for more messages.}
 }
 \details{
 Correlations among variables are problematic in multivariate models, as they inflate the variance of coefficients and thus may bias the interpretation of the effects of those variables on the response (Legendre & Legendre 2012). One of the strategies to circumvent this problem is to eliminate one from each pair of correlated variables, but it is not always straightforward to choose the right variable to exclude a priori.

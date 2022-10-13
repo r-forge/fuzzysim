@@ -1,3 +1,25 @@
+============================================
+fuzzySim v4.9.1 (committed 2022-10-13)
+============================================
+
+## Modified functions:
+
+* corSelect
+- added 'verbosity' argument
+- message emitted saying how many vars selected and excluded (like in 'FDR') if verbosity > 0
+- message emitted saying which vars selected and excluded if verbosity > 1
+
+* FDR
+- argument 'verbose' replaced with 'verbosity' (with warnings)
+- message emitted saying which vars selected and excluded if verbosity > 1
+
+* multGLM
+- argument 'verbose' for 'FDR' replaced with 'verbosity' (as per 'FDR' change above)
+- argument 'select' now accepts additional criterion "p.value", in which case 'stepwise' used instead of 'step'
+- added arguments test.in, test.out, p.in and p.out to pass to 'stepwise'
+- trim=TRUE reverts back to using 'modelTrim' (rather than 'stepwise' with direcction='backward' as in previous experimental versions)
+- argument trim.fun (added in previous experimental versions) removed
+
 
 ============================================
 fuzzySim v4.9 (committed 2022-10-11)

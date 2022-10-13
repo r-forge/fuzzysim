@@ -1,7 +1,7 @@
-multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, trim.fun = "modelTrim", Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, ...) {
-
-  # version 5.3 (13 Jun 2022)
-
+multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...) {
+  
+  # version 5.4 (13 Oct 2022)
+  
   start.time <- Sys.time()
   on.exit(timer(start.time))
   
@@ -10,13 +10,15 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   input.ncol <- ncol(data)
   input.names <- colnames(data)
   
+  if (family != "binomial") stop ("Sorry, 'binomial' is the only family currently implemented.")
+  
   stopifnot (
     as.vector(na.omit(as.matrix(data[ , sp.cols]))) %in% c(0, 1),
     all(sp.cols %in% (1 : input.ncol)) || all(sp.cols %in% input.names),
     all(var.cols %in% (1 : input.ncol)) || all(var.cols %in% input.names),
     is.null(id.col) || (length(id.col) == 1 && (id.col %in% (1 : input.ncol) || id.col %in% input.names)),
     is.null(coord.cols) || all(coord.cols %in% (1 : input.ncol)) || all(coord.cols %in% input.names),
-    family == "binomial",
+    #family == "binomial",
     test.sample >= 0 | test.sample == "Huberty",
     length(test.sample) == 1 | (is.integer(test.sample) & test.sample > 0),
     length(test.sample) < nrow(data),
@@ -24,13 +26,12 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     is.logical(step),
     start %in% c("null.model", "full.model"),
     direction %in% c("both", "backward", "forward"),
-    select %in% c("AIC", "BIC"),
+    select %in% c("AIC", "BIC", "p.value"),
     is.logical(Y.prediction),
     is.logical(P.prediction),
     is.logical(Favourability),
     is.logical(group.preds),
     is.logical(trim),
-    trim.fun %in% c("modelTrim", "stepwise"),
     is.logical(TSA)
   )
   
@@ -40,9 +41,9 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   
   # UNDER CONSTRUCTION:
   #if (test.sample != 0 && n != nrow(na.omit(data[ , c(sp.cols, var.cols, coord.cols)]))) warning("'data' include missing values, thus 'test.sample' may not always conta  in the expected amount of actual data.")  # new
-
+  
   test.sample.input <- test.sample
-
+  
   if (length(test.sample) == 1) {
     if (test.sample == "Huberty") {
       if (!FDR & !step & !trim) {
@@ -73,24 +74,24 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
         n - n.test, " observations used for model training.")
     }
     test.sample <- sample(data.row, size = n.test, replace = FALSE)
-      } else if (length(test.sample) > 1) {
-        n.test <- length(test.sample)
-        if (verbosity > 0)  message(
-          n.test, " (out of ", n, ") observations set aside for model testing; ",
-          n - n.test, " observations used for model training.")
-      }
-
+  } else if (length(test.sample) > 1) {
+    n.test <- length(test.sample)
+    if (verbosity > 0)  message(
+      n.test, " (out of ", n, ") observations set aside for model testing; ",
+      n - n.test, " observations used for model training.")
+  }
+  
   data$sample[data.row %in% test.sample] <- "test"
   train.data <- data[data$sample == "train", ]
-
+  
   if (Favourability) {
     if (family != "binomial") {
       Favourability <- FALSE
       warning ("Favourability is only applicable to binomial responses,
                so it could not be calculated")
     }  # end if family != binomial (for when other families are implemented)
-    }  # end if Fav
-
+  }  # end if Fav
+  
   if (!is.numeric(sp.cols)) sp.cols <- which(colnames(data) %in% sp.cols)  # new
   if (!is.numeric(var.cols)) var.cols <- which(colnames(data) %in% var.cols)  # new
   if (!is.null(coord.cols) && !is.numeric(coord.cols)) coord.cols <- which(colnames(data) %in% coord.cols)  # new
@@ -114,7 +115,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   #   excl_names <- c("FDR", "corSelect", "step", "trim")
   #   names(excluded) <- excl_names[which(exclusions == TRUE)]
   # }
-
+  
   for (s in sp.cols) {
     model.count <- model.count + 1
     response <- colnames(train.data)[s]
@@ -131,10 +132,10 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
       names(train.data)[ncol(train.data)] <- tsa_name
       var.cols <- c(var.cols, ncol(train.data))
     }  # end if TSA
-
+    
     #attach(train.data, warn.conflicts = FALSE)
     #on.exit(detach(train.data), add = TRUE)
-
+    
     # UNDER CONSTRUCTION:
     #data_noNA <- na.omit(train.data[ , c(s, var.cols, id.col)])  # new
     #n_noNA <- nrow(data_noNA)
@@ -143,7 +144,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     #}
     
     if (FDR) {
-      fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, correction = correction, verbose = FALSE)
+      fdr <- FDR(data = train.data, sp.cols = s, var.cols = var.cols, correction = correction, verbosity = 0)
       if (nrow(fdr$select) == 0) {
         message(paste0(
           "No variables passed the FDR test (so no variables included in the model)\n for '", response, "'. Consider using 'FDR = FALSE' or choosing a less stringent 'correction' procedure."))
@@ -155,60 +156,69 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
       sel.var.cols <- which(colnames(train.data) %in% rownames(fdr$select))
     }  # end if FDR
     else sel.var.cols <- var.cols
-
+    
     if (length(sel.var.cols) > 1 && corSelect == TRUE) {
       corselect <- suppressMessages(corSelect(data = train.data, sp.cols = s, var.cols = sel.var.cols, cor.thresh = cor.thresh, use = "pairwise.complete.obs"))
       corsel.var.cols <- corselect$selected.var.cols
       if (verbosity > 1)  cat(length(sel.var.cols) - length(corsel.var.cols), "variable(s) excluded by 'corSelect' function\n", corselect$excluded.vars, "\n\n")
       sel.var.cols <- corsel.var.cols
     }  # end if corSelect
-
+    
     if (length(sel.var.cols) == 0)  model.vars <- 1
     else  model.vars <- colnames(train.data)[sel.var.cols]
     model.formula <- with(train.data, as.formula(paste(response, "~", paste(model.vars, collapse = "+"))))
-
+    
     model.expr <- expression(glm(model.formula, family = binomial))
-
+    
     if (step && length(sel.var.cols) > 0) {
+      
       n.vars.start <- length(sel.var.cols)
-      if (select == "AIC") K <- 2
-      else if (select == "BIC") K <- log(n)
-
-      if (start == "full.model") {
-
-        model <- step(eval(model.expr), direction = direction, trace = trace, k = K)
-      } else if (start == "null.model") {
-        model.scope <- model.formula[-2]  # removes response from formula
-        null.formula <- as.formula(paste(response, "~", 1))
-        model <- step(glm(null.formula, family = binomial, data = train.data),
-                      direction = direction, scope = model.scope, trace = trace, k = K)
-      } else stop ("'start' must be either 'full.model' or 'null.model'")
+      
+      if (select == "p.value") {  # NEW
+        model <- stepwise(data = train.data, sp.col = response, var.cols = model.vars, family = family, direction = direction, trace = trace, test.in = test.in, test.out = test.out, p.in = p.in, p.out = p.out)
+      } else {
+        
+        if (select == "AIC") K <- 2
+        else if (select == "BIC") K <- log(n)
+        
+        if (start == "full.model") {
+          
+          model <- step(eval(model.expr), direction = direction, trace = trace, k = K)
+        } else if (start == "null.model") {
+          model.scope <- model.formula[-2]  # removes response from formula
+          null.formula <- as.formula(paste(response, "~", 1))
+          model <- step(glm(null.formula, family = binomial, data = train.data),
+                        direction = direction, scope = model.scope, trace = trace, k = K)
+        } else stop ("'start' must be either 'full.model' or 'null.model'")
+      }  # end if AIC or BIC
+      
       n.vars.step <- length(model$coefficients) - 1
       excluded.vars <- setdiff(colnames(data[ , sel.var.cols]), names(model$coefficients)[-1])
-      if (verbosity > 1)  cat(n.vars.start - n.vars.step, "variable(s) excluded by 'step' function\n", paste(excluded.vars, collapse = ", "), "\n\n")
+      step_fun <- ifelse(select == "p.value", "stepwise", "step")
+      if (verbosity > 1)  cat(n.vars.start - n.vars.step, " variable(s) excluded by '", step_fun, "' function\n", paste(excluded.vars, collapse = ", "), "\n\n", sep = "")
     } else model <- eval(model.expr, envir = train.data)
-
+    
     if (trim && length(sel.var.cols) > 0) {
       n.vars.start <- length(model$coefficients) - 1
       names.vars.start <- names(model$coefficients)[-1]
-      if (trim.fun == "modelTrim") model <- suppressMessages(suppressWarnings(modelTrim(model, ...)))
-      else if (trim.fun == "stepwise") model <- stepwise(data = model$model, sp.col = 1, var.cols = 2:ncol(model$model), direction = "backward", Favourability = FALSE, simplif = TRUE, trace = 0, ...)
+      model <- suppressMessages(modelTrim(model, ...))
+      # model <- stepwise(data = model$model, sp.col = 1, var.cols = 2:ncol(model$model), direction = "backward", Favourability = FALSE, simplif = TRUE, trace = 0, ...)
       n.vars.trim <- length(model$coefficients) - 1
       excluded.vars <- setdiff(names.vars.start, names(model$coefficients)[-1])
-      if (verbosity > 1)  cat(n.vars.start - n.vars.trim, " variable(s) excluded by '", trim.fun, "' function\n ", paste(excluded.vars, collapse = ", "), "\n\n", sep = "")
+      if (verbosity > 1)  cat(n.vars.start - n.vars.trim, " variable(s) excluded by 'modelTrim' function\n ", paste(excluded.vars, collapse = ", "), "\n\n", sep = "")
     }
-
+    
     if (step || trim) {
       sel.var.names <- names(model$coefficients)[-1]
       if (verbosity > 1)  cat(length(sel.var.names), "variable(s) INCLUDED IN THE FINAL MODEL\n",
-          paste(sel.var.names, collapse = ", "))
+                              paste(sel.var.names, collapse = ", "))
     }
-
+    
     if (verbosity > 1)  cat("\n\n")
-
+    
     models[[model.count]] <- model
     names(models)[[model.count]] <- response
-
+    
     if (Y.prediction) {
       pred.count <- pred.count + 1
       colnames(predictions)[pred.count] <- paste(response, "Y", sep = "_")
@@ -226,34 +236,34 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
       predictions[ , pred.count] <- Fav(n1n0 = c(n1, n0), pred = predictions[ , pred.count - 1])
       colnames(predictions)[pred.count] <- paste(response, "F", sep = "_")
     } # end if Fav
-
+    
     if (TSA) {
       train.data <- train.data[ , -ncol(train.data)]
       data <- data[ , -ncol(data)]
       var.cols <- var.cols[-length(var.cols)]
     }  # end if TSA 2
-
+    
     #detach(train.data)
-
+    
   }  # end for s
-
+  
   #if (rm.null.models) models <- models[!sapply(models, is.null)]
-
+  
   if (P.prediction && !keeP) {
     n.char <- nchar(colnames(predictions))
     pred.suffix <- substr(colnames(predictions), n.char - 1, n.char)
     P.cols <- grep("_P", pred.suffix)
     predictions <- predictions[ , - P.cols]
   }
-
+  
   n.pred.types <- sum(Y.prediction, keeP, Favourability)
   if (n.pred.types == 0) {
     predictions <- data.frame()
   } else {
     predictions <- data.frame(data[ , id.col], sample = data[ , "sample"], predictions)
-
+    
     if (n.pred.types == 1 || length(sp.cols) == 1)  group.preds <- FALSE
-
+    
     if (group.preds) {
       first.pred.col <- ifelse(is.null(id.col), 2, 3) # 1st new col is 'sample'
       pred1.cols <- seq(first.pred.col, ncol(predictions), by = n.pred.types)
@@ -269,13 +279,13 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
                                 predictions[ , pred2.cols],
                                 predictions[ , pred3.cols])
     }  # end if groups.preds
-
+    
     if (!is.null(id.col)) {
       colnames(predictions)[1] <- input.names[id.col]
     }
-
+    
   }  # end if pred.types 0 else
-
+  
   if (test.sample.input == 0) {
     predictions <- predictions[ , - match("sample", colnames(predictions))]
   }
@@ -288,5 +298,5 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   
   message("Finished!")
   return(list(predictions = predictions, models = models, variables = selected_variables))
-
-  }  # end multGLM function
+  
+}  # end multGLM function

@@ -11,9 +11,10 @@ multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
 test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE,
 cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, 
 start = "null.model", direction = "both", select = "AIC", trim = TRUE, 
-trim.fun = "modelTrim", Y.prediction = FALSE, P.prediction = TRUE, 
-Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, 
-degree = 3, verbosity = 2, ...)
+Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, 
+group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, 
+verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, 
+p.out = 0.1, ...)
 }
 \arguments{
   \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
@@ -27,33 +28,36 @@ degree = 3, verbosity = 2, ...)
   \item{corSelect}{logical value indicating whether to do a preliminary exclusion of highly correlated variables (see \code{\link{corSelect}}). The default is FALSE.}
   \item{cor.thresh}{numerical value indicating the correlation threshold to pass to \code{\link{corSelect}} (used only if corSelect = TRUE).}
   \item{cor.method}{character value to pass to \code{\link{corSelect}} (used only if corSelect = TRUE) specifying the correlation coefficient to use. Can be "pearson" (the default), "kendall" or "spearman".}
-  \item{step}{logical, whether to use the \code{\link{step}} function to perform a stepwise variable selection (based on AIC or BIC).}
-  \item{trace}{if positive, information is printed during the running of \code{\link{step}}. Larger values may give more detailed information.}
-  \item{start}{character string specifying whether to start with the 'null.model' (so that variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if step = TRUE.}
-  \item{direction}{argument to be passed to \code{\link{step}} specifying the direction of variable selection ('forward', 'backward' or 'both'). Used only if step = TRUE.}
-  \item{select}{character string specifying the criterion for stepwise selection of variables. Options are "AIC" (Akaike's Information Criterion; Akaike, 1973), the default; or BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC; Schwarz, 1978). Used only if step = TRUE.}
-  \item{trim}{logical value indicating whether to trim off non-significant variables from the model(s), using either \code{\link{modelTrim}} or backward \code{\link{stepwise}} selection (depending on the specified 'trim.fun' below). This argument is TRUE by default, and it can be used whether or not step=TRUE -- e.g. Crawley (2005, p. 208) and Crawley (2007, p. 442 and 601) recommend that \code{\link{step}} be followed by significance-based backward elimination).}
-  \item{trim.fun}{character value indicating the name of the function to use for removing non-significant variables if trim=TRUE. Can be "\code{\link{modelTrim}}" (the default) or "\code{\link{stepwise}}" (which will be performed backward). Note that these to functions have different default significance thresholds, though you can change that (via the '...' below) with argument 'alpha' or 'p.out', respectively.}
-  \item{Y.prediction}{logical, whether to include output predictions in the scale of the predictor variables (type = "link" in \code{\link{predict.glm}}).}
+  \item{step}{logical, whether to perform a stepwise selection of variables, using either the \code{\link{step}} function (if select = "AIC" or "BIC") or the \code{\link{stepwise}} (if select = "p.value").}
+  \item{trace}{if positive, information is printed during the stepwise selection (if step=TRUE). Larger values may give more detailed information.}
+  \item{start}{character string specifying whether to start with the 'null.model' (so that variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if step=TRUE.}
+  \item{direction}{if step=TRUE, argument to be passed to \code{\link{step}} or to \code{\link{stepwise}} specifying the direction of variable selection. Can be 'forward', 'backward', or 'both'.}
+  \item{select}{character string specifying the criterion for stepwise selection of variables if step=TRUE. Options are the default "AIC" (Akaike's Information Criterion; Akaike, 1973); BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC; Schwarz, 1978); or "p.value" (Murtaugh, 2014). The first two options imply using \code{\link{step}} as the variable selection function, while the last option calls the \code{\link{stepwise}} function.}
+  \item{trim}{logical value indicating whether to trim off non-significant variables from the models using \code{\link{modelTrim}}. This argument is TRUE by default (for back-compatibility), and it can be used whether or not step=TRUE -- e.g. Crawley (2005, p. 208) and Crawley (2007, p. 442 and 601) recommend that \code{\link{step}} be followed by significance-based backward elimination).}
+  \item{Y.prediction}{logical value indicating whether to include output predictions in the scale of the predictor variables (type = "link" in \code{\link{predict.glm}}).}
   \item{P.prediction}{logical, whether to include output predictions in the scale of the response variable, i.e. probability (type = "response" in \code{\link{predict.glm}}).}
   \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to remove the effect of prevalence on predicted probability (Real et al. 2006) and include its results in the output.}
   \item{group.preds}{logical, whether to group together predictions of similar type ('Y', 'P' or 'F') in the output 'predictions' table (e.g. if FALSE: sp1_Y, sp1_P, sp1_F, sp2_Y, sp2_P, sp2_F; if TRUE: sp1_Y, , sp2_Y, sp1_P, sp2_P, sp1_F, sp2_F).}
   \item{TSA}{logical, whether to add a trend surface analysis (calculated individually for each species) as a spatial variable in each model (with type="Y" -- see \code{\link{multTSA}} for more details). The default is FALSE. If TRUE, this spatial trend will be treated as any other variable, i.e. also considered by arguments 'FDR', 'corSelect', etc.}
-  \item{coord.cols}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
-  \item{degree}{argument to pass to \code{\link{multTSA}} (if TSA = TRUE).}
-  \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}
-  \item{\dots}{additional arguments for variable selection criteria to pass to the function specified in 'trim.fun' (except "direction", which currently is set to "backward" here).}
+  \item{coord.cols}{argument to pass to \code{\link{multTSA}} (if TSA=TRUE).}
+  \item{degree}{argument to pass to \code{\link{multTSA}} (if TSA=TRUE).}
+  \item{verbosity}{numeric value indicating the amount of messages to display, from less to more verbose; currently meaningful values are 0, 1, and 2 (the default).}
+  \item{test.in}{argument to pass to \code{\link{stepwise}} if select="p.value".}
+  \item{test.out}{argument to pass to \code{\link{stepwise}} if select="p.value".}
+  \item{p.in}{argument to pass to \code{\link{stepwise}} if select="p.value".}
+  \item{p.out}{argument to pass to \code{\link{stepwise}} if select="p.value".}
+  \item{\dots}{(for back-compatibility) additional arguments to be passed to \code{\link{modelTrim}} (if trim=TRUE).}
 }
 \details{
-This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform \code{\link{step}}wise variable selection (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward) and using Akaike's information criterion (AIC) as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function.
+This function automatically calculates binomial GLMs for one or more species (or other binary variables) in a data frame. The function can optionally perform stepwise variable selection using either \code{\link{stepwise}} or \code{\link{step}} (and it does so by default) instead of forcing all variables into the models, starting from either the null model (the default, so selection starts forward) or from the full model (so selection starts backward), and using AIC, BIC or statistical significance as a variable selection criterion. Instead or subsequently, it can also perform stepwise removal of non-significant variables from the models using the \code{\link{modelTrim}} function.
 
-There is also an optional preliminary selection of non-correlated variables, and/or of variables with a significant bivariate relationship with the response, based on the false discovery rate (\code{\link{FDR}}). Note, however, that some variables can be significant in a multivariate model even if they would not have been selected by FDR.
+There is also an optional preliminary selection among highly correlated variables, and/or preliminary selection of variables with a significant bivariate relationship with the response, based on the false discovery rate (\code{\link{FDR}}). Note, however, that some variables can be significant in a multivariate model even if they would not have been selected by FDR.
 
-\code{\link{Fav}}ourability is also calculated, removing the effect of species prevalence from occurrence probability and thus allowing direct comparisons between models (Real et al. 2006).
+\code{\link{Fav}}ourability can also be calculated by default, removing the effect of training prevalence from occurrence probability and thus allowing direct comparisons between different models (Real et al. 2006; Acevedo & Real 2012).
 
 By default, all data are used in model training, but you can define an optional 'test.sample' to be reserved for model testing afterwards. You may also want to do a previous check for multicollinearity among variables, e.g. the variance inflation factor (VIF), using \code{\link{multicol}}.
 
-The 'multGLM' function will create a list of the resulting models (each with the name of the corresponding species column) and a data frame with their predictions ('Y', 'P' and/or 'F', all of which are optional). If you plan on representing these predictions in a GIS based on .dbf tables, remember that dbf only allows up to 10 characters in column names; 'multGLM' predictions will add 2 characters (_Y, _P and/or _F) to each of your species column names, so use species names/codes with up to 8 characters in the data set that you are modelling. You can create (sub)species name abbreviations with the \code{\link{spCodes}} function.
+The 'multGLM' function will create a list of the resulting models (each with the name of the corresponding species column) and a data frame with their predictions ('Y', 'P' and/or 'F', all of which are optional). If you plan on representing these predictions in a GIS format based on .dbf tables (e.g. ESRI Shapefile), remember that .dbf only allows up to 10 characters in column names; 'multGLM' predictions will add 2 characters (_Y, _P and/or _F) to each of your species column names, so better use species names/codes with up to 8 characters in the data set that you are modelling. You can create (sub)species name abbreviations with the \code{\link{spCodes}} function.
 }
 \value{
 This function returns a list with the following components:
@@ -61,9 +65,11 @@ This function returns a list with the following components:
 \item{models}{a list of the resulting model objects.}
 \item{variables}{a list of character vectors naming the variables finally included in each model according to the specified selection criteria.}
 }
-\note{With step=TRUE (the default), an error may occur if there are missing values in some of the variables that are selected (see "Warning" in \code{\link{step}}). If this happens, you can use something like data=na.omit(data[ , var.cols]).
+\note{With step=TRUE (the default), an error may occur if there are missing values in some of the variables that are selected (see "Warning" in \code{\link{step}}). If this happens, you can use something like data=na.omit(data[ , c(sp.col, var.cols)]).
 }
 \references{
+Acevedo P. & Real R. (2012) Favourability: concept, distinctive characteristics and potential usefulness. Naturwissenschaften, 99:515-522
+
 Akaike, H. (1973) Information theory and an extension of the maximum likelihood principle. In: Petrov B.N. & Csaki F., 2nd International Symposium on Information Theory, Tsahkadsor, Armenia, USSR, September 2-8, 1971, Budapest: Akademiai Kiado, p. 267-281.
 
 Crawley, M.J. (2005) Statistics: An introdution using R. John Wiley & Sons, Ltd.
@@ -74,6 +80,8 @@ Fielding A.H. & Bell J.F. (1997) A review of methods for the assessment of predi
 
 Huberty C.J. (1994) Applied Discriminant Analysis. Wiley, New York, 466 pp.
 Schaafsma W. & van Vark G.N. (1979) Classification and discrimination problems with applications. Part IIa. Statistica Neerlandica 33: 91-126
+
+Murtaugh P.A. (2014) In defense of P values. Ecology, 95:611-617
 
 Real R., Barbosa A.M. & Vargas J.M. (2006) Obtaining environmental favourability functions from logistic regression. Environmental and Ecological Statistics 13: 237-245.
 

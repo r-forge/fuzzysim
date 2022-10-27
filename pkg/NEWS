@@ -1,4 +1,24 @@
 ============================================
+fuzzySim v4.9.2 (committed 2022-10-27)
+============================================
+
+## Modified functions:
+
+* multGLM
+- added 'FDR.first' argument
+
+
+## Other modified files:
+
+* multGLM.Rd
+- added recommendation to set trim=FALSE when select="p.value"
+- added JCG funding acknowledgment to Note
+
+* fuzSim.Rd
+- help file now mentions Jaccard and Sorensen also as recommended metrics for model evaluation 
+
+
+============================================
 fuzzySim v4.9.1 (committed 2022-10-13)
 ============================================
 

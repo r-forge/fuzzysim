@@ -17,7 +17,7 @@ a vector of (optionally fuzzy) presence-absence data, with 1 meaning presence, 0
 a vector similar to 'x', of the same length and in the same order.
 }
   \item{method}{
-the similarity index to use. Currently available options are "Jaccard", "Sorensen", "Simpson" and "Baroni" (see Details).
+the similarity index to compute between x and y. Currently available options are "Jaccard", "Sorensen", "Simpson" and "Baroni" (see Details).
 }
   \item{na.rm}{
 logical value indicating whether NA values should be ignored. The default is TRUE.
@@ -25,6 +25,8 @@ logical value indicating whether NA values should be ignored. The default is TRU
 }
 \details{
 Similarity between ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented in their fuzzy versions (Barbosa, 2015), able to deal with both binary and fuzzy data. Jaccard's and Baroni's indices have associated tables of significant values (Baroni-Urbani & Buser 1976, Real & Vargas 1996, Real 1999).
+
+Jaccard's and Sorensen's indices have also been recommended as prevalence-independent metrics for evaluating the performance of models of species distributions and ecological niches (Leroy et al. 2018). These indices are equivalent to other previously recommended model evaluation metrics: the F-measure (which equals Sorensen's index), and the proxy of the F-measure for presence-background data, which equals 2 times Jaccard's index (Li and Guo 2013, Leroy et al. 2018).
 }
 \value{
 The function returns a value between 0 and 1 representing the fuzzy similarity between the provided 'x' and 'y' vectors. Note, for example, that Jaccard similarity can be converted to dissimilarity (or Jaccard distance) if subtracted from 1, while \code{1-Sorensen} is not a proper distance metric as it lacks the property of triangle inequality (see \url{https://en.wikipedia.org/wiki/S\%C3\%B8rensen\%E2\%80\%93Dice_coefficient}).
@@ -38,6 +40,10 @@ Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices 
 Baroni-Urbani C. & Buser M.W. (1976) Similarity of Binary Data. Systematic Zoology, 25: 251-259
 
 Jaccard P. (1901) Etude comparative de la distribution florale dans une portion des Alpes et des Jura. Memoires de la Societe Vaudoise des Sciences Naturelles, 37: 547-579
+
+Leroy B., Delsol R., Hugueny B., Meynard C. N., Barhoumi C., Barbet-Massin M. & Bellard C. (2018) Without quality presence-absence data, discrimination metrics such as TSS can be misleading measures of model performance. Journal of Biogeography, 45: 1994-2002
+
+Li W. & Guo Q. (2013) How to assess the prediction accuracy of species presence-absence models without absence data? Ecography, 36: 788-799
 
 Olivero J., Real R. & Vargas J.M. (1998) Distribution of breeding, wintering and resident waterbirds in Europe: biotic regions and the macroclimate. Ornis Fennica, 75: 153-175
 
@@ -75,7 +81,7 @@ fuzSim(rotif.env[, "Abrigh"], rotif.env[, "Afissa"], method = "Baroni")
 # and calculate fuzzy similarity between their environmental predictions
 # which goes beyond the strict coincidence of their occurrence records:
 
-fav <- multGLM(rotif.env, sp.cols = 18:19, var.cols = 5:17, step = TRUE, 
+fav <- multGLM(rotif.env, sp.cols = 18:19, var.cols = 5:17, step = TRUE,
 FDR = TRUE, trim = TRUE, P = FALSE, Fav = TRUE) $ predictions
 
 fuzSim(fav[, "Abrigh_F"], fav[, "Afissa_F"], method = "Jaccard")

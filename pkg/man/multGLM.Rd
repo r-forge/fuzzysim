@@ -8,13 +8,12 @@ This function performs selection of variables and calculates generalized linear 
 }
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
-test.sample = 0, FDR = FALSE, correction = "fdr", corSelect = FALSE,
-cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, 
-start = "null.model", direction = "both", select = "AIC", trim = TRUE, 
-Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, 
-group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, 
-verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, 
-p.out = 0.1, ...)
+test.sample = 0, FDR = FALSE, correction = "fdr", FDR.first = TRUE,
+corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE,
+trace = 0, start = "null.model", direction = "both", select = "AIC",
+trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE,
+group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2,
+test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...)
 }
 \arguments{
   \item{data}{a data frame in wide format (see \code{\link{splist2presabs}}) containing, in separate columns, your species' binary (0/1) occurrence data and the predictor variables.}
@@ -24,16 +23,17 @@ p.out = 0.1, ...)
   \item{family}{argument to be passed to the \code{\link{glm}} function; currently, only 'binomial' is implemented here.}
   \item{test.sample}{a subset of data to set aside for subsequent model testing. Can be a value between 0 and 1 for a proportion of the data to choose randomly (e.g. 0.2 for 20\%); or an  integer number for a particular number of cases to choose randomly among the records in 'data'; or a vector of integers for the index numbers of the particular rows to set aside; or "Huberty" for his rule of thumb based on the number of variables (Huberty 1994, Fielding & Bell 1997).}
   \item{FDR}{logical value indicating whether to do a preliminary exclusion of variables based on the false discovery rate (see \code{\link{FDR}}). The default is FALSE.}
-  \item{correction}{argument to pass to the \code{\link{FDR}} function if FDR = TRUE. The default is "fdr", but see \code{\link{p.adjust}} for other options.}
-  \item{corSelect}{logical value indicating whether to do a preliminary exclusion of highly correlated variables (see \code{\link{corSelect}}). The default is FALSE.}
-  \item{cor.thresh}{numerical value indicating the correlation threshold to pass to \code{\link{corSelect}} (used only if corSelect = TRUE).}
-  \item{cor.method}{character value to pass to \code{\link{corSelect}} (used only if corSelect = TRUE) specifying the correlation coefficient to use. Can be "pearson" (the default), "kendall" or "spearman".}
-  \item{step}{logical, whether to perform a stepwise selection of variables, using either the \code{\link{step}} function (if select = "AIC" or "BIC") or the \code{\link{stepwise}} (if select = "p.value").}
+  \item{correction}{argument to pass to the \code{\link{FDR}} function if FDR=TRUE. The default is "fdr", but see \code{\link{p.adjust}} for other options.}
+  \item{FDR.first}{logical value indicating whether FDR exclusion (if FDR=TRUE) should be applied at the beginning. The default is TRUE. If set to FALSE (and if FDR=TRUE), FDR exclusion will be applied after 'corSelect' below.}
+  \item{corSelect}{logical value indicating whether to select among highly correlated variables using \code{\link{corSelect}}. The default is FALSE.}
+  \item{cor.thresh}{numerical value indicating the correlation threshold to pass to \code{\link{corSelect}} (used only if corSelect=TRUE).}
+  \item{cor.method}{character value to pass to \code{\link{corSelect}} (if corSelect=TRUE) specifying the correlation coefficient to use. Can be "pearson" (the default), "kendall" or "spearman".}
+  \item{step}{logical, whether to perform a stepwise selection of variables, using either the \code{\link{step}} function (if select = "AIC" or "BIC") or the \code{\link{stepwise}} function (if select = "p.value").}
   \item{trace}{if positive, information is printed during the stepwise selection (if step=TRUE). Larger values may give more detailed information.}
   \item{start}{character string specifying whether to start with the 'null.model' (so that variable selection starts forward) or with the 'full.model' (so selection starts backward). Used only if step=TRUE.}
-  \item{direction}{if step=TRUE, argument to be passed to \code{\link{step}} or to \code{\link{stepwise}} specifying the direction of variable selection. Can be 'forward', 'backward', or 'both'.}
-  \item{select}{character string specifying the criterion for stepwise selection of variables if step=TRUE. Options are the default "AIC" (Akaike's Information Criterion; Akaike, 1973); BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC; Schwarz, 1978); or "p.value" (Murtaugh, 2014). The first two options imply using \code{\link{step}} as the variable selection function, while the last option calls the \code{\link{stepwise}} function.}
-  \item{trim}{logical value indicating whether to trim off non-significant variables from the models using \code{\link{modelTrim}}. This argument is TRUE by default (for back-compatibility), and it can be used whether or not step=TRUE -- e.g. Crawley (2005, p. 208) and Crawley (2007, p. 442 and 601) recommend that \code{\link{step}} be followed by significance-based backward elimination).}
+  \item{direction}{if step=TRUE, argument to be passed to \code{\link{step}} or to \code{\link{stepwise}} specifying the direction of variable selection. Can be 'forward', 'backward', or 'both' (the default).}
+  \item{select}{character string specifying the criterion for stepwise selection of variables if step=TRUE. Options are the default "AIC" (Akaike's Information Criterion; Akaike, 1973); BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC; Schwarz, 1978); or "p.value" (Murtaugh, 2014). The first two options imply using \code{\link{step}} as the variable selection function, while the last option calls the \code{\link{stepwise}} function. If you set \code{select="p.value"}, we recommend also setting \code{trim=FALSE} to avoid mixing different significance criteria.}
+  \item{trim}{logical value indicating whether to trim off non-significant variables from the models using \code{\link{modelTrim}}. This argument is TRUE by default (for back-compatibility), and it can be used whether or not step=TRUE -- e.g. Crawley (2005, p. 208) and Crawley (2007, p. 442 and 601) recommend that \code{\link{step}} (with AIC selection) be followed by significance-based backward elimination).}
   \item{Y.prediction}{logical value indicating whether to include output predictions in the scale of the predictor variables (type = "link" in \code{\link{predict.glm}}).}
   \item{P.prediction}{logical, whether to include output predictions in the scale of the response variable, i.e. probability (type = "response" in \code{\link{predict.glm}}).}
   \item{Favourability}{logical, whether to apply the \code{\link{Fav}}ourability function to remove the effect of prevalence on predicted probability (Real et al. 2006) and include its results in the output.}
@@ -65,7 +65,10 @@ This function returns a list with the following components:
 \item{models}{a list of the resulting model objects.}
 \item{variables}{a list of character vectors naming the variables finally included in each model according to the specified selection criteria.}
 }
-\note{With step=TRUE (the default), an error may occur if there are missing values in some of the variables that are selected (see "Warning" in \code{\link{step}}). If this happens, you can use something like data=na.omit(data[ , c(sp.col, var.cols)]).
+\note{
+With step=TRUE (the default), an error may occur if there are missing values in some of the variables that are selected (see "Warning" in \code{\link{step}}). If this happens, you can use something like data=na.omit(data[ , c(sp.col, var.cols)]).
+
+Thanks are due to Prof. Jose Carlos Guerrero at the University of the Republic (Uruguay), who funded the implementation of the options \code{select="p.value"} and \code{FDR.first=FALSE}.
 }
 \references{
 Acevedo P. & Real R. (2012) Favourability: concept, distinctive characteristics and potential usefulness. Naturwissenschaften, 99:515-522

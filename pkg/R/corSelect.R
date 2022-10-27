@@ -38,7 +38,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
     
     if (select %in% bivar.criteria) {
       bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), family = family, simplif = TRUE, verbosity = 0)[ , c("p.value", "AIC", "BIC")]
-      if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), tolerance = 1.5e-8)))  message("Results identical whether using p-value, AIC or BIC to select variables.\n") else message("Results NOT identical whether using p-value, AIC or BIC to select variables.\n")
+      if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), tolerance = 1.5e-8)))  message("Results identical whether using p-value, AIC or BIC to select among correlated variables.\n") else message("Results NOT identical whether using p-value, AIC or BIC to select among correlated variables.\n")
     }  # end if select in bivar
     
     data.remaining <- data[ , var.cols]

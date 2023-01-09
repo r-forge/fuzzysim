@@ -1,3 +1,24 @@
+
+============================================
+fuzzySim v4.9.3 (committed 2023-01-09)
+============================================
+
+## Modified functions:
+
+* gridRecords
+- added 'plot' argument
+
+* corSelect
+- non-numeric variables excluded with warning (instead of causing error)
+
+* multGLM
+- corrected bug that miscounted the variables excluded by FDR when FDR.first=FALSE (affecting only console messages)
+- total N variables now reported when TSA=TRUE (i.e. "... 46 with the spatial trend variable" instead of just "...plus the spatial trend variable")
+
+* modelTrim
+- added family <- family(model) when method = "summary", as per bug report by J.C.Guerrero email 30/12/2022
+
+
 ============================================
 fuzzySim v4.9.2 (committed 2022-10-27)
 ============================================

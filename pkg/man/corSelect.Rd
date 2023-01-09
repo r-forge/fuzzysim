@@ -4,11 +4,11 @@
 Select among correlated variables based on a given criterion
 }
 \description{
-This function calculates pairwise correlations among the variables in a dataset and, among each pair of variables correlated above a given threshold, excludes the variable with either the highest variance inflation factor (VIF), or the least significant or least informative bivariate (individual) relationship with the response variable (if supplied), according to a specified criterion.
+This function computes pairwise correlations among the variables in a dataset and, among each pair of variables correlated above a given threshold, it excludes the variable with either the highest variance inflation factor (VIF), or the least significant or least informative bivariate (individual) relationship with the response variable (if supplied), according to a given criterion.
 }
 \usage{
-corSelect(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, 
-select = "p.value", family = "auto", use = "pairwise.complete.obs", 
+corSelect(data, sp.cols = NULL, var.cols, cor.thresh = 0.8,
+select = "p.value", family = "auto", use = "pairwise.complete.obs",
 method = "pearson", verbosity = 1)
 }
 \arguments{
@@ -32,7 +32,7 @@ If 'sp.cols' is left NULL and the 'select' criterion is other than "VIF", the fu
 \value{
 This function returns a list of 7 elements, unless 'sp.cols = NULL', in which case it returns only the first of these elements:
 \item{high.correlations}{data frame showing the pairs of input variables that are correlated beyond the given threshold, and their correlation coefficient.}
-\item{bivariate.significance}{data frame with the individual p-value, AIC and BIC (if one of these was the 'select' criterion) of each of the highly correlated variables against the response variable.}
+\item{bivariate.significance}{data frame with the individual p-value, AIC and BIC (if one of these was the 'select' criterion and 'sp.col' was provided) of each of the highly correlated variables against the response variable.}
 \item{excluded.vars}{character vector containing the names of the variables to be excluded (i.e., from each highly correlated pair, the variable with the worse 'select' score.}
 \item{selected.vars}{character vector containing the names of the variables to be selected (i.e., the non-correlated variables and, from each correlated pair, the variable with the better 'select' score).}
 \item{selected.var.cols}{integer vector containing the column indices of the selected variables in 'data'.}

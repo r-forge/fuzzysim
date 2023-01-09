@@ -3,9 +3,11 @@ gridRecords <- function(rst,
                         abs.coords = NULL,
                         absences = TRUE,
                         species = NULL,  # new
-                        na.rm = TRUE) {  # new
+                        na.rm = TRUE,  # new
+                        plot = FALSE)  # new
+  {
 
-  # version 3.5 (1 Aug 2022)
+  # version 3.6 (13 Nov 2022)
 
   if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -17,7 +19,7 @@ gridRecords <- function(rst,
     if (!is.null(abs.coords)) stop ("Sorry, 'abs.coords' is currently only implemented for one species at a time, i.e. when species=NULL")
     #if (suppressWarnings(any(is.finite(as.numeric(species))))) warning ("'species' are used as column names, so they should be of class 'character' and not start with a number.")
     if (length(unique(species)) != length(unique(trimws(species)))) warning ("Some values in 'species' have leading or trailing spaces and are treated separately; consider using trimws() first.")
-    
+
     species_list <- unique(species)
     pres.coords.in <- pres.coords
     pres.coords <- pres.coords.in[species == species_list[1], ]
@@ -79,10 +81,10 @@ gridRecords <- function(rst,
   #   }
   # }
   if (na.rm) result <- result[!apply(is.na(result[ , 5:ncol(result), drop = FALSE]), 1, all), ]  # 5:ncol(result)  # names(rst)
-  
+
   if (!is.null(species)) {
     species_result <- result[ , "cells", drop = FALSE]
-    
+
     for (s in species_list[-1]) {  # species 1 already gridded above
       if (inherits(rst, "Raster"))  species_cells <- raster::cellFromXY(rst, as.matrix(pres.coords.in[species == s, ]))
       if (inherits(rst, "SpatRaster"))  species_cells <- terra::cellFromXY(rst, as.matrix(pres.coords.in[species == s, ]))
@@ -97,9 +99,20 @@ gridRecords <- function(rst,
     )
     names(result)[1] <- species_list[1]  # species 1 gridded before as "presence"
   }  # end if !null species
-  
+
   result <- result[order(result$cell), ]  # new
   #result <- result[order(as.integer(rownames(result))), ]  # new
   rownames(result) <- NULL  # new
+
+  if (plot) {  # new
+    xrange <- range(result$x, na.rm = TRUE)
+    yrange <- range(result$y, na.rm = TRUE)
+    plot(result[result$presence == 1, c("x", "y")],
+         xlim = xrange, ylim = yrange,
+         pch = "+", col = "blue")
+    points(result[result$presence == 0, c("x", "y")],
+         pch = "-", col = "red")
+  }
+
   return(result)
 }

@@ -1,6 +1,6 @@
 multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", FDR.first = TRUE, corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...) {
 
-  # version 5.4 (13 Oct 2022)
+  # version 5.5 (9 Jan 2023)
 
   start.time <- Sys.time()
   on.exit(timer(start.time))
@@ -40,7 +40,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   data.row <- 1:n
 
   # UNDER CONSTRUCTION:
-  #if (test.sample != 0 && n != nrow(na.omit(data[ , c(sp.cols, var.cols, coord.cols)]))) warning("'data' include missing values, thus 'test.sample' may not always conta  in the expected amount of actual data.")  # new
+  #if (test.sample != 0 && n != nrow(na.omit(data[ , c(sp.cols, var.cols, coord.cols)]))) warning("'data' include missing values, thus 'test.sample' may not always contain the expected amount of actual data.")  # new
 
   test.sample.input <- test.sample
 
@@ -87,8 +87,8 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   if (Favourability) {
     if (family != "binomial") {
       Favourability <- FALSE
-      warning ("Favourability is only applicable to binomial responses,
-               so it could not be calculated")
+      warning ("Favourability not computed, as it is only applicable when the
+                response variable is binary.")
     }  # end if family != binomial (for when other families are implemented)
   }  # end if Fav
 
@@ -123,7 +123,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     if (verbosity > 1)  cat(length(var.cols), "input predictor variable(s)\n\n")
 
     if (TSA) {
-      if (verbosity > 1)  cat("...plus the spatial trend variable\n\n")
+      if (verbosity > 1)  cat("...", length(var.cols) + 1, "with the spatial trend variable\n\n")
       tsa <- suppressMessages(multTSA(data = data, sp.cols = s, coord.cols = coord.cols, degree = degree, type = "Y"))
       tsa_name <- paste("sptrend", response, sep = "_")
       data <- data.frame(data, tsa[ , ncol(tsa)])
@@ -160,7 +160,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     if (length(sel.var.cols) > 1 && corSelect == TRUE) {
       corselect <- suppressMessages(corSelect(data = train.data, sp.cols = s, var.cols = sel.var.cols, cor.thresh = cor.thresh, use = "pairwise.complete.obs"))
       corsel.var.cols <- corselect$selected.var.cols
-      if (verbosity > 1)  cat(length(sel.var.cols) - length(corsel.var.cols), "variable(s) excluded by 'corSelect' function\n", corselect$excluded.vars, "\n\n")
+      if (verbosity > 1)  cat(length(sel.var.cols) - length(corsel.var.cols), "variable(s) excluded by 'corSelect' function\n", paste(corselect$excluded.vars, collapse = ", "), "\n\n")
       sel.var.cols <- corsel.var.cols
     }  # end if corSelect
 
@@ -172,7 +172,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
         #next
       } #else {
       #excluded["FDR"] <- row.names(fdr$exclude)
-      if (verbosity > 1)  cat(length(var.cols) - nrow(fdr$select), "variable(s) excluded by 'FDR' function\n", paste(row.names(fdr$exclude), collapse = ", "), "\n\n")
+      if (verbosity > 1)  cat(length(sel.var.cols) - nrow(fdr$select), "variable(s) excluded by 'FDR' function\n", paste(row.names(fdr$exclude), collapse = ", "), "\n\n")
       #}
       sel.var.cols <- which(colnames(train.data) %in% rownames(fdr$select))
     }  # end if FDR & !FDR.first
@@ -211,9 +211,10 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
       if (verbosity > 1)  cat(n.vars.start - n.vars.step, " variable(s) excluded by '", step_fun, "' function\n", paste(excluded.vars, collapse = ", "), "\n\n", sep = "")
     } else model <- eval(model.expr, envir = train.data)
 
-    if (trim && length(sel.var.cols) > 0) {
+    if (trim && length(model$coefficients) > 1) {  # length(sel.var.cols)
       n.vars.start <- length(model$coefficients) - 1
       names.vars.start <- names(model$coefficients)[-1]
+      # cat("+++ variables for modelTrim:\n", paste(names.vars.start, collapse = ", "), "\n\n")
       model <- suppressMessages(modelTrim(model, ...))
       # model <- stepwise(data = model$model, sp.col = 1, var.cols = 2:ncol(model$model), direction = "backward", Favourability = FALSE, simplif = TRUE, trace = 0, ...)
       n.vars.trim <- length(model$coefficients) - 1

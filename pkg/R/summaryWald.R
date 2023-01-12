@@ -1,11 +1,12 @@
 summaryWald <- function(model, interceptLast = TRUE) {
-  
+  # version 1.1 (12 Jan 2023)
+
   if (!requireNamespace("aod")) {
     stop("This function requires installing the 'aod' package.")
   }
-  
+
   if (!inherits(model, "glm")) stop("'model' must be of class 'glm'.")
-  
+
   coefs <- as.data.frame(summary(model)$coefficients)
   coefs <- coefs[ , -grep("z", names(coefs))]  # remove z test (to which remaining statistics won't correspond)
   coefs$Wald <- NA

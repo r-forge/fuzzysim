@@ -1,3 +1,18 @@
+============================================
+fuzzySim v4.9.4 (committed 2023-01-12)
+============================================
+
+## Modified functions:
+
+* pairwiseRangemaps
+- replaced 'PBSmapping' (and consequently 'sp' and 'maptools') with 'terra' (future-proof and much faster)
+
+
+# Other modified fiels:
+
+* DESCRIPTION
+- packages 'PBSmapping', 'sp' and 'maptools' removed from 'Suggests'
+
 
 ============================================
 fuzzySim v4.9.3 (committed 2023-01-09)

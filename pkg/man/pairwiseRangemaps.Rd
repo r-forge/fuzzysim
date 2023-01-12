@@ -7,16 +7,16 @@ Pairwise intersection (and union) of range maps
 This function takes a set of rangemaps and returns a matrix containing the areas of their pairwise intersections; optionally, also their individual areas and/our their areas of pairwise unions.
 }
 \usage{
-pairwiseRangemaps(rangemaps, projection, diag = TRUE, unions = TRUE, 
-verbosity = 2, Ncpu = 1, nchunks = 1, subchunks = NULL, 
+pairwiseRangemaps(rangemaps, projection = NULL, diag = TRUE, unions = TRUE,
+verbosity = 2, Ncpu = 1, nchunks = 1, subchunks = NULL,
 filename = "rangemap_matrix.csv")
 }
 \arguments{
   \item{rangemaps}{
-a character vector of rangemap filenames, including folder paths if not in the woorking directory. ESRI shapefile (.shp) is currently the only accepted format. Specifying the extension is optional.
+a character vector of rangemap filenames, including the extension (e.g. ".shp" or ".gpkg"), and the folder paths if not in the woorking directory.
 }
   \item{projection}{
-argument to be passed to function 'importShapefile' of package \pkg{PBSmapping}
+DEPRECATED argument, previously required by function 'PBSmapping::importShapefile', which is now here replaced with 'terra::vect'. Will be ignored with a message if provided. Mind that area computations are more accurate with unprojected input maps (see ?terra::expanse).
 }
   \item{diag}{
 logical, whether to fill the diagonal of the resulting matrix with the area of each rangemap. The default is TRUE, and it is also automatically set to TRUE (as it is necessary) if unions = TRUE.
@@ -41,7 +41,7 @@ optional character vector indicating the name of the file to save the resulting 
 }
 }
 \details{
-This calculation can be very intensive and slow, especially if you have many and/or large rangemaps, due to the time needed for spatial operations between maps. You can set nchunks = "decreasing" for the matrix to be calculated in parts and the memory cleaned between one part and the next; and, if your computer has more than one core that you can use, you can increase 'Ncpu' to get parallel computing.
+This computation can be intensive and slow, especially if you have many and/or large rangemaps, due to the time needed for pairwise spatial operations between them. You can set nchunks="decreasing" for the matrix to be calculated in parts and the memory cleaned between one part and the next; and, if your computer has more than one core that you can use, you can increase 'Ncpu' to get parallel computing.
 }
 \value{
 This function returns a square matrix containing, in the lower triangle, the area of the pair-wise intersections among the input 'rangemaps'; in the diagonal (if diag = TRUE or union = TRUE), the area of each rangemap; and in the upper triangle (if union = TRUE), the area of the pair-wise unions among the rangemaps.
@@ -53,7 +53,7 @@ Barbosa A.M. & Estrada A. (2016) Calcular corotipos sin dividir el territorio en
 A. Marcia Barbosa
 }
 \note{
-This function uses the \pkg{PBSmapping} package to import and intersect the polygon rangemaps and to calculate areas. Remember to use projected rangemaps, preferably with an equal-area reference system, so that calculations are correct.
+This function previously used the \pkg{PBSmapping} package to import and intersect the rangemaps and to calculate areas. Now it uses the \pkg{terra} package instead. Mind that, after the implementation of spherical geometry, area computations are more accurate with unprojected input maps (see ?terra::expanse). Small differences can thus arise between the results of the previous version and the current version (from \pkg{fuzzySim} 4.9.4).
 }
 \seealso{
 \code{\link{rangemapSim}}

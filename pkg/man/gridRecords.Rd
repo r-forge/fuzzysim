@@ -4,7 +4,7 @@
 Grid (or thin) point occurrence records to the resolution of a raster map
 }
 \description{
-This function takes a Raster* or a SpatRaster object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). This is analogous to removing duplicates and thinning points (both presences and absences) with a distance equal to the pixel size of the raster map(s) on which analysis will be based.
+This function takes a SpatRaster or a Raster* object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). This is analogous to removing duplicates and thinning points (both presences and absences) with a distance equal to the pixel size of the raster map(s) on which analysis will be based. You may want to consider cleaning the coordinates beforehand, e.g. with \code{\link{cleanCoords}}.
 }
 \usage{
 gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE,
@@ -54,7 +54,7 @@ Baez J.C., Barbosa A.M., Pascual P., Ramos M.L. & Abascal F. (2020) Ensemble mod
 A. Marcia Barbosa
 }
 \seealso{
-'extract' in package \pkg{raster} or in package \pkg{terra}
+\code{\link{cleanCoords}}
 }
 \examples{
 \dontrun{

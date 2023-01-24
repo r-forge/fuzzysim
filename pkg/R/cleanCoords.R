@@ -1,7 +1,6 @@
 #' Title Clean coordinates
 #'
 #' @param data an object inheriting class 'data.frame' containing the spatial coordinates to be cleaned.
-#' @param coord.cols character or integer vector of length 2, with either the names or the positions of the columns that contain the spatial coordinates in 'data' (e.g., in GBIF these columns are usually named "decimalLongitude" and "decimalLatitude").
 #' @param uncert.col character or integer vector of length 1, with either the name or the position of the column that reports spatial uncertainty in 'data' (e.g., in GBIF this column is usually named "coordinateUncertaintyInMeters").
 #' @param rm.dup logical, whether to remove rows with exactly the same pair of coordinates. The default is TRUE.
 #' @param rm.equal logical, whether to remove rows with exactly the same pair of coordinates, i.e. where latitude = longitude. The default is TRUE.
@@ -23,7 +22,7 @@
 #' @examples
 
 cleanCoords <- function(data, coord.cols, uncert.col = NULL, rm.dup = TRUE, rm.equal = TRUE, rm.imposs = TRUE, rm.missing.any = TRUE, rm.missing.both = TRUE, rm.zero.any = TRUE, rm.zero.both = TRUE, rm.imprec.any = TRUE, rm.imprec.both = TRUE, imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = Inf, uncert.na.pass = TRUE) {
-  # version 1.0 (20 Jan 2023)
+  # version 1.1 (23 Jan 2023)
 
   stopifnot(
     inherits(data, "data.frame"),
@@ -73,23 +72,25 @@ cleanCoords <- function(data, coord.cols, uncert.col = NULL, rm.dup = TRUE, rm.e
   }
 
   if (rm.imprec.any) {
-    coords <- subset(coords, coords$lon != round(coords$lon, imprec.digits) | coords$lat != round(coords$lat, imprec.digits))
+    # coords <- coords[grepl("[0-9]+\\.[0-9]+", coords$lon) | grepl("[0-9]+\\.[0-9]+", coords$lat), ]  # adapted from 'scrubr::coord_imprecise', removes only integer coords (no 'digits' option)
+    coords <- subset(coords, coords$lon != round(coords$lon, imprec.digits) & coords$lat != round(coords$lat, imprec.digits))
     message(nrow(coords), " rows after 'rm.imprec.any'")
   } else if (rm.imprec.both) {
-    coords <- subset(coords, coords$lon != round(coords$lon, imprec.digits) & coords$lat != round(coords$lat, imprec.digits))
+    # coords <- coords[grepl("[0-9]+\\.[0-9]+", coords$lon) & grepl("[0-9]+\\.[0-9]+", coords$lat), ]  # adapted from 'scrubr::coord_imprecise', removes only integer coords (no 'digits' option)
+    coords <- subset(coords, coords$lon != round(coords$lon, imprec.digits) | coords$lat != round(coords$lat, imprec.digits))
     message(nrow(coords), " rows after 'rm.imprec.both'")
   }
 
-  presences <- presences[rownames(coords), ]
+  data <- data[rownames(coords), ]
 
   if (rm.uncert) {
-    uncert <- presences[ , uncert.col]
+    uncert <- data[ , uncert.col]
     if (uncert.na.pass) uncert[is.na(uncert)] <- 0
     accurate <- uncert <= uncert.limit
     coords <- coords[sapply(accurate, isTRUE), ]
     message(nrow(coords), " rows after 'rm.uncert' (with uncert.limit=", uncert.limit, " and uncert.na.pass=", uncert.na.pass, ")")
   }
 
-  presences <- presences[rownames(coords), ]
-  return(presences)
+  data <- data[rownames(coords), ]
+  return(data)
 }

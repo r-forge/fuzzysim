@@ -1,4 +1,19 @@
 ============================================
+fuzzySim v4.9.6 (committed 2023-01-24)
+============================================
+
+## New functions:
+
+* selectAbsences
+
+
+## Modified functions:
+
+* cleanCoords
+- fixed bug in 'rm.imprecise'
+
+
+============================================
 fuzzySim v4.9.5 (committed 2023-01-20)
 ============================================
 

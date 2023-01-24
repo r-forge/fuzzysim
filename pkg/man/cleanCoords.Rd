@@ -15,7 +15,7 @@ rm.uncert = !is.null(uncert.col), uncert.limit = Inf, uncert.na.pass = TRUE)
 }
 \arguments{
   \item{data}{a matrix or data frame containing, at least, two columns with spatial coordinates, and one column per species containing their presence (1) and absence (0) data, with localities in rows.}
-  \item{coord.cols}{character or integer vector of length 2, with either the names or the positions of the columns that contain the spatial coordinates in 'data' (e.g., in GBIF these columns are usually named "decimalLongitude" and "decimalLatitude").}
+  \item{coord.cols}{character or integer vector of length 2, with either the names or the positions of the columns that contain the spatial coordinates in 'data' - in this order, LONGitude and LATitude, or x and y.}
   \item{uncert.col}{character or integer vector of length 1, with either the name or the position of the column that reports spatial uncertainty in 'data' (e.g., in GBIF this column is usually named "coordinateUncertaintyInMeters").}
   \item{rm.dup}{logical, whether to remove rows with exactly the same pair of coordinates. The default is TRUE.}
   \item{rm.equal}{logical, whether to remove rows with exactly the same pair of coordinates, i.e. where latitude = longitude. The default is TRUE.}

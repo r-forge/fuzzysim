@@ -63,8 +63,8 @@ A. Marcia Barbosa
 require(terra)
 
 # import a raster map and aggregate it to a coarser resolution:
-r <- rast(system.file("ex/elev.tif", package = "terra"))
-r <- aggregate(r, 6)
+r <- terra::rast(system.file("ex/elev.tif", package = "terra"))
+r <- terra::aggregate(r, 6)
 plot(r)
 
 # generate some random presence and absence points:

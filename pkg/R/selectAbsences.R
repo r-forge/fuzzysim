@@ -25,7 +25,7 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, ma
 
     if (verbosity > 0) cat("\nComputing distance to presences...\n")
     data$dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = FALSE)[, 1]
-    if (verbosity > 1) cat("Distance from input absences to presences ranges between", round(min(data$dist.pres[abs.rows]), 3), "and", round(max(data$dist.pres[abs.rows]), 3), "coordinate units.\n")
+    if (verbosity > 1) cat("- Distance from input absences to presences ranges between", round(min(data$dist.pres[abs.rows]), 3), "and", round(max(data$dist.pres[abs.rows]), 3), "coordinate units.\n")
 
     if (!is.null(min.dist)) {
       pres.rows <- which(data[ , sp.cols] == 1)
@@ -34,7 +34,7 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, ma
       pres.rows <- which(data[ , sp.cols] == 1)
       abs.rows <- which(data[ , sp.cols] == 0)
       n.abs <- length(abs.rows)
-      if (verbosity > 1) cat("\n", n.abs, " absences selected by 'min.dist'.\n", sep = "")
+      if (verbosity > 0) cat("\n", n.abs, " absences selected by 'min.dist'.\n", sep = "")
     }
 
     if (!is.null(max.dist)) {
@@ -43,25 +43,26 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, ma
       pres.rows <- which(data[ , sp.cols] == 1)
       abs.rows <- which(data[ , sp.cols] == 0)
       n.abs <- length(abs.rows)
-      if (verbosity > 1) cat("\n", n.abs, " absences selected by 'max.dist'.\n", sep = "")
+      if (verbosity > 0) cat("\n", n.abs, " absences selected by 'max.dist'.\n", sep = "")
     }
   }
 
   if (is.null(n) && !is.null(mult.p)) {
     n <- n.pres * mult.p
-    if (verbosity > 0) cat("\n", n.pres, " presences x 'mult.p' = ", n, "\n", sep = "")
+    if (verbosity > 0) cat("\n", n.pres, " presences x 'mult.p' = ", n, " absences\n", sep = "")
+    n <- round(n, digits = 0)
     if (verbosity > 0 && n > n.abs) cat("\nAbsences not enough to make", mult.p, "times the number of presences; all absences included in output.\n")
   }
 
-  # if (verbosity > 0) cat(n, " absences in output.", sep = "")
-
   if (!is.null(n) && n < n.abs) {
+    if (verbosity > 0 && is.null(mult.p)) cat("\nSelecting n =", n, "absences...\n")
 
     if (bias) {
       # inv.dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = TRUE)[, 1][abs.rows]
       inv <- function(x) 1 - ((x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE)))
       inv.dist.abs <- inv(data$dist.pres)[abs.rows]
       if (!is.null(seed)) set.seed(seed)
+      if (verbosity > 0) cat("\nBiasing the selection of absences towards de vicitiny of presences...\n")
       abs.samp <- sample(abs.rows, n, replace = FALSE, prob = inv.dist.abs)
     } else {
       if (!is.null(seed)) set.seed(seed)

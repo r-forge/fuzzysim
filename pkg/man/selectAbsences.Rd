@@ -7,7 +7,9 @@ Select (spatially biased) absence rows.
 This function takes a matrix or data frame containing species presence (1) and absence (0) data, and selects among the absence rows to stay within a given number of absences, which can be user-defined or a multiplier of the number of presences. Optionally, and if spatial coordinates are provided, it can select absences with higher probability in the vicinity of presences, to reproduce survey bias.
 }
 \usage{
-selectAbsences(data, sp.cols, coord.cols = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, seed = NULL, plot = !is.null(coord.cols), verbosity = 2)
+selectAbsences(data, sp.cols, coord.cols = NULL, min.dist = NULL,
+max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE,
+seed = NULL, plot = !is.null(coord.cols), verbosity = 2)
 }
 \arguments{
   \item{data}{a matrix or data frame containing, at least, one column with the species' presence (1) and absence (0) records, with localities in rows; and (if distance or spatial bias are required) two columns with the spatial coordinates.}
@@ -49,13 +51,18 @@ names(rotif.env)
 
 table(rotif.env$Burceo)
 
-# select among the absences:
+# select among the absences using different criteria:
 
-burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo", coord.cols = c("Longitude", "Latitude"), n = 150, seed = 123)
+burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
+coord.cols = c("Longitude", "Latitude"), n = 150, seed = 123)
 
-burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo", coord.cols = c("Longitude", "Latitude"), mult.p = 1.5, seed = 123)
+burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
+coord.cols = c("Longitude", "Latitude"), mult.p = 1.5, seed = 123)
 
-burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo", coord.cols = c("Longitude", "Latitude"), max.dist = 18, seed = 123, bias = TRUE)
+burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
+coord.cols = c("Longitude", "Latitude"), max.dist = 18)
 
-burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo", coord.cols = c("Longitude", "Latitude"), max.dist = 18, min.dist = 5, bias = TRUE)
+burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
+coord.cols = c("Longitude", "Latitude"), max.dist = 18, min.dist = 5,
+n = sum(rotif.env$Burceo), bias = TRUE)
 }

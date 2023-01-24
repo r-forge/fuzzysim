@@ -13,7 +13,7 @@
 #' @param rm.imprec.both logical, whether to remove rows where both coordinates are imprecise. The default is TRUE, but it is not used if rm.imprec.any=TRUE. See 'rm.imprec.any' above for important details.
 #' @param imprec.digits integer, maximum number of digits to consider that a coordinate is imprecise. The default is 0, for eliminating coordinates with no more than zero decimal places.
 #' @param rm.uncert logical, whether to remove rows where the value in 'uncert.col' is higher than 'uncert.limit'. The default is TRUE if 'uncert.col' is not NULL, and FALSE otherwise.
-#' @param uncert.limit numeric, threshold value for 'uncert.col'. If rm.uncert=TRUE and 'uncert.col' is provided, rows with values above this will be excluded. The default is Inf, which does not exclude any rows.
+#' @param uncert.limit numeric, threshold value for 'uncert.col'. If rm.uncert=TRUE and 'uncert.col' is provided, rows with values above this will be excluded. The default is 50,000, i.e. 50 km if the values in 'uncert.col' are in meters.
 #' @param uncert.na.pass logical, whether rows with NA in 'uncert.col' should be kept as having no uncertainty. The default is TRUE.
 #'
 #' @return This function returns a data frame of the input 'data' without the rows that met the specified removal criteria. The row names are the same as the original ones in 'data'. Messages are displayed in the console saying how many rows passed each removal filter.
@@ -21,8 +21,8 @@
 #'
 #' @examples
 
-cleanCoords <- function(data, coord.cols, uncert.col = NULL, rm.dup = TRUE, rm.equal = TRUE, rm.imposs = TRUE, rm.missing.any = TRUE, rm.missing.both = TRUE, rm.zero.any = TRUE, rm.zero.both = TRUE, rm.imprec.any = TRUE, rm.imprec.both = TRUE, imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = Inf, uncert.na.pass = TRUE) {
-  # version 1.1 (23 Jan 2023)
+cleanCoords <- function(data, coord.cols, uncert.col = NULL, rm.dup = TRUE, rm.equal = TRUE, rm.imposs = TRUE, rm.missing.any = TRUE, rm.missing.both = TRUE, rm.zero.any = TRUE, rm.zero.both = TRUE, rm.imprec.any = TRUE, rm.imprec.both = TRUE, imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, plot = TRUE) {
+  # version 1.2 (24 Jan 2023)
 
   stopifnot(
     inherits(data, "data.frame"),
@@ -36,6 +36,8 @@ cleanCoords <- function(data, coord.cols, uncert.col = NULL, rm.dup = TRUE, rm.e
   if (rm.uncert && is.null(uncert.col)) stop("'rm.uncert=TRUE' requires specifying 'uncert.col'.")
 
   data <- as.data.frame(data)
+  if (plot) data.in <- data
+
   coords <- data[ , coord.cols]
   names(coords) <- c("lon", "lat")
   message(nrow(coords), " rows in input data")
@@ -92,5 +94,18 @@ cleanCoords <- function(data, coord.cols, uncert.col = NULL, rm.dup = TRUE, rm.e
   }
 
   data <- data[rownames(coords), ]
+
+  if (plot) {
+    # if ("terra" %in% .packages()) {
+    #   data.in <- vect(data.in, geom = coord.cols)
+    #   data <- vect(data, geom = coord.cols)
+    # }
+    xrange <- range(data.in[ , coord.cols[1]], na.rm = TRUE)
+    yrange <- range(data.in[ , coord.cols[2]], na.rm = TRUE)
+    plot(data.in[ , coord.cols], pch = 4, cex = 0.4, col = "red", xlim = xrange, ylim = yrange)
+    points(data[ , coord.cols], pch = 20, cex = 0.8, col = "blue")
+  }
+
   return(data)
+
 }

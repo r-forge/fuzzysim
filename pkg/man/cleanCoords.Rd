@@ -37,7 +37,7 @@
   This function applies some basic cleaning procedures for species occurrence data, removing some of the most common mistakes in biodiversity data bases. It is inspired by a few functions (namely 'coord_incomplete', 'coord_imprecise', 'coord_impossible', 'coord_unlikely' and 'coord_uncertain') that were present in the 'scrubr' package, which was archived.
 }
 \value{
-  This function returns a data frame of the input 'data' without the rows that met the specified removal criteria. The row names are the same as the original ones in 'data'. Messages are displayed in the console saying how many rows passed each removal filter.
+  This function returns a data frame of the input 'data' without the rows that met the specified removal criteria. The row names match the original ones in 'data'. Messages are displayed in the console saying how many rows passed each removal filter. If plot=TRUE (the default), a plot is also displayed with the selected presences (blue dots) and the excluded ones (red "x").
 }
 \author{
   A. Marcia Barbosa

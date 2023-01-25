@@ -1,4 +1,15 @@
 ============================================
+fuzzySim v4.9.7 (committed 2023-01-24)
+============================================
+
+## Modified functions:
+
+* cleanCoords
+- added 'plot' argument
+- changed default 'uncert.limit' to 50000
+
+
+============================================
 fuzzySim v4.9.6 (committed 2023-01-24)
 ============================================
 

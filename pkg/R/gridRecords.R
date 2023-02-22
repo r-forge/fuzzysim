@@ -7,7 +7,7 @@ gridRecords <- function(rst,
                         plot = FALSE)  # new
   {
 
-  # version 3.6 (13 Nov 2022)
+  # version 3.6 (6 Feb 2023)
 
   if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -107,11 +107,11 @@ gridRecords <- function(rst,
   if (plot) {  # new
     xrange <- range(result$x, na.rm = TRUE)
     yrange <- range(result$y, na.rm = TRUE)
-    plot(result[result$presence == 1, c("x", "y")],
+    plot(result[result$presence == 0, c("x", "y")],
          xlim = xrange, ylim = yrange,
-         pch = "+", col = "blue")
-    points(result[result$presence == 0, c("x", "y")],
          pch = "-", col = "red")
+    points(result[result$presence == 1, c("x", "y")],
+         pch = "+", col = "blue")
   }
 
   return(result)

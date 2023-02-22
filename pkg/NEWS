@@ -1,4 +1,19 @@
 ============================================
+fuzzySim v4.9.8 (committed 2023-02-22)
+============================================
+
+## Modified functions:
+
+* selectAbsences
+- added 'df' argument
+- output df now ordered by as.integer(rownames) rather than character rownames (1, 10, 100, 2, ...)
+- points now plotted in this order: unselected absences, selected absences, presences on top
+
+* gridRecords
+- points now plotted in this order: absences, presences on top
+
+
+============================================
 fuzzySim v4.9.7 (committed 2023-01-25)
 ============================================
 
@@ -6,7 +21,7 @@ fuzzySim v4.9.7 (committed 2023-01-25)
 
 * cleanCoords
 - added 'plot' argument
-- changed default 'uncert.limit' to 50000
+- changed default 'uncert.limit' from Inf to 50000
 
 
 ============================================

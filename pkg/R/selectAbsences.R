@@ -1,5 +1,5 @@
-selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, seed = NULL, plot = !is.null(coord.cols), verbosity = 2) {
-  # version 1.2 (25 Jan 2023)
+selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2) {
+  # version 1.4 (6 Feb 2023)
 
   if (length(sp.cols) > 1) stop("Sorry, this function is currently implemented for only one 'sp.col' at a time.")
   if (bunch == TRUE) stop("Sorry, 'bunch=TRUE' is still pending implementation.")
@@ -12,7 +12,7 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, ma
   )
 
   data <- as.data.frame(data)
-  if (plot) data.in <- data
+  if (plot || !df) data_in <- data
 
   abs.rows <- which(data[ , sp.cols] == 0)
   pres.rows <- which(data[ , sp.cols] == 1)
@@ -83,18 +83,18 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, ma
     if (is.null(coord.cols)) {
       message("'plot=TRUE' requires specifying 'coord.cols'; plot not produced.")
     } else {
-      xrange <- range(data.in[ , coord.cols[1]], na.rm = TRUE)
-      yrange <- range(data.in[ , coord.cols[2]], na.rm = TRUE)
-      plot(data[data[ , sp.cols] == 1, coord.cols],
+      xrange <- range(data_in[ , coord.cols[1]], na.rm = TRUE)
+      yrange <- range(data_in[ , coord.cols[2]], na.rm = TRUE)
+      plot(data_in[data_in[ , sp.cols] == 0, coord.cols],
            xlim = xrange, ylim = yrange,
-           pch = "+", col = "blue")
-      points(data.in[data.in[ , sp.cols] == 0, coord.cols],
-             pch = 20, cex = 0.1, col = "orange")
+           pch = 20, cex = 0.1, col = "orange")
       points(data[data[ , sp.cols] == 0, coord.cols],
              pch = "-", col = "red")
+      points(data[data[ , sp.cols] == 1, coord.cols],
+           pch = "+", col = "blue")
     }
   }
 
-  data <- data[order(rownames(data)), ]
-  return(data)
+  if (!df) return(rownames(data_in) %in% rownames(data))
+  return(data[order(as.integer(rownames(data))), ])
 }

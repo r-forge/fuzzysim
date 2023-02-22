@@ -4,12 +4,12 @@
 Select (spatially biased) absence rows.
 }
 \description{
-This function takes a matrix or data frame containing species presence (1) and absence (0) data, and selects among the absence rows to stay within a given number of absences, which can be user-defined or a multiplier of the number of presences. Optionally, and if spatial coordinates are provided, it can select absences with higher probability in the vicinity of presences, to reproduce survey bias.
+This function takes a matrix or data frame containing species presence (1) and absence (0) data, and it selects among the absence rows to stay within a given number or ratio of absences, and/or within and/or beyond a given distance to the presences. Optionally, absences can be selected with higher probability towards the vicinity of presences, to reproduce survey bias.
 }
 \usage{
 selectAbsences(data, sp.cols, coord.cols = NULL, min.dist = NULL,
 max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE,
-seed = NULL, plot = !is.null(coord.cols), verbosity = 2)
+seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2)
 }
 \arguments{
   \item{data}{a matrix or data frame containing, at least, one column with the species' presence (1) and absence (0) records, with localities in rows; and (if distance or spatial bias are required) two columns with the spatial coordinates.}
@@ -17,12 +17,13 @@ seed = NULL, plot = !is.null(coord.cols), verbosity = 2)
   \item{coord.cols}{names or index numbers of the columns containing the spatial coordinates in 'data' (x and y, or longitude and latitude, in this order). Needed if distance or spatial bias are required.}
   \item{min.dist}{(optional) numeric value specifying the minimum distance (in the same units as 'coord.cols') at which selected absences should be from the presences.}
   \item{max.dist}{(optional) numeric value specifying the maximum distance (in the same units as 'coord.cols') at which selected absences should be from the presences.}
-  \item{n}{(optional) integer value specifying the number of absence rows to select.}
+  \item{n}{(optional) integer value specifying the number of absence rows to select. Can also be specified as a ratio -- see 'mult.p' below.}
   \item{mult.p}{(optional) numeric value specifying how many times the number of presences to use as 'n' (e.g. 10 times as many absences as presences). Ignored if 'n' is not NULL.}
-  \item{bias}{logical value specifying if the selection of absences should be biased towards the vicinity of presences. The default is FALSE.}
+  \item{bias}{logical value specifying if the selection of absences should be biased towards the vicinity of presences. Requires specifying 'coord.cols'. The default is FALSE. Can take time (and memory) for large datasets.}
   \item{bunch}{[PENDING IMPLEMENTATION] logical value specifying if the selected absences should concentrate around presences in proportion to their local density, as in Vollering et al. (2019). The default is FALSE.}
   \item{seed}{(optional) integer value to pass to \code{\link{set.seed}} specifying the random seed to use for sampling among the absences.}
   \item{plot}{logical value specifying whether to plot the result. The default is TRUE if 'coord.cols' are provided.}
+  \item{df}{logical value specifying whether to return a dataframe with the input 'data' after removal of the non-selected absences. The default is TRUE. If set to FALSE, the output is a logical vector specifying if each row of 'data' was selected or not.}
   \item{verbosity}{numeric value indicating the amount of messages to display. Choose 0 for no messages.}
 }
 \details{
@@ -31,7 +32,7 @@ Species occurrence data typically incorporate two probability distributions: the
 Methods to correct for this bias include the selection of (pseudo)absences preferably towards the vicinity of presence records, in order to reproduce the survey bias. This function implements this latter strategy, in several (alternative or complementary) ways: 1) selecting absences within and/or outside a given distance from presences; 2) biasing the random selection of absences, making it more likely towards the vicinity of presences (providing the 'prob' argument in \code{\link{sample}} with the result of \code{\link{distPres}}); or [PENDING IMPLEMENTATION!] 3) bunching up the absences preferably around the areas with higher densities of presences (Vollering et al. 2019).
 }
 \value{
-This function returns the 'data' input after removal of the non-selected absences. If plot=TRUE and provided 'coord.cols', it also plots the presences (blue "plus" signs), the selected absences (red "minus" signs) and the excluded absences (orange dots).
+This function returns the 'data' input after removal of the non-selected absences, or (if df=FALSE) a logical vector specifying if each row of 'data' was selected or not. If plot=TRUE and provided 'coord.cols', it also plots the presences (blue "plus" signs), the selected absences (red "minus" signs) and the excluded absences (orange dots).
 }
 \references{
 Vollering J., Halvorsen R., Auestad I. & Rydgren K. (2019) Bunching up the background betters bias in species distribution models. Ecography, 42: 1717-1727

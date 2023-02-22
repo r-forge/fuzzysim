@@ -4,7 +4,7 @@
 Grid (or thin) point occurrence records to the resolution of a raster map
 }
 \description{
-This function takes a SpatRaster or a Raster* object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame with the presences and absences as well as the corresponding values of the rasters in the grid of pixels (cells). This is analogous to removing duplicates and thinning points (both presences and absences) with a distance equal to the pixel size of the raster map(s) on which analysis will be based. You may want to consider cleaning the coordinates beforehand, e.g. with \code{\link{cleanCoords}}.
+This function takes a (single or multi-layer) SpatRaster or a Raster* object and a set of spatial coordinates of a species' presence (and optionally absence) records, and returns a data frame of the presences and absences with their raster values in the grid of pixels (cells). This is analogous to removing duplicates and thinning points (both presences and absences) with a distance equal to the pixel size of the raster map(s) on which analysis will be based.
 }
 \usage{
 gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE,
@@ -15,30 +15,34 @@ species = NULL, na.rm = TRUE, plot = FALSE)
 a Raster* or SpatRaster object (the latter is processed faster) with the desired spatial resolution and extent for the species presence-(pseudo)absence data, and the layer(s) whose values to extract for those data.
 }
   \item{pres.coords}{
-a matrix or data frame with two columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst') of the points where species presence was detected.
+a matrix or data frame with two columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst') of the points where species presence was recorded.
 }
   \item{abs.coords}{
-(optional) same as 'pres.coords' but for points where the species was not detected. If NULL and if absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as absence cells.
+(optional) same as 'pres.coords' but for points where the species was not recorded. If NULL and if absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as having absence of records.
 }
   \item{absences}{
 logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.
 }
   \item{species}{
-(optional) character vector, of the same length as 'nrow(pres.coords)', indicating the species to which each pair of coordinates corresponds. Useful for gridding records of more than one species at a time. Its unique values will be used as column names in the output. If 'species' is specified, 'abs.coords' cannot be used.
+(optional) character vector, of the same length as 'nrow(pres.coords)', indicating the species to which each pair of coordinates corresponds. Useful for gridding records of more than one species at a time. Its unique values will be used as column names in the output. If this argument is specified, 'abs.coords' cannot be used.
 }
   \item{na.rm}{
 logical value indicating whether pixels with NA in all of the 'rst' layers should be excluded from the output data frame. The default is TRUE.
 }
   \item{plot}{
-  logical value specifying whether to plot the resulting presences and absences. The default is FALSE.
+  logical value specifying whether to plot the resulting presences and absences. The default is FALSE (for back-compatibility).
 }
 }
 \details{
 See e.g. Baez et al. (2020), where this function was first used to get unique presences and absences from point occurrence data at the spatial resolution of marine raster variables.
+
+You should consider cleaning the coordinates beforehand, e.g. with \code{\link{cleanCoords}}.
+
+If your output has an overly large and/or spatially biased set of absences, you can use \code{\link{selectAbsences}} afterwards.
 }
 \value{
 This function returns a data frame with the following columns:
-\item{'presence'}{integer, 1 for the cells (pixels) with at least one presence point, and (if absences=TRUE) 0 for the cells without any presence point, or with at least one absence point (if 'abs.coords' are provided) AND no presence points. If the 'species' argument is provided, instead of 'presence' you get one column named as each species.}
+\item{'presence'}{integer, 1 for the cells (pixels) with at least one presence point; and (if absences=TRUE) 0 for the cells without any presence point, or with at least one absence point (if 'abs.coords' are provided) AND no presence points. If the 'species' argument is provided, instead of 'presence' you get one column named as each species.}
 \item{'x', 'y'}{centroid coordinates of each cell (pixel).}
 \item{'cell'}{the pixel identifier in 'rst'.}
 \item{one column for each layer in 'rst'}{value of each pixel for each layer.}
@@ -54,7 +58,7 @@ Baez J.C., Barbosa A.M., Pascual P., Ramos M.L. & Abascal F. (2020) Ensemble mod
 A. Marcia Barbosa
 }
 \seealso{
-\code{\link{cleanCoords}}
+\code{\link{cleanCoords}}, \code{\link{selectAbsences}}
 }
 \examples{
 \dontrun{

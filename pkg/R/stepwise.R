@@ -122,6 +122,6 @@ stepwise <- function(data, sp.col, var.cols, id.col = NULL, family = binomial(li
 
   predictions <- predictions[ , -1]  # was there just to initialize the data.frame
   if (!is.null(id.col))  predictions <- data.frame(data[ , id.col, drop = FALSE], predictions)
-  if (Favourability) predictions[ , -1] <- data.frame(lapply(predictions[ , -1], function(x) x <- Fav(pred = x, sample.preval = prevalence(model = mod))))
+  if (Favourability) predictions[ , -1] <- data.frame(lapply(predictions[ , -1], function(x) x <- Fav(pred = x, sample.preval = modEvA::prevalence(model = mod))))
   return(list(model = mod, steps = steps, predictions = predictions))
 }

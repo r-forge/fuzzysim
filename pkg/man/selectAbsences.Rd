@@ -23,7 +23,7 @@ seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2)
   \item{bunch}{[PENDING IMPLEMENTATION] logical value specifying if the selected absences should concentrate around presences in proportion to their local density, as in Vollering et al. (2019). The default is FALSE.}
   \item{seed}{(optional) integer value to pass to \code{\link{set.seed}} specifying the random seed to use for sampling among the absences.}
   \item{plot}{logical value specifying whether to plot the result. The default is TRUE if 'coord.cols' are provided.}
-  \item{df}{logical value specifying whether to return a dataframe with the input 'data' after removal of the non-selected absences. The default is TRUE. If set to FALSE, the output is a logical vector specifying if each row of 'data' was selected or not.}
+  \item{df}{logical value specifying whether to return a dataframe with the input 'data' after removal of the non-selected absences. The default is TRUE, for back-compatibility. If set to FALSE, the output is a logical vector specifying if each row of 'data' was selected or not.}
   \item{verbosity}{numeric value indicating the amount of messages to display. Choose 0 for no messages.}
 }
 \details{

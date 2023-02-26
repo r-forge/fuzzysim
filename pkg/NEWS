@@ -1,4 +1,20 @@
 ============================================
+fuzzySim v4.9.8 (committed 2023-02-26)
+============================================
+
+## Deleted functions:
+
+* prevalence
+- replaced with modEvA::prevalence, as modEvA is now a dependency
+
+
+## Other modified files:
+
+* CITATION
+- removed old-style personList() and citEntry(), the latter replaced with bibentry() which is now required instead
+
+
+============================================
 fuzzySim v4.9.8 (committed 2023-02-22)
 ============================================
 

@@ -83,6 +83,6 @@ Fav(model = mod)
 
 Fav(obs = rotif.env$Abrigh, pred = prob)
 
-Fav(pred = mod$fitted.values, sample.preval = modEvA::prevalence(model = mod))
+Fav(pred = mod$fitted.values, sample.preval = prevalence(model = mod))
 }
 \keyword{ models }

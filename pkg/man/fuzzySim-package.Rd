@@ -6,14 +6,14 @@
 Fuzzy Similarity in Species Distributions
 }
 \description{
-Functions to compute fuzzy versions of species occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis, and prevalence-independent favourability obtained from probability of presence), as well as pair-wise fuzzy similarity (based on fuzzy logic versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for model consensus and comparison (overlap and fuzzy similarity, loss or gain), and for data preparation, such as obtaining unique abbreviations of species names, gridding (thinning) point occurrence data onto raster maps, converting species lists (long format) to presence-absence tables (wide format), transposing part of a data frame, selecting relevant variables for models, assessing the false discovery rate, or analysing and dealing with multicollinearity. Includes also sample datasets for providing practical examples. A step-by-step illustrated tutorial is available from the package homepage (http://fuzzysim.r-forge.r-project.org).
+Functions to compute fuzzy versions of species occurrence patterns based on presence-absence data (including inverse distance interpolation, trend surface analysis, and prevalence-independent favourability obtained from probability of presence), as well as pair-wise fuzzy similarity (based on fuzzy logic versions of commonly used similarity indices) among those occurrence patterns. Includes also functions for model consensus and comparison (fuzzy overlap and fuzzy similarity, loss or gain), and for data preparation such as obtaining unique abbreviations of species names, cleaning species occurrence records, gridding (thinning) point occurrence data onto raster maps, converting species lists (long format) to presence-absence tables (wide format), transposing part of a data frame, selecting relevant variables for models, assessing the false discovery rate, or analysing and dealing with multicollinearity. Includes also sample datasets for providing practical examples. A step-by-step illustrated tutorial is available from the package homepage (http://fuzzysim.r-forge.r-project.org).
 }
 \details{
 \tabular{ll}{
 Package: \tab fuzzySim\cr
 Type: \tab Package\cr
 Version: \tab 4.9.8\cr
-Date: \tab 2023-02-26\cr
+Date: \tab 2023-03-06\cr
 License: \tab GPL-3\cr
 }
 }

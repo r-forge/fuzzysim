@@ -1,17 +1,11 @@
 ============================================
-fuzzySim v4.9.8 (committed 2023-02-26)
+fuzzySim v4.9.8 (committed 2023-03-06)
 ============================================
 
-## Deleted functions:
-
-* prevalence
-- replaced with modEvA::prevalence, as modEvA is now a dependency
-
-
-## Other modified files:
+## Mdified files:
 
 * CITATION
-- removed old-style personList() and citEntry(), the latter replaced with bibentry() which is now required instead
+- removed old-style personList(), and replaced citEntry() with bibentry(), as per new CRAN requirements
 
 
 ============================================

@@ -7,7 +7,7 @@ Favourability (probability without the effect of sample prevalence)
 Computes prevalence-independent favourability for a species' presence, based on a presence/(pseudo)absence model object, or on a vector of predicted probability values plus either the modelled binary response variable, the total number of modelled ones and zeros, or the prevalence (proportion of ones) in the modelled binary response (i.e., in the training data).
 }
 \usage{
-Fav(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preval = NULL, 
+Fav(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preval = NULL,
 method = "RBV", true.preval = NULL, verbosity = 2)
 }
 \arguments{
@@ -70,8 +70,8 @@ data(rotif.env)
 
 names(rotif.env)
 
-mod <- with(rotif.env, glm(Abrigh ~ Area + Altitude + 
-AltitudeRange + HabitatDiversity + HumanPopulation, 
+mod <- with(rotif.env, glm(Abrigh ~ Area + Altitude +
+AltitudeRange + HabitatDiversity + HumanPopulation,
 family = binomial))
 
 prob <- predict(mod, data = rotif.env, type = "response")
@@ -83,8 +83,6 @@ Fav(model = mod)
 
 Fav(obs = rotif.env$Abrigh, pred = prob)
 
-Fav(pred = mod$fitted.values, n1n0 = c(112, 179))
-
-Fav(pred = mod$fitted.values, sample.preval = 0.38)
+Fav(pred = mod$fitted.values, sample.preval = modEvA::prevalence(model = mod))
 }
 \keyword{ models }

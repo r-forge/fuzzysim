@@ -7,8 +7,8 @@ Stepwise regression
 This function runs a stepwise regression, selecting and/or excluding variables based on the significance (p-value) of the statistical tests implemented in the \code{\link{add1}} and \code{\link{drop1}} functions of R.
 }
 \usage{
-stepwise(data, sp.col, var.cols, id.col = NULL, family = binomial(link="logit"),
-direction = "both", test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1,
+stepwise(data, sp.col, var.cols, id.col = NULL, family = binomial(link="logit"), 
+direction = "both", test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, 
 trace = 1, simplif = TRUE, preds = FALSE, Favourability = FALSE, Wald = FALSE)
 }
 \arguments{
@@ -46,13 +46,13 @@ threshold p-value for a variable to leave the model. Defaults to 0.1.
 if positive, information is printed to the console at each step. The default is 1, for naming each variable that was added or removed. With trace=2, the summary of the model at each step is also printed.
 }
   \item{simplif}{
-logical, whether to return a simpler output containing only the model object (the default), or a list with, additionally, a data frame with the variable included or excluded at each step, and (if preds=TRUE) the predictions at each step.
+logical, whether to return a simpler output containing only the model object (the default), or a list with, additionally, a data frame with the variable included or excluded at each step.
 }
   \item{preds}{
 logical, whether to return also the predictions given by the model at each step. This argument is ignored if simplif=TRUE.
 }
   \item{Favourability}{
-logical, whether to convert the predictions (if preds=TRUE) with the \code{\link{Fav}} function. This argument is ignored if simplif=TRUE or if preds=FALSE (the default).
+logical, whether to convert the predictions (if preds=TRUE) with the \code{\link{Fav}} function. This argument is ignored if simplif=TRUE.
 }
   \item{Wald}{
 logical, whether to print the Wald test statistics using \code{\link{summaryWald}}, rather than the z test normally returned by \code{\link{summary}}. Used only if trace > 1. Requires the \pkg{aod} package. The default is FALSE.

@@ -1,8 +1,25 @@
-============================================
-fuzzySim v4.9.8 (committed 2023-03-06)
-============================================
+==============================================
+fuzzySim v4.9.9 (committed 2023-04-14) -> CRAN
+==============================================
 
-## Mdified files:
+## Modified functions:
+
+* cleanCoords
+- added arguments 'rm.abs' and 'abs.col'
+- when all records are removed, return 'data' with zero rows instead of error
+- input 'data' can also be a SpatVector of points, in which case output is too
+- 'coord.cols' default now NULL, can be taken from 'data' if class 'SpatVector'
+- 'coord.cols' can be NULL, in which case only the other removal criteria (absences, coordinate uncertainty) are applied
+
+* gridRecords
+- input 'pres.coords' and 'abs.coords' can also be SpatVector of points
+
+
+==============================================
+fuzzySim v4.9.8 (committed 2023-03-06) -> CRAN
+==============================================
+
+## Modified files:
 
 * CITATION
 - removed old-style personList(), and replaced citEntry() with bibentry(), as per new CRAN requirements
@@ -241,7 +258,7 @@ fuzzySim v4.6 (committed 2022-07-05)
 - added warning("'Favourability' is only applicable when family=binomial(link='logit'), so it was automatically set to FALSE.")
 
 * multGLM
-- added argument 'trim.fun="modelTrim', which can be changed to 'stepwise'
+- added argument trim.fun="modelTrim", which can be changed to "stepwise"
 
 
 ============================================

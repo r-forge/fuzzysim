@@ -15,10 +15,10 @@ species = NULL, na.rm = TRUE, plot = FALSE)
 a Raster* or SpatRaster object (the latter is processed faster) with the desired spatial resolution and extent for the species presence-(pseudo)absence data, and the layer(s) whose values to extract for those data.
 }
   \item{pres.coords}{
-a matrix or data frame with two columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst') of the points where species presence was recorded.
+a SpatVector of points, or an object inheriting class 'data.frame' with 2 columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst') of the points where species presence was recorded.
 }
   \item{abs.coords}{
-(optional) same as 'pres.coords' but for points where the species was not recorded. If NULL and if absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as having absence of records.
+(optional) same as 'pres.coords' but for points where the species was not recorded. If abs.coords=NULL and absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as having absence of records.
 }
   \item{absences}{
 logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.

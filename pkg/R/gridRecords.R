@@ -5,14 +5,25 @@ gridRecords <- function(rst,
                         species = NULL,  # new
                         na.rm = TRUE,  # new
                         plot = FALSE)  # new
-  {
+{
 
-  # version 3.6 (6 Feb 2023)
+  # version 3.7 (13 Mar 2023)
 
   if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
-  pres.coords <- as.data.frame(pres.coords)
-  if (!is.null(abs.coords))  abs.coords <- as.data.frame(abs.coords)
+  if (inherits(pres.coords, "SpatVector")) {
+    if (isFALSE(terra::is.points(pres.coords))) stop ("If 'pres.coords' is of class 'SpatVector', its 'geomtype' must be 'points'.")
+    pres.coords <- terra::crds(pres.coords)
+  }
+  pres.coords <- as.data.frame(pres.coords)  # also for tibbles etc.
+
+  if (!is.null(abs.coords)) {
+    if (inherits(abs.coords, "SpatVector")) {
+      if (isFALSE(terra::is.points(abs.coords))) stop ("If 'abs.coords' is of class 'SpatVector', its 'geomtype' must be 'points'.")
+      abs.coords <- terra::crds(abs.coords)
+    }
+    abs.coords <- as.data.frame(abs.coords)  # also for tibbles etc.
+  }
 
   if (!is.null(species)) {
     if (length(species) != nrow(pres.coords)) stop ("'species' must have the same length as nrow(pres.coords)")
@@ -111,7 +122,7 @@ gridRecords <- function(rst,
          xlim = xrange, ylim = yrange,
          pch = "-", col = "red")
     points(result[result$presence == 1, c("x", "y")],
-         pch = "+", col = "blue")
+           pch = "+", col = "blue")
   }
 
   return(result)

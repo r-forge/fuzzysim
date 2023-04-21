@@ -1,13 +1,13 @@
-corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = "p.value", family = "auto", use = "pairwise.complete.obs", method = "pearson", verbosity = 1) {
+corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select = ifelse(is.null(sp.cols), "VIF", "p.value"), family = "auto", use = "pairwise.complete.obs", method = "pearson", verbosity = 1) {
 
-  # version 3.2 (27 Dec 2022)
+  # version 3.3 (21 Apr 2023)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 
   univar.criteria <- c("VIF")
   bivar.criteria <- c("p.value", "AIC", "BIC")
 
-  if (!(select %in% c(univar.criteria, bivar.criteria))) stop ("Invalid 'select' criterion.")
+  if (!is.null(select) && !(select %in% c(univar.criteria, bivar.criteria))) stop ("Invalid 'select' criterion.")
 
   data <- as.data.frame(data)
 
@@ -18,7 +18,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
     var.cols <- var.cols[-grep(notnum, var.cols)]
   }
 
-  if (!is.null(sp.cols) & select %in% bivar.criteria) {
+  if (!is.null(sp.cols) && !is.null(select) && select %in% bivar.criteria) {
     n.in <- nrow(data)
     data <- data[is.finite(data[ , sp.cols]), ]
     n.out <- nrow(data)
@@ -37,16 +37,20 @@ corSelect <- function(data, sp.cols = NULL, var.cols, cor.thresh = 0.8, select =
     for (r in 1:nrow(high.cor.mat))  high.cor.mat$corr[r] <- cor.mat[high.cor.rowcol[ ,"row"][r], high.cor.rowcol[ ,"col"][r]]
     high.cor.mat <- high.cor.mat[order(abs(high.cor.mat$corr), decreasing = TRUE), ]
 
-    if (is.null(sp.cols) & select %in% bivar.criteria) {
-      message(select, " 'select' criterion not assessable without a response variable ('sp.cols'). Returning high pairwise correlations among 'var.cols'.")
-      return (high.cor.mat)
+    if (is.null(sp.cols) && !is.null(select) && select %in% bivar.criteria) {
+      message(select, " 'select' criterion changed to NULL, as it is not assessable without a response variable ('sp.cols'). You can either specify 'sp.cols', or change 'select' to 'VIF'.")
+      select <- NULL
     }
+
+    if (is.null(select))  return (high.cor.mat)
+
+    message("Using ", select, " as the 'select' criterion.")
 
     high.cor.vars <- unique(rownames(cor.mat[high.cor.inds, high.cor.inds]))
 
     if (select %in% bivar.criteria) {
       bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), family = family, simplif = TRUE, verbosity = 0)[ , c("p.value", "AIC", "BIC")]
-      if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), tolerance = 1.5e-8)))  message("Results identical whether using p-value, AIC or BIC to select among correlated variables.\n") else message("Results NOT identical whether using p-value, AIC or BIC to select among correlated variables.\n")
+      if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), tolerance = 1.5e-8)))  message("Results identical whether 'select' is p-value, AIC or BIC.\n") else message("Results NOT identical whether 'select' is p-value, AIC or BIC.\n")
     }  # end if select in bivar
 
     data.remaining <- data[ , var.cols]

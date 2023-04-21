@@ -1,4 +1,17 @@
 ==============================================
+fuzzySim v4.9.10 (committed 2023-04-21)
+==============================================
+
+## Modified functions:
+
+* corSelect
+- 'select' default now VIF if 'sp.cols' is null
+- 'select' can now be null
+- message displayed saying what 'select' criterion was used
+- help file updated accordingly
+
+
+==============================================
 fuzzySim v4.9.9 (committed 2023-04-14) -> CRAN
 ==============================================
 

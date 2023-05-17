@@ -1,6 +1,10 @@
-multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", FDR.first = TRUE, corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...) {
+multGLM <- function(data, sp.cols, var.cols, id.col = NULL, block.cols = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", FDR.first = TRUE, corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...) {
 
-  # version 5.5 (9 Jan 2023)
+  # version 5.6 (17 May 2023)
+
+  if (!is.null(block.cols)) stop("Sorry, 'block.cols' is still under implementation and is not yet ready for use.")
+  # block.cols may or may not be included in var.cols:
+  # var.cols <- setdiff(var.cols, block.cols)
 
   start.time <- Sys.time()
   on.exit(timer(start.time))
@@ -17,8 +21,9 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     all(sp.cols %in% (1 : input.ncol)) || all(sp.cols %in% input.names),
     all(var.cols %in% (1 : input.ncol)) || all(var.cols %in% input.names),
     is.null(id.col) || (length(id.col) == 1 && (id.col %in% (1 : input.ncol) || id.col %in% input.names)),
+    is.null(block.cols) || all(block.cols %in% (1 : input.ncol)) || all(block.cols %in% input.names),
     is.null(coord.cols) || all(coord.cols %in% (1 : input.ncol)) || all(coord.cols %in% input.names),
-    #family == "binomial",
+    #family == "binomial",  # replaced with more explanatory message above
     test.sample >= 0 | test.sample == "Huberty",
     length(test.sample) == 1 | (is.integer(test.sample) & test.sample > 0),
     length(test.sample) < nrow(data),
@@ -35,9 +40,17 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     is.logical(TSA)
   )
 
+  if (select == "p.value" && trim == TRUE) warning("When select='p.value', it is advisable to set trim=FALSE to avoid mixed significance criteria -- see help file for details.")
+
   data$sample <- "train"
   n <- nrow(data)  # [is.finite(data[ , sp.cols]), ]  # but this can differ among spp
   data.row <- 1:n
+
+  # NEW:
+  # n.init <- nrow(data)
+  # data <- na.omit(data[ , c(sp.cols, var.cols)])
+  # na.loss <- n.init - nrow(data)
+  # if (na.loss > 0) message(na.loss, " rows excluded due to missing values.")
 
   # UNDER CONSTRUCTION:
   #if (test.sample != 0 && n != nrow(na.omit(data[ , c(sp.cols, var.cols, coord.cols)]))) warning("'data' include missing values, thus 'test.sample' may not always contain the expected amount of actual data.")  # new
@@ -96,6 +109,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   if (!is.numeric(var.cols)) var.cols <- which(colnames(data) %in% var.cols)  # new
   if (!is.null(coord.cols) && !is.numeric(coord.cols)) coord.cols <- which(colnames(data) %in% coord.cols)  # new
   if (!is.null(id.col) && !is.numeric(id.col)) id.col <- which(colnames(data) %in% id.col)  # new
+  if (!is.null(block.cols) && !is.numeric(block.cols)) block.cols <- which(colnames(data) %in% block.cols)  # new
 
   keeP <- P.prediction  # keep P only if the user wants it
   if (Favourability)  P.prediction <- TRUE  # P is necessary to calculate Fav
@@ -119,8 +133,13 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
   for (s in sp.cols) {
     model.count <- model.count + 1
     response <- colnames(train.data)[s]
+
     if (verbosity > 0)  cat("\n\n=> Building model ", model.count, " of ", n.models, " (", response, ")...\n\n", sep = "")
-    if (verbosity > 1)  cat(length(var.cols), "input predictor variable(s)\n\n")
+    if (verbosity > 1) {
+      cat(length(var.cols) + length(block.cols), "input predictor variable(s)")
+      if (!is.null(block.cols))  cat("[including", length(block.cols), "block variable(s)]")
+      cat("\n\n")
+    }
 
     if (TSA) {
       if (verbosity > 1)  cat("...", length(var.cols) + 1, "with the spatial trend variable\n\n")
@@ -186,6 +205,7 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, family = "binomial",
     if (step && length(sel.var.cols) > 0) {
 
       n.vars.start <- length(sel.var.cols)
+      # n.vars.start <- length(sel.var.cols) + length(block.cols)
 
       if (select == "p.value") {  # NEW
         model <- stepwise(data = train.data, sp.col = response, var.cols = model.vars, family = family, direction = direction, trace = trace, test.in = test.in, test.out = test.out, p.in = p.in, p.out = p.out)

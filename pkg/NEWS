@@ -1,4 +1,26 @@
 ==============================================
+fuzzySim v4.10 (committed 2023-05-  )
+==============================================
+
+* multGLM
+- NA rows removed automatically (with warning) when step=TRUE -- as `stepwise()` and consequently `select="p.value"` already did
+
+* fuzzyRangeChange
+- added indices of Real et al. 2010
+
+
+==============================================
+fuzzySim v4.9.11 (committed 2023-05-17)
+==============================================
+
+## Modified functions:
+
+* multGLM
+- warning emitted if select="p.value" and trim=TRUE
+- started implementation of 'block.cols' argument (still not useable)
+
+
+==============================================
 fuzzySim v4.9.10 (committed 2023-04-21)
 ==============================================
 

@@ -4,7 +4,7 @@ importFrom("graphics", "abline", "arrows", "axis", "barplot", "lines",
 importFrom("methods", "is")
 importFrom("modEvA", "lollipop", "mod2obspred")
 importFrom("stats", "add1", "drop1", "anova", "as.formula", "binomial", 
-"complete.cases", "coef", "cor", "dist", "extractAIC", "fitted", "glm", 
+"complete.cases", "coef", "cor", "cor.test", "dist", "extractAIC", "fitted", "glm", 
 "lm", "na.omit", "nobs", "p.adjust", "p.adjust.methods", "poly", "prcomp", 
 "predict", "quantile", "step", "update",  "na.pass", "t.test", "vcov", 
 "weighted.mean")

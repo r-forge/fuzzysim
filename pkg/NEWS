@@ -1,12 +1,13 @@
 ==============================================
-fuzzySim v4.10 (committed 2023-05-  )
+fuzzySim v4.9.12 (committed 2023-05-21)
 ==============================================
 
-* multGLM
-- NA rows removed automatically (with warning) when step=TRUE -- as `stepwise()` and consequently `select="p.value"` already did
+## Modified functions:
 
-* fuzzyRangeChange
-- added indices of Real et al. 2010
+* corSelect
+- fixed bug when there's >1 categorical variable to exclude a priori
+- 'p.value' column added to 'high.correlations' output table
+- added 'coeff' argument; if FALSE, high correlations are flagged based on p-value (not coefficient) of correlation
 
 
 ==============================================

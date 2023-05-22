@@ -1,13 +1,23 @@
 ==============================================
+fuzzySim v4.9.13 (committed 2023-05-22)
+==============================================
+
+## Modified functions:
+
+* corSelect
+- fixed bug that did not correctly get the selected vars when coeff=FALSE
+
+
+==============================================
 fuzzySim v4.9.12 (committed 2023-05-21)
 ==============================================
 
 ## Modified functions:
 
 * corSelect
-- fixed bug when there's >1 categorical variable to exclude a priori
+- added 'coeff' argument; if FALSE, high correlations are identified based on p-value (not coefficient) of correlation
 - 'p.value' column added to 'high.correlations' output table
-- added 'coeff' argument; if FALSE, high correlations are flagged based on p-value (not coefficient) of correlation
+- fixed bug when there's >1 categorical variable to exclude a priori
 
 
 ==============================================

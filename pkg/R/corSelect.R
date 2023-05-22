@@ -146,7 +146,9 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
   }
 
   if (is.character(var.cols)) var.cols <- which(colnames(data) %in% var.cols)  # new
-  excluded.vars <- colnames(data)[var.cols][!(colnames(data)[var.cols] %in% colnames(cor.mat))]
+
+  if (isTRUE(coeff)) excluded.vars <- colnames(data)[var.cols][!(colnames(data)[var.cols] %in% colnames(cor.mat))]
+  if (isFALSE(coeff)) excluded.vars <- colnames(data)[var.cols][!(colnames(data)[var.cols] %in% colnames(cor.mat.p))]
 
   vif2 <- multicol(data[ , selected.var.cols, drop = FALSE])
 

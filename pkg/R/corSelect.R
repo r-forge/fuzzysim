@@ -1,6 +1,6 @@
 corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), select = ifelse(is.null(sp.cols), "VIF", "p.value"), family = "auto", use = "pairwise.complete.obs", method = "pearson", verbosity = 1) {
 
-  # version 3.4 (21 May 2023)
+  # version 3.4 (22 May 2023)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 
@@ -164,6 +164,8 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
     cat(selected.vars, sep = ", ")
     cat("\n")
   }
+
+  if (isFALSE(coeff)) cor.mat <- cor.mat[rownames(cor.mat.p), colnames(cor.mat.p)]
 
   list(high.correlations = high.cor.mat,
        bivariate.significance = bivar.mat,

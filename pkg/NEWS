@@ -5,7 +5,7 @@ fuzzySim v4.9.13 (committed 2023-05-22)
 ## Modified functions:
 
 * corSelect
-- fixed bug that did not correctly get the selected vars when coeff=FALSE
+- fixed bug that didn't allow correctly reporting the selected variables when coeff=FALSE
 
 
 ==============================================

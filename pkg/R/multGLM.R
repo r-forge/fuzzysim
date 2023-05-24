@@ -1,6 +1,6 @@
-multGLM <- function(data, sp.cols, var.cols, id.col = NULL, block.cols = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", FDR.first = TRUE, corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...) {
+multGLM <- function(data, sp.cols, var.cols, id.col = NULL, block.cols = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", FDR.first = TRUE, corSelect = FALSE, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...) {
 
-  # version 5.6 (17 May 2023)
+  # version 5.7 (24 May 2023)
 
   if (!is.null(block.cols)) stop("Sorry, 'block.cols' is still under implementation and is not yet ready for use.")
   # block.cols may or may not be included in var.cols:
@@ -176,14 +176,14 @@ multGLM <- function(data, sp.cols, var.cols, id.col = NULL, block.cols = NULL, f
     }  # end if FDR & FDR.first
     else sel.var.cols <- var.cols
 
-    if (length(sel.var.cols) > 1 && corSelect == TRUE) {
-      corselect <- suppressMessages(corSelect(data = train.data, sp.cols = s, var.cols = sel.var.cols, cor.thresh = cor.thresh, use = "pairwise.complete.obs"))
+    if (length(sel.var.cols) > 1 && isTRUE(corSelect)) {
+      corselect <- suppressMessages(corSelect(data = train.data, sp.cols = s, var.cols = sel.var.cols, coeff = coeff, cor.thresh = cor.thresh, use = "pairwise.complete.obs"))
       corsel.var.cols <- corselect$selected.var.cols
       if (verbosity > 1)  cat(length(sel.var.cols) - length(corsel.var.cols), "variable(s) excluded by 'corSelect' function\n", paste(corselect$excluded.vars, collapse = ", "), "\n\n")
       sel.var.cols <- corsel.var.cols
     }  # end if corSelect
 
-    if (FDR && !FDR.first) {
+    if (length(sel.var.cols) > 0 && isTRUE(FDR) && isFALSE(FDR.first)) {
       fdr <- FDR(data = train.data, sp.cols = s, var.cols = sel.var.cols, correction = correction, verbosity = 0)
       if (nrow(fdr$select) == 0) {
         message(paste0(

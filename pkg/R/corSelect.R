@@ -15,7 +15,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
 
   notnum <- names(which(!sapply(data[ , var.cols, drop = FALSE], is.numeric)))
   if (length(notnum) > 0) {
-    warning("Found the following non-numeric input variable(s):\n- ", paste(notnum, collapse = "\n- "), "\nThese variables were not considered by corSelect(). You can add them manually and consider finding a package with a correlation method appropriate for that type of variable(s).\n")
+    warning("Disregarded the following non-numeric input variable(s):\n- ", paste(notnum, collapse = "\n- "), "\nYou can add them manually and consider finding a package with a correlation method appropriate for that type of variable(s).\n")
     if (is.numeric(var.cols)) var.cols <- names(data)[var.cols]
     var.cols <- var.cols[-grep(paste(notnum, collapse = "|"), var.cols)]
   }
@@ -166,13 +166,15 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
   }
 
   if (isFALSE(coeff)) cor.mat <- cor.mat[rownames(cor.mat.p), colnames(cor.mat.p)]
+  strongest.remaining.corr <- suppressMessages(cor.mat[which.max(abs(cor.mat))])
+
 
   list(high.correlations = high.cor.mat,
        bivariate.significance = bivar.mat,
        excluded.vars = excluded.vars,
        selected.vars = selected.vars,
        selected.var.cols = selected.var.cols,
-       strongest.remaining.corr = cor.mat[which.max(abs(cor.mat))],
+       strongest.remaining.corr = strongest.remaining.corr,
        remaining.multicollinearity = vif2
   )
 }  # end corSelect function

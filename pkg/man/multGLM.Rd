@@ -9,7 +9,8 @@ This function performs selection of variables and calculates generalized linear 
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, block.cols = NULL,
 family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr",
-FDR.first = TRUE, corSelect = FALSE, cor.thresh = 0.8, cor.method = "pearson",
+FDR.first = TRUE, corSelect = FALSE, coeff = TRUE,
+cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), cor.method = "pearson",
 step = TRUE, trace = 0, start = "null.model", direction = "both",
 select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE,
 Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL,
@@ -28,7 +29,8 @@ p.out = 0.1, ...)
   \item{correction}{argument to pass to the \code{\link{FDR}} function if FDR=TRUE. The default is "fdr", but see \code{\link{p.adjust}} for other options.}
   \item{FDR.first}{logical value indicating whether FDR exclusion (if FDR=TRUE) should be applied at the beginning. The default is TRUE. If set to FALSE (and if FDR=TRUE), FDR exclusion will be applied after 'corSelect' below.}
   \item{corSelect}{logical value indicating whether to select among highly correlated variables using \code{\link{corSelect}}. The default is FALSE.}
-  \item{cor.thresh}{numerical value indicating the correlation threshold to pass to \code{\link{corSelect}} (used only if corSelect=TRUE).}
+  \item{coeff}{logical value to pass to \code{\link{corSelect}} (if corSelect=TRUE) indicating whether two variables should be considered highly correlated based on the magnitude of their coefficient (rather than p-value) of correlation. The default is TRUE.}
+  \item{cor.thresh}{numerical value indicating the correlation threshold to pass to \code{\link{corSelect}} (if corSelect=TRUE).}
   \item{cor.method}{character value to pass to \code{\link{corSelect}} (if corSelect=TRUE) specifying the correlation coefficient to use. Can be "pearson" (the default), "kendall" or "spearman".}
   \item{step}{logical, whether to perform a stepwise selection of variables, using either the \code{\link{step}} function (if select = "AIC" or "BIC") or the \code{\link{stepwise}} function (if select = "p.value").}
   \item{trace}{if positive, information is printed during the stepwise selection (if step=TRUE). Larger values may give more detailed information.}

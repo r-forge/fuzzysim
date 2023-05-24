@@ -1,4 +1,15 @@
 ==============================================
+fuzzySim v4.10 (committed 2023-05-24)
+==============================================
+
+## Modified functions:
+
+* multGLM
+- added 'coeff' argument to pass to 'corSelect', and changed 'cor.thresh' default accordingly
+- precluded error when no variables pass corSelect
+
+
+==============================================
 fuzzySim v4.9.13 (committed 2023-05-22)
 ==============================================
 

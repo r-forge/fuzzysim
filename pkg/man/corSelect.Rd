@@ -25,7 +25,7 @@ use = "pairwise.complete.obs", method = "pearson", verbosity = 1)
   \item{verbosity}{integer value indicating the amount of messages to display. The default is 1, for a medium amount of messages. Use 2 for more messages.}
 }
 \details{
-Correlations among variables are problematic in multivariate models, as they inflate the variance of coefficients and thus may bias the interpretation of the effects of those variables on the response (Legendre & Legendre 2012). One of the strategies to circumvent this issue is to exclude one from each pair of highly correlated variables, but it is not always straightforward to choose which one to exclude a priori.
+Correlations among variables are commonly considered problematic in multivariate models, as they inflate the variance of coefficients and thus may bias the interpretation of the effects of those variables on the response (Legendre & Legendre 2012). One of the strategies to circumvent this issue is to exclude one from each pair of highly correlated variables (see, however, Morrissey & Ruxton 2018, Gregorich et al. 2021, Vanhove 2021). However, it is not always straightforward to choose which variable to exclude a priori.
 
 This function selects among correlated variables, based either on their variance inflation factor (VIF: Marquardt 1970; Mansfield & Helms 1982) within the variables dataset (obtained with the \code{\link{multicol}} function and recalculated iteratively after each variable exclusion); or on their relationship with the response, by building a bivariate model of each individual variable against the response and excluding, among each of two correlated variables, the one with the largest (worst) p-value, AIC (Akaike's Information Criterion: Akaike, 1973) or BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC: Schwarz, 1978), which is calculated with the \code{\link{FDR}} function.
 
@@ -42,7 +42,9 @@ This function returns a list of 7 elements (unless select=NULL, in which case it
 \item{remaining.multicollinearity}{data frame showing the \code{\link{multicol}}linearity among the selected variables.}
 }
 \references{
-Akaike, H. (1973) Information theory and an extension of the maximum likelihood principle. In: Petrov B.N. & Csaki F., 2nd International Symposium on Information Theory, Tsahkadsor, Armenia, USSR, September 2-8, 1971, Budapest: Akademiai Kiado, p. 267-281.
+Akaike H. (1973) Information theory and an extension of the maximum likelihood principle. In: Petrov B.N. & Csaki F., 2nd International Symposium on Information Theory, Tsahkadsor, Armenia, USSR, September 2-8, 1971, Budapest: Akademiai Kiado, p. 267-281.
+
+Gregorich M., Strohmaier S., Dunkler D. & Heinze G. (2021) Regression with Highly Correlated Predictors: Variable Omission Is Not the Solution. Int. J. Environ. Res. Public Health, 18: 4259.
 
 Legendre P. & Legendre L. (2012) Numerical ecology (3rd edition). Elsevier, Amsterdam: 990 pp.
 
@@ -50,7 +52,11 @@ Marquardt D.W. (1970) Generalized inverses, ridge regression, biased linear esti
 
 Mansfield E.R. & Helms B.P. (1982) Detecting multicollinearity. The American Statistician 36: 158-160.
 
+Morrissey M.B. & Ruxton G.D. (2018) Multiple Regression Is Not Multiple Regressions: The Meaning of Multiple Regression and the Non-Problem of Collinearity. Philosophy, Theory, and Practice in Biology, 10: 003. DOI: 10.3998/ptpbio.16039257.0010.003
+
 Schwarz, G.E. (1978) Estimating the dimension of a model. Annals of Statistics, 6 (2): 461-464.
+
+Vanhove J. (2021)  Collinearity isn't a disease that needs curing. Meta-Phsychology 5, MP.2020.2548. DOI: 10.15626/MP.2021.2548
 }
 \author{A. Marcia Barbosa}
 \seealso{

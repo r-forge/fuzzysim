@@ -12,13 +12,13 @@ method = "RBV", true.preval = NULL, verbosity = 2)
 }
 \arguments{
   \item{model}{
-a binary-response, presence/(pseudo)absence probability-producing model object of class "glm", "gam", "gbm", "randomForest" or "bart" (computed with keeptrees=TRUE).
+a binary-response, presence/(pseudo)absence probability-producing model object of class "glm", "gam", "gbm", "randomForest" or "bart" (computed with keeptrees=TRUE), obtained with weights=NULL.
 }
   \item{obs}{
 alternatively to 'model', a vector of the 1 and 0 values of the binary response variable (e.g. presence-absence of a species) in the model training data. This argument is ignored if 'model' is provided.
 }
   \item{pred}{
-alternatively to 'model', a numeric vector, RasterLayer or SpatRaster of predicted presence probability values, produced by a presence/(pseudo)absence modelling method yielding presence probability. This argument is ignored if 'model' is provided.
+alternatively to 'model', a numeric vector, RasterLayer or SpatRaster of predicted presence probability values, produced by a presence/(pseudo)absence modelling method yielding presence probability (obtained with weights=NULL). This argument is ignored if 'model' is provided.
 }
   \item{n1n0}{
 alternatively to 'obs' or 'sample.preval', an integer vector of length 2 providing the total numbers of modelled ones and zeros (in this order) of the binary response variable in the model training data. Ignored if 'obs' or 'model' is provided.
@@ -36,14 +36,17 @@ the true prevalence (as opposed to sample prevalence), necessary if you want to 
   }
 }
 \details{
-Methods such as Generalized Linear Models, Generalized Additive Models, Random Forests, Boosted Regression Trees / Generalized Boosted Models, Bayesian Additive Regression Trees and several others, are widely used for modelling species' potential distributions using presence/absence data and a set of predictor variables. These models predict presence probability, which incorporates the prevalence (proportion of presences) of the species in the modelled sample. So, predictions for restricted species are always generally low, while predictions for widespread species are always generally higher, regardless of the actual environmental quality. Barbosa (2006) and Real, Barbosa & Vargas (2006) proposed an environmental favourability function which is based on presence probability and cancels out uneven proportions of presences and absences in the modelled data. Favourability thus assesses the extent to which the environmental conditions change the probability of occurrence of a species with respect to its overall prevalence in the study area. Model predictions become, therefore, directly comparable among species with different prevalences. The favourability function is implemented in the \pkg{fuzzySim} package and is also in the SAM (Spatial Analysis in Macroecology) software (Rangel et al. 2010).
+Methods such as Generalized Linear Models, Generalized Additive Models, Random Forests, Boosted Regression Trees / Generalized Boosted Models, Bayesian Additive Regression Trees and several others, are widely used for modelling species' potential distributions using presence/absence data and a set of predictor variables. These models predict presence probability, which (unless presences and abences are given different weights) incorporates the prevalence (proportion of presences) of the species in the modelled sample. So, predictions for restricted species are always generally low, while predictions for widespread species are always generally higher, regardless of the actual environmental quality. Barbosa (2006) and Real, Barbosa & Vargas (2006) proposed an environmental favourability function which is based on presence probability and cancels out uneven proportions of presences and absences in the modelled data. Favourability thus assesses the extent to which the environmental conditions change the probability of occurrence of a species with respect to its overall prevalence in the study area. Model predictions become, therefore, directly comparable among species with different prevalences, without the need to artificially assign different weights to presences and absences.
 
 Using simulated data, Albert & Thuiller (2008) proposed a modification to the favourability function, but it requires knowing the true prevalence of the species (not just the prevalence in the modelled sample), which is rarely possible in real-world modelling. Besides, this suggestion was based on the misunderstanding that the favourability function was a way to obtain the probability of occurrence when prevalence differs from 50\%, which is incorrect (see Acevedo & Real 2012).
 
-To get environmental favourability with either the Real, Barbosa & Vargas ("RBV") or the Albert & Thuiller ("AT") method, you just need to get model predictions of presence probability from your data, together with the proportions of presences and absences in the modelled sample, and then use the 'Fav' function. Input data for this function are either a model object resulting from the \code{\link{glm}} function, or the vector of presences-absences (1-0) of your species and the corresponding presence probability values, obtained e.g. with predict(mymodel, mydata, type = "response"). Alternatively to the presences-absences, you can provide either the sample prevalence or the numbers of presences and absences in the dataset that was used to generate the presence probabilities. In case you want to use the "AT" method, you also need to provide the true (absolute) prevalence of your species.
+To get environmental favourability with either the Real, Barbosa & Vargas ("RBV") or the Albert & Thuiller ("AT") method, you just need to get model predictions of presence probability from your data, together with the proportions of presences and absences in the modelled sample, and then use the 'Fav' function. Input data for this function are either a model object of an implemented class, or the vector of presences-absences (1-0) of your species and the corresponding presence probability values, obtained e.g. with predict(mymodel, mydata, type = "response"). Alternatively to the presences-absences, you can provide either the sample prevalence or the numbers of presences and absences in the dataset that was used to generate the presence probabilities. In case you want to use the "AT" method (but see Acevedo & Real 2012), you also need to provide the true (besides the sample) prevalence of your species.
 }
 \value{
 If 'model' is provided or if 'pred' is a numeric vector, the function returns a numeric vector of the favourability values. If 'model' is not provided (which would override other arguments) and 'pred' is a RasterLayer or a SpatRaster, the function returns an object of the same class, containing the favourability values.
+}
+\note{
+This function is applicable only to presence probability values obtained without weighting presences and absences differently (i.e. with weights=NULL), thus reflecting the sample prevalence, which is generally the default in presence/absence modelling functions (like \code{\link{glm}}). Note, however, that some modelling packages may use different defaults when calling these functions, e.g. biomod2::BIOMOD_Modeling() with automatically generated pseudo-absences.
 }
 \references{
 Acevedo P. & Real R. (2012) Favourability: concept, distinctive characteristics and potential usefulness. Naturwissenschaften 99: 515-522
@@ -51,8 +54,6 @@ Acevedo P. & Real R. (2012) Favourability: concept, distinctive characteristics 
 Albert C.H. & Thuiller W. (2008) Favourability functions versus probability of presence: advantages and misuses. Ecography 31: 417-422.
 
 Barbosa A.M.E. (2006) Modelacion de relaciones biogeograficas entre predadores, presas y parasitos: implicaciones para la conservacion de mamiferos en la Peninsula Iberica. PhD Thesis, University of Malaga (Spain).
-
-Rangel T.F.L.V.B, Diniz-Filho J.A.F & Bini L.M. (2010) SAM: a comprehensive application for Spatial Analysis in Macroecology. Ecography 33: 46-50.
 
 Real R., Barbosa A.M. & Vargas J.M. (2006) Obtaining environmental favourability functions from logistic regression. Environmental and Ecological Statistics 13: 237-245.
 }

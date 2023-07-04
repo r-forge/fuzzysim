@@ -1,4 +1,23 @@
 ==============================================
+fuzzySim v4.10.1 (committed 2023-07-04)
+==============================================
+
+## Modified functions:
+
+* cleanCoords
+- added 'terra::' before plot() on sv objects, to prevent newly appeared error
+
+
+# Other modified files:
+
+* Fav.Rd
+- now states that 'model' or 'pred' must have been obtained with weights=NULL
+
+* corSelect.Rd
+- added "however" references against dropping correlated variables
+
+
+==============================================
 fuzzySim v4.10 (committed 2023-05-24)
 ==============================================
 
@@ -153,7 +172,7 @@ fuzzySim v4.9.4 (committed 2023-01-12)
 - replaced 'PBSmapping' (and consequently 'sp' and 'maptools') with 'terra' (future-proof and much faster)
 
 
-# Other modified fiels:
+# Other modified files:
 
 * DESCRIPTION
 - packages 'PBSmapping', 'sp' and 'maptools' removed from 'Suggests'

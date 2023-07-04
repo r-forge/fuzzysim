@@ -1,5 +1,5 @@
 cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL, rm.dup = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), plot = TRUE) {
-  # version 1.3 (14 Apr 2023)
+  # version 1.4 (4 Jul 2023)
 
   stopifnot(
     inherits(data, "data.frame") || inherits(data, "SpatVector"),
@@ -132,8 +132,8 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
   }
 
   if (plot) {
-    plot(data.sv.in, pch = 4, cex = 0.4, col = "red")
-    plot(data.sv.out, pch = 20, cex = 0.8, col = "blue", add = TRUE)
+    terra::plot(data.sv.in, pch = 4, cex = 0.4, col = "red")
+    terra::plot(data.sv.out, pch = 20, cex = 0.8, col = "blue", add = TRUE)
   }
 
   return(data.sv.out)

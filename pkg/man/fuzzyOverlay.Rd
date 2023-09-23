@@ -7,7 +7,7 @@ Row-wise overlay operations based on fuzzy logic
 Logical and set operations are useful for comparative distribution modelling, to assess consensus or mismatches between the predictions of different models, and to quantify differences between models obtained for different time periods. Fuzzy set theory (Zadeh 1965, Barbosa & Real 2012) allows performing such operations without converting model predictions from continuous to binary, thus avoiding the application of arbitrary thresholds and the distortion or over-simplification of those predictions. The result is a continuous numerical value quantifying the intersection, union, sum, or other operation among model predictions, whether binary or continuous.
 }
 \usage{
-fuzzyOverlay(data, overlay.cols = 1:ncol(data), op = "intersection", 
+fuzzyOverlay(data, overlay.cols = 1:ncol(data), op = "intersection",
 na.rm = FALSE, round.digits = 2)
 }
 \arguments{
@@ -28,7 +28,7 @@ integer value indicating the number of decimal places to be used if op = "mainte
 }
 }
 \details{
-If your predictions are probabilities, "prob_and" (probabilistic 'and') gives the probability of all species in 'data' occurring simultaneously by multiplying all probabilities; and "prob_or" (probabilistic 'or') gives the probability of any of them occurring at each site. These can be quite restrictive, though; probabilistic "and" can give particularly irrealistically small values. 
+If your predictions are probabilities, "prob_and" (probabilistic 'and') gives the probability of all species in 'data' occurring simultaneously by multiplying all probabilities; and "prob_or" (probabilistic 'or') gives the probability of any of them occurring at each site. These can be quite restrictive, though; probabilistic "and" can give particularly irrealistically small values.
 
 If you have (or convert your probabilities to) favourability predictions, which can be used directly with fuzzy logic (Real et al. 2006; see \code{\link{Fav}} function), you can use "fuzzy_and" or "intersection" to get the favourability for all species co-occurring at each site, and "fuzzy_or" or "union" to get favourability for any of them to occur at each site (Barbosa & Real 2012).
 }
@@ -79,16 +79,16 @@ preds$Abrigh_imag[preds$Abrigh_imag > 1] <- 1
 
 # you can calculate row-wise prediction changes from Abrigh to Abrigh_imag:
 
-preds$Abrigh_exp <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F", 
+preds$Abrigh_exp <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F",
 "Abrigh_imag"), op = "expansion")
 
-preds$Abrigh_contr <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F", 
+preds$Abrigh_contr <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F",
 "Abrigh_imag"), op = "contraction")
 
-preds$Abrigh_chg <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F", 
+preds$Abrigh_chg <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F",
 "Abrigh_imag"), op = "change")
 
-preds$Abrigh_maint <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F", 
+preds$Abrigh_maint <- fuzzyOverlay(preds, overlay.cols = c("Abrigh_F",
 "Abrigh_imag"), op = "maintenance")
 
 head(preds)

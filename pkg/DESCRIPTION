@@ -1,8 +1,8 @@
 Package: fuzzySim
 Type: Package
 Title: Fuzzy Similarity in Species Distributions
-Version: 4.10.1
-Date: 2023-07-04
+Version: 4.10.2
+Date: 2023-09-23
 Author: Barbosa A.M.
 Maintainer: A. Marcia Barbosa <ana.marcia.barbosa@gmail.com>
 Imports: graphics,

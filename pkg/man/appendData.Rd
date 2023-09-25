@@ -4,24 +4,30 @@
 Append data
 }
 \description{
-This function appends the rows of a dataframe 'y' at the bottom of another dataframe 'x', using the values in the columns with matching names, and filling missing columns with NAs. Columns of 'y' that are not matched in 'x' are not added to the result.
+This function appends the rows of a dataframe 'data2' at the bottom of another dataframe 'data1', using the values in the columns with matching names, and (optionally, by default) filling missing columns with NAs.
 }
 \usage{
-appendData(x, y, fill = TRUE)
+appendData(data1, data2, fill = TRUE, add.source = TRUE)
 }
 \arguments{
-  \item{x}{
+  \item{data1}{
 object inheriting class 'data.frame' to which to append data.
 }
-  \item{y}{
-object inheriting class 'data.frame' to append to \code{x}, with column names matching those of the corresponding columns in \code{x}.
+  \item{data2}{
+object inheriting class 'data.frame' to append to 'data1', with column names matching those of the corresponding columns in 'data1'.
 }
   \item{fill}{
-logical, whether the result should keep all columns of \code{x} that are missing in \code{y}, filling them with NAs in the rows with no data. The default is TRUE. If set to FALSE, the result will keep only the columns of \code{x} that are also present in \code{y}.
+logical, whether the result should keep all columns of 'data1' that are missing in 'data2', filling them with NAs in the rows with no data. The default is TRUE. If set to FALSE, the result will keep only the columns of 'data1' that are also present in 'data2'.
 }
+  \item{add.source}{
+logical, whether the result should include an additional column saying from which input data frame ('data1' or 'data2') each row came.
+}
+}
+\details{
+This function is asymmetric, i.e. \code{appendData(data1, data2)} may output different columns from \code{appendData(data2, data1)}. 'data1' dictates the columns the result will have. Columns of 'data2' that are not matched in 'data1' are not kept in the output.
 }
 \value{
-This function returns a data frame with all the columns and rows of \code{x}, extended with the rows of \code{y} with its values for the columns with matching names in \code{x}. If \code{fill} is set to FALSE, the result only carries the columns with matching names in both data frames.
+This function returns a data frame with all the columns and rows of 'data1', extended with the rows of 'data2' with its values for the columns with matching names in 'data1'. By default, with 'add.source = TRUE', there is also an additional column specifying the source input object. If 'fill' is set to FALSE, the result only carries the columns with matching names in both data frames.
 }
 \author{
 A. Marcia Barbosa

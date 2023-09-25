@@ -7,9 +7,10 @@ gridRecords <- function(rst,
                         plot = FALSE)  # new
 {
 
-  # version 3.7 (13 Mar 2023)
+  # version 3.8 (24 Sep 2023)
 
-  if (!requireNamespace("raster", quietly = TRUE) && !requireNamespace("terra", quietly = TRUE)) stop("This function requires having either the 'raster' or the 'terra' package installed.")
+  if (!("raster" %in% rownames(installed.packages())) && !("terra" %in% rownames(installed.packages()))) stop("This function requires having either the 'raster' or the 'terra' package installed.")
+
 
   if (inherits(pres.coords, "SpatVector")) {
     if (isFALSE(terra::is.points(pres.coords))) stop ("If 'pres.coords' is of class 'SpatVector', its 'geomtype' must be 'points'.")

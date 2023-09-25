@@ -4,7 +4,8 @@
   Clean coordinates
 }
 \description{
-  This function takes a data frame with species occurrences and removes the rows whose coordinates do not pass a set of user-specified filters.
+  This function takes a data frame with species occurrences and removes the rows whose coordinates do not pass a set of user-specified filters (see Arguments
+). Row names are inheritted from the input data frame, i.e. if row "2" is cleaned out, output rownames will be c("1", "3", ...).
 }
 \usage{
   cleanCoords(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL,

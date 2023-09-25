@@ -1,4 +1,26 @@
 ==============================================
+fuzzySim v4.10.3 (committed 2023-09-25)
+==============================================
+
+## Modified functions:
+
+* appendData
+- added 'add.source' argument
+- x and y arguments renamed to data1 and data2
+- warning when no matching columns
+- out data frame created empty, instead of taking x data and converting to NA
+
+* gridRecords
+- replaced 'requireNamespace(raster)' with raster %in% rownames(installed.packages()), to avoid loading 'sp' and getting all the deprecation warnings
+
+
+# Other modified files:
+
+* cleanCoords.Rd
+- now states that row names are carried from input dataframe
+
+
+==============================================
 fuzzySim v4.10.2 (committed 2023-09-23)
 ==============================================
 
@@ -224,7 +246,7 @@ fuzzySim v4.9.2 (committed 2022-10-27)
 - added JCG funding acknowledgment to Note
 
 * fuzSim.Rd
-- help file now mentions Jaccard and Sorensen also as recommended metrics for model evaluation 
+- help file now mentions Jaccard and Sorensen also as recommended metrics for model evaluation
 
 
 ============================================
@@ -849,7 +871,7 @@ fuzzySim v1.7.9 (committed 2017-03-27)
 - help file now states that corSelect is included as option in multGLM
 - added 'use = "pairwise.complete.obs"' to examples
 
-* PDF manual: 
+* PDF manual:
 - reduced several code line lengths to avoid overboard
 
 
@@ -1004,10 +1026,10 @@ fuzzySim v1.6.1 (committed 2015-11-13)
 - result is now a named vector instead of a list
 - 'na.rm' now TRUE by default
 
-* fuzSim: 
+* fuzSim:
 - added argument 'na.rm = TRUE'
 
-* multGLM: 
+* multGLM:
 - bug corrected in corSelect (was reporting but not really eliminating variables)
 - suppressMessages in corSelect
 
@@ -1021,7 +1043,7 @@ fuzzySim v1.6.1 (committed 2015-11-13)
 * fuzzyOverlay, fuzzyRangeChange, modOverlap:
 - examples containing 'jitter' corrected to avoid values outside the [0, 1] interval
 
-* fuzSim: 
+* fuzSim:
 - examples now provided also for similarity between fuzzy data
 - tables of significance for Jaccard and Baroni's indices now referred
 

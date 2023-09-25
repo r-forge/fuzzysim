@@ -1,11 +1,11 @@
 
 #' Append data
 #'
-#' @param x object inheriting class 'data.frame' to which to append data.
-#' @param y object inheriting class 'data.frame' to append to x, with column names matching those of the corresponding columns in x.
-#' @param fill logical, whether to keep in the result all columns of x that are missing in y, filling them with NAs for the rows with no data. TRUE by default. If set to FALSE, the result will keep only the columns also present in y.
+#' @param data1 object inheriting class 'data.frame' to which to append data.
+#' @param data2 object inheriting class 'data.frame' to append to data1, with column names matching those of the corresponding columns in data1.
+#' @param fill logical, whether to keep in the result all columns of data1 that are missing in data2, filling them with NAs for the rows with no data. TRUE by default. If set to FALSE, the result will keep only the columns also present in data2.
 #'
-#' @return This function returns a data frame with all the columns of x, and the additional rows of y with its values for the columns with matching names in x. If fill is set to FALSE, the result only carries the columns with matching names in both data frames.
+#' @return This function returns a data frame with all the columns of data1, and the additional rows of data2 with its values for the columns with matching names in data1. If fill is set to FALSE, the result only carries the columns with matching names in both data frames.
 #' @export
 #'
 #' @examples
@@ -13,14 +13,35 @@
 #' df2 = data.frame(A = 4:5, B = letters[5:4])
 #' appendData(df1, df2)
 
-appendData <- function(x, y, fill = TRUE) {
-  # version 1.0 (22 Sep 2023)
+appendData <- function(data1, data2, fill = TRUE, add.source = TRUE) {
+  # version 1.2 (25 Sep 2023)
 
-  y <- y[ , colnames(y) %in% colnames(x)]
-  y2 <- x[1:nrow(y), ]  # y with the structure of x
-  y2[] <- NA
-  y2[ , colnames(y)] <- y[ , colnames(y)]
-  out <- rbind(x, y2)
-  if (!fill) out <- out[ , colnames(y)]
+  column_match <- colnames(data2) %in% colnames(data1)
+  if (sum(column_match) == 0) warning("No matching column names, so only NAs were added.")
+  data2 <- data2[ , column_match]
+
+  # data2.2 <- data1[1:nrow(data2), ]  # data2 with the structure of data1
+  # data2.2[] <- NA
+  data2.2 <- data.frame(matrix(nrow = nrow(data2), ncol = ncol(data1)))  # data2 with all columns of data1; tried adding dimnames here, but error afterwards
+  colnames(data2.2) <- colnames(data1)
+
+  data2.2[ , colnames(data2)] <- data2[ , colnames(data2)]  # fill in values where available
+  out <- rbind(data1, data2.2)
+
+  if (add.source) {
+    # out$add.source <- substitute(data2)
+    # out$add.source[1:nrow(data1)] <- substitute(data1)
+    # out$add.source <- deparse(substitute(data2))
+    # out$add.source[1:nrow(data1)] <- deparse(substitute(data1))
+    # Error in `$<-.data.frame`(`*tmp*`, "add.source", value = c("structure(list(species = c(\"Daboia_mauritanica\", \"Daboia_mauritanica\", ", : replacement has 108 rows, data has 198
+    out$appendSource <- deparse(quote(data2))
+    out$appendSource[1:nrow(data1)] <- deparse(quote(data1))
+  }
+
+  if (!fill) {
+    if (add.source)  out <- out[ , c(colnames(data2), "appendSource")]
+    else out <- out[ , colnames(data2)]
+  }
+
   return(out)
 }

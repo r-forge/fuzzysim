@@ -9,19 +9,21 @@
 }
 \usage{
   cleanCoords(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL,
-  rm.dup = !is.null(coord.cols), rm.equal = !is.null(coord.cols),
-  rm.imposs = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols),
-  rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols),
-  rm.zero.both = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols),
-  rm.imprec.both = !is.null(coord.cols), imprec.digits = 0,
-  rm.uncert = !is.null(uncert.col), uncert.limit = 50000,
-  uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), plot = TRUE)
+  year.col = NULL, rm.dup = !is.null(coord.cols),
+  rm.equal = !is.null(coord.cols),   rm.imposs = !is.null(coord.cols),
+  rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols),
+  rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols),
+  rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols),
+  imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000,
+  uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL,
+  year.na.pass = TRUE, plot = TRUE)
 }
 \arguments{
   \item{data}{an object inheriting class 'data.frame' with the spatial coordinates to be cleaned, or a 'SpatVector' of points.}
   \item{coord.cols}{character or integer vector of length 2, with either the names or the positions of the columns that contain the spatial coordinates in 'data' - in this order, LONGitude and LATitude, or x and y. Can be left NULL if 'data' is a 'SpatVector', in which case the coordinates will be extracted with terra::crds().}
   \item{uncert.col}{character or integer vector of length 1, with either the name or the position of the column that reports spatial uncertainty in 'data' (e.g., in GBIF this column is usually named "coordinateUncertaintyInMeters").}
   \item{abs.col}{character or integer vector of length 1, with either the name or the position of the column that specifies whether the species is present or absent (e.g., in GBIF this column is usually named "occurrenceStatus").}
+  \item{year.col}{character or integer vector of length 1, with either the name or the position of the column that specifies the year in which the observation was made (e.g., in GBIF this column is usually named "year").}
   \item{rm.dup}{logical, whether to remove rows with exactly the same pair of coordinates. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
   \item{rm.equal}{logical, whether to remove rows with exactly the same pair of coordinates, i.e. where latitude = longitude. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
   \item{rm.imposs}{logical, whether to remove rows with coordinates outside planet Earth, i.e. with absolute value >180 for longitude or >90 for latitude. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise. Note that this is only valid for unprojected angular coordinates in geographic degrees.}
@@ -36,6 +38,8 @@
   \item{uncert.limit}{lnumeric, threshold value for 'uncert.col'. If rm.uncert=TRUE and 'uncert.col' is provided, rows with values above this will be excluded. The default is 50,000, i.e. 50 km if the values in 'uncert.col' are in meters.}
   \item{uncert.na.pass}{logical, whether rows with NA in 'uncert.col' should be kept as having no uncertainty. The default is TRUE.}
   \item{rm.abs}{logical, whether to remove rows where the value in 'abs.col' is (case-insensitive) 'absent'. The default is TRUE if 'abs.col' is not NULL, and FALSE otherwise.}
+  \item{year.min}{positive integer specifying the minimum (earliest) value admitted for the year column. The default is NULL (no limit).}
+  \item{year.na.pass}{logical, whether rows with NA in 'year.col' should be kept as if fulfilling the year.min criterion. The default is TRUE.}
   \item{plot}{logical value specifying whether to plot the result. The default is TRUE.}
 }
 \details{
@@ -61,9 +65,10 @@
     # clean occurrences:
     names(occ)
     occ_clean <- cleanCoords(occ,
-                   coord.cols = c("decimalLongitude", "decimalLatitude"),
-                   abs.col = "occurrenceStatus",
-                   uncert.col = "coordinateUncertaintyInMeters",
-                   uncert.limit = 10000)  # 10 km tolerance
+                      coord.cols = c("decimalLongitude", "decimalLatitude"),
+                      abs.col = "occurrenceStatus",
+                      uncert.col = "coordinateUncertaintyInMeters",
+                      uncert.limit = 10000,  # 10 km tolerance
+                      year.col = "year", year.min = 1950)
   }
 }

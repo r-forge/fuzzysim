@@ -1,5 +1,5 @@
-cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL, rm.dup = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), plot = TRUE) {
-  # version 1.4 (4 Jul 2023)
+cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL, year.col = NULL, rm.dup = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL, year.na.pass = TRUE, plot = TRUE) {
+  # version 1.5 (28 Sep 2023)
 
   stopifnot(
     inherits(data, "data.frame") || inherits(data, "SpatVector"),
@@ -16,16 +16,16 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
 
 
   coord.ops <- c("rm.dup", "rm.equal", "rm.imposs", "rm.missing.any", "rm.missing.both", "rm.zero.any", "rm.zero.both", "rm.imprec.any", "rm.imprec.both")
-   for (o in coord.ops) {
-     if (isTRUE(get(o)) && is.null(coord.cols))  stop(paste0("'", o, "=TRUE' requires specifying 'coord.cols'."))
-   }
+  for (o in coord.ops) {
+    if (isTRUE(get(o)) && is.null(coord.cols))  stop(paste0("'", o, "=TRUE' requires specifying 'coord.cols'."))
+  }
 
-
-    if (rm.uncert && is.null(uncert.col)) stop("'rm.uncert=TRUE' requires specifying 'uncert.col'.")
 
   if (rm.uncert && is.null(uncert.col)) stop("'rm.uncert=TRUE' requires specifying 'uncert.col'.")
 
   if (rm.abs && is.null(abs.col)) stop("'rm.abs=TRUE' requires specifying 'abs.col'.")
+
+  if (!is.null(year.min) && is.null(year.col)) stop("applying 'year.min' requires specifying 'year.col'.")
 
 
   if (inherits(data, "SpatVector")) {
@@ -114,6 +114,15 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
     message(nrow(data), " rows after 'rm.abs'")
   }
 
+  if (is.finite(year.min) && !is.null(year.col) && nrow(data) > 0) {
+    year_ok <- data[ , year.col] >= year.min
+    # if (year.na.pass) year_ok[is.na(data[ , year.col])] <- TRUE
+    # else year_ok[is.na(data[ , year.col])] <- FALSE
+    year_ok[is.na(data[ , year.col])] <- ifelse(year.na.pass, TRUE, FALSE)
+    data <- data[year_ok, ]
+    message(nrow(data), " rows after 'year.min' (with year.min=", year.min, " and year.na.pass=", year.na.pass, ")")
+  }
+
 
   if (is.null(data.sv.in)) {
     if (plot) {
@@ -122,7 +131,7 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
     }
 
     return(data)
-  }
+  }  # end if null data.sv.in
 
 
   data.sv.out <- terra::vect(data, geom = coord.cols, crs = terra::crs(data.sv.in), keepgeom = TRUE)

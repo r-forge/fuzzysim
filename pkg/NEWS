@@ -1,4 +1,14 @@
 ==============================================
+fuzzySim v4.10.4 (committed 2023-09-28)
+==============================================
+
+## Modified functions:
+
+* cleanCoords
+- added 'year.min' and 'year.na.pass' arguments
+
+
+==============================================
 fuzzySim v4.10.3 (committed 2023-09-25)
 ==============================================
 
@@ -8,10 +18,10 @@ fuzzySim v4.10.3 (committed 2023-09-25)
 - added 'add.source' argument
 - x and y arguments renamed to data1 and data2
 - warning when no matching columns
-- out data frame created empty, instead of taking x data and converting to NA
+- out data frame created empty, instead of taking data1 values and then converting to NA
 
 * gridRecords
-- replaced 'requireNamespace(raster)' with raster %in% rownames(installed.packages()), to avoid loading 'sp' and getting all the deprecation warnings
+- replaced 'requireNamespace(raster)' with 'raster %in% rownames(installed.packages())', to avoid loading 'sp' and triggering all the deprecation warnings
 
 
 # Other modified files:

@@ -1,15 +1,15 @@
 corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), select = ifelse(is.null(sp.cols), "VIF", "p.value"), family = "auto", use = "pairwise.complete.obs", method = "pearson", verbosity = 1) {
 
-  # version 3.4 (22 May 2023)
+  # version 3.5 (4 Oct 2023)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 
   univar.criteria <- c("VIF")
-  bivar.criteria <- c("p.value", "AIC", "BIC")
+  bivar.criteria <- c("p.value", "AIC", "BIC", "cor")
 
   if (!is.null(select) && !(select %in% c(univar.criteria, bivar.criteria))) stop ("Invalid 'select' criterion.")
 
-  data <- as.data.frame(data)
+  data <- as.data.frame(data)  # accepts tibbles
 
   if (is.numeric(var.cols)) var.cols <- colnames(data)[var.cols]
 
@@ -82,7 +82,9 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
 
     if (select %in% bivar.criteria) {
       bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), family = family, simplif = TRUE, verbosity = 0)[ , c("p.value", "AIC", "BIC")]
-      if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), tolerance = 1.5e-8)))  message("Results identical whether 'select' is p.value, AIC or BIC.\n") else message("Results NOT identical whether 'select' is p.value, AIC or BIC.\n")
+      cors <- cor(data.frame(data[ , sp.cols, drop = FALSE], data[ , match(high.cor.vars, colnames(data)), drop = FALSE]), use = "pairwise.complete.obs")[-1, 1]
+      bivar.mat <- data.frame(bivar.mat, cor = cors[rownames(bivar.mat)])  # 'rownames' puts them in same order
+      if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), order(abs(bivar.mat[ , c("cor")])), tolerance = 1.5e-8)))  message("Results identical whether 'select' is p.value, AIC, BIC or cor.\n") else message("Results NOT identical whether 'select' is p.value, AIC, BIC or cor.\n")
     }  # end if select in bivar
 
     data.remaining <- data[ , var.cols]
@@ -100,7 +102,8 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
           targets <- bivar.mat[c(v1, v2), select, drop = FALSE]
         }  # end if bivar
 
-        exclude <- which.max(as.matrix(targets))
+        if (select == "cor")  exclude <- which.min(as.matrix(abs(targets)))
+        else exclude <- which.max(as.matrix(targets))
         excl.name <- rownames(targets)[exclude]
         excl.ind <- match(excl.name, colnames(cor.mat))
         data.remaining <- data.remaining[ , -excl.ind, drop = FALSE]

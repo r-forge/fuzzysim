@@ -1,4 +1,17 @@
 ==============================================
+fuzzySim v4.10.5 (committed 2023-10-04)
+==============================================
+
+## Modified functions:
+
+* corSelect
+- added 'cor' to 'select' criteria
+
+* getPreds
+- replaced 'requireNamespace(raster)' with 'raster %in% rownames(installed.packages())', to avoid loading the pkg if unnecessary
+
+
+==============================================
 fuzzySim v4.10.4 (committed 2023-09-28)
 ==============================================
 
@@ -46,7 +59,7 @@ fuzzySim v4.10.1 (committed 2023-07-04)
 ## Modified functions:
 
 * cleanCoords
-- added 'terra::' before plot() on sv objects, to prevent newly appeared error
+- added 'terra::' before plot() on SpatVector objects, to prevent newly appeared error
 
 
 # Other modified files:

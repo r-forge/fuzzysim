@@ -3,11 +3,11 @@ function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE,
   # version 2.0 (23 Apr 2021)
 
   if (!Y & !P & !Favourability) stop("There are no predictions to get if all Y, P and Favourability are set to FALSE.")
-  
+
   if (verbosity > 1) start.time <- Sys.time()
-  
+
   if (is(data, "RasterStack") || is(data, "RasterBrick")) {  # previously 'if("raster" %in% class(data))'
-    if (!requireNamespace("raster")) stop("Input 'data' is in raster format, so you need to install the 'raster' package first.")
+    if (!("raster" %in% rownames(installed.packages()))) stop("Input 'data' is in raster format, so you need to install the 'raster' package first.")
     preds <- raster::brick()  # previously raster::stack()
     n.mods <- length(models)
     mod.count <- 0
@@ -21,16 +21,16 @@ function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE,
         preds <- raster::addLayer(preds, raster::predict(data, mod))
         names(preds)[raster::nlayers(preds)] <- paste(mod.name, "Y", sep = "_")
       }  # end if Y
-      
+
       if (P == TRUE | Favourability == TRUE) {
         p <- raster::predict(data, mod, type = "response")
-        
+
         if (P == TRUE) {
           preds <- raster::addLayer(preds, p)
           names(preds)[raster::nlayers(preds)] <- paste(mod.name, "P", sep = "_")
         }  # end if P
       }  # end if P or F
-      
+
       if (Favourability == TRUE) {
         n1 <- sum(mod$y == 1)
         n0 <- sum(mod$y == 0)
@@ -39,10 +39,10 @@ function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE,
         names(preds)[raster::nlayers(preds)] <- paste(mod.name, "F", sep = "_")
       }  # end if Fav
     }  # end for m
-    
-    return(preds)  
+
+    return(preds)
   }  # end if RasterStack
-  
+
   stopifnot(
     is.data.frame(data) || is(data, "RasterStack") || is(data, "RasterBrick"),
     is.list(models),

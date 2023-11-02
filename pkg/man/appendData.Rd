@@ -24,7 +24,7 @@ logical, whether the result should include an additional column saying from whic
 }
 }
 \details{
-This function is asymmetric, i.e. \code{appendData(data1, data2)} may output different columns from \code{appendData(data2, data1)}. 'data1' dictates the columns the result will have. Columns of 'data2' that are not matched in 'data1' are not kept in the output.
+This function is asymmetric, i.e. \code{appendData(data1, data2)} may output different columns than \code{appendData(data2, data1)}. 'data1' dictates the columns that the result will have. Columns of 'data2' that are not matched in 'data1' are not kept in the output.
 }
 \value{
 This function returns a data frame with all the columns and rows of 'data1', extended with the rows of 'data2' with its values for the columns with matching names in 'data1'. By default, with 'add.source = TRUE', there is also an additional column specifying the source input object. If 'fill' is set to FALSE, the result only carries the columns with matching names in both data frames.
@@ -42,4 +42,6 @@ df2 = data.frame(A = 4:5, B = letters[5:4])
 appendData(df1, df2)
 
 appendData(df1, df2, fill = FALSE)
+
+appendData(df1, df2, fill = FALSE, add.source = FALSE)
 }

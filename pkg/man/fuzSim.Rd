@@ -26,7 +26,10 @@ logical value indicating whether NA values should be ignored. The default is TRU
 \details{
 Similarity between ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented in their fuzzy versions (Barbosa, 2015), able to deal with both binary and fuzzy data. Jaccard's and Baroni's indices have associated tables of significant values (Baroni-Urbani & Buser 1976, Real & Vargas 1996, Real 1999).
 
+Note that the Jaccard index's translation to fuzzy logic (where intersection = minimum and union = maximum) is equivalent to the weighted Jaccard index (Ioffe 2010) and to the overlap, coincidence and consistence indices of Real et al. (2010).
+
 Jaccard's and Sorensen's indices have also been recommended as prevalence-independent metrics for evaluating the performance of models of species distributions and ecological niches (Leroy et al. 2018). These indices are equivalent to other previously recommended model evaluation metrics: the F-measure (which equals Sorensen's index), and the proxy of the F-measure for presence-background data, which equals 2 times Jaccard's index (Li and Guo 2013, Leroy et al. 2018).
+
 }
 \value{
 The function returns a value between 0 and 1 representing the fuzzy similarity between the provided 'x' and 'y' vectors. Note, for example, that Jaccard similarity can be converted to dissimilarity (or Jaccard distance) if subtracted from 1, while \code{1-Sorensen} is not a proper distance metric as it lacks the property of triangle inequality (see \url{https://en.wikipedia.org/wiki/S\%C3\%B8rensen\%E2\%80\%93Dice_coefficient}).
@@ -38,6 +41,8 @@ The formulas used in this function may look slighty different from some of their
 Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. Methods in Ecology and Evolution, 6: 853-858.
 
 Baroni-Urbani C. & Buser M.W. (1976) Similarity of Binary Data. Systematic Zoology, 25: 251-259
+
+Ioffe S. (2010) Improved Consistent Sampling, Weighted Minhash and L1 Sketching. 2010 IEEE International Conference on Data Mining, Sydney, NSW, Australia, pp. 246-255, doi: 10.1109/ICDM.2010.80
 
 Jaccard P. (1901) Etude comparative de la distribution florale dans une portion des Alpes et des Jura. Memoires de la Societe Vaudoise des Sciences Naturelles, 37: 547-579
 

@@ -1,4 +1,24 @@
 ==============================================
+fuzzySim v4.10.6 (committed 2023-11-02)
+==============================================
+
+## Modified functions:
+
+* corSelect
+- fixed wrong usage of all.equal() to compare results between different 'select' criteria (thanks to bug report by Jose Carlos Guerrero)
+
+
+# Other modified files:
+
+* corSelect.Rd
+- mention {collinear} pkg under "See also"
+- mention that pearson is recommened for min 30 row, spearman for min 10 rows (as in ?collinear::collinear)
+
+* fuzSim.Rd
+- mention fuzzy Jaccard = weighted Jaccard (Ioffe 2010), overlap, coincidence, consistence (Real et al. 2010)
+
+
+==============================================
 fuzzySim v4.10.5 (committed 2023-10-04)
 ==============================================
 

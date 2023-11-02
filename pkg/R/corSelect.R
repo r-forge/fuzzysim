@@ -76,7 +76,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
 
     if (is.null(select))  return (high.cor.mat)
 
-    message("Using ", select, " as the 'select' criterion.")
+    message("Using '", select, "' as the 'select' criterion.")
 
     high.cor.vars <- unique(rownames(cor.mat[high.cor.inds, high.cor.inds]))
 
@@ -84,7 +84,9 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
       bivar.mat <- FDR(data = data, sp.cols = sp.cols, var.cols = match(high.cor.vars, colnames(data)), family = family, simplif = TRUE, verbosity = 0)[ , c("p.value", "AIC", "BIC")]
       cors <- cor(data.frame(data[ , sp.cols, drop = FALSE], data[ , match(high.cor.vars, colnames(data)), drop = FALSE]), use = "pairwise.complete.obs")[-1, 1]
       bivar.mat <- data.frame(bivar.mat, cor = cors[rownames(bivar.mat)])  # 'rownames' puts them in same order
-      if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), order(abs(bivar.mat[ , c("cor")])), tolerance = 1.5e-8)))  message("Results identical whether 'select' is p.value, AIC, BIC or cor.\n") else message("Results NOT identical whether 'select' is p.value, AIC, BIC or cor.\n")
+      # if (isTRUE(all.equal(order(bivar.mat[ , c("p.value")]), order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), order(abs(bivar.mat[ , c("cor")])), tolerance = 1.5e-8)))  # wrong use of 'all.equal'
+      if (isTRUE(all(sapply(list(order(bivar.mat[ , c("AIC")]), order(bivar.mat[ , c("BIC")]), order(abs(bivar.mat[ , c("cor")]))), FUN = identical, order(bivar.mat[ , c("p.value")])))))  # https://stackoverflow.com/a/30850654/3447652
+        message("Results identical whether 'select' is 'p.value', 'AIC', 'BIC' or cor.\n") else message("Results NOT identical whether 'select' is 'p.value', 'AIC', 'BIC' or 'cor'.\n")
     }  # end if select in bivar
 
     data.remaining <- data[ , var.cols]

@@ -21,7 +21,7 @@ use = "pairwise.complete.obs", method = "pearson", verbosity = 1)
   \item{select}{character value indicating the criterion for excluding variables among those that are highly correlated. Can be "VIF" (the default if 'sp.cols' is NULL), "p.value" (the default if 'sp.cols' is specified), "AIC", "BIC", or "cor" (see Details).}
   \item{family}{If 'sp.col' is not NULL, the error distribution and (optionally) the link function to use for assessing significant / informative variables (see \code{\link{glm}} or \code{\link{family}} for details). The default "auto" automatically uses "binomial" family for response variables containing only values of 0 and 1; "poisson" for positive integer responses (i.e. count data); "Gamma" for positive non-integer; and "gaussian" (i.e., linear models) otherwise.}
   \item{use}{argument to pass to \code{\link{cor}} indicating what to do when there are missing values. Can be "pairwise.complete.obs" (the default here), "everything", "all.obs", "complete.obs", "na.or.complete".}
-  \item{method}{argument to pass to \code{\link{cor}} specifying the correlation coefficient to use. Can be "pearson" (the default), "kendall" or "spearman".}
+  \item{method}{argument to pass to \code{\link{cor}} specifying the correlation coefficient to use. Can be "pearson" (the default, with a recommended minimum of 30 rows of data), "kendall", or "spearman" (with a recommended minimum of 10 rows of data).}
   \item{verbosity}{integer value indicating the amount of messages to display. The default is 1, for a medium amount of messages. Use 2 for more messages.}
 }
 \details{
@@ -60,7 +60,7 @@ Vanhove J. (2021)  Collinearity isn't a disease that needs curing. Meta-Phsychol
 }
 \author{A. Marcia Barbosa}
 \seealso{
-\code{\link{multicol}}, \code{\link{FDR}}, \code{\link{cor}}
+\code{\link{multicol}}, \code{\link{FDR}}, \code{\link{cor}}; and \code{collinear} in package \pkg{collinear}, which handles continuous and categorical variables
 }
 \examples{
 data(rotif.env)

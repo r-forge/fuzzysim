@@ -1,5 +1,5 @@
-selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2) {
-  # version 1.4 (6 Feb 2023)
+selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, dist.mat = NULL, seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2) {
+  # version 1.5 (9 Nov 2023)
 
   if (length(sp.cols) > 1) stop("Sorry, this function is currently implemented for only one 'sp.col' at a time.")
   if (bunch == TRUE) stop("Sorry, 'bunch=TRUE' is still pending implementation.")
@@ -24,7 +24,7 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, ma
     if (is.null(coord.cols)) stop("arguments 'min.dist', 'max.dist', 'bias' and 'bunch' require specifying 'coord.cols'.")
 
     if (verbosity > 0) cat("\nComputing distance to presences...\n")
-    dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = FALSE)[, 1]
+    dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = FALSE, dist.mat = dist.mat)[, 1]
     if (verbosity > 1) cat("- Distance from input absences to presences ranges between", round(min(dist.pres[abs.rows]), 3), "and", round(max(dist.pres[abs.rows]), 3), "coordinate units.\n")
 
     if (!is.null(min.dist)) {
@@ -63,8 +63,8 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, ma
       # inv.dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = TRUE)[, 1][abs.rows]
       inv <- function(x) 1 - ((x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE)))
       inv.dist.abs <- inv(dist.pres)[abs.rows]
-      if (!is.null(seed)) set.seed(seed)
       if (verbosity > 0) cat("\nBiasing the selection of absences towards de vicitiny of presences...\n")
+      if (!is.null(seed)) set.seed(seed)
       abs.samp <- sample(abs.rows, n, replace = FALSE, prob = inv.dist.abs)
     } else {
       if (!is.null(seed)) set.seed(seed)

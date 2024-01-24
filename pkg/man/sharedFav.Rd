@@ -11,9 +11,9 @@ sharedFav(strong_F, weak_F, conf = 0.95, bin_interval = "0.1", ...)
 }
 \arguments{
   \item{strong_F}{a numeric vector of favourability values (obtained, e.g., with functions \code{\link{Fav}} or \code{\link{multGLM}}) for the stronger species.}
-  \item{weak_F}{a numeric vector of favourability values for the weaker species. Must be of the same lenght and in the same order as strong_F.}
+  \item{weak_F}{a numeric vector of favourability values for the weaker species. Must be of the same length and in the same order as strong_F.}
   \item{conf}{confidence level for the confidence intervals in the plot. The default is 0.95. Set it to NA for no confidence intervals (see "Note" below).}
-  \item{bin_interval}{character value specifying the method for grouping the favourability values into bins, to plot and compare mean favourability for each species. Currently implemented options are "0.1" (the default, dividing the values at 0.1 intervals as per Acevedo et al. 2010, 2012) and "quantiles" (as the former method may generate an error if there are overly small bins to calculate confidence intervals). See "Note" below.}
+  \item{bin_interval}{character value specifying the method for grouping the favourability values into bins for plotting and comparing mean favourability for each species. Currently implemented options are "0.1" (the default, dividing the values at 0.1 intervals as per Acevedo et al. 2010, 2012) and "quantiles" (as the former method may produce an error if there are bins too small to allow computing confidence intervals). See "Note" below.}
   \item{\dots}{some additional arguments can be passed to \code{\link{barplot}}, such as "main" (for the plot title) or "las" (for the orientation of the axis labels).}
 }
 \details{
@@ -50,6 +50,6 @@ favs <- mods$predictions[ , 3:4]
 # get shared favourability:
 sharedFav(strong_F = favs[,1], weak_F = favs[,2], main = "Shared favourability")
 
-sharedFav(strong_F = favs[,1], weak_F = favs[,2], bin_interval = "quantiles", 
+sharedFav(strong_F = favs[,1], weak_F = favs[,2], bin_interval = "quantiles",
 main = "Shared favourability", las = 2)
 }

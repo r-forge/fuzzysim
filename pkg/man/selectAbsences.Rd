@@ -9,7 +9,8 @@ This function takes a matrix or data frame containing species presence (1) and a
 \usage{
 selectAbsences(data, sp.cols, coord.cols = NULL, min.dist = NULL,
 max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE,
-seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2)
+dist.mat = NULL, seed = NULL, plot = !is.null(coord.cols), df = TRUE,
+verbosity = 2)
 }
 \arguments{
   \item{data}{a matrix or data frame containing, at least, one column with the species' presence (1) and absence (0) records, with localities in rows; and (if distance or spatial bias are required) two columns with the spatial coordinates.}
@@ -19,7 +20,8 @@ seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2)
   \item{max.dist}{(optional) numeric value specifying the maximum distance (in the same units as 'coord.cols') at which selected absences should be from the presences.}
   \item{n}{(optional) integer value specifying the number of absence rows to select. Can also be specified as a ratio -- see 'mult.p' below.}
   \item{mult.p}{(optional) numeric value specifying how many times the number of presences to use as 'n' (e.g. 10 times as many absences as presences). Ignored if 'n' is not NULL.}
-  \item{bias}{logical value specifying if the selection of absences should be biased towards the vicinity of presences. Requires specifying 'coord.cols'. The default is FALSE. Can take time (and memory) for large datasets.}
+  \item{bias}{logical value specifying if the selection of absences should be biased towards the vicinity of presences. Requires specifying 'coord.cols'. The default is FALSE. Can take time (and memory) for large datasets if 'dist.mat' is not provided.}
+  \item{dist.mat}{optional (but recommendable) argument to pass to \code{\link{distPres}}.}
   \item{bunch}{[PENDING IMPLEMENTATION] logical value specifying if the selected absences should concentrate around presences in proportion to their local density, as in Vollering et al. (2019). The default is FALSE.}
   \item{seed}{(optional) integer value to pass to \code{\link{set.seed}} specifying the random seed to use for sampling among the absences.}
   \item{plot}{logical value specifying whether to plot the result. The default is TRUE if 'coord.cols' are provided.}

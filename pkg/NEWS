@@ -1,6 +1,25 @@
-==============================================
+===============================================
+fuzzySim v4.10.7 (committed 2024-01-24) -> CRAN
+===============================================
+
+## Modified functions:
+
+* selectAbsences
+- added 'dist.mat' argument for 'distPres'
+- updated help file to reflect this
+
+
+# Other modified files:
+
+* distPres.Rd
+- corrected typo "euclidian" -> "euclidean"
+- mention that (external) spherical distance is recommended for large extents
+- mention that 'method' is only used if 'dist.mat' is not provided
+
+
+===============================================
 fuzzySim v4.10.6 (committed 2023-11-02)
-==============================================
+===============================================
 
 ## Modified functions:
 
@@ -18,9 +37,9 @@ fuzzySim v4.10.6 (committed 2023-11-02)
 - mention fuzzy Jaccard = weighted Jaccard (Ioffe 2010), overlap, coincidence, consistence (Real et al. 2010)
 
 
-==============================================
-fuzzySim v4.10.5 (committed 2023-10-04)
-==============================================
+===============================================
+fuzzySim v4.10.5 (committed 2023-10-04) -> CRAN
+===============================================
 
 ## Modified functions:
 

@@ -7,8 +7,8 @@
 This function takes a matrix or data frame containing species presence (1) and absence (0) data and their spatial coordinates (optionally also a pre-calculated distance matrix between all localities), and calculates the (inverse) distance from each locality to the nearest presence locality for each species.
 }
 \usage{
-distPres(data, sp.cols, coord.cols = NULL, id.col = NULL, 
-dist.mat = NULL, method = "euclidian", suffix = "_D", p = 1, 
+distPres(data, sp.cols, coord.cols = NULL, id.col = NULL,
+dist.mat = NULL, method = "euclidean", suffix = "_D", p = 1,
 inv = TRUE)
 }
 \arguments{
@@ -22,13 +22,13 @@ names or index numbers of the columns containing the species presences and absen
 names or index numbers of the columns containing the spatial coordinates in data (in this order, x and y, or longitude and latitude).
 }
   \item{id.col}{
-optionally, the name or index number of a column (to be included in the output) containing locality identifiers in data.
+optionally, the name or index number of a column (to be included in the output) containing locality identifiers in 'data'.
 }
   \item{dist.mat}{
-optionally, if you do not want distances calculated with any of the methods available in \code{\link{dist}}, you may provide a distance matrix calculated elsewhere for the localities in \code{data}.
+optionally, if you do not want distances calculated with any of the methods available in the \code{\link{dist}} function of package \pkg{stats}, you may provide a distance matrix calculated elsewhere for the localities in 'data'. This is especially advisable for large geographic extents, where you will get much more accurate distances with a function that considers the curvature of the Earth -- e.g., function \code{distance} in package \pkg{terra}, or function \code{st_distance} in package \pkg{sf}.
 }
   \item{method}{
-the method with which to calculate distances between localities. Available options are those of \code{\link{dist}}. The default is \code{"euclidian"}.
+(if 'dist.mat' is not provided) the method with which to compute the distances between localities. Available options are those of \code{\link{dist}}. The default is "euclidean".
 }
   \item{suffix}{
 character indicating the suffix to add to the distance columns in the resulting data frame. The default is \code{"_D"}.
@@ -67,8 +67,8 @@ names(rotif.env)
 
 # calculate plain distance to presence:
 
-rotifers.dist <- distPres(rotif.env, sp.cols = 18:47, 
-coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 1, 
+rotifers.dist <- distPres(rotif.env, sp.cols = 18:47,
+coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 1,
 inv = FALSE, suffix = "_D")
 
 head(rotifers.dist)
@@ -76,8 +76,8 @@ head(rotifers.dist)
 
 # calculate inverse squared distance to presence:
 
-rotifers.invd2 <- distPres(rotif.env, sp.cols = 18:47, 
-coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 2, 
+rotifers.invd2 <- distPres(rotif.env, sp.cols = 18:47,
+coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 2,
 inv = TRUE, suffix = "_iDsq")
 
 head(rotifers.invd2)

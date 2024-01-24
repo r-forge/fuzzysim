@@ -7,8 +7,8 @@ Trend Surface Analysis for multiple species
 This function performs trend surface analysis for one or more species at a time. It converts categorical presence-absence (1-0) data into continuous surfaces denoting the spatial trend in species' occurrence patterns.
 }
 \usage{
-multTSA(data, sp.cols, coord.cols, id.col = NULL, degree = 3, 
-step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, 
+multTSA(data, sp.cols, coord.cols, id.col = NULL, degree = 3,
+step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE,
 suffix = "_TS", save.models = FALSE, verbosity = 2, ...)
 }
 \arguments{
@@ -37,7 +37,7 @@ character value indicating whether the backward stepwise selection of variables 
 the type of trend surface to obtain. Can be either "Y" for the raw polynomial equation (i.e. in the scale of the predictors, e.g. if you want to use the spatial trend as a predictor variable in a model), "P" for the logit-transformed probability (e.g. if you want to use the output as a prediction of presence probability based on spatial trend alone), or "F" for spatial favourability, i.e., prevalence-independent probability (see \code{\link{Fav}}).
 }
   \item{Favourability}{
-deprecated argument; link{type} should now be used instead, although (at least for the timebeing) this argument will still be accepted (with Favourability=TRUE internally resulting in type="F") for back-compatibility.
+deprecated argument; 'type' should now be used instead, although (at least for the timebeing) this will still be accepted (with Favourability=TRUE internally resulting in type="F") for back-compatibility.
 }
   \item{suffix}{
 character indicating the suffix to add to the trend surface columns in the resulting data frame. The default is "_TS".
@@ -76,7 +76,7 @@ head(rotif.env)
 
 names(rotif.env)
 
-tsa <- multTSA(rotif.env, sp.cols = 18:20, 
+tsa <- multTSA(rotif.env, sp.cols = 18:20,
 coord.cols = c("Longitude", "Latitude"), id.col = 1)
 
 head(tsa)

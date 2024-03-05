@@ -14,7 +14,10 @@
 #' appendData(df1, df2)
 
 appendData <- function(data1, data2, fill = TRUE, add.source = TRUE) {
-  # version 1.2 (25 Sep 2023)
+  # version 1.3 (25 Jan 2024)
+
+  data1 <- as.data.frame(data1)
+  data2 <- as.data.frame(data2)
 
   column_match <- colnames(data2) %in% colnames(data1)
   if (sum(column_match) == 0) warning("No matching column names, so only NAs were added.")

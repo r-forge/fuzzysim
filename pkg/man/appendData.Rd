@@ -11,10 +11,10 @@ appendData(data1, data2, fill = TRUE, add.source = TRUE)
 }
 \arguments{
   \item{data1}{
-object inheriting class 'data.frame' to which to append data.
+object inheriting class 'data.frame' (or that can be coerced with 'as.data.frame') to which to append data.
 }
   \item{data2}{
-object inheriting class 'data.frame' to append to 'data1', with column names matching those of the corresponding columns in 'data1'.
+object inheriting class 'data.frame' (or that can be coerced with 'as.data.frame') to append to 'data1', with column names matching those of the corresponding columns in 'data1'. Both datasets can have more columns than those whose names match.
 }
   \item{fill}{
 logical, whether the result should keep all columns of 'data1' that are missing in 'data2', filling them with NAs in the rows with no data. The default is TRUE. If set to FALSE, the result will keep only the columns of 'data1' that are also present in 'data2'.

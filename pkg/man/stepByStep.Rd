@@ -4,25 +4,25 @@
 Analyse and compare stepwise model predictions
 }
 \description{
-This function builds a generalized linear model with forward stepwise inclusion of variables, using AIC as the selection criterion, and provides the values predicted at each step, as well as their correlation with the final model predictions.
+This function builds a generalized linear model with forward stepwise inclusion of variables, using AIC as the selection criterion, and it outputs the values predicted at each step, as well as their correlation with the final model predictions. Alternatively, it can take an already-made model object of class 'glm', and output the values predicted after adding each variable, in the order in which the variables are placed in the model object.
 }
 \usage{
-stepByStep(data, sp.col, var.cols, family = binomial(link = "logit"), 
-Favourability = FALSE, trace = 0, direction = "forward", k = 2, 
+stepByStep(data, sp.col, var.cols, family = binomial(link = "logit"),
+Favourability = FALSE, trace = 0, direction = "forward", k = 2,
 cor.method = "pearson")
 }
 \arguments{
   \item{data}{
-a data frame containing your target and predictor variables.
+a data frame (or another object that can be coerced with "as.data.frame", e.g. a matrix, a tibble, a SpatVector) containing the response and predictor variables. Alternatively, a model object of class 'glm', from which the names, values and order of entry of the variables will be taken.
 }
   \item{sp.col}{
-name or index number of the column of 'data' that contains the response variable.
+(if 'data' is not a model object) the name or index number of the column of 'data' that contains the response variable.
 }
   \item{var.cols}{
-names or index numbers of the columns of 'data' that contain the predictor variables.
+(if 'data' is not a model object) the names or index numbers of the columns of 'data' that contain the predictor variables.
 }
   \item{family}{
-argument to be passed to the \code{\link{glm}} function indicating the family (and error distribution) to use in modelling. The default is binomial distribution with logit link (for binary response variables).
+(if 'data' is not a model object) argument to be passed to \code{\link{glm}} indicating the family (and error distribution) to use in modelling. The default is binomial distribution with logit link (for binary response variables).
 }
   \item{Favourability}{
 logical, whether to apply the \code{\link{Fav}}ourability function to remove the effect of prevalence from predicted probability (Real et al. 2006). Applicable only to binomial GLMs. Defaults to FALSE.
@@ -51,12 +51,12 @@ This function returns a list of the following components:
 \item{model}{the resulting model object.}
 }
 \references{
-Munoz, A.R., Real R., BARBOSA A.M. & Vargas J.M. (2005) Modelling the distribution of Bonelli's Eagle in Spain: Implications for conservation planning. Diversity and Distributions 11: 477-486
+Munoz, A.R., Real R., Barbosa A.M. & Vargas J.M. (2005) Modelling the distribution of Bonelli's Eagle in Spain: Implications for conservation planning. Diversity and Distributions 11: 477-486
 
 Real R., Barbosa A.M. & Vargas J.M. (2006) Obtaining environmental favourability functions from logistic regression. Environmental and Ecological Statistics 13: 237-245.
 }
 \author{
-A. Marcia Barbosa
+A. Marcia Barbosa, with contribution by Alba Estrada
 }
 \seealso{
 \code{\link{step}}, \code{\link{glm}}, \code{\link{modelTrim}}
@@ -64,12 +64,12 @@ A. Marcia Barbosa
 \examples{
 data(rotif.env)
 
-stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17, 
+stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17,
 cor.method = "spearman")
- 
-stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17, 
+
+stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17,
 cor.method = "spearman", Favourability = TRUE)
- 
-stepByStep(data = rotif.env, sp.col = 9, var.cols = c(5:8, 10:17), 
+
+stepByStep(data = rotif.env, sp.col = 9, var.cols = c(5:8, 10:17),
 family = poisson)
 }

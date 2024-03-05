@@ -1,4 +1,17 @@
 ===============================================
+fuzzySim v4.10.8 (committed 2024-03-05)
+===============================================
+
+## Modified functions:
+
+* appendData
+- 'data1' and 'data2' coerced to data.frame (to work e.g. for SpatVectors)
+
+* stepByStep
+- 'data' can now be a 'glm' model object, from which the order of the variables will be taken
+
+
+===============================================
 fuzzySim v4.10.7 (committed 2024-01-24) -> CRAN
 ===============================================
 

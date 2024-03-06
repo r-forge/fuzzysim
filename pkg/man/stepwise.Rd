@@ -7,8 +7,8 @@ Stepwise regression
 This function runs a stepwise regression, selecting and/or excluding variables based on the significance (p-value) of the statistical tests implemented in the \code{\link{add1}} and \code{\link{drop1}} functions of R.
 }
 \usage{
-stepwise(data, sp.col, var.cols, id.col = NULL, family = binomial(link="logit"), 
-direction = "both", test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, 
+stepwise(data, sp.col, var.cols, id.col = NULL, family = binomial(link="logit"),
+direction = "both", test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1,
 trace = 1, simplif = TRUE, preds = FALSE, Favourability = FALSE, Wald = FALSE)
 }
 \arguments{
@@ -97,5 +97,8 @@ A. Marcia Barbosa
 \examples{
 data(rotif.env)
 
-stepwise(data = rotif.env, sp.col = 18, var.cols = 5:17)
+stepwise(data = rotif.env, sp.col = 21, var.cols = 5:17)
+
+sw <- stepwise(data = rotif.env, sp.col = 21, var.cols = 5:17, simplif = FALSE)
+sw
 }

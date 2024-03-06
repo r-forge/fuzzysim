@@ -5,10 +5,19 @@ stepByStep <- function(data,
                        Favourability = FALSE,
                        trace = 0,
                        direction = "forward",  # argument implemented by Alba Estrada; "forward" default for back-compatibility
-                       k = 2,
+                       select = "AIC", k = 2,
+                       test.in = "Rao", test.out = "LRT",
+                       p.in = 0.05, p.out = 0.1,
                        cor.method = "pearson") {
 
-  # version 1.8 (5 Mar 2023)
+  # version 2.0 (6 Mar 2023)
+
+if (direction == "backward") stop ("Sorry, 'backward' direction is not implemented in this function. Use 'forward' or 'both'.")
+
+  stopifnot (
+    direction %in% c("forward", "both"),
+    select %in% c("AIC", "BIC", "p.value")
+  )
 
   if (is(data, "glm"))  mod.in <- TRUE  else  mod.in <- FALSE
 
@@ -33,10 +42,22 @@ stepByStep <- function(data,
 
   }  # end if is(data, "glm") else
 
+  if (select == "BIC") {
+    n <- nrow(data)
+    k <- log(n)
+  }
+
   null.model.formula <- reformulate(termlabels = "1", response = response)
   scope.formula <- reformulate(termlabels = vars)
 
-  if (!mod.in)  mod <- step(glm(null.model.formula, family = family, data = data), scope = scope.formula, direction = direction, trace = trace, k = k)
+  if (!mod.in) {
+    if (select %in% c("AIC", "BIC"))  mod <- step(glm(null.model.formula, family = family, data = data), scope = scope.formula, direction = direction, trace = trace, k = k)
+    else if (select == "p.value") {
+      mod <- stepwise(data = data, sp.col = response, var.cols = vars, family = family, direction = direction, trace = trace, test.in = test.in, test.out = test.out, p.in = p.in, p.out = p.out, simplif = FALSE, preds = FALSE, Favourability = FALSE, Wald = FALSE)
+      steps <- mod$steps
+      mod <- mod$model
+    }
+  }
 
   pred.final <- mod$fitted.values
 
@@ -46,14 +67,19 @@ stepByStep <- function(data,
   }
   if (Favourability)  fav.final <- Fav(model = mod)
 
-  if (mod.in) {  # new 5 Mar 2023
+  if (mod.in) {  # new 5-6 Mar 2023
     model.vars <- names(mod$coefficients)[-grep("(Intercept)", names(mod$coefficients))]
-    model.vars <- paste("+", model.vars)  # matching the step() output below
-  } else {
-  # model.vars.split <- sapply(mod$anova[ , 1], strsplit, split = " ")
-  # model.vars <- lapply(model.vars.split, `[`, 2)
-  # model.vars <- as.character(model.vars)[-1]
-  model.vars <- mod$anova[ , 1][nchar(mod$anova[ , 1]) > 0]  # changed by Alba Estrada to accommodate direction="both"
+    model.vars <- paste("+", model.vars)
+  } else {  # if !mod.in
+    if (select == "p.value") {
+      var.entry <- ifelse(steps[ , "direction"] == "in", "+", "-")
+      model.vars <- paste(var.entry, steps$variable)
+    } else {  # if select != "p.value"
+      # model.vars.split <- sapply(mod$anova[ , 1], strsplit, split = " ")
+      # model.vars <- lapply(model.vars.split, `[`, 2)
+      # model.vars <- as.character(model.vars)[-1]
+      model.vars <- mod$anova[ , 1][nchar(mod$anova[ , 1]) > 0]  # changed by Alba Estrada to accommodate direction="both"
+    }
   }
 
   n.steps <- length(model.vars)

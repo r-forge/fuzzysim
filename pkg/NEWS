@@ -1,4 +1,20 @@
 ===============================================
+fuzzySim v4.11 (committed 2024-03-06)
+===============================================
+
+## Modified functions:
+
+* stepByStep
+- added option select="p.value" and associated arguments
+
+
+# Other modified files:
+
+* stepwise.Rd
+- changed 'sp.col' in Examples, for a model where a variable is included and then dropped
+
+
+===============================================
 fuzzySim v4.10.8 (committed 2024-03-05)
 ===============================================
 

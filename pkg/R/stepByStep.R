@@ -4,7 +4,7 @@ stepByStep <- function(data,
                        family = binomial(link = "logit"),
                        Favourability = FALSE,
                        trace = 0,
-                       direction = "forward",  # argument implemented by Alba Estrada; "forward" default for back-compatibility
+                       direction = "both",  # argument implemented by Alba Estrada
                        select = "AIC", k = 2,
                        test.in = "Rao", test.out = "LRT",
                        p.in = 0.05, p.out = 0.1,

@@ -8,7 +8,7 @@ This function builds (or takes) a generalized linear model with stepwise inclusi
 }
 \usage{
 stepByStep(data, sp.col, var.cols, family = binomial(link = "logit"),
-Favourability = FALSE, trace = 0, direction = "forward", select = "AIC",
+Favourability = FALSE, trace = 0, direction = "both", select = "AIC",
 k = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1,
 cor.method = "pearson")
 }
@@ -32,7 +32,7 @@ logical, whether to apply the \code{\link{Fav}}ourability function to remove the
 (if 'data' is not a model object) argument to pass to \code{\link{step}} (if select="AIC" or "BIC") or to \code{\link{stepwise}} (if select="p.value"). If positive, information is printed during the stepwise procedure. Larger values may give more detailed information. The default is 0 (silent).
 }
   \item{direction}{
-(if 'data' is not a model object) argument to pass to \code{\link{step}} (if select="AIC" or "BIC") or to \code{\link{stepwise}} (if select="p.value"). Can be "forward" (the default, for back-compatibility with former versions of 'stepByStep') or "both".
+(if 'data' is not a model object) argument to pass to \code{\link{step}} (if select="AIC" or "BIC") or to \code{\link{stepwise}} (if select="p.value"). Can be "forward" or "both". The default is the latter, to match related functions like \code{\link{step}}, \code{\link{stepwise}} and \code{\link{multGLM}}. (Note that older versions of this function had "forward" as the default.)
 }
   \item{select}{(if 'data' is not a model object) character string specifying the criterion for stepwise selection of variables if step=TRUE. Options are the default "AIC" (Akaike's Information Criterion; Akaike, 1973); BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC or SBIC; Schwarz, 1978); or "p.value" (Murtaugh, 2014). The first two options imply using \code{\link{step}} as the variable selection function, while the last option calls the \code{\link{stepwise}} function.
 }

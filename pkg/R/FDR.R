@@ -1,8 +1,9 @@
 FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
-                 model.type = NULL, family = "auto", correction = "fdr",
-                 q = 0.05, verbose = NULL, verbosity = 1, simplif = FALSE)
+                 test = "Chisq", model.type = NULL, family = "auto",
+                 correction = "fdr", q = 0.05, verbose = NULL, verbosity = 1,
+                 simplif = FALSE)
 
-  # version 4.1 (12 Oct 2022)
+  # version 4.2 (7 Mar 2024)
 
 {
 
@@ -49,7 +50,7 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
   predictors <- data[, var.cols]
 
   if (!is.null(pvalues)) {
-    if (!is.null(data) | !is.null(sp.cols) | !is.null(var.cols)) message("Argments 'data', 'sp.cols' and 'var.cols' are ignored when 'pvalues' provided.")
+    if (!is.null(data) | !is.null(sp.cols) | !is.null(var.cols)) message("Argments 'data', 'sp.cols' and 'var.cols' ignored when 'pvalues' provided.")
 
     coeffs <- aic <- bic <- FALSE
     p.bivar <- pvalues[, 2]
@@ -59,7 +60,7 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
     n.init <- nrow(data)
     data <- data[is.finite(data[ , sp.cols]), ]
     na.loss <- n.init - nrow(data)
-    if (na.loss > 0) message(na.loss, " cases excluded due to missing or non-finite values.")
+    if (na.loss > 0) message(na.loss, " cases excluded due to missing or non-finite values in 'sp.cols'.")
 
     coeffs <- aic <- bic <- TRUE
     if (is.null(ncol(predictors)))
@@ -68,7 +69,8 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
     for (i in 1:length(p.bivar)) {
       #if (model.type == "GLM") {
       model <- glm(response ~ predictors[, i], family = family)
-      p.bivar[i] <- anova(model, test = "Chi")[, "Pr(>Chi)"][2]  # 'test' should be one of "Rao", "LRT", "Chisq", "F", "Cp"
+      anova.table <- anova(model, test = test)
+      p.bivar[i] <- anova.table[, startsWith(colnames(anova.table), "Pr(")][2]  # 'test' should be one of "Rao", "LRT", "Chisq", "F", "Cp"; "F" inappropriate fr binomial models; "Cp" does not give a p-value column
       coef.bivar[i] <- model[["coefficients"]][2]
       #aic.bivar[i] <- model[["aic"]]
       aic.bivar[i] <- extractAIC(model, k = 2)[2]

@@ -7,9 +7,9 @@ False Discovery Rate
 Calculate the false discovery rate (type I error) under repeated testing and determine which variables to select and to exclude from multivariate analysis.
 }
 \usage{
-FDR(data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,  
-model.type = NULL, family = "auto", correction = "fdr", q = 0.05, 
-verbose = NULL, verbosity = 1, simplif = FALSE)
+FDR(data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
+test = "Chisq", model.type = NULL, family = "auto", correction = "fdr",
+q = 0.05, verbose = NULL, verbosity = 1, simplif = FALSE)
 }
 \arguments{
   \item{data}{a data frame containing the response and predictor variables
@@ -17,10 +17,8 @@ verbose = NULL, verbosity = 1, simplif = FALSE)
   \item{sp.cols}{name or index number of the column containing the response variable
   (currently implemented for only one response variable at a time).}
   \item{var.cols}{names or index numbers of the columns containing the predictor variables.}
-  \item{pvalues}{optionally, instead of 'data', 'sp.cols' and 'var.cols',
-  a data frame with the names of the predictor variables in the first column and
-  their bivariate p-values (obtained elsewhere) in the second column. Example:
-  pvalues <- data.frame(var = letters[1:5], pval = c(0.02, 0.004, 0.07, 0.03, 0.05)).}
+  \item{pvalues}{optionally, instead of 'data', 'sp.cols' and 'var.cols', a data frame with the names of the predictor variables in the first column andtheir bivariate p-values (obtained elsewhere) in the second column. Example: pvalues <- data.frame(var = letters[1:5], pval = c(0.02, 0.004, 0.07, 0.03, 0.05)).}
+  \item{test}{(if 'pvalues' not provided) argument to pass to \code{\link{anova}} to obtain the p-value for each variable. Should be one of "Chisq" (the default, for back-compatibility), "Rao", "LRT" or "F" (the latter is not appropriate for models of family "binomial").}
   \item{model.type}{this argument (previously a character value, either "LM" or "GLM") is now deprecated and ignored with a warning if provided. This information is now included in argument 'family' -- e.g., if you want linear models (LM), you can set 'family = "gaussian"'.}
   \item{family}{The error distribution and (optionally) the link function to use (see \code{\link{glm}} or \code{\link{family}} for details). The default "auto" automatically uses "binomial" family for response variables containing only values of 0 and 1; "poisson" for positive integer responses (i.e. count data); "Gamma" for positive non-integer; and "gaussian" (i.e., linear models) otherwise.}
   \item{correction}{the correction procedure to apply to the p-values; see
@@ -35,7 +33,7 @@ verbose = NULL, verbosity = 1, simplif = FALSE)
 \details{
 It is common in ecology to search for statistical relationships between species' occurrence and a set of predictor variables. However, when a large number of variables is analysed (compared to the number of observations), false findings may arise due to repeated testing. Garcia (2003) recommended controlling the false discovery rate (FDR; Benjamini & Hochberg 1995) in ecological studies. The \code{\link{p.adjust}} R function performs this and other corrections to the significance (p) values of variables under repeated testing. The 'FDR' function performs repeated regressions (either linear or logistic) or uses already-obtained p values for a set of variables; calculates the FDR with 'p.adjust'; and shows which variables should be retained for or excluded from further multivariate analysis according to their corrected p values (see, for example, Barbosa, Real & Vargas 2009).
 
-The FDR function uses the Benjamini & Hochberg ("BH", alias "fdr") correction by default, but check the \code{\link{p.adjust}} documentation for other available methods, namely "BY", which allows for non-independent data. Input data may be the response variable (for example, the presence-absence or abundance of a species) and the predictors (a table with one independent variable in each column, with the same number of rows and in the same order as the response); there should be no missing values in the data. Alternatively, you may already have performed the univariate regressions and have a set of variables and corresponding p values which you want to correct with FDR; in this case, get a table with your variables' names in the first column and their p values in the second column, and supply it as the 'pvalues' argument (no need to provide response or predictors in this case).
+The FDR function uses the Benjamini & Hochberg ("BH", alias "fdr") correction by default, but check the \code{\link{p.adjust}} documentation for other available methods, namely "BY", which allows for non-independent data. Input data may be the response variable (for example, the presence-absence or abundance of a species) and the predictors (a table with one predictor variable in each column, with the same number of rows and in the same order as the response). Alternatively, you may already have performed the univariate regressions and have a set of variables and corresponding p values which you want to correct with FDR; in this case, get a table with your variables' names in the first column and their p values in the second column, and supply it as the 'pvalues' argument (no need to provide response or predictors in this case).
 }
 \value{
 If simplif = TRUE, this function returns a data frame with the variables' names as row names and 4 columns containing, respectively, their individual (bivariate) coefficients against the response, their individual AIC (Akaike's Information Criterion; Akaike, 1973), BIC (Bayesian Information Criterion, also known as Schwarz criterion, SBC, SBIC; Schwarz, 1978), p-value and adjusted p-value according to the applied 'correction'.

@@ -10,9 +10,7 @@ stepByStep <- function(data,
                        p.in = 0.05, p.out = 0.1,
                        cor.method = "pearson") {
 
-  # version 2.0 (6 Mar 2023)
-
-  if (length(sp.col) > 1)  stop("Sorry, this function is implemented for only one response variable at a time, so 'sp.col' must indicate only one column")
+  # version 2.1 (7 Mar 2023)
 
   if (direction == "backward")  stop ("Sorry, 'backward' direction is not implemented in this function. Use either 'forward' or 'both'.")
 
@@ -32,6 +30,8 @@ stepByStep <- function(data,
 
   } else {  # if !is(data, "glm")
 
+    if (length(sp.col) > 1)  stop("Sorry, this function is implemented for only one response variable at a time, so 'sp.col' must indicate only one column")
+
     data <- as.data.frame(data)
 
     n.init <- nrow(data)
@@ -43,6 +43,11 @@ stepByStep <- function(data,
     if (is.numeric(var.cols)) vars <- names(data)[var.cols] else vars <- var.cols
 
   }  # end if is(data, "glm") else
+
+  if (length(vars) == 0) {
+    message("Model has no variables.")
+    return(list(predictions = NA, correlations = NA, variables = NA, model = NA))
+  }
 
   if (select == "BIC") {
     n <- nrow(data)
@@ -59,6 +64,11 @@ stepByStep <- function(data,
       steps <- mod$steps
       mod <- mod$model
     }
+  }
+
+  if (length(mod$coefficients[-grep("(Intercept)", names(mod$coefficients))]) == 0) {
+    message("Model has no variables.")
+    return(list(predictions = NA, correlations = NA, variables = NA, model = NA))
   }
 
   pred.final <- mod$fitted.values

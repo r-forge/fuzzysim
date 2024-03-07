@@ -1,4 +1,17 @@
 ===============================================
+fuzzySim v4.11.1 (committed 2024-03-  )
+===============================================
+
+## Modified functions:
+
+* FDR
+- added argument 'test'
+
+* stepByStep
+- message and NA outputs if model has no variables
+
+
+===============================================
 fuzzySim v4.11 (committed 2024-03-06)
 ===============================================
 

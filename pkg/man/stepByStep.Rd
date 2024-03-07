@@ -14,7 +14,7 @@ cor.method = "pearson")
 }
 \arguments{
   \item{data}{
-a data frame (or another object that can be coerced with "as.data.frame", e.g. a matrix, a tibble, a SpatVector) containing the response and predictor variables. Alternatively, a model object of class 'glm', from which the names, values and order of the variables will be taken.
+a data frame (or another object that can be coerced with "as.data.frame", e.g. a matrix, a tibble, a SpatVector) containing the response and predictor variables to model. Alternatively, a model object of class 'glm', from which the names, values and order of the variables will be taken -- arguments 'sp.col', 'var.cols', 'family', 'trace', 'direction', 'select', 'k', 'test.in', 'test.out', 'p.in' and 'p.out' will then be ignored.
 }
   \item{sp.col}{
 (if 'data' is not a model object) the name or index number of the column of 'data' that contains the response variable.
@@ -85,12 +85,15 @@ A. Marcia Barbosa, with contribution by Alba Estrada
 \examples{
 data(rotif.env)
 
-stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17,
-cor.method = "spearman")
+stepByStep(data = rotif.env, sp.col = 21, var.cols = 5:17)
 
-stepByStep(data = rotif.env, sp.col = 18, var.cols = 5:17,
-cor.method = "spearman", Favourability = TRUE)
+stepByStep(data = rotif.env, sp.col = 21, var.cols = 5:17, select = "p.value")
 
-stepByStep(data = rotif.env, sp.col = 9, var.cols = c(5:8, 10:17),
-family = poisson)
+
+# with a model object:
+
+form <- reformulate(names(rotif.env)[5:17], names(rotif.env)[21])
+mod <- step(glm(form, data = rotif.env))
+
+stepByStep(data = mod)
 }

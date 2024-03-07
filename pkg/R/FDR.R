@@ -1,26 +1,26 @@
 FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
-                 model.type = NULL, family = "auto", correction = "fdr", q = 0.05,
-                 verbose = NULL, verbosity = 1, simplif = FALSE)
-  
+                 model.type = NULL, family = "auto", correction = "fdr",
+                 q = 0.05, verbose = NULL, verbosity = 1, simplif = FALSE)
+
   # version 4.1 (12 Oct 2022)
-  
+
 {
-  
+
   if (length(sp.cols) > 1)
     stop("Sorry, FDR is currently implemented for only one response variable at a time, so 'sp.cols' must indicate only one column")
-  
+
   if (!is.null(model.type))  warning ("Argument 'model.type' is deprecated and now ignored, as this info is included in 'family' (e.g. 'gaussian' for LM, 'binomial' or 'poisson' for GLM).")
-  
+
   model.type <- "GLM"  # it's always GLM, even for LM; family is what may change
-  
+
   data <- as.data.frame(data)
-  
+
   # n.init <- nrow(data)
   # data <- data[is.finite(data[ , sp.cols]), ]
   # na.loss <- n.init - nrow(data)
   # if (na.loss > 0) message(na.loss, " cases excluded due to missing or non-finite values.")
   # -> MOVED FURTHER BELOW (if null pvalues)
-  
+
   if (!is.null(verbose)) {
     warning("'verbose' argument will be removed; instead, use 'verbosity' in your code from now on.")
     if (verbose == TRUE) {
@@ -31,7 +31,7 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
       verbosity <- 0
     }
   }
-  
+
   if (simplif)  verbosity <- 0
 
   if (family == "auto" && is.null(pvalues)) {  # not all families are available in auto!
@@ -42,25 +42,25 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
     else family <- "gaussian"
     if (verbosity > 0) message("\nUsing generalized linear models of family '", family, "'.\n")
   }
-  
+
   if (!(correction %in% p.adjust.methods))
-    stop("Invalid correction method.\nType 'p.adjust.methods' for available options.")
+    stop("Invalid correction method.\nType in 'p.adjust.methods' for available options.")
   response <- data[, sp.cols]
   predictors <- data[, var.cols]
-  
+
   if (!is.null(pvalues)) {
-    if (!is.null(data) | !is.null(sp.cols) | !is.null(var.cols)) message("Argments 'data', 'sp.cols' and 'var.cols' are ignored when 'pvalues' is provided.")
-    
+    if (!is.null(data) | !is.null(sp.cols) | !is.null(var.cols)) message("Argments 'data', 'sp.cols' and 'var.cols' are ignored when 'pvalues' provided.")
+
     coeffs <- aic <- bic <- FALSE
     p.bivar <- pvalues[, 2]
     names(p.bivar) <- pvalues[, 1]
-    
+
   } else {  # if null pvalues
     n.init <- nrow(data)
     data <- data[is.finite(data[ , sp.cols]), ]
     na.loss <- n.init - nrow(data)
     if (na.loss > 0) message(na.loss, " cases excluded due to missing or non-finite values.")
-    
+
     coeffs <- aic <- bic <- TRUE
     if (is.null(ncol(predictors)))
       stop("You need more than one predictor to calculate the FDR.")
@@ -68,7 +68,7 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
     for (i in 1:length(p.bivar)) {
       #if (model.type == "GLM") {
       model <- glm(response ~ predictors[, i], family = family)
-      p.bivar[i] <- anova(model, test = "Chi")[, "Pr(>Chi)"][2]
+      p.bivar[i] <- anova(model, test = "Chi")[, "Pr(>Chi)"][2]  # 'test' should be one of "Rao", "LRT", "Chisq", "F", "Cp"
       coef.bivar[i] <- model[["coefficients"]][2]
       #aic.bivar[i] <- model[["aic"]]
       aic.bivar[i] <- extractAIC(model, k = 2)[2]
@@ -81,17 +81,17 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
       #  aic.bivar[i] <- extractAIC(model)[2]
       #}
       #else stop("'model.type' must be either 'LM' or 'GLM'")
-      
+
       if (is.na(p.bivar[i]))
         message("A p-value could not be calculated for var.col number", i)
       if (is.na(aic.bivar[i]))
         message("AIC could not be calculated for var.col number", i)
-      
+
       if (is.na(aic.bivar[i]))
         message("BIC could not be calculated for var.col number", i)
     }; rm(i)
   }  # end if null pvalues
-  
+
   if (coeffs) {
     results <- data.frame(cbind(coef.bivar, aic.bivar, bic.bivar, p.bivar), row.names = names(predictors))
     names(results) <- c("bivariate.coeff", "AIC", "BIC", "p.value")
@@ -112,18 +112,18 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
                                         method = correction)
   }
   p.adjusted <- NULL
-  
+
   if (simplif)  return (results)
-  
+
   exclude <- subset(results, p.adjusted > q)
   select <- subset(results, p.adjusted <= q)
-  
+
   if (verbosity > 0) {
     message("\nBivariate p-values adjusted with '", correction,
             "' correction;\n", nrow(exclude), " variable(s) excluded, ",
             nrow(select), " selected (with q = ", q, ")")
   }
-  
+
   if (verbosity > 1) {
     cat("\nEXCLUDED:\n")
     cat(rownames(exclude), sep = ", ")

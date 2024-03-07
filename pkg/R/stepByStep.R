@@ -12,7 +12,9 @@ stepByStep <- function(data,
 
   # version 2.0 (6 Mar 2023)
 
-if (direction == "backward") stop ("Sorry, 'backward' direction is not implemented in this function. Use 'forward' or 'both'.")
+  if (length(sp.col) > 1)  stop("Sorry, this function is implemented for only one response variable at a time, so 'sp.col' must indicate only one column")
+
+  if (direction == "backward")  stop ("Sorry, 'backward' direction is not implemented in this function. Use either 'forward' or 'both'.")
 
   stopifnot (
     direction %in% c("forward", "both"),

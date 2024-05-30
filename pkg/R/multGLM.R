@@ -1,6 +1,6 @@
-multGLM <- function(data, sp.cols, var.cols, id.col = NULL, block.cols = NULL, family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr", FDR.first = TRUE, corSelect = FALSE, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...) {
+multGLM <- function(data, sp.cols, var.cols, id.col = NULL, block.cols = NULL, family = "binomial", test.sample = 0, FDR = FALSE, test = "Chisq", correction = "fdr", FDR.first = TRUE, corSelect = FALSE, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), cor.method = "pearson", step = TRUE, trace = 0, start = "null.model", direction = "both", select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE, Favourability = TRUE, group.preds = TRUE, TSA = FALSE, coord.cols = NULL, degree = 3, verbosity = 2, test.in = "Rao", test.out = "LRT", p.in = 0.05, p.out = 0.1, ...) {
 
-  # version 5.7 (24 May 2023)
+  # version 5.8 (13 Mar 2024)
 
   if (!is.null(block.cols)) stop("Sorry, 'block.cols' is still under implementation and is not yet ready for use.")
   # block.cols may or may not be included in var.cols:

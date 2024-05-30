@@ -9,8 +9,9 @@ This function computes pairwise correlations among the variables in a dataset an
 \usage{
 corSelect(data, sp.cols = NULL, var.cols, coeff = TRUE,
 cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05),
-select = ifelse(is.null(sp.cols), "VIF", "p.value"), family = "auto",
-use = "pairwise.complete.obs", method = "pearson", verbosity = 1)
+select = ifelse(is.null(sp.cols), "VIF", "p.value"), test = "Chisq",
+family = "auto", use = "pairwise.complete.obs", method = "pearson",
+verbosity = 1)
 }
 \arguments{
   \item{data}{a data frame containing the response and predictor variables.}
@@ -19,6 +20,7 @@ use = "pairwise.complete.obs", method = "pearson", verbosity = 1)
   \item{coeff}{logical value indicating whether two variables should be considered highly correlated based on the magnitude of their coefficient of correlation. The default is TRUE. If set to FALSE, this classification will be based on the p-value of the correlation, but mind that (with sufficient sample size) correlations can be statistically significant even if weak.}
   \item{cor.thresh}{if coeff=TRUE (the default): threshold value of correlation coefficient above which (or below which, for negative correlations) two predictor variables are considered highly correlated. The default is 0.8. If coeff=FALSE: threshold value of p-value below which two predictor variables are considered highly (or significantly) correlated. The default is 0.05.}
   \item{select}{character value indicating the criterion for excluding variables among those that are highly correlated. Can be "VIF" (the default if 'sp.cols' is NULL), "p.value" (the default if 'sp.cols' is specified), "AIC", "BIC", or "cor" (see Details).}
+  \item{test}{argument to pass to the \code{\link{FDR}} function (which, in turn, passes it to \code{\link{anova}}) if test="p.value". The default is currently "Chisq" for back-compatibility.}
   \item{family}{If 'sp.col' is not NULL, the error distribution and (optionally) the link function to use for assessing significant / informative variables (see \code{\link{glm}} or \code{\link{family}} for details). The default "auto" automatically uses "binomial" family for response variables containing only values of 0 and 1; "poisson" for positive integer responses (i.e. count data); "Gamma" for positive non-integer; and "gaussian" (i.e., linear models) otherwise.}
   \item{use}{argument to pass to \code{\link{cor}} indicating what to do when there are missing values. Can be "pairwise.complete.obs" (the default here), "everything", "all.obs", "complete.obs", "na.or.complete".}
   \item{method}{argument to pass to \code{\link{cor}} specifying the correlation coefficient to use. Can be "pearson" (the default, with a recommended minimum of 30 rows of data), "kendall", or "spearman" (with a recommended minimum of 10 rows of data).}

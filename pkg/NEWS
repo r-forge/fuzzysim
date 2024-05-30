@@ -1,11 +1,20 @@
 ===============================================
-fuzzySim v4.11.1 (committed 2024-03-  )
+fuzzySim v4.12 (committed 2024-05-30)
+===============================================
+
+## New functions:
+
+* dms2dec
+
+
+===============================================
+fuzzySim v4.11.1 (committed 2024-03-07)
 ===============================================
 
 ## Modified functions:
 
-* FDR
-- added argument 'test'
+* FDR, multGLM, corSelect
+- added argument 'test' (default "Chisq" for back-compatibility; future default probably "Rao" score as in SPSS)
 
 * stepByStep
 - message and NA outputs if model has no variables

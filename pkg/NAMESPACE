@@ -8,6 +8,7 @@ importFrom("stats", "add1", "drop1", "anova", "reformulate", "as.formula", "bino
 "lm", "na.omit", "nobs", "p.adjust", "p.adjust.methods", "poly", "prcomp",
 "predict", "quantile", "step", "update",  "na.pass", "t.test", "vcov",
 "weighted.mean")
+importFrom(stringi, stri_unescape_unicode)
 importFrom("utils", "combn", "installed.packages", "read.csv", "stack",
            "write.csv", "setTxtProgressBar", "txtProgressBar")
 

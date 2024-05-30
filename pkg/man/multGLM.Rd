@@ -8,8 +8,8 @@ This function performs selection of variables and calculates generalized linear 
 }
 \usage{
 multGLM(data, sp.cols, var.cols, id.col = NULL, block.cols = NULL,
-family = "binomial", test.sample = 0, FDR = FALSE, correction = "fdr",
-FDR.first = TRUE, corSelect = FALSE, coeff = TRUE,
+family = "binomial", test.sample = 0, FDR = FALSE, test = "Chisq",
+correction = "fdr", FDR.first = TRUE, corSelect = FALSE, coeff = TRUE,
 cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), cor.method = "pearson",
 step = TRUE, trace = 0, start = "null.model", direction = "both",
 select = "AIC", trim = TRUE, Y.prediction = FALSE, P.prediction = TRUE,
@@ -26,6 +26,7 @@ p.out = 0.1, ...)
   \item{family}{argument to be passed to the \code{\link{glm}} function; currently, only 'binomial' is implemented here.}
   \item{test.sample}{a subset of data to set aside for subsequent model testing. Can be a value between 0 and 1 for a proportion of the data to choose randomly (e.g. 0.2 for 20\%); or an  integer number for a particular number of cases to choose randomly among the records in 'data'; or a vector of integers for the index numbers of the particular rows to set aside; or "Huberty" for his rule of thumb based on the number of variables (Huberty 1994, Fielding & Bell 1997).}
   \item{FDR}{logical value indicating whether to do a preliminary exclusion of variables based on the false discovery rate (see \code{\link{FDR}}). The default is FALSE.}
+  \item{test}{argument to pass to the \code{\link{FDR}} function (which, in turn, passes it to \code{\link{anova}}) if FDR=TRUE. The default is currently "Chisq" for back-compatibility.}
   \item{correction}{argument to pass to the \code{\link{FDR}} function if FDR=TRUE. The default is "fdr", but see \code{\link{p.adjust}} for other options.}
   \item{FDR.first}{logical value indicating whether FDR exclusion (if FDR=TRUE) should be applied at the beginning. The default is TRUE. If set to FALSE (and if FDR=TRUE), FDR exclusion will be applied after 'corSelect' below.}
   \item{corSelect}{logical value indicating whether to select among highly correlated variables using \code{\link{corSelect}}. The default is FALSE.}

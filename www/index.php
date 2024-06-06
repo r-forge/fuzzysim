@@ -125,7 +125,7 @@ echo $contents; } ?>
 
 <p> Here's a <a href="fuzzySim-poster-RMtp.pdf">poster</a> made to present <i>fuzzySim</i> at <i><a href="http://r2014-mtp.sciencesconf.org/">Rencontres R 2014</a></i>, and a <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract">scientific paper</a> presenting the package, though it has grown a lot since then.</p>
 
-<p> There's an <b><a href="fuzzySim-tutorial.html">illustrated beginners <big>tutorial</big></b></a> of the basics of <i>fuzzySim</i>. There's also a beginners <a href="fuzzySim-modelling-tutorial.html"><b>tutorial on <big>species distribution modelling</big></b></a> with <i>fuzzySim</i>, and a (somewhat outdated) <a href="http://modeva.r-forge.r-project.org/Guia_modelacion_fuzzySim_modEvA.html">course manual on model building with <i>fuzzySim</i> and model evaluation with <i>modEvA</i> (<b>in Spanish</b>)</a>. There's also a <a href="pairwise_rangemaps_tutorial.html">short tutorial on rangemap comparison</a> with <i>fuzzySim</i>.
+<p> Here's an <b><a href="fuzzySim-tutorial.html">illustrated beginners <big>tutorial</big></b></a> of the basics of <i>fuzzySim</i>. There's also a beginners <a href="fuzzySim-modelling-tutorial.html"><b>tutorial on <big>species distribution modelling</big></b></a> with <i>fuzzySim</i>, and a (somewhat outdated) <a href="http://modeva.r-forge.r-project.org/Guia_modelacion_fuzzySim_modEvA.html">course manual on model building with <i>fuzzySim</i> and model evaluation with <i>modEvA</i> (<b>in Spanish</b>)</a>. There's also a <a href="pairwise_rangemaps_tutorial.html">short tutorial on rangemap comparison</a> with <i>fuzzySim</i>.
 </p>
 
 Read the functions' <b>help files</b> for full documentation.

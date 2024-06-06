@@ -61,7 +61,9 @@ echo $contents; } ?>
 <p>To install a <b>developing version</b> (with the latest features and bug fix attempts) of <i>fuzzySim</i> from R-Forge, paste the following command in the R console (when connected to the internet):</p>
 <code>install.packages("fuzzySim", repos="http://R-Forge.R-project.org")</code><br />
 
+<font color="grey" size="1">
 <p>This should work if you have the <b>latest version of R</b>; otherwise, it may either fail (producing a message like "<i>package 'fuzzySim' is not available for your R version</i>") or install an older version of <i>fuzzySim</i>. To <b>check the version that you have actually installed</b>, type <big><b><code>citation(package="fuzzySim")</code></b></big>. To install the latest version of the package, you can either upgrade R <i>or</i> download the compressed <i>fuzzySim</i> <b>package source files</b> to your disk (<i>.zip</i> or <i>.tar.gz</i> available <a href="https://r-forge.r-project.org/R/?group_id=1853">here</a>) and then install the package from there, e.g. with R menu "<i>Packages - Install packages from local zip files</i>" (Windows), or "<i>Packages & Data - Package installer, Packages repository - Local source package</i>" (Mac), or "<i>Tools - Install packages - Install from: Package Archive File</i>" (RStudio).</p>
+</font>
 
 <p>You only need to install (each version of) the package once, but then every time you re-open R you need to <big><strong>load</strong></big> it by typing:</p>
 <code>library(fuzzySim)</code><br />
@@ -121,13 +123,12 @@ echo $contents; } ?>
 
 <h2>Find out more</h2>
 
-<p> There's an <b><a href="fuzzySim-tutorial.html">illustrated beginners <big>tutorial</big></b></a> of <i>fuzzySim</i> and a <b><a href="fuzzySim-manual.pdf">reference <big>manual</big></a></b> based on the package help files.</p>
+<p> Here's a <a href="fuzzySim-poster-RMtp.pdf">poster</a> made to present <i>fuzzySim</i> at <i><a href="http://r2014-mtp.sciencesconf.org/">Rencontres R 2014</a></i>, and a <a href="http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract">scientific paper</a> presenting the package, though it has grown a lot since then.</p>
 
-<p> Here's a <a href="fuzzySim-poster-RMtp.pdf">poster</a> made to present <i>fuzzySim</i> at <i><a href="http://r2014-mtp.sciencesconf.org/">Rencontres R 2014</a></i>.</p>
+<p> There's an <b><a href="fuzzySim-tutorial.html">illustrated beginners <big>tutorial</big></b></a> of the basics of <i>fuzzySim</i>. There's also a beginners <a href="fuzzySim-modelling-tutorial.html"><b>tutorial on <big>species distribution modelling</big></b></a> with <i>fuzzySim</i>, and a (somewhat outdated) <a href="http://modeva.r-forge.r-project.org/Guia_modelacion_fuzzySim_modEvA.html">course manual on model building with <i>fuzzySim</i> and model evaluation with <i>modEvA</i> (<b>in Spanish</b>)</a>. There's also a <a href="pairwise_rangemaps_tutorial.html">short tutorial on rangemap comparison</a> with <i>fuzzySim</i>.
+</p>
 
-<p> There's also a beginners <a href="fuzzySim-modelling-tutorial.html"><b>tutorial on <big>species distribution modelling</big></b></a> with <i>fuzzySim</i> and a <a href="http://modeva.r-forge.r-project.org/Guia_modelacion_fuzzySim_modEvA.html">course manual on model building with <i>fuzzySim</i> and model evaluation with <i>modEvA</i> (<b>in Spanish</b>)</a>.</p>
-
-There's also a <a href="pairwise_rangemaps_tutorial.html">short tutorial on rangemap comparison</a>.
+Read the functions' <b>help files</b> for full documentation.
 
 <p> Go <a href="http://modtools.wordpress.com/packages/fuzzysim/">here</a> for further info on the package and its origins. </p>
 

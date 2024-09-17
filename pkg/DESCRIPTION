@@ -3,7 +3,22 @@ Type: Package
 Title: Fuzzy Similarity in Species Distributions
 Version: 4.13
 Date: 2024-09-17
-Author: Barbosa A.M.
+Authors@R: c(person(given = c("A.", "Marcia"),
+                    family = "Barbosa",
+                    role = "aut"),
+             person(given = "Paul",
+                    family = "Melloy",
+                    role = "ctb"),
+             person(given = "Diego",
+                    family = "Fontaneto",
+                    role = "dtc"),
+             person(given = c("Jose", "Carlos"),
+                    family = "Guerrero",
+                    role = "fnd"),
+             person(given = c("A.", "Marcia"),
+                    family = "Barbosa",
+                    role = "cre",
+                    email = "ana.marcia.barbosa@gmail.com"))
 Maintainer: A. Marcia Barbosa <ana.marcia.barbosa@gmail.com>
 Imports: graphics,
          methods,

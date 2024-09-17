@@ -16,10 +16,10 @@ inv = TRUE)
 a matrix or data frame containing, at least, two columns with spatial coordinates, and one column per species containing their presence (1) and absence (0) data, with localities in rows.
 }
   \item{sp.cols}{
-names or index numbers of the columns containing the species presences and absences in \code{data}. It must contain only zeros (0) for absences and ones (1) for presences.
+names or index numbers of the columns containing the species presences and absences in 'data'. It must contain only zeros (0) for absences and ones (1) for presences.
 }
   \item{coord.cols}{
-names or index numbers of the columns containing the spatial coordinates in data (in this order, x and y, or longitude and latitude).
+names or index numbers of the columns containing the spatial coordinates in 'data' (in this order, x and y, or longitude and latitude).
 }
   \item{id.col}{
 optionally, the name or index number of a column (to be included in the output) containing locality identifiers in 'data'.

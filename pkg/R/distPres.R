@@ -14,7 +14,15 @@ distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat =
     is.null(dist.mat) | nrow(dist.mat) == nrow(data)
   )
 
-  if (is.null(dist.mat)) dist.mat <- dist(data[ , coord.cols], method = method)
+  if (is.null(dist.mat)) {
+    # if ("terra" %in% .packages()) {
+    #   v <- terra::vect(as.matrix(data[ , coord.cols]))
+    #   ll <- terra::is.lonlat(v, perhaps = TRUE, warn = TRUE)  # but add 'crs' parameter
+    #   dist.mat <- terra::distance(data[ , coord.cols], lonlat = ll)
+    # }
+    # else
+      dist.mat <- stats::dist(data[ , coord.cols], method = method)
+  }
 
   dist.mat <- as.matrix(dist.mat)
   sp.data <- data[ , sp.cols, drop = FALSE]

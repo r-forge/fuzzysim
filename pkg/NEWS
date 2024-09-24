@@ -1,4 +1,13 @@
 ===============================================
+fuzzySim v4.20 (committed 2024-09-24)
+===============================================
+
+## New functions:
+
+* getRegion
+
+
+===============================================
 fuzzySim v4.13 (committed 2024-09-17)
 ===============================================
 
@@ -8,6 +17,12 @@ fuzzySim v4.13 (committed 2024-09-17)
 - implemented for 'phylolm' models
 - added 'phy' and 'verbosity' arguments
 - changed 'if (class(model) %in% c("glm", "lm"))' to 'if (all(class(model) %in% c("glm", "lm")))', otherwise CRAN check error
+
+
+## Other modified files:
+
+* DESCRIPTION
+- added contributors
 
 
 ===============================================

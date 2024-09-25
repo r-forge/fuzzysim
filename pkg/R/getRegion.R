@@ -29,7 +29,9 @@ getRegion <- function(pres.coords,
                       type = "width",
                       dist_mult = 1,
                       width_mult = 0.5,
+                      weight = TRUE,
                       CRS = NULL,
+                      # surveyed_polygons = NULL,
                       verbosity = 2,
                       plot = TRUE)
 {
@@ -107,11 +109,18 @@ getRegion <- function(pres.coords,
     for (i in clusters) {
       clust_pts <- pres.coords[pres.coords$clust == i, ]
       buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
-      if (nrow(clust_pts) == 1) buff_radius <- 0.001  # clusters with only one point get no distance, and a zero-width buffer cannot be computed for points
+      if (!is.finite(buff_radius) || buff_radius <= 0) buff_radius <- 0.001  # clusters with only one point get no distance, and a zero-width buffer cannot be computed for points
       pres.coords[pres.coords$clust == i, "buff_radius"] <- buff_radius
     }
 
-    # PENALIZAR POR PQN N PONTOS POR CLUSTER (ver Tadarida teniotis)
+    if (weight) {
+      clust_n_table <- table(pres.coords$clust)
+      clust_n <- merge(data.frame(pres.coords[ , "clust", drop = FALSE]), data.frame(clust_n_table), by.x = "clust", by.y = "Var1")[ , "Freq"]
+      range01 <- function(x){(x-min(x))/(max(x)-min(x))}
+      clust_n_01 <- range01(clust_n)
+      clust_n_01[clust_n_01 == 0] <- 0.001  # zero buffer not allowed for points
+      pres.coords$buff_radius <- pres.coords$buff_radius * clust_n_01
+    }
 
     # agg <- terra::aggregate(pres.coords, by = "clust")
     # # reg <- terra::aggregate(terra::buffer(agg, width = buff_radius))
@@ -144,17 +153,29 @@ getRegion <- function(pres.coords,
 
   reg <- terra::aggregate(reg)
 
-  if (plot) {
-    plot(reg, col = "yellow", border = NA,
-         main = paste("type =", type))
+  # if (!is.null(surveyed_polygons)) {
+  #   reg <- terra::union(reg, surveyed_polygons)
+  # }
 
-    if (!startsWith(type, "clust")) plot(pres.coords, cex = 0.5, add = TRUE)
-    else plot(pres.coords, "clust", cex = 0.5, add = TRUE,
-              col = hcl.colors(length(clusters), palette = "dark2"),
-              plg = list(title = "clusters"))
+  if (plot) {
+    terra::plot(reg, col = "yellow", border = NA,
+                main = paste("type =", type))
+
+    if (!startsWith(type, "clust")) {
+      terra::plot(pres.coords, cex = 0.5, add = TRUE)
+    } else {
+      pres.coords$clust <- as.factor(pres.coords$clust)
+      nc <- ifelse(length(clusters) > 10, 2, 1)
+      terra::plot(pres.coords, "clust", cex = 0.5, add = TRUE,
+                  col = grDevices::hcl.colors(length(clusters),
+                                              palette = "dark2"),
+                  plg = list(title = "clusters", cex = 0.6, nc = nc))
+      agg <- terra::aggregate(pres.coords, "clust")
+      terra::text(terra::centroids(agg), "agg_n", cex = 0.5)
+    }
   }
 
-  if (verbosity > 1) message("Finished!")
+  if (verbosity > 1 && grepl("dist|clust", type)) message("Finished!")
 
   return(reg)
 }

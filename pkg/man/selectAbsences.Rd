@@ -7,7 +7,7 @@ Select (spatially biased) absence rows.
 This function takes a matrix or data frame containing species presence (1) and absence (0) data, and it selects among the absence rows to stay within a given number or ratio of absences, and/or within and/or beyond a given distance to the presences. Optionally, absences can be selected with higher probability towards the vicinity of presences, to reproduce survey bias.
 }
 \usage{
-selectAbsences(data, sp.cols, coord.cols = NULL, min.dist = NULL,
+selectAbsences(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dist = NULL,
 max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE,
 dist.mat = NULL, seed = NULL, plot = !is.null(coord.cols), df = TRUE,
 verbosity = 2)
@@ -16,6 +16,7 @@ verbosity = 2)
   \item{data}{a matrix or data frame containing, at least, one column with the species' presence (1) and absence (0) records, with localities in rows; and (if distance or spatial bias are required) two columns with the spatial coordinates.}
   \item{sp.cols}{names or index numbers of the columns containing the species presences (1) and absences (0) in 'data'.}
   \item{coord.cols}{names or index numbers of the columns containing the spatial coordinates in 'data' (x and y, or longitude and latitude, in this order). Needed if distance or spatial bias are required.}
+\item{CRS}{coordinate reference system of the 'coord.cols' in 'data', in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). Ignored if 'dist.mat' is provided. Otherwise, if 'CRS' is provided and the 'terra' package is installed, distances are computed with \code{\link[terra:distance]{terra::distance()}}, thus accounting for the curvature of the Earth.}
   \item{min.dist}{(optional) numeric value specifying the minimum distance (in the same units as 'coord.cols') at which selected absences should be from the presences.}
   \item{max.dist}{(optional) numeric value specifying the maximum distance (in the same units as 'coord.cols') at which selected absences should be from the presences.}
   \item{n}{(optional) integer value specifying the number of absence rows to select. Can also be specified as a ratio -- see 'mult.p' below.}

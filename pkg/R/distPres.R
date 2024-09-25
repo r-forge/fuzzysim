@@ -1,5 +1,5 @@
-distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, method = "euclidean", suffix = "_D", p = 1, inv = TRUE) {
-  # version 2.3 (9 Nov 2023)
+distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, CRS = NULL, method = "euclidean", suffix = "_D", p = 1, inv = TRUE, verbosity = 2) {
+  # version 2.4 (25 Sep 2024)
 
   data <- as.data.frame(data)
   stopifnot(
@@ -15,13 +15,23 @@ distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat =
   )
 
   if (is.null(dist.mat)) {
-    # if ("terra" %in% .packages()) {
-    #   v <- terra::vect(as.matrix(data[ , coord.cols]))
-    #   ll <- terra::is.lonlat(v, perhaps = TRUE, warn = TRUE)  # but add 'crs' parameter
-    #   dist.mat <- terra::distance(data[ , coord.cols], lonlat = ll)
-    # }
-    # else
+    if (verbosity > 1) message("Computing pairwise distances...")
+    if (!is.null(CRS) && "terra" %in% .packages()) {
+      # ll <- terra::is.lonlat(v, perhaps = TRUE, warn = TRUE)
+      # dist.mat <- terra::distance(data[ , coord.cols], lonlat = ll)
+
+      v <- terra::vect(as.matrix(data[ , coord.cols]), crs = CRS)
+      dist.mat <- terra::distance(v)
+
+      # crd_names <- if (is.character(coord.cols)) coord.cols else colnames(data)[coord.cols]
+      # pres_pts <- terra::vect(as.matrix(data[data[ , sp.cols] == 1, ]), geom = crd_names, crs = CRS)
+      # abs_pts <- terra::vect(as.matrix(data[data[ , sp.cols] == 0, ]), geom = crd_names, crs = CRS)
+      # nearest_pres <- terra::nearest(abs_pts, pres_pts)$distance
+
+    } else {
+      if (verbosity > 0) message("NOTE: with 'CRS' not provided or 'terra' package not installed,\n distances don't consider the curvature of the Earth")
       dist.mat <- stats::dist(data[ , coord.cols], method = method)
+    }
   }
 
   dist.mat <- as.matrix(dist.mat)

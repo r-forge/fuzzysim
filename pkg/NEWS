@@ -1,4 +1,20 @@
 ===============================================
+fuzzySim v4.21 (committed 2024-09-25)
+===============================================
+
+## Modified functions:
+
+* distPres, selectAbsences
+- add 'CRS' argument; if provided, terra::distance() is used
+
+* distPres
+- add 'verbosity' argument
+
+* getRegion
+- fix plotting error, now specifying 'terra::' before plot() and text()
+
+
+===============================================
 fuzzySim v4.20 (committed 2024-09-24)
 ===============================================
 

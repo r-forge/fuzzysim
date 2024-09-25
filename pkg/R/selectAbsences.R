@@ -1,5 +1,5 @@
-selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, dist.mat = NULL, seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2) {
-  # version 1.5 (9 Nov 2023)
+selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, dist.mat = NULL, seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2) {
+  # version 1.6 (25 Sep 2024)
 
   if (length(sp.cols) > 1) stop("Sorry, this function is currently implemented for only one 'sp.col' at a time.")
   if (bunch == TRUE) stop("Sorry, 'bunch=TRUE' is still pending implementation.")
@@ -20,12 +20,12 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, min.dist = NULL, ma
   n.pres <- length(pres.rows)
   if (verbosity > 0) cat("\n", n.abs, " absences (and ", n.pres, " presences) in input 'data'.\n", sep = "")
 
-  if (!is.null(min.dist) || !is.null(max.dist) || bias == TRUE || bunch == TRUE) {
+  if (!is.null(min.dist) || !is.null(max.dist) || isTRUE(bias)) {  #  || isTRUE(bunch)
     if (is.null(coord.cols)) stop("arguments 'min.dist', 'max.dist', 'bias' and 'bunch' require specifying 'coord.cols'.")
 
-    if (verbosity > 0) cat("\nComputing distance to presences...\n")
-    dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = FALSE, dist.mat = dist.mat)[, 1]
-    if (verbosity > 1) cat("- Distance from input absences to presences ranges between", round(min(dist.pres[abs.rows]), 3), "and", round(max(dist.pres[abs.rows]), 3), "coordinate units.\n")
+    if (verbosity > 0) cat("\nComputing distance to presences (may take long for large datasets)...\n")
+    dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = FALSE, dist.mat = dist.mat, CRS = CRS, verbosity = 1)[, 1]
+    if (verbosity > 1) cat("- Distance from input absences to presences ranges between", round(min(dist.pres[abs.rows]), 3), "and", round(max(dist.pres[abs.rows]), 3), "\n")
 
     if (!is.null(min.dist)) {
       pres.rows <- which(data[ , sp.cols] == 1)

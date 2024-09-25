@@ -8,8 +8,8 @@ This function takes a matrix or data frame containing species presence (1) and a
 }
 \usage{
 distPres(data, sp.cols, coord.cols = NULL, id.col = NULL,
-dist.mat = NULL, method = "euclidean", suffix = "_D", p = 1,
-inv = TRUE)
+dist.mat = NULL, CRS = NULL, method = "euclidean", suffix = "_D",
+p = 1, inv = TRUE, verbosity = 2)
 }
 \arguments{
   \item{data}{
@@ -27,8 +27,11 @@ optionally, the name or index number of a column (to be included in the output) 
   \item{dist.mat}{
 optionally, if you do not want distances calculated with any of the methods available in the \code{\link{dist}} function of package \pkg{stats}, you may provide a distance matrix calculated elsewhere for the localities in 'data'. This is especially advisable for large geographic extents, where you will get much more accurate distances with a function that considers the curvature of the Earth -- e.g., function \code{distance} in package \pkg{terra}, or function \code{st_distance} in package \pkg{sf}.
 }
+\item{CRS}{
+coordinate reference system of the 'coord.cols' in 'data', in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). Ignored if 'dist.mat' is provided. Otherwise, if 'CRS' is provided and the 'terra' package is installed, distances are computed with \code{\link[terra:distance]{terra::distance()}}, thus accounting for the curvature of the Earth.
+}
   \item{method}{
-(if 'dist.mat' is not provided) the method with which to compute the distances between localities. Available options are those of \code{\link{dist}}. The default is "euclidean".
+(if neither 'dist.mat' nor 'CRS' are provided) the method with which to compute the distances between localities. Available options are those of \code{\link{dist}}. The default is "euclidean".
 }
   \item{suffix}{
 character indicating the suffix to add to the distance columns in the resulting data frame. The default is \code{"_D"}.
@@ -38,6 +41,9 @@ the power to which distance should be raised. The default is 1; use 2 or higher 
 }
   \item{inv}{
 logical value indicating whether distance should be inverted, i.e. standardized to vary between 0 and 1 and then subtracted from 1, so that it varies between 0 and 1 and higher values mean closer to presence. The default is \code{TRUE}, which is adequate as a fuzzy version of presence-absence (for using e.g. with \code{\link{fuzSim}} and \code{\link{simMat}}). In this case, presences maintain the value 1, and inverse distance to presence is calculated only for absence localities.
+}
+  \item{verbosity}{
+integer specifying the amount of messages to display along the process. The default is 2, for the maximum amount of messages available.
 }
 }
 \details{

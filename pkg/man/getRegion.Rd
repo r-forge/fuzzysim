@@ -9,6 +9,7 @@ getRegion(
   type = "width",
   dist_mult = 1,
   width_mult = 0.5,
+  weight = TRUE,
   CRS = NULL,
   verbosity = 2,
   plot = TRUE
@@ -28,6 +29,7 @@ getRegion(
 }
 \item{dist_mult}{if type = "mean_dist" or "clust_mean_dist", multiplier of the mean pairwise point distance to use for the \code{\link[terra:buffer]{terra::buffer()}} radius around each cluster. Default 1.}
 \item{width_mult}{if type = "width" or "clust_width", multiplier of the width to use for the \code{\link[terra:buffer]{terra::buffer()}} radius. Default 0.5.}
+\item{weight}{logical (default TRUE, used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes.}
 \item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}).}
 \item{verbosity}{integer indicating the amount of messages to display. The default is 2, for all available messages.}
 \item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow) together with the input 'pres.coords' (black points).}

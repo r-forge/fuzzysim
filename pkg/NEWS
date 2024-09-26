@@ -1,4 +1,14 @@
 ===============================================
+fuzzySim v4.23 (committed 2024-09-  )
+===============================================
+
+## Modified functions:
+
+* distPres
+- terra::nearest instead of pairwise distance (much more efficient and avoids crash for large datasets)
+
+
+===============================================
 fuzzySim v4.22 (committed 2024-09-26)
 ===============================================
 

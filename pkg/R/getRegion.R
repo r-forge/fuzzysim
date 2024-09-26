@@ -27,17 +27,18 @@
 
 getRegion <- function(pres.coords,
                       type = "width",
+                      clust_dist = 100,
                       dist_mult = 1,
                       width_mult = 0.5,
                       weight = TRUE,
                       CRS = NULL,
-                      # surveyed_polygons = NULL,
                       verbosity = 2,
                       plot = TRUE)
 {
 
-  stopifnot(type %in% c("width", "mean_dist", "inv_dist", "clust_mean_dist", "clust_width"),
-            dist_mult > 0,
+  if (!(type %in% c("width", "mean_dist", "inv_dist", "clust_mean_dist", "clust_width"))) stop("Invalid 'type'. See help file for options.")
+
+  stopifnot(dist_mult > 0,
             width_mult > 0,
             is.numeric(verbosity),
             is.logical(plot)
@@ -83,11 +84,16 @@ getRegion <- function(pres.coords,
 
   if (grepl("clust", type)) {
     if (verbosity > 1) message("Computing point clusters...")
-    tree <- stats::hclust(d = dist_mat)
-    pres.coords$clust <- stats::cutree(tree, h = dist_mean)
+
+    # nrby <- nearby(pres.coords, k = 1)
+    # nearest_dist <- distance(pres.coords[nrby[ , 1], ], pres.coords[nrby[ , 2], ], pairwise = TRUE)
+
+    tree <- stats::hclust(d = dist_mat, method = "single")
+    pres.coords$clust <- stats::cutree(tree, h = clust_dist * 1000)
     # clust_polygons <- terra::convHull(pres.coords, by = "clust")
     # buff_radius <- sqrt(terra::expanse(clust_polygons))
     clusters <- unique(pres.coords$clust)
+    # if (verbosity > 1) message("- got ", length(clusters), " clusters")
   }
 
 
@@ -107,19 +113,20 @@ getRegion <- function(pres.coords,
   else if (type == "clust_mean_dist") {
     if (verbosity > 0) message("Computing pairwise distance within clusters...")  # before loop to avoid message repetitions
     for (i in clusters) {
+      # if (verbosity > 1) cat(i, "")
       clust_pts <- pres.coords[pres.coords$clust == i, ]
       buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
       if (!is.finite(buff_radius) || buff_radius <= 0) buff_radius <- 0.001  # clusters with only one point get no distance, and a zero-width buffer cannot be computed for points
       pres.coords[pres.coords$clust == i, "buff_radius"] <- buff_radius
     }
 
-    if (weight) {
-      clust_n_table <- table(pres.coords$clust)
-      clust_n <- merge(data.frame(pres.coords[ , "clust", drop = FALSE]), data.frame(clust_n_table), by.x = "clust", by.y = "Var1")[ , "Freq"]
-      range01 <- function(x){(x-min(x))/(max(x)-min(x))}
-      clust_n_01 <- range01(clust_n)
-      clust_n_01[clust_n_01 == 0] <- 0.001  # zero buffer not allowed for points
-      pres.coords$buff_radius <- pres.coords$buff_radius * clust_n_01
+    if (isTRUE(weight)) {
+      counts <- table(pres.coords$clust)
+      clust_n <- counts[match(pres.coords$clust, names(counts))]
+      # clust_abund <- clust_n / sum(clust_n)  # would add up to 1
+      clust_abund <- (clust_n - min(clust_n)) / (max(clust_n) - min(clust_n))  # range between 0 and 1
+      clust_abund[clust_abund == 0] <- 0.001  # zero buffer not allowed for points
+      pres.coords$buff_radius <- pres.coords$buff_radius * clust_abund
     }
 
     # agg <- terra::aggregate(pres.coords, by = "clust")
@@ -142,6 +149,15 @@ getRegion <- function(pres.coords,
       if (clust_width <= 0) clust_width <- 0.001  # negative or zero-width buffer cannot be computed for points
       pres.coords[pres.coords$clust == i, "clust_width"] <- clust_width
     }
+
+    if (isTRUE(weight)) {
+      counts <- table(pres.coords$clust)
+      clust_n <- counts[match(pres.coords$clust, names(counts))]
+      clust_abund <- (clust_n - min(clust_n)) / (max(clust_n) - min(clust_n))  # range between 0 and 1
+      clust_abund[clust_abund == 0] <- 0.001  # zero buffer not allowed for points
+      pres.coords$clust_width <- pres.coords$clust_width * clust_abund
+    }
+
     reg <- terra::buffer(pres.coords, width = "clust_width")
   }
 
@@ -161,12 +177,12 @@ getRegion <- function(pres.coords,
     terra::plot(reg, col = "yellow", border = NA,
                 main = paste("type =", type))
 
-    if (!startsWith(type, "clust")) {
-      terra::plot(pres.coords, cex = 0.5, add = TRUE)
+    if (!grepl("clust", type)) {
+      terra::plot(pres.coords, cex = 0.15, add = TRUE)
     } else {
       pres.coords$clust <- as.factor(pres.coords$clust)
       nc <- ifelse(length(clusters) > 10, 2, 1)
-      terra::plot(pres.coords, "clust", cex = 0.5, add = TRUE,
+      terra::plot(pres.coords, "clust", cex = 0.15, add = TRUE,
                   col = grDevices::hcl.colors(length(clusters),
                                               palette = "dark2"),
                   plg = list(title = "clusters", cex = 0.6, nc = nc))

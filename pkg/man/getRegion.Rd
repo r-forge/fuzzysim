@@ -7,6 +7,7 @@
 getRegion(
   pres.coords,
   type = "width",
+  clust_dist = 100,
   dist_mult = 1,
   width_mult = 0.5,
   weight = TRUE,
@@ -23,16 +24,17 @@ getRegion(
 \item "width": a buffer whose radius is the minimum diameter of the 'pres.coords' spatial extent (computed with \code{\link[terra:width]{terra::width()}}), multiplied by 'width_mult';
 \item "mean_dist": a buffer whose radius is the mean pairwise \code{\link[terra:distance]{terra::distance()}} among 'pres.coords', multiplied by 'dist_mult';
 \item "inv_dist": a buffer whose radius is inversely proportional to the sum of the distances from each point to all other points in 'pres.coords' (a rough measure of how isolated each point is, possibly indicating an opportunistic record in a sparsely surveyed area);
-\item "clust_mean_dist": a different buffer around each cluster of 'pres.coords' (clusters computed with \code{\link[stats:hclust]{stats::hclust()}}) and then \code{\link[stats:cutree]{stats::cutree()}} using the mean pairwise distance between all points as the 'h' parameter), sized according to the mean pairwise distance of each cluster's 'pres.coords'.
+\item "clust_mean_dist": a different buffer around each cluster of 'pres.coords' (clusters computed with \code{\link[stats:hclust]{stats::hclust()}}, method = "simple") and then \code{\link[stats:cutree]{stats::cutree()}} with h = clust_dist*1000), sized according to the mean pairwise distance of each cluster's 'pres.coords'.
 \item "clust_width": a different buffer around each cluster of 'pres.coords' (clusters computed as described for 'clust_mean_dist'), sized according to the \code{\link[terra:width]{terra::width()}} of each cluster's 'pres.coords'.
 }
 }
+\item{clust_dist}{if 'type' involves clusters, numeric value specifying the distance threshold (in km) within which points are clustered together. Default 100.}
 \item{dist_mult}{if type = "mean_dist" or "clust_mean_dist", multiplier of the mean pairwise point distance to use for the \code{\link[terra:buffer]{terra::buffer()}} radius around each cluster. Default 1.}
 \item{width_mult}{if type = "width" or "clust_width", multiplier of the width to use for the \code{\link[terra:buffer]{terra::buffer()}} radius. Default 0.5.}
-\item{weight}{logical (default TRUE, used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes.}
+\item{weight}{logical (default TRUE, used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes. If TRUE (the default), clusters with fewer points (possibly indicating more sparsely surveyed areas) get smaller buffers than the mean distances among them.}
 \item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}).}
-\item{verbosity}{integer indicating the amount of messages to display. The default is 2, for all available messages.}
-\item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow) together with the input 'pres.coords' (black points).}
+\item{verbosity}{integer indicating the amount of messages to displayalong the process. The default is 2, for all available messages.}
+\item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow), together with the input 'pres.coords' (black points), and the number of points in each cluster (if 'type' involves clusters).}
 }
 \value{
 SpatVector polygon delimiting a region around 'pres.coords'

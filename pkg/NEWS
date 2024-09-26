@@ -1,4 +1,17 @@
 ===============================================
+fuzzySim v4.22 (committed 2024-09-26)
+===============================================
+
+## Modified functions:
+
+* getRegion
+- hclust() now with method = "single"
+- cutree() with h = clust_dist (new argument)
+- fixed bug in 'weight', which wasn't correctly ordered (replaced merge with match)
+- 'weight' argument now also applies to type="width"
+
+
+===============================================
 fuzzySim v4.21 (committed 2024-09-25)
 ===============================================
 

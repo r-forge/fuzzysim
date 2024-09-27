@@ -5,7 +5,7 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
   if (bunch == TRUE) stop("Sorry, 'bunch=TRUE' is still pending implementation.")
 
   stopifnot(
-    inherits(data, "data.frame"),
+    inherits(data, "data.frame") || is(data, "SpatVector"),
     is.null(coord.cols) || length(coord.cols) == 2
     # is.null(coord.cols) || ((is.character(coord.cols) && all(coord.cols %in% names(data))) || (is.integer(coord.cols) && all(coord.cols %in% 1:ncol(data)))),
     # (is.character(sp.cols) && all(sp.cols %in% names(data))) || (is.integer(sp.cols) && all(sp.cols %in% 1:ncol(data)))
@@ -59,7 +59,7 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
   if (!is.null(n) && n < n.abs) {
     if (verbosity > 0 && is.null(mult.p)) cat("\nSelecting n =", n, "absences...\n")
 
-    if (bias) {
+    if (isTRUE(bias)) {
       # inv.dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = TRUE)[, 1][abs.rows]
       inv <- function(x) 1 - ((x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE)))
       inv.dist.abs <- inv(dist.pres)[abs.rows]
@@ -82,16 +82,30 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
   if (plot) {
     if (is.null(coord.cols)) {
       message("'plot=TRUE' requires specifying 'coord.cols'; plot not produced.")
+
     } else {
-      xrange <- range(data_in[ , coord.cols[1]], na.rm = TRUE)
-      yrange <- range(data_in[ , coord.cols[2]], na.rm = TRUE)
-      plot(data_in[data_in[ , sp.cols] == 0, coord.cols],
-           xlim = xrange, ylim = yrange,
-           pch = 20, cex = 0.1, col = "orange")
-      points(data[data[ , sp.cols] == 0, coord.cols],
-             pch = "-", col = "red")
-      points(data[data[ , sp.cols] == 1, coord.cols],
-           pch = "+", col = "blue")
+
+      if ("terra" %in% .packages(all.available = TRUE) && !is(data_in, "SpatVector")) {  # for better-shaped plot
+        data_in <- terra::vect(data_in, geom = coord.cols, keepgeom = TRUE)
+        data <- terra::vect(data, geom = coord.cols, keepgeom = TRUE)
+        terra::plot(data_in[data.frame(data_in[ , sp.cols]) == 0, ],
+                    ext = terra::ext(data_in),
+                    pch = 20, cex = 0.1, col = "orange")
+        terra::points(data[data.frame(data[ , sp.cols]) == 0, ],
+                      pch = "-", col = "red")
+        terra::points(data[data.frame(data[ , sp.cols]) == 1, ],
+                      pch = "+", col = "blue")
+      } else {
+        xrange <- range(data_in[ , coord.cols[1]], na.rm = TRUE)
+        yrange <- range(data_in[ , coord.cols[2]], na.rm = TRUE)
+        plot(data_in[data_in[ , sp.cols] == 0, coord.cols],
+             xlim = xrange, ylim = yrange,
+             pch = 20, cex = 0.1, col = "orange")
+        points(data[data[ , sp.cols] == 0, coord.cols],
+               pch = "-", col = "red")
+        points(data[data[ , sp.cols] == 1, coord.cols],
+               pch = "+", col = "blue")
+      }
     }
   }
 

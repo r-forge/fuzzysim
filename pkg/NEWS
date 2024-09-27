@@ -1,11 +1,14 @@
 ===============================================
-fuzzySim v4.23 (committed 2024-09-  )
+fuzzySim v4.23 (committed 2024-09-27)
 ===============================================
 
 ## Modified functions:
 
-* distPres
-- terra::nearest instead of pairwise distance (much more efficient and avoids crash for large datasets)
+* getRegion
+- labels now appear for all clusters in plot
+
+* gridRecords, selectAbsences
+- output plot SpatVector when terra available
 
 
 ===============================================

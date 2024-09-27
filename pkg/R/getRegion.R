@@ -178,16 +178,22 @@ getRegion <- function(pres.coords,
                 main = paste("type =", type))
 
     if (!grepl("clust", type)) {
-      terra::plot(pres.coords, cex = 0.15, add = TRUE)
+      terra::plot(pres.coords, cex = 0.3, add = TRUE)
     } else {
-      pres.coords$clust <- as.factor(pres.coords$clust)
-      nc <- ifelse(length(clusters) > 10, 2, 1)
-      terra::plot(pres.coords, "clust", cex = 0.15, add = TRUE,
+      clust_aggregates <- terra::aggregate(pres.coords, "clust")
+      clust_centroids <- terra::centroids(clust_aggregates)
+
+      # with cluster legend:
+      # terra::text(clust_centroids, "agg_n", cex = 0.5)  # not all labels show if this is placed only after the following plot...
+      # nc <- ifelse(length(clusters) > 10, 2, 1)
+      # terra::plot(pres.coords, "clust", cex = 0.3, add = TRUE,
+      #             col = grDevices::hcl.colors(length(clusters),
+      #                                         palette = "dark2"))
+
+      terra::plot(clust_aggregates, cex = 0.3, add = TRUE,
                   col = grDevices::hcl.colors(length(clusters),
-                                              palette = "dark2"),
-                  plg = list(title = "clusters", cex = 0.6, nc = nc))
-      agg <- terra::aggregate(pres.coords, "clust")
-      terra::text(terra::centroids(agg), "agg_n", cex = 0.5)
+                                              palette = "dark2"))
+      terra::text(clust_centroids, "agg_n", cex = 0.5)
     }
   }
 

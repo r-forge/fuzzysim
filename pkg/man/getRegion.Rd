@@ -34,20 +34,20 @@ getRegion(
 \item{weight}{logical (default TRUE, used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes. If TRUE (the default), clusters with fewer points (possibly indicating more sparsely surveyed areas) get smaller buffers than the mean distances among them.}
 \item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}).}
 \item{verbosity}{integer indicating the amount of messages to displayalong the process. The default is 2, for all available messages.}
-\item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow), together with the input 'pres.coords' (black points), and the number of points in each cluster (if 'type' involves clusters).}
+\item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow), together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
 }
 \value{
 SpatVector polygon delimiting a region around 'pres.coords'
 }
 \description{
-This function computes a region around a set of point coordinates, which may be useful for delimiting background or (pseudo)absence areas for computing species distibution models. Some of the 'type' options, especially those involving clusters, attempt to somewhat address survey bias by making smaller polygons around areas with fewer or more isolated points.
+This function computes a polygon around a set of point coordinates, which may be useful for delimiting background or (pseudo)absence regions for computing species distibution models. Some of the 'type' options, especially those involving clusters, attempt to somewhat address survey bias by making smaller polygons around areas with fewer or more isolated points.
 }
 \details{
-Most methods for computing species distribution models require predictor values for regions beyond those with species occurrence records, i.e. background or pseudo-absence areas. The extent of these regions has a strong effect on model predictions. Ideally, they should include the areas that are within the reach of the species AND were reasonably surveyed. While sometimes we have a large enough and delimited area that we can use (e.g. when modeling occurrence data from a national or regional distribution atlas), often we need to approximate the areas that appear to be roughly surveyed and within the species' reach.
+Most methods for computing species distribution models require predictor values for regions beyond those with species occurrence records, i.e. background or (pseudo)absence areas. The extent of these regions has a strong effect on model predictions. Ideally, they should include the areas that are within the reach of the species AND were reasonably surveyed. While sometimes we have a large enough and delimited area that we can use (e.g. when modelling a region where a national or regional distribution atlas is available), often we need to approximate the areas that appear to be both reasonably surveyed and within the species' reach.
 
-Mind that no automated procedure can properly address all possible issues related to uneven data collection, or properly conform to all possible distibution and survey patterns. Mind also that the output region from this function does not consider geographical barriers, or other factors that should also be taken into account when delimiting a region for modelling.
+Mind that no automated procedure can properly address all possible issues related to uneven data collection, or properly conform to all possible species distribution and survey patterns. Mind also that the output region from this function does not consider geographical barriers, or other factors that should also be taken into account when delimiting a region for modelling.
 
-It is thus recommended to try different values for 'type' and associated parameters; judge for yourself which one provides the most plausible approximation to the surveyed region accessible to your target species; and possibly post-process (i.e. further edit) the resulting region in light of the available knowledge of the species' distribution, survey patterns and study region.
+It is thus recommended to try different values for 'type' and associated parameters; judge for yourself which one provides the most plausible approximation to the surveyed region accessible to your target species; and possibly post-process (i.e. further edit) the resulting region in light of the available knowledge of that species' distribution, survey patterns and study region.
 }
 \seealso{
 \code{\link[terra:buffer]{terra::buffer()}}, \code{\link[terra:width]{terra::width()}}

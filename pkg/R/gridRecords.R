@@ -9,7 +9,7 @@ gridRecords <- function(rst,
 
   # version 3.8 (24 Sep 2023)
 
-  if (!("raster" %in% rownames(installed.packages())) && !("terra" %in% rownames(installed.packages()))) stop("This function requires having either the 'raster' or the 'terra' package installed.")
+  if (!("raster" %in% .packages(all.available = TRUE)) && !("terra" %in% .packages(all.available = TRUE))) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
 
   if (inherits(pres.coords, "SpatVector")) {
@@ -116,14 +116,23 @@ gridRecords <- function(rst,
   #result <- result[order(as.integer(rownames(result))), ]  # new
   rownames(result) <- NULL  # new
 
-  if (plot) {  # new
-    xrange <- range(result$x, na.rm = TRUE)
-    yrange <- range(result$y, na.rm = TRUE)
-    plot(result[result$presence == 0, c("x", "y")],
-         xlim = xrange, ylim = yrange,
-         pch = "-", col = "red")
-    points(result[result$presence == 1, c("x", "y")],
-           pch = "+", col = "blue")
+  if (plot) {
+    if ("terra" %in% .packages(all.available = TRUE)) {
+      result <- terra::vect(result, geom = c("x", "y"), keepgeom = TRUE)  # for better-shaped plot
+      terra::plot(result[result$presence == 0, ],
+                  ext = terra::ext(result),
+                  pch = "-", col = "red")
+      terra::points(result[result$presence == 1, ],
+                    pch = "+", col = "blue")
+    } else {  # non-spatial plot
+      xrange <- range(result$x, na.rm = TRUE)
+      yrange <- range(result$y, na.rm = TRUE)
+      plot(result[result$presence == 0, c("x", "y")],
+           xlim = xrange, ylim = yrange,
+           pch = "-", col = "red")
+      points(result[result$presence == 1, c("x", "y")],
+             pch = "+", col = "blue")
+    }
   }
 
   return(result)

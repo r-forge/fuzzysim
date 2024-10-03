@@ -24,17 +24,21 @@ character value indicating the operation to perform between the (specified) pred
     \item "fuzzy_and" or "intersection" for fuzzy intersection;
     \item "fuzzy_or" or "union" for fuzzy union;
     \item "prob_and" or "prob_or" for probabilistic and/or, respectively (see Details);
-    \item "maintenance" for the values where all predictions for the same row or pixel (rounded to the number of digits specified in 'round.digits') are the same;
-If 'data' has only two columns to compare, other options are:
+    \item "maintenance" for the values where all predictions for the same row/pixel (rounded to the number of digits specified in 'round.digits') are the same.
+    }
+
+If 'data' has only two columns/layers to compare, further options are:
+
+\itemize{
     \item "xor" for exclusive 'or'
-    \item "AnotB" for the the occurrence of the species in column 1 in detriment of that in column 2;
-    \item "expansion" for the prediction increase in rows where column 2 has higher values than column 1;
-    \item "contraction" for the prediction decrease in rows where column 2 has lower values than column 1;
-    \item "change" for a mix of the latter two, with positive values where there has been an increase and negative values where there was decrease in favourability from columns 1 to 2. For expansion, contraction and maintenance, rows where the values do not satisfy the condition (i.e. second column larger, smaller, or roughly equal to the first column) get a value of zero.
+    \item "AnotB" for the the occurrence of the species in column/layer 1 in detriment of that in column/layer 2;
+    \item "expansion" for the prediction increase in rows/pixels where column/layer 2 has higher values than column/layer 1;
+    \item "contraction" for the prediction decrease in rows/pixels where column/layer 2 has lower values than column/layer 1;
+    \item "change" for a mix of the latter two, with positive values where there is an increase and negative values where there is a decrease in favourability from columns/layers 1 to 2. For expansion, contraction and maintenance, rows/pixels where the values do not satisfy the condition (i.e. second column/layer larger, smaller, or roughly equal to the first) get a value of zero.
 }
 }
   \item{na.rm}{
-logical value indicating if NA values should be ignored. The default is FALSE, so rows with NA in any of the prediction columns get NA as a result.
+logical value indicating if NA values should be ignored. The default is FALSE, so rows/pixels with NA in any of the prediction columns/layers get NA as a result.
 }
   \item{round.digits}{
 integer value indicating the number of decimal places to be used if op = "maintenance". The default is 2.

@@ -13,6 +13,9 @@ fuzzySim v4.24 (committed 2024-10-03)
 
 ## Other modified files:
 
+* fuzzyOverlay.Rd
+- 'op' argument itemized list of options
+
 * NAMESPACE
 - removed import of utils::installed.packages() [now using .packages(all.available = TRUE) instead]
 

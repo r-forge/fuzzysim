@@ -4,14 +4,14 @@
 Pair-wise (fuzzy) similarity matrix
 }
 \description{
-\code{simMat} takes a matrix or data frame containing species occurrence data or regional species composition, either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the \code{\link{fuzSim}} function to calculate a square matrix of pair-wise similarities between them, using a fuzzy logic version (Barbosa, 2015) of the specified similarity index.
+\code{simMat} takes multiple species occurrence data or regional species composition, either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the \code{\link{fuzSim}} function to compute a square matrix of pair-wise similarities between them, using a fuzzy logic version (Barbosa, 2015) of the specified similarity index.
 }
 \usage{
-simMat(data, method, diag = TRUE, upper = TRUE, verbosity = 2)
+simMat(data, method, diag = TRUE, upper = TRUE, verbosity = 2, plot = FALSE, ...)
 }
 \arguments{
   \item{data}{
-a matrix or data frame containing (optionally fuzzy) species presence-absence data (in wide format, i.e. one column per species), with 1 meaning presence, 0 meaning absence, and values in between for fuzzy presence (or the degree to which each locality belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}}. These data can also be \code{\link{transpose}}d for comparing regional species compositions.
+a matrix, data frame, or multilayer SpatRaster containing (optionally fuzzy) species presence-absence data (in wide format, i.e. one column or layer per species), with 1 meaning presence, 0 meaning absence, and values in between for fuzzy presence (or the degree to which each locality belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}}. These data can also be \code{\link{transpose}}d for comparing regional species compositions.
 }
   \item{method}{
 the similarity index whose fuzzy version to use. See \code{\link{fuzSim}} for available options.
@@ -25,6 +25,8 @@ logical value indicating whether the upper triangle of the matrix (symmetric to 
   \item{verbosity}{
 integer value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).
 }
+  \item{plot}{logical argument indicating whether to also plot the matrix as an image. The default is FALSE (for back-compatibility).}
+  \item{\dots}{some additional arguments can be passed to \code{\link{image}} (and through to \code{\link{plot}}) if plot=TRUE, such as 'col', 'main', 'font.main' or 'cex.main' (not 'axes', 'xlab' or 'ylab', which are already defined by simMat).}
 }
 \details{
 The fuzzy versions of species occurrence data and of binary similarity indices introduce tolerance for small spatial differences in species' occurrence localities, allow for uncertainty about species occurrence, and may compensate for under-sampling and geo-referencing errors (Barbosa, 2015).
@@ -64,13 +66,13 @@ head(bin.sim.mat)
 # based on inverse distance to presences:
 
 rotifers.invd <- distPres(rotif.env, sp.cols = 18:47,
-coord.cols = c("Longitude", "Latitude"), id.col = 1, suffix = ".d", 
+coord.cols = c("Longitude", "Latitude"), id.col = 1, suffix = ".d",
 p = 1, inv = TRUE)
 
 head(rotifers.invd)
 
 
-# build a matrix of fuzzy similarity among these fuzzy 
+# build a matrix of fuzzy similarity among these fuzzy
 # distribution data, using the fuzzy version of Jaccard's index:
 
 fuz.sim.mat <- simMat(rotifers.invd[ , -1], method = "Jaccard")
@@ -80,16 +82,16 @@ head(fuz.sim.mat)
 
 # plot the similarity matrices as colours:
 
-image(x = 1:ncol(bin.sim.mat), y = 1:nrow(bin.sim.mat), 
-z = bin.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "", 
+image(x = 1:ncol(bin.sim.mat), y = 1:nrow(bin.sim.mat),
+z = bin.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "",
 axes = FALSE, main = "Binary similarity")
 axis(side = 1, at = 1:ncol(bin.sim.mat), tick = FALSE,
 labels = colnames(bin.sim.mat), las = 2)
 axis(side = 2, at = 1:nrow(bin.sim.mat), tick = FALSE,
 labels = rownames(bin.sim.mat), las = 2)
 
-image(x = 1:ncol(fuz.sim.mat), y = 1:nrow(fuz.sim.mat), 
-z = fuz.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "", 
+image(x = 1:ncol(fuz.sim.mat), y = 1:nrow(fuz.sim.mat),
+z = fuz.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "",
 axes = FALSE, main = "Fuzzy similarity")
 axis(side = 1, at = 1:ncol(fuz.sim.mat), tick = FALSE,
 labels = colnames(fuz.sim.mat), las = 2, cex = 0.5)

@@ -3,11 +3,17 @@ fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE,
                              measures = c("Gain", "Loss", "Stable positive", "Stable negative", "Balance"),
                              plot = TRUE, plot.type = "lollipop", x.lab = TRUE,
                              ...)  {   # log = NA,
-  # version 1.9 (12 Jan 2023)
-  # version 2.0 (-- Jan 2023) -> new arg 'log': NA or the base of the log for the scale (see https://blog.datawrapper.de/weeklychart-logscale3/)
+  # version 2.0 (3 Oct 2024)
+  # version -.- (-- --- 202-) -> new arg 'log': NA or the base of the log for the scale (see https://blog.datawrapper.de/weeklychart-logscale3/)
+
+
+  if (inherits(pred1, "SpatRaster"))
+    pred1 <- terra::values(pred1, mat = FALSE, dataframe = FALSE)
+  if (inherits(pred2, "SpatRaster"))
+    pred2 <- terra::values(pred2, mat = FALSE, dataframe = FALSE)
 
   pred1 <- unlist(pred1)
-  pred2 <- unlist(pred2)
+  pred2 <- unlist(pred2)  # can't remember what this was for...
 
   stopifnot(#ncol(pred1) == ncol(pred2),
             #all(pred1[is.finite(pred1)] >= 0 && pred1[is.finite(pred1)] <= 1),

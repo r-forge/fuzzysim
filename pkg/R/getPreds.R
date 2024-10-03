@@ -7,7 +7,7 @@ function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE,
   if (verbosity > 1) start.time <- Sys.time()
 
   if (is(data, "RasterStack") || is(data, "RasterBrick")) {  # previously 'if("raster" %in% class(data))'
-    if (!("raster" %in% rownames(installed.packages()))) stop("Input 'data' is in raster format, so you need to install the 'raster' package first.")
+    if (!("raster" %in% .packages(all.available = TRUE))) stop("Input 'data' is in raster format, so you need to install the 'raster' package first.")
     preds <- raster::brick()  # previously raster::stack()
     n.mods <- length(models)
     mod.count <- 0
@@ -41,7 +41,7 @@ function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE,
     }  # end for m
 
     return(preds)
-  }  # end if RasterStack
+  }  # end if RasterStack or RasterBrick
 
   stopifnot(
     is.data.frame(data) || is(data, "RasterStack") || is(data, "RasterBrick"),

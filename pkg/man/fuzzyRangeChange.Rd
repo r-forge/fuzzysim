@@ -13,8 +13,8 @@ measures = c("Gain", "Loss", "Stable positive", "Stable negative", "Balance"),
 plot = TRUE, plot.type = "lollipop", x.lab = TRUE, ...)
 }
 \arguments{
-  \item{pred1}{numeric vector containing the predictions (between 0 and 1) of the model that will serve as reference.}
-  \item{pred2}{numeric vector containing the predictions (between 0 and 1) of the model whose change will be calculated. Must be of the same length and in the same order as 'pred1'.}
+  \item{pred1}{numeric vector or SpatRaster layer containing the predictions (between 0 and 1) of the model that will serve as reference.}
+  \item{pred2}{numeric vector or SpatRaster layer containing the predictions (between 0 and 1) of the model whose change will be calculated. Must be of the same dimensions and in the same order as 'pred1'.}
   \item{number}{logical value indicating if results should include the fuzzy number of cases. The default is TRUE.}
   \item{prop}{logical value indicating if results should include the proportion of the total number of cases. The default is TRUE.}
   \item{na.rm}{logical value indicating whether NA values should be ignored. The default is TRUE.}
@@ -36,7 +36,7 @@ If number=TRUE (the default), there is a column named "Number" with the number o
 }
 \author{A. Marcia Barbosa}
 \seealso{
-\code{\link{fuzSim}}, \code{\link{modOverlap}} for other ways to compare models; \code{\link{fuzzyOverlay}} for row-wise model comparisons
+\code{\link{fuzSim}}, \code{\link{modOverlap}} for other ways to compare models; \code{\link{fuzzyOverlay}} for row-wise or pixel-wise model comparisons
 }
 \examples{
 # get an environmental favourability model for a rotifer species:

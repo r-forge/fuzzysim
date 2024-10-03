@@ -1,15 +1,14 @@
 exportPattern("^[[:alpha:]]+")
-importFrom("graphics", "abline", "arrows", "axis", "barplot", "lines",
-"mtext", "par", "points", "polygon", "text")
+importFrom("graphics", "abline", "arrows", "axis", "barplot", "lines", "mtext",
+           "par", "points", "polygon", "text")
 importFrom("grDevices", "hcl.colors")
 importFrom("methods", "is")
 importFrom("modEvA", "lollipop", "mod2obspred")
-importFrom("stats", "add1", "drop1", "anova", "reformulate", "as.formula", "binomial",
-"complete.cases", "coef", "cor", "cor.test", "dist", "extractAIC", "fitted", "glm",
-"lm", "na.omit", "nobs", "p.adjust", "p.adjust.methods", "poly", "prcomp",
-"predict", "quantile", "step", "update",  "na.pass", "t.test", "vcov",
-"weighted.mean")
+importFrom("stats", "add1", "drop1", "anova", "reformulate", "as.formula",
+           "binomial", "complete.cases", "coef", "cor", "cor.test", "dist",
+           "extractAIC", "fitted", "glm", "lm", "na.omit", "nobs", "p.adjust",
+           "p.adjust.methods", "poly", "prcomp", "predict", "quantile", "step",
+           "update", "na.pass", "t.test", "vcov", "weighted.mean")
 importFrom(stringi, stri_unescape_unicode)
-importFrom("utils", "combn", "installed.packages", "read.csv", "stack",
-           "write.csv", "setTxtProgressBar", "txtProgressBar")
-
+importFrom("utils", "combn", "read.csv", "stack", "write.csv",
+           "setTxtProgressBar", "txtProgressBar")

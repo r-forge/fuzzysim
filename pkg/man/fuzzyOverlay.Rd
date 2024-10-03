@@ -1,24 +1,37 @@
 \name{fuzzyOverlay}
 \alias{fuzzyOverlay}
 \title{
-Row-wise overlay operations based on fuzzy logic
+Overlay operations based on fuzzy logic
 }
 \description{
 Logical and set operations are useful for comparative distribution modelling, to assess consensus or mismatches between the predictions of different models, and to quantify differences between models obtained for different time periods. Fuzzy set theory (Zadeh 1965, Barbosa & Real 2012) allows performing such operations without converting model predictions from continuous to binary, thus avoiding the application of arbitrary thresholds and the distortion or over-simplification of those predictions. The result is a continuous numerical value quantifying the intersection, union, sum, or other operation among model predictions, whether binary or continuous.
 }
 \usage{
-fuzzyOverlay(data, overlay.cols = 1:ncol(data), op = "intersection",
+fuzzyOverlay(data, overlay.cols = NULL, op = "intersection",
 na.rm = FALSE, round.digits = 2)
 }
 \arguments{
   \item{data}{
-matrix or data frame containing the model predictions to compare.
+matrix, data frame, or multilayer SpatRaster containing the model predictions to compare.
 }
   \item{overlay.cols}{
-vector of the names or index numbers of the columns to compare. The default is all columns in \code{data}.
+vector of the names or index numbers of the columns or layers to compare. The default is all columns or layers in \code{data}.
 }
   \item{op}{
-character value indicating the operation to perform between the prediction columns in 'data'. Can be "consensus" for the arithmetic mean of predictions (or the fuzzy equivalent of the proportion of models that agree that the species occurs at each site), "fuzzy_and" or "intersection" for fuzzy intersection; "fuzzy_or" or "union" for fuzzy union; "prob_and" or "prob_or" for probabilistic and/or, respectively (see Details); "maintenance" for the values where all predictions for the same row (rounded to the number of digits specified in the next argument) are the same. If 'data' has only two columns to compare, you can also calculate"xor" for exclusive 'or', "AnotB"" for the the occurrence of the species in column 1 in detriment of that in column 2, "expansion" for the prediction increase in rows where column 2 has higher values than column 1, "contraction" for the prediction decrease in rows where column 2 has lower values than column 1, or "change" for a mix of the latter two,  with positive values where there has been an increase and negative values where there was decrease in favourability from columns 1 to 2. For expansion, contraction and maintenance, rows where the values do not satisfy the condition (i.e. second column larger, smaller, or roughly equal to the first column) get a value of zero.
+character value indicating the operation to perform between the (specified) prediction columns or layers in 'data'. Options are:
+  \itemize{
+    \item "consensus" for the arithmetic mean of predictions (or the fuzzy equivalent of the proportion of models that agree that the species can potentially occur at each site);
+    \item "fuzzy_and" or "intersection" for fuzzy intersection;
+    \item "fuzzy_or" or "union" for fuzzy union;
+    \item "prob_and" or "prob_or" for probabilistic and/or, respectively (see Details);
+    \item "maintenance" for the values where all predictions for the same row or pixel (rounded to the number of digits specified in 'round.digits') are the same;
+If 'data' has only two columns to compare, other options are:
+    \item "xor" for exclusive 'or'
+    \item "AnotB" for the the occurrence of the species in column 1 in detriment of that in column 2;
+    \item "expansion" for the prediction increase in rows where column 2 has higher values than column 1;
+    \item "contraction" for the prediction decrease in rows where column 2 has lower values than column 1;
+    \item "change" for a mix of the latter two, with positive values where there has been an increase and negative values where there was decrease in favourability from columns 1 to 2. For expansion, contraction and maintenance, rows where the values do not satisfy the condition (i.e. second column larger, smaller, or roughly equal to the first column) get a value of zero.
+}
 }
   \item{na.rm}{
 logical value indicating if NA values should be ignored. The default is FALSE, so rows with NA in any of the prediction columns get NA as a result.
@@ -30,10 +43,10 @@ integer value indicating the number of decimal places to be used if op = "mainte
 \details{
 If your predictions are probabilities, "prob_and" (probabilistic 'and') gives the probability of all species in 'data' occurring simultaneously by multiplying all probabilities; and "prob_or" (probabilistic 'or') gives the probability of any of them occurring at each site. These can be quite restrictive, though; probabilistic "and" can give particularly irrealistically small values.
 
-If you have (or convert your probabilities to) favourability predictions, which can be used directly with fuzzy logic (Real et al. 2006; see \code{\link{Fav}} function), you can use "fuzzy_and" or "intersection" to get the favourability for all species co-occurring at each site, and "fuzzy_or" or "union" to get favourability for any of them to occur at each site (Barbosa & Real 2012).
+If you have (or convert your probabilities to) favourability predictions, which can be used directly with fuzzy logic (Real et al. 2006; see \code{\link{Fav}} function), you can use "fuzzy_and" or "intersection" to get the favourability for all species to co-occur at each site, and "fuzzy_or" or "union" to get favourability for any of them to occur at each site (Barbosa & Real 2012).
 }
 \value{
-This function returns a vector, with length equal to the number of rows in \code{data}, containing the row-wise result of the operation performed.
+This function returns a vector with length equal to the number of rows in 'data', or (if the input is a SpatRaster) a SpatRaster layer of the same dimensions as the input's first layer, containing the row-wise or pixel-wise result of the operation performed.
 }
 \references{
 Barbosa A.M. & Real R. (2012) Applying fuzzy logic to comparative distribution modelling: a case study with two sympatric amphibians. The Scientific World Journal, 2012, Article ID 428206
@@ -44,7 +57,7 @@ Zadeh, L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353
 }
 \author{A. Marcia Barbosa}
 \seealso{
-\code{\link{fuzSim}}, \code{\link{modOverlap}} and \code{\link{fuzzyRangeChange}} for overall (not row-wise) comparisons among model predictions.
+\code{\link{fuzSim}}, \code{\link{modOverlap}} and \code{\link{fuzzyRangeChange}} for overall (not row-wise or pixel-wise) comparisons among model predictions.
 }
 \examples{
 data(rotif.env)

@@ -1,4 +1,23 @@
 ===============================================
+fuzzySim v4.24 (committed 2024-10-03)
+===============================================
+
+## Modified functions:
+
+* fuzSim, simMat, fuzzyOverlay, modOverlap, fuzzyRangeChange
+- inputs can be SpatRaster
+
+* simMat
+- added 'plot' argument
+
+
+## Other modified files:
+
+* NAMESPACE
+- removed import of utils::installed.packages() [now using .packages(all.available = TRUE) instead]
+
+
+===============================================
 fuzzySim v4.23 (committed 2024-09-27)
 ===============================================
 

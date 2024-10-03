@@ -7,8 +7,8 @@ This function calculates the degree of overlap between the predictions of two mo
 modOverlap(pred1, pred2, na.rm = TRUE)
 }
 \arguments{
-  \item{pred1}{numeric vector of the predictions of a (values between 0 and 1).}
-  \item{pred2}{numeric vector of the predictions of another model; must be of the same length and in the same order as 'pred1'.}
+  \item{pred1}{numeric vector or SpatRaster layer of the predictions of a model, with values between 0 and 1.}
+  \item{pred2}{numeric vector or SpatRaster layer of the predictions of another model, also with values between 0 and 1; must be of the same dimensions and in the same order as 'pred1'.}
   \item{na.rm}{logical value indicating whether NA values should be removed prior to calculation. The default is TRUE.}
 }
 \details{
@@ -38,7 +38,7 @@ data(rotif.env)
 
 names(rotif.env)
 
-fav_current <- multGLM(rotif.env, sp.cols = 18, var.cols = 5:17,  
+fav_current <- multGLM(rotif.env, sp.cols = 18, var.cols = 5:17,
 step = TRUE, FDR = TRUE, trim = TRUE, P = FALSE, Fav = TRUE) $
 predictions
 

@@ -210,24 +210,17 @@ print(spplot(TDWG4shp, zcol = "Abrigh_F", col.regions = rev(heat.colors(256)), m
 
 ## Calculating (fuzzy) similarity among species occurrence patterns
 
-Let's now **use these favourability model predictions as our fuzzy occurrence values**. First, **get a matrix of pair-wise fuzzy similarity** among these fuzzy species' distributions, by comparing these columns with e.g. the fuzzy Jaccard similarity index:
+Let's now **use these favourability model predictions as our fuzzy occurrence values**. First, **get a matrix of pair-wise fuzzy similarity** among these fuzzy species' distributions, by comparing these columns with e.g. the fuzzy Jaccard similarity index. We'll use the more recent argument `plot = TRUE` to get also a quick viz of which species pairs are more and less similar in distribution. You can optionally provide some extra arguments to customize this plot, such as `main = "Fuzzy similarity matrix"` or `col = hcl.colors(100, palette = "blues")`.
+
 
 ```{r, results='hide', message=FALSE}
-fuz.sim.mat <- simMat(rotifers.fav$predictions[ , 32:61], method = "Jaccard")
+fuz.sim.mat <- simMat(rotifers.fav$predictions[ , 32:61], method = "Jaccard", plot = TRUE)
 ```
 
-Take a look at the first rows of the resulting fuzzy similarity matrix (results not shown here):
+Let's take a look at the first rows of the resulting fuzzy similarity matrix (results not shown here):
 
 ```{r, results='hide'}
 head(fuz.sim.mat)
-```
-
-For a quick look at which species pairs are more and less similar in distribution, you can **plot the similarity matrix with a colour scale** (the same used above for the maps), using the *image* function of R and then adding the species as axis labels (the *cex.axis* argument defines the text size):
-
-```{r, fig.width=5, fig.height=5}
-image(x = 1:ncol(fuz.sim.mat), y = 1:nrow(fuz.sim.mat), z = fuz.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "", axes = FALSE, main = "Fuzzy Jaccard similarity")
-axis(side = 1, at = 1:ncol(fuz.sim.mat), tick = FALSE, labels = colnames(fuz.sim.mat), las = 2, cex.axis = 0.8)
-axis(side = 2, at = 1:nrow(fuz.sim.mat), tick = FALSE, labels = rownames(fuz.sim.mat), las = 2, cex.axis = 0.8)
 ```
 
 You can also **build a cluster dendrogram from the similarity matrix**, using the *hclust* R function. The clustering method requires a distance matrix, so our similarity matrix is subtracted from 1 in the command below. The *method="average"* argument means that UPGMA is the clustering algorithm, but you can check for other options with `help(hclust)`:

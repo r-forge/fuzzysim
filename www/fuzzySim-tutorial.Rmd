@@ -1,24 +1,31 @@
 ---
-title: "A beginners tutorial on the *fuzzySim* R package"
+title: "A beginners tutorial on the `fuzzySim` R package"
 author: "A. Marcia Barbosa (https://modtools.wordpress.com)"
-date: "updated 28 Feb 2020"
+date: "updated 4 Oct 2024"
 output: html_document
 ---
 
-***fuzzySim*** is an R package for calculating **fuzzy similarity in species distributions**. It can also **produce** the underlying **fuzzy distribution data**, e.g. through **interpolating or modelling species presence-absence data**.
+**`fuzzySim`** is an R package for computing **fuzzy similarity in species distributions**. It can also **produce** the underlying **fuzzy distribution data**, e.g. through **interpolating or modelling species presence-absence data**.
 
 
-## Installing and loading *fuzzySim*
+## Installing and loading `fuzzySim`
 
-*fuzzySim* works within the free and open-source R statistical software, so you first need to **download, install and open R** (available at <http://www.r-project.org>). In this tutorial, in `monospaced` font are the commands that you need to type (or copy and paste) into the R console (and then press the *enter* key to execute them). For commands that generate visible results in R, these are usually shown below them, preceded by hash marks (##). Note that all **commands are case-sensitive**, so you must respect upper- and lower-case letters; that you must always use **straight** (`'`, `"`) **rather than curly quotes and apostrophes**; and that **R is only ready to receive a new command when there's a prompt sign (>) at the end of the R console**; if not, it's still waiting for an operation to be finished or for you to complete a previous command -- watch out for unclosed parentheses or such.
+`fuzzySim` works within the free and open-source R statistical software, so you first need to **download, install and open R** (available at <http://www.r-project.org>). In this tutorial, in `monospaced` font are the commands that you need to type (or copy and paste) into the R console (and then press the *enter* key to execute them). For commands that generate visible results in R, these are usually shown below them, preceded by hash marks (##). Note that all **commands are case-sensitive**, so you must respect upper- and lower-case letters; that you must always use **straight** (`'`, `"`) **rather than curly quotes and apostrophes**; and that **R is only ready to receive a new command when there's a prompt sign (>) at the end of the R console**; if not, it's still waiting for an operation to be finished or for you to complete a previous command -- watch out for unclosed parentheses or such, and press *Esc* for a fresh prompt.
 
-**Install *fuzzySim*** by pasting the command below in the R console (when connected to the internet):
+You can install the latest CRAN version of `fuzzySim` by pasting the command below in the R console (when connected to the internet). You may need to provide additional information if R asks you, such as selecting a CRAN mirror to download from (choose any).
 
 ```{r, eval=FALSE}
 install.packages("fuzzySim")
 ```
 
-You only need to install the package once (unless a new version becomes available), but you need to **load it every time you open a new R session** in which you intend to use *fuzzySim* (no need for an internet connection anymore), by pasting the following command in R:
+If you instead need the latest development version of the package, install it from R-Forge:
+
+```{r, eval=FALSE}
+install.packages("fuzzySim", repos = "http://R-Forge.R-project.org")
+```
+
+
+You only need to install the package once (unless a new version becomes available), but you need to **load it every time you open a new R session** in which you intend to use `fuzzySim` (no need for an internet connection anymore), by pasting the following command in R:
 
 ```{r, warning=FALSE, message=FALSE}
 library(fuzzySim)
@@ -27,15 +34,15 @@ library(fuzzySim)
 
 ## Preparing the species occurrence data
 
->**NOTE**: This package works with species occurrence data in presence-absence tables. If your data are point occurrences and raster maps, check out [this blog post](https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/) on how to convert them into tabular presence-absence data.
+>**NOTE**: This package works mainly with species occurrence data in presence-absence tables. If your data are point occurrences and raster maps, check out [this blog post](https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/) on how to convert them into tabular presence-absence data.
 
-Load the *rotifers* sample dataset that comes with the *fuzzySim* package, to use as an example:
+Load the *rotifers* sample dataset that comes with the `fuzzySim` package, to use as an example:
 
 ```{r}
 data(rotifers)
 ```
 
-This dataset was originally published by [Fontaneto, Barbosa, Segers & Pautasso in *Ecography*](https://doi.org/10.1111/j.1600-0587.2011.06850.x). You can get more information on the data (the following command should open an R Documentation window):
+This dataset was originally published by [Fontaneto, Barbosa, Segers & Pautasso in *Ecography*](https://nsojournals.onlinelibrary.wiley.com/doi/abs/10.1111/j.1600-0587.2011.06850.x). You can get more information on the data (the following command should open an R Documentation window):
 
 ```{r, eval=FALSE}
 help(rotifers)
@@ -61,7 +68,7 @@ Now show the first 10 rows of the *rotifers* dataset after you've added the *spc
 head(rotifers, 10)
 ```
 
-The *rotifers* dataset is in long format, listing in the same column the species that are present in each spatial unit. For analyzing distributional relationships with *fuzzySim*, we need a presence-absence table with species in separate columns (wide format). So, create a new table called *rotifers.presabs* with the rotifers presence-absence data converted to wide format and using *spcodes* as column names:
+The *rotifers* dataset is in long format, listing in the same column the species that are present in each spatial unit. For analyzing distributional relationships with `fuzzySim`, we need a presence-absence table with species in separate columns (wide format). So, create a new table called *rotifers.presabs* with the rotifers presence-absence data converted to wide format and using *spcodes* as column names:
 
 ```{r}
 rotifers.presabs <- splist2presabs(rotifers, sites.col = "TDWG4", sp.col = "spcode", keep.n = FALSE)
@@ -75,37 +82,40 @@ head(rotifers.presabs)
 
 ## Mapping the species occurrence data
 
-You can map these data if you have a map of the same spatial units and with the same unit identifiers; the TDWG maps are [available online](http://www.tdwg.org/standards/109). You can use R commands to download the TDWG level 4 map into your current R session. This requires the *rgdal* package; the following command will install *rgdal* within your R installation if it's not there already (and if you're connected to the internet). You may need to provide additional information if R asks you, such as selecting a CRAN mirror to download from (choose any).
+You can map these data if you have a map of the same spatial units and with the same unit identifiers; the TDWG maps are [available online](http://www.tdwg.org/standards/109). You can use R commands to download the TDWG level 4 map into your current R session. This requires the `terra` package; the following command will install `terra` within your R installation if it's not there already (and if you're connected to the internet).
 
 ```{r, message=FALSE, warning=FALSE}
-if (!("rgdal" %in% rownames(installed.packages()))) install.packages("rgdal")
+if (!("terra" %in% .packages(all.available = TRUE)))
+  install.packages("terra")
 ```
 
-Now load the *rgdal* package and create a map named *TDWG4shp* by importing the online file, using the *readOGR* function of *rgdal*: 
+Now load the `terra` package and create a map named *tdwg* by importing the online file, using the `vect` function of `terra`: 
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
-library(rgdal)
-TDWG4shp <- readOGR(dsn = "https://raw.githubusercontent.com/tdwg/wgsrpd/master/geojson/level4.geojson")
+library(terra)
+tdwg <- vect("https://raw.githubusercontent.com/tdwg/wgsrpd/master/geojson/level4.geojson")
 ```
 
-The map is now in your R session. Now add the *rotifers.presabs* data to the map's attribute table within R, matching them by the name of the column containing the region identifiers in each table: 
+The map is now in your R session. Now add the *rotifers.presabs* data to the *tdwg* map's attribute table within R, matching them by the name of the column containing the region identifiers in each table, and keeping all rows of *tdwg* in the final result: 
 
 ```{r}
-TDWG4shp@data <- data.frame(TDWG4shp@data, rotifers.presabs[match(TDWG4shp@data$Level4_cod, rotifers.presabs$TDWG4), ])
+tdwg <- merge(tdwg, rotifers.presabs, 
+              by.x = "Level4_cod", by.y = "TDWG4", 
+              all.x = TRUE)
 ```
 
-You are now ready to map the presence-absence of particular species from the *rotifers.presabs* table. The *spplot* function in the next command is in the *sp* R package, which should have been installed and loaded along with *rgdal* before. Be patient, as this command can be slow to process. The resulting map should pop out in a graphics window within R:
+You are now ready to map the presence-absence of particular species from the *rotifers.presabs* table:
 
 ```{r, fig.width=7, fig.height=3, warning=FALSE, message=FALSE}
-print(spplot(TDWG4shp, zcol = "Abrigh", col.regions = rev(heat.colors(256)), main = expression(paste(italic("A. brightwellii"), " occurrence records"))))
+plot(tdwg, y = "Abrigh", col = rev(heat.colors(2)), main = "Abrigh occurrence records")
 ```
 
-Try this also with *zcol=* other species in `names(TDWG4shp)`. As you can see in the maps and in the *rotifers.presabs* table, these are binary (either 0 or 1) presence-absence data. 
+Try this also with *y =* other species in `names(tdwg)`. As you can see in the maps and in the *rotifers.presabs* table, these are binary (either 0 or 1) presence-absence data, with missing values in regions with no rotifer occurrence records in this dataset.
 
 
 ## Converting binary to fuzzy occurrence data
 
-You can get a fuzzy (continuous between 0 and 1) version of presence-absence data using e.g. trend surface analysis or inverse distance interpolation. These require the spatial coordinates of each study unit, which the *rotifers* table doesn't have. So, load the *rotif.env* sample dataset that also comes with the *fuzzySim* package, which is already in wide format and contains the geographical coordinates of the centroid of each TDWG4 unit: 
+You can get a fuzzy (continuous between 0 and 1) version of presence-absence data using e.g. trend surface analysis or inverse distance interpolation. These require the spatial coordinates of each study unit, which the *rotifers* table doesn't have. So, load the *rotif.env* sample dataset that also comes with the `fuzzySim` package, which is already in wide format and contains the geographical coordinates of the centroid of each TDWG4 unit: 
 
 ```{r}
 data(rotif.env)
@@ -123,15 +133,17 @@ Show the column names of this dataset, to see which columns contain the species 
 names(rotif.env)
 ```
 
-You can see that species are in columns 18 to 47 and geographical coordinates are in columns 10 and 11. You can use either the names or the index numbers of these columns in the *multTSA* and *distPres* functions below. Mind that the **coordinates must be specified to the function in the correct order**, i.e. **x, y** or **Longitude, Latitude**!
+You can see that species are in columns 18 to 47 and geographical coordinates are in columns 10 and 11. You can use either the names or the index numbers of these columns in the `multTSA` and `distPres` functions below. Mind that the **coordinates must be specified to the function in the order x, y**, i.e. **Longitude, Latitude**!
 
 First, try a multiple **trend surface analysis (TSA)** for all species using a 3rd-degree polynomial with stepwise selection of terms:
 
 ```{r, message=FALSE}
-rotifers.tsa <- multTSA(rotif.env, sp.cols = 18:47, coord.cols = c("Longitude", "Latitude"), id.col = 1, degree = 3, step = TRUE)
+spcols <- 18:47
+
+rotifers.tsa <- multTSA(rotif.env, sp.cols = spcols, coord.cols = c("Longitude", "Latitude"), id.col = 1, degree = 3, step = TRUE)
 ```
 
-You can find out more about trend surface analysis and the different options of the *multTSA* function by reading the help file that appears when you type `help(multTSA)`. Now look at the first rows of the *rotifers.tsa* created just above:
+You can find out more about trend surface analysis and the different options of the `multTSA` function by reading the help file that appears when you type `help(multTSA)`. Now look at the first rows of the *rotifers.tsa* table created just above:
 
 ```{r, results='hide'}
 head(rotifers.tsa)
@@ -143,52 +155,58 @@ Results (not shown here) are continuous values representing the spatial trend in
 range(rotifers.tsa[ , -1])
 ```
 
-Now **add the TSA results to the *TDWG4shp* map table**:
+Now **add the TSA results to the *tdwg* map table**:
 
 ```{r}
-TDWG4shp@data <- data.frame(TDWG4shp@data, rotifers.tsa[match(TDWG4shp@data$Level4_cod, rotifers.tsa$TDWG4), ]) 
+tdwg <- merge(tdwg, rotifers.tsa, 
+              by.x = "Level4_cod", by.y = "TDWG4", 
+              all = TRUE)
 ```
 
-**Plot the results for the first species** (and then others as you like; check `names(TDWG4shp)` for available *zcol* options):
+**Plot the results for the first species** (and then others as you like; check `names(tdwg)` for available *y* options):
 
 ```{r, fig.width=7, fig.height=3, warning=FALSE, message=FALSE}
-print(spplot(TDWG4shp, zcol = "Abrigh_TS", col.regions = rev(heat.colors(256)), main = expression(paste(italic("A. brightwellii"), " TSA"))))
+plot(tdwg, y = "Abrigh_TS", col = rev(heat.colors(256)), main = "Abrigh TSA")
 ```
 
-The TSA depicts a general spatial trend in a species' occurrence, but this may not be a faithful representation of its (fuzzy) occurrence area (compare with the presence-absence map shown before for the same species). You can try *multTSA* again with different polynomial degrees, with or without stepwise selection; or you can **calculate inverse distance to presence** to use instead of TSA:
+The TSA depicts a general spatial trend in a species' occurrence, but this may not be a faithful representation of its (fuzzy) occurrence area (compare with the presence-absence map shown before for the same species). You can try `multTSA` again with different polynomial degrees, with or without stepwise selection; or you can **compute inverse distance to presence** to use instead of TSA:
 
 ```{r}
-rotifers.invdist <- distPres(rotif.env, sp.cols = 18:47, coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 1, inv = TRUE, suffix = "_D")
+rotifers.invdist <- distPres(rotif.env, sp.cols = spcols, coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 1, inv = TRUE, suffix = "_D")
 ```
 
-You can check `help(distPres)` for more information and options for this function (for example, **you may want to use p=2 for a more conservative squared distance, especially if your spatial units are smaller)**. Check out the first rows of the resulting table (results not shown here):
+You can check `help(distPres)` for more information and options for this function (for example, **you may want to use p=2 for a more conservative squared distance, especially if your spatial units are smaller**). Check out the first rows of the resulting table (results not shown here):
 
 ```{r, results='hide'}
 head(rotifers.invdist)
 ```
 
-You can check that the values in this table (excluding the first column) also range between 0 and 1, so they can be used with fuzzy logic:
+You can check that the values in this table (excluding the first column, which has the region identifiers) also range between 0 and 1, so they can be used with fuzzy logic:
 
 ```{r}
 range(rotifers.invdist[ , -1])
 ```
 
-Note that inverse distance to presence is calculated only for absence localities; *distPres* maintains the value 1 for presences. Now **add these distances to the *TDWG4shp* map table and plot the first species** (then try other species as well):
+Note that inverse distance to presence is computed only for absence localities; `distPres` maintains the value 1 for presences. Now **add these distances to the *tdwg* map table and plot the first species** (then try other species as well):
 
 ```{r, fig.width=7, fig.height=3, warning=FALSE, message=FALSE}
-TDWG4shp@data <- data.frame(TDWG4shp@data, rotifers.invdist[match(TDWG4shp@data$Level4_cod, rotifers.invdist$TDWG4), ]) 
-print(spplot(TDWG4shp, zcol = "Abrigh_D", col.regions = rev(heat.colors(256)), main = expression(paste(italic("A. brightwellii"), " inverse distance"))))
+tdwg <- merge(tdwg, rotifers.invdist, 
+              by.x = "Level4_cod", by.y = "TDWG4", 
+              all = TRUE)
+
+plot(tdwg, y = "Abrigh_D", col = rev(heat.colors(256)), main = "Abrigh inverse distance")
 ```
 
 This seems a more faithful portrait of our species' distribution than the TSA. However, note that distance is also not always a good fuzzy representation of a species' occurrence area, as geographical and environmental barriers may cause sharp local variations in species' occurrence patterns.
 
-Another way of obtaining fuzzy versions of species occurrence is to build **distribution models** based on the relationship between species presence/absence and a set of geographical, environmental and/or human variables. This can be done for multiple species simultaneously with the *multGLM* function and the variables in *rotif.env*. You must specify the name of the dataset and the names or index numbers of the columns containing the species data and the variables. There are a number of options on how to select variables for the models -- you can type `help(multGLM)` or read [this modelling tutorial](http://fuzzysim.r-forge.r-project.org/fuzzySim-modelling-tutorial.html) for further details. Here, we'll just see how to create models with the *multGLM* default options:
+Another way of obtaining fuzzy versions of species occurrence is to build **distribution models** based on the relationship between species presence/absence and a set of geographical, environmental and/or human variables. This can be done for multiple species simultaneously with the `multGLM` function and the variables in *rotif.env*. You must specify the name of the dataset and the names or index numbers of the columns containing the species data and the variables. There are a number of options on how to select variables for the models -- you can type `help(multGLM)` or read [this modelling tutorial](http://fuzzysim.r-forge.r-project.org/fuzzySim-modelling-tutorial.html) for further details. Here, we'll just see how to create models with the
+`multGLM` default options:
 
 ```{r, results='hide', message=FALSE}
-rotifers.fav <- multGLM(data = rotif.env, sp.cols = 18:47, var.cols = 5:17, id.col = 1)
+rotifers.fav <- multGLM(data = rotif.env, sp.cols = spcols, var.cols = 5:17, id.col = 1)
 ```
 
-The object output by *multGLM* is a list containing three elements: a dataframe with the resulting *predictions*, a list of *models*, and a list of vectors naming the *variables* included in each model. Check out the first rows of the *predictions* dataframe (results not shown here):
+The object returned by `multGLM` is a list containing three elements: a dataframe with the resulting *predictions*, a list of *models*, and a list of vectors naming the *variables* included in each model. Check out the first rows of the *predictions* dataframe (results not shown here):
 
 ```{r, results='hide'}
 head(rotifers.fav$predictions)
@@ -200,17 +218,22 @@ Predicted presence probability is in the columns with suffix *P*, but here we're
 names(rotifers.fav$predictions)
 ```
 
-You see that favourability values are in columns 32 to 61 of the *rotifers.fav$predictions* table. Now add these values to the *TDWG4shp* map table and plot e.g. favourability for the first species:
+You can see that favourability values are in columns 32 to 61 of the *rotifers.fav$predictions* table. Now add these values to the *tdwg* map table and plot e.g. favourability for the first species:
 
 ```{r, fig.width=7, fig.height=3, warning=FALSE, message=FALSE}
-TDWG4shp@data <- data.frame(TDWG4shp@data, rotifers.fav$predictions[match(TDWG4shp@data$Level4_cod, rotifers.fav$predictions$TDWG4), ]) 
-print(spplot(TDWG4shp, zcol = "Abrigh_F", col.regions = rev(heat.colors(256)), main = expression(paste(italic("A. brightwellii"), " favourability"))))
+tdwg <- merge(tdwg, rotifers.fav$predictions, 
+              by.x = "Level4_cod", by.y = "TDWG4", 
+              all = TRUE)
+
+plot(tdwg, y = "Abrigh_F", 
+     col = rev(heat.colors(256)), 
+     main = "Abrigh favourability")
 ```
 
 
-## Calculating (fuzzy) similarity among species occurrence patterns
+## Computing (fuzzy) similarity among species occurrence patterns
 
-Let's now **use these favourability model predictions as our fuzzy occurrence values**. First, **get a matrix of pair-wise fuzzy similarity** among these fuzzy species' distributions, by comparing these columns with e.g. the fuzzy Jaccard similarity index. We'll use the more recent argument `plot = TRUE` to get also a quick viz of which species pairs are more and less similar in distribution. You can optionally provide some extra arguments to customize this plot, such as `main = "Fuzzy similarity matrix"` or `col = hcl.colors(100, palette = "blues")`.
+Let's now **use these favourability model predictions as our fuzzy occurrence values**. First, **get a matrix of pair-wise fuzzy similarity** among these fuzzy species' distributions, by comparing these columns with e.g. the fuzzy Jaccard similarity index. Since `fuzzySim` version 4.24, we can use the argument `plot = TRUE` to get also a quick viz of which species pairs are more and less similar in distribution. You can optionally provide some extra arguments to customize this plot, such as `main = "Fuzzy similarity matrix"` or `col = hcl.colors(100, palette = "blues")`.
 
 
 ```{r, results='hide', message=FALSE}
@@ -227,28 +250,29 @@ You can also **build a cluster dendrogram from the similarity matrix**, using th
 
 ```{r, fig.width=8, fig.height=6}
 fuz.dendro <- hclust(as.dist(1 - fuz.sim.mat), method = "average")
+
 plot(fuz.dendro, main = "Fuzzy dendrogram", xlab = "", ylab = "", sub = "Fuzzy Jaccard index\nUPGMA clustering")
 ```
 
-You can also **build a similarity matrix from the original binary presence-absence data**, to compare with the fuzzy similarity results. First check again the column names of *rotif.env*, to see where the species columns are so that you can specify them correctly to the *simMat* function:
+You can also **build a similarity matrix from the original binary presence-absence data**, to compare with the fuzzy similarity results. First, check again the column names of *rotif.env*, to see where the species columns are, so that you can specify them correctly to the `simMat` function:
 
 ```{r}
 names(rotif.env)
 ```
 
-Now calculate the binary similarity matrix from the columns containing the species occurrence data:
+Now compute the binary similarity matrix from the columns containing the species occurrence data:
 
 ```{r, message=FALSE, results='hide'}
-bin.sim.mat <- simMat(rotif.env[ , 18:47], method = "Jaccard") 
+bin.sim.mat <- simMat(rotif.env[ , spcols], method = "Jaccard") 
 ```
 
 You can try and **repeat the operations exemplified before**, but **replacing *fuz.sim.mat* with *bin.sim.mat***, to visualize the binary similarity matrix and the resulting dendrogram. You can also **compare the fuzzy and binary similarity matrices** using the *mantel* function of the *vegan* package. If you want to do this, the command below will install vegan if you don't already have it within your R installation:
 
 ```{r, results='hide', message=FALSE}
-if (!("vegan" %in% rownames(installed.packages()))) install.packages("vegan")
+if (!("vegan" %in% .packages(all.available = TRUE))) install.packages("vegan")
 ```
 
-Now load *vegan* into the current R session and calculate the Mantel correlation between the two matrices (type `help(mantel)` for more info and options):
+Now load *vegan* into the current R session and compute the Mantel correlation between the two matrices (type `help(mantel)` for more info and options):
 
 ```{r, message=FALSE, warning=FALSE}
 library(vegan) 
@@ -256,28 +280,33 @@ mantel(bin.sim.mat, fuz.sim.mat, method = "spearman")
 ```
 
 
-## Calculating (fuzzy) similarity among regional species pools
+## Computing (fuzzy) similarity among regional species pools
 
-Besides comparing species according to their (fuzzy) occurrence patterns, you can also **compare regions according to their (fuzzy) species composition**. For this you only need to transpose the (fuzzy) species occurrence matrix, so that regions go in columns and species in rows. With the *transpose* function of *fuzzySim*, you can do this directly from the complete tables, specifying which columns contain the data to transpose, and which column contains the region names to use as column names in the transposed table:
+Besides comparing species according to their (fuzzy) occurrence patterns, you can also **compare regions according to their (fuzzy) species composition**. For this, you only need to transpose the (fuzzy) species occurrence matrix, so that regions go in columns and species in rows. With the `transpose` function of `fuzzySim`, you can do this directly from the complete tables, specifying which columns contain the data to transpose, and which column contains the region names to use as column names in the transposed table:
 
 ```{r, results='hide'}
-names(rotif.env) 
-bin.reg <- transpose(rotif.env, sp.cols = 18:47, reg.names = 1) 
-names(rotifers.fav$predictions) 
-fuz.reg <- transpose(rotifers.fav$predictions, sp.cols = 32:61, reg.names = 1) 
+names(rotif.env)
+
+bin.reg <- transpose(rotif.env, sp.cols = spcols, reg.names = 1)
+
+names(rotifers.fav$predictions)
+
+fuz.reg <- transpose(rotifers.fav$predictions, sp.cols = 32:61, reg.names = 1)
 ```
 
 Look at the first rows of the resulting tables (results not shown here): 
 
 ```{r, eval=FALSE}
 head(bin.reg)
+
 head(fuz.reg)
 ```
 
-Now **create the pair-wise similarity matrices for both binary and fuzzy species composition** in these regions. These matrices will take longer to calculate because there are (in this dataset) many more regions than species, so there are many more pair-wise comparisons to make now:
+Now **create the pair-wise similarity matrices for both binary and fuzzy species composition** in these regions. These matrices will take longer to compute because there are (in this dataset) many more regions than species, so there are many more pair-wise comparisons to make now:
 
 ```{r, message=FALSE, results='hide'}
-bin.reg.sim.mat <- simMat(bin.reg, method = "Jaccard") 
+bin.reg.sim.mat <- simMat(bin.reg, method = "Jaccard")
+
 fuz.reg.sim.mat <- simMat(fuz.reg, method = "Jaccard")
 ```
 
@@ -286,12 +315,12 @@ Then you can proceed as you did before with the species distributional similarit
 
 ## Further steps
 
-Fuzzy similarity matrices can be entered in the [***RMACOQUI* package**](http://rmacoqui.r-forge.r-project.org/) for a systematic analysis of **chorotypes** (significant clusters of species distribution types) or of **biotic/biogeographic regions** (significant clusters of regional species compositions).
+Fuzzy similarity matrices can be entered in the [**`RMACOQUI` package**](http://rmacoqui.r-forge.r-project.org/) for a systematic analysis of **chorotypes** (significant clusters of species distribution types) or of **biotic / biogeographic regions** (significant clusters of regional species compositions).
 
 
 ## Using your own data
 
-If you want to try this out with your own data, get your table (with column names in the first row) in a text file named *mydata.txt* and separated by tabs, save it in your R working directory (type `getwd()` to find out where it is), and then import it to R using the following command:
+If you want to try this out with your own data, get your table (with column names in the first row) in a text file named *mydata.txt* and separated by tabs, save it in your R working directory (type `getwd` to find out where it is), and then import it to R using the following command:
 
 ```{r, eval=FALSE}
 mydata <- read.table("mydata.txt", header = TRUE, sep = "\t")
@@ -299,9 +328,11 @@ mydata <- read.table("mydata.txt", header = TRUE, sep = "\t")
 
 The `sep = "\t"` argument above indicates that the columns in the text file are separated by tabulators, but you can specify other separators as necessary, such as spaces (`sep = " "`), commas (`sep = ","`) or semicolons (`sep = ";"`).
 
-As noted above, if your data are point occurrences and raster maps, check out [this blog post](https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/) on how to convert them into tabular presence-absence data.
+As noted above, if your data are point occurrences and raster maps, check out [this blog post](https://modtools.wordpress.com/2020/02/11/fuzzysim-updated-to-3-0-on-cran/) on how to convert them to tabular presence-(pseudo)absence data.
 
-Then reproduce all the operations above, but replacing *rotifers* or *rotif.env* (depending on if your data are in long or wide format, respectively) with *mydata* (or whatever name you've assigned in the command above) and specifying column names or numbers accordingly. If you use *fuzzySim* in publications, please **cite the paper**:
+Then reproduce all the operations above, but replacing *rotifers* or *rotif.env* (depending on if your data are in long or wide format, respectively) with *mydata* (or whatever name you've assigned in the command above) and specifying column names or numbers accordingly.
+
+If you use `fuzzySim` in publications, please **cite the paper**:
 
 >Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices in ecology. *Methods in Ecology and Evolution*, 6: 853-858 (DOI: [10.1111/2041-210X.12372](http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12372/abstract)).
 

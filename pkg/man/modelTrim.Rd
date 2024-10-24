@@ -58,15 +58,13 @@ HabitatDiversity + HumanPopulation, family = binomial)))
 
 # examine the model:
 
-summary(mod)  # contains non-significant variables
+summary(mod)  # includes non-significant variables
 
-
-# use modelTrim to get rid of non-significan effects:
+# use modelTrim to get rid of those:
 
 mod <- modelTrim(mod)
 
-summary(mod)  # only significant variables now
-
+summary(mod)  # only significant variables remain
 }
 \keyword{ models }
 

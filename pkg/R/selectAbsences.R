@@ -1,18 +1,19 @@
 selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, dist.mat = NULL, seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2) {
-  # version 1.6 (25 Sep 2024)
+  # version 2.0 (24 Oct 2024)
 
   if (length(sp.cols) > 1) stop("Sorry, this function is currently implemented for only one 'sp.col' at a time.")
   if (bunch == TRUE) stop("Sorry, 'bunch=TRUE' is still pending implementation.")
 
   stopifnot(
-    inherits(data, "data.frame") || is(data, "SpatVector"),
-    is.null(coord.cols) || length(coord.cols) == 2
+    inherits(data, "data.frame") || inherits(data, "SpatVector"),
+    is.null(coord.cols) || length(coord.cols) == 2,
+    is.logical(bias) || inherits(bias, "SpatRaster")
     # is.null(coord.cols) || ((is.character(coord.cols) && all(coord.cols %in% names(data))) || (is.integer(coord.cols) && all(coord.cols %in% 1:ncol(data)))),
     # (is.character(sp.cols) && all(sp.cols %in% names(data))) || (is.integer(sp.cols) && all(sp.cols %in% 1:ncol(data)))
   )
 
-  data <- as.data.frame(data)
-  if (plot || !df) data_in <- data
+  data_in <- data  # needed e.g. if plot or !df
+  data <- as.data.frame(data)  # coerces matrices, tibbles, SpatVectors
 
   abs.rows <- which(data[ , sp.cols] == 0)
   pres.rows <- which(data[ , sp.cols] == 1)
@@ -20,7 +21,8 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
   n.pres <- length(pres.rows)
   if (verbosity > 0) cat("\n", n.abs, " absences (and ", n.pres, " presences) in input 'data'.\n", sep = "")
 
-  if (!is.null(min.dist) || !is.null(max.dist) || isTRUE(bias)) {  #  || isTRUE(bunch)
+  if (!is.null(min.dist) || !is.null(max.dist) || (is.logical(bias) && isTRUE(bias))) {  #  || isTRUE(bunch)
+
     if (is.null(coord.cols)) stop("arguments 'min.dist', 'max.dist', 'bias' and 'bunch' require specifying 'coord.cols'.")
 
     if (verbosity > 0) cat("\nComputing distance to presences (may take long for large datasets)...\n")
@@ -47,7 +49,7 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
       n.abs <- length(abs.rows)
       if (verbosity > 0) cat("\n", n.abs, " absences selected by 'max.dist'.\n", sep = "")
     }
-  }
+  }  # end if dist.pres needed
 
   if (is.null(n) && !is.null(mult.p)) {
     n <- n.pres * mult.p
@@ -59,17 +61,27 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
   if (!is.null(n) && n < n.abs) {
     if (verbosity > 0 && is.null(mult.p)) cat("\nSelecting n =", n, "absences...\n")
 
-    if (isTRUE(bias)) {
+    if (!is.null(seed)) set.seed(seed)
+
+    if (is.logical(bias) && isTRUE(bias)) {
+      if (verbosity > 0) cat("\nBiasing the selection of absences towards de vicitiny of presences...\n")
       # inv.dist.pres <- distPres(data, sp.cols = sp.cols, coord.cols = coord.cols, inv = TRUE)[, 1][abs.rows]
       inv <- function(x) 1 - ((x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE)))
       inv.dist.abs <- inv(dist.pres)[abs.rows]
-      if (verbosity > 0) cat("\nBiasing the selection of absences towards de vicitiny of presences...\n")
-      if (!is.null(seed)) set.seed(seed)
       abs.samp <- sample(abs.rows, n, replace = FALSE, prob = inv.dist.abs)
+
+    } else if (inherits(bias, "SpatRaster")) {
+      if (verbosity > 0) cat("\nBiasing the selection of absences according to the input 'bias' raster...\n")
+      if (terra::global(bias, "min", na.rm = TRUE) < 0 || terra::global(bias, "max", na.rm = TRUE) == 0) stop ("'bias' values must be non-negative and not all zeros.")
+
+      bias.abs <- terra::extract(bias, data[abs.rows, coord.cols], cells = FALSE, xy = FALSE, ID = FALSE)[ , 1]
+      bias.abs[!is.finite(bias.abs)] <- 0  # zero probability where NA
+      abs.samp <- sample(abs.rows, n, replace = FALSE, prob = bias.abs)
+
     } else {
-      if (!is.null(seed)) set.seed(seed)
-      abs.samp <- sample(abs.rows, n, replace = FALSE)
+      abs.samp <- sample(abs.rows, n, replace = FALSE, prob = NULL)
     }
+
     data <- data[c(pres.rows, abs.samp), ]
     n.abs <- length(abs.samp)
 
@@ -85,15 +97,15 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
 
     } else {
 
-      if ("terra" %in% .packages(all.available = TRUE) && !is(data_in, "SpatVector")) {  # for better-shaped plot
-        data_in <- terra::vect(data_in, geom = coord.cols, keepgeom = TRUE)
-        data <- terra::vect(data, geom = coord.cols, keepgeom = TRUE)
-        terra::plot(data_in[data.frame(data_in[ , sp.cols]) == 0, ],
-                    ext = terra::ext(data_in),
+      if ("terra" %in% .packages(all.available = TRUE) && !inherits(data_in, "SpatVector")) {  # for better-shaped plot
+        data_in_sv <- terra::vect(data_in, geom = coord.cols, keepgeom = TRUE)
+        # data_sv <- terra::vect(data, geom = coord.cols, keepgeom = TRUE)
+        terra::plot(data_in_sv[data.frame(data_in_sv[ , sp.cols]) == 0, ],
+                    ext = terra::ext(data_in_sv),
                     pch = 20, cex = 0.1, col = "orange")
-        terra::points(data[data.frame(data[ , sp.cols]) == 0, ],
+        terra::points(data[data.frame(data[ , sp.cols]) == 0, coord.cols],
                       pch = "-", col = "red")
-        terra::points(data[data.frame(data[ , sp.cols]) == 1, ],
+        terra::points(data[data.frame(data[ , sp.cols]) == 1, coord.cols],
                       pch = "+", col = "blue")
       } else {
         xrange <- range(data_in[ , coord.cols[1]], na.rm = TRUE)

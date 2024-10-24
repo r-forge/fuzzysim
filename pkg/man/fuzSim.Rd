@@ -11,10 +11,10 @@ fuzSim(x, y, method, na.rm = TRUE)
 }
 \arguments{
   \item{x}{
-a vector of (optionally fuzzy) presence-absence data, with 1 meaning presence, 0 meaning absence, and values in between meaning fuzzy presence (or the degree to which each locality belongs to the set of species presences, or to which each species belongs to the locality; Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with functions \code{\link{multGLM}}, \code{\link{multTSA}} or \code{\link{distPres}} in this package.
+numeric vector or SpatRaster layer of (optionally fuzzy) presence-absence data, with 1 meaning presence, 0 meaning absence, and values in between meaning fuzzy presence (or the degree to which each locality belongs to the set of species presences, or to which each species belongs to the locality; Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with functions \code{\link{multGLM}}, \code{\link{multTSA}} or \code{\link{distPres}} in this package, or with any other function that computes presence probability or spatial/environmental suitability for a species.
 }
   \item{y}{
-a vector similar to 'x', of the same length and in the same order.
+numeric vector or SpatRaster to overlap with 'x', of the same length and in the same order.
 }
   \item{method}{
 the similarity index to compute between x and y. Currently available options are "Jaccard", "Sorensen", "Simpson" and "Baroni" (see Details).

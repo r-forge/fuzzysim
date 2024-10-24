@@ -1,3 +1,15 @@
+
+===============================================
+fuzzySim v4.25 (committed 2024-10-24)
+===============================================
+
+* selectAbsences
+- 'bias' can now be a raster layer
+
+* modelTrim
+- implement categorical variables in phylolm models
+
+
 ===============================================
 fuzzySim v4.24 (committed 2024-10-03)
 ===============================================
@@ -30,7 +42,7 @@ fuzzySim v4.23 (committed 2024-09-27)
 - labels now appear for all clusters in plot
 
 * gridRecords, selectAbsences
-- output plot SpatVector when terra available
+- output plot SpatVector when 'terra' available
 
 
 ===============================================

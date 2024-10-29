@@ -110,7 +110,7 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
       } else {
         xrange <- range(data_in[ , coord.cols[1]], na.rm = TRUE)
         yrange <- range(data_in[ , coord.cols[2]], na.rm = TRUE)
-        plot(data_in[data_in[ , sp.cols] == 0, coord.cols],
+        plot(data.frame(data_in)[data.frame(data_in)[ , sp.cols] == 0, coord.cols],
              xlim = xrange, ylim = yrange,
              pch = 20, cex = 0.1, col = "orange")
         points(data[data[ , sp.cols] == 0, coord.cols],
@@ -121,6 +121,6 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
     }
   }
 
-  if (!df) return(rownames(data_in) %in% rownames(data))
+  if (!df) return(rownames(data.frame(data_in)) %in% rownames(data))
   return(data[order(as.integer(rownames(data))), ])
 }

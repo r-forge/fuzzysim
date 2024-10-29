@@ -1,3 +1,24 @@
+===============================================
+upcoming...
+===============================================
+
+* getRegion
+- new arg 'dist_mat' for efficiency when available
+
+* distPres
+- computes terra::nearest instead of pairwise distance (much more efficient and avoids crash for large datasets)
+
+
+===============================================
+fuzzySim v4.26 (committed 2024-10-29)
+===============================================
+
+* gridRecords
+- output is SpatVector only if input is too
+
+* selectAbsences
+- added data.frame() to fix error when input SpatVector
+
 
 ===============================================
 fuzzySim v4.25 (committed 2024-10-24)

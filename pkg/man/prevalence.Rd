@@ -11,7 +11,7 @@ prevalence(obs, model = NULL, event = 1, na.rm = TRUE)
 }
 \arguments{
   \item{obs}{a vector or a factor of binary observations (e.g. 1 vs. 0, male vs. female, disease vs. no disease, etc.). This argument is ignored if 'model' is provided.}
-  \item{model}{alternatively to 'obs', a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' will be extracted with \code{\link{modEvA::mod2obspred}}.}
+  \item{model}{alternatively to 'obs', a binary-response model object of class "glm", "gam", "gbm", "randomForest" or "bart". If this argument is provided, 'obs' will be extracted with 'modEvA::mod2obspred'.}
   \item{event}{the value whose prevalence we want to calculate (e.g. 1, "present", etc.). This argument is ignored if 'model' is provided.}
   \item{na.rm}{logical, whether NA values should be excluded from the calculation. The default is TRUE.}
 }

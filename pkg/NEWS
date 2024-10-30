@@ -10,10 +10,12 @@ upcoming...
 
 
 ===============================================
-fuzzySim v4.26 (committed 2024-10-29)
+fuzzySim v4.26 (committed 2024-10-29) -> CRAN
 ===============================================
 
-* gridRecords
+*## Modified functions:
+
+ gridRecords
 - output is SpatVector only if input is too
 
 * selectAbsences
@@ -23,6 +25,8 @@ fuzzySim v4.26 (committed 2024-10-29)
 ===============================================
 fuzzySim v4.25 (committed 2024-10-24)
 ===============================================
+
+## Modified functions:
 
 * selectAbsences
 - 'bias' can now be a raster layer

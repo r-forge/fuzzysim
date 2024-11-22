@@ -5,11 +5,15 @@ fuzzyOverlay <- function(data,
                          round.digits = 2
 ) {
 
-  # version 2.0 (3 Oct 2024)
+  # version 2.1 (22 Nov 2024)
 
   data_in <- data
 
-  data <- as.data.frame(data)  # converts vector, matrix, tibble, SpatRaster
+  if (inherits(data_in, "SpatRaster")) {
+    data <- terra::values(data, na.rm = FALSE)
+  } else {
+    data <- as.data.frame(data)  # converts vector, matrix, tibble
+  }
 
   if (!is.null(overlay.cols))
     data <- data[ , overlay.cols]

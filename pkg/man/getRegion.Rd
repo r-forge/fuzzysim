@@ -52,6 +52,51 @@ It is thus recommended to try different values for 'type' and associated paramet
 \seealso{
 \code{\link[terra:buffer]{terra::buffer()}}, \code{\link[terra:width]{terra::width()}}
 }
+\examples{
+\dontrun{
+# you can run these examples if you have 'terra' and 'geodata' installed
+
+# download example data:
+
+occs <- geodata::sp_occurrence("Triturus", "pygmaeus")
+
+occs_sv <- terra::vect(occs, geom = c("lon", "lat"), crs = "EPSG:4326")
+
+cntry <- geodata::world(path = tempdir())
+
+
+terra::plot(occs_sv)
+
+terra::plot(cntry, lwd = 0.2, add = TRUE)
+
+
+# compute regions with some different methods:
+
+reg1 <- fuzzySim::getRegion(occs_sv)
+
+terra::plot(cntry, lwd = 0.2, add = TRUE)
+
+
+reg2 <- fuzzySim::getRegion(occs_sv, type = "inv_dist")
+
+terra::plot(cntry, lwd = 0.2, add = TRUE)
+
+terra::plot(reg2, lwd = 4, border = "orange", add = TRUE)
+
+
+reg3 <- fuzzySim::getRegion(occs_sv, type = "clust_width", weight = TRUE,
+width_mult = 0.3)
+
+terra::plot(cntry, lwd = 0.2, add = TRUE)
+
+terra::plot(reg3, lwd = 4, border = "orange", add = TRUE)
+
+
+# note it is up to the user to pre-process the data (e.g. by removing erroneous
+# records) and/or post-process the region (e.g. by erasing islands, countries,
+# or continents that are not accessible to the target species).
+}
+}
 \author{
 A. Marcia Barbosa
 }

@@ -71,4 +71,15 @@ coord.cols = c("Longitude", "Latitude"), max.dist = 18)
 burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
 coord.cols = c("Longitude", "Latitude"), max.dist = 18, min.dist = 5,
 n = sum(rotif.env$Burceo), bias = TRUE)
+
+
+\dontrun{
+# you can run the next example if you have the 'geodata' package installed:
+
+bias_layer <- geodata::footprint(year = 2009, path = tempfile())
+
+burceo_select <- fuzzySim::selectAbsences(data = rotif.env, sp.cols = "Burceo",
+coord.cols = c("Longitude", "Latitude"), n = sum(rotif.env$Burceo),
+bias = bias_layer)
+}
 }

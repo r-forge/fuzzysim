@@ -10,6 +10,19 @@ upcoming...
 
 
 ===============================================
+fuzzySim v4.27 (committed 2024-  -  )
+===============================================
+
+## Other modified files:
+
+* getRegion.Rd
+- added examples
+
+* selectAbsences.Rd
+- added example with bias layer
+
+
+===============================================
 fuzzySim v4.26 (committed 2024-10-29) -> CRAN
 ===============================================
 

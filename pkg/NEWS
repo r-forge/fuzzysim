@@ -10,8 +10,14 @@ upcoming...
 
 
 ===============================================
-fuzzySim v4.27 (committed 2024-  -  )
+fuzzySim v4.28 (committed 2024-11-22)
 ===============================================
+
+## Modified functions:
+
+* fuzzyOverlay
+- fixed bug for raster inputs with NA pixels (reported by Jakub Nowosad)
+
 
 ## Other modified files:
 

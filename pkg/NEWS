@@ -10,13 +10,23 @@ upcoming...
 
 
 ===============================================
-fuzzySim v4.28 (committed 2024-11-22)
+fuzzySim v4.28 (committed 2024-12-05)
+===============================================
+
+## Modified functions:
+
+* cleanCoords
+- added 'extend' argument, default 0.1 to increase the output plot extent by 10% of the input coordinates range
+
+
+===============================================
+fuzzySim v4.27 (committed 2024-11-22)
 ===============================================
 
 ## Modified functions:
 
 * fuzzyOverlay
-- fixed bug for raster inputs with NA pixels (reported by Jakub Nowosad)
+- fixed bug for raster inputs with NA pixels (reported by Jakub Nowosad: https://github.com/AMBarbosa/fuzzySim/issues/2#issue-2679366909)
 
 
 ## Other modified files:
@@ -32,9 +42,9 @@ fuzzySim v4.28 (committed 2024-11-22)
 fuzzySim v4.26 (committed 2024-10-29) -> CRAN
 ===============================================
 
-*## Modified functions:
+## Modified functions:
 
- gridRecords
+* gridRecords
 - output is SpatVector only if input is too
 
 * selectAbsences

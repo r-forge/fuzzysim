@@ -10,8 +10,9 @@ getRegion(
   clust_dist = 100,
   dist_mult = 1,
   width_mult = 0.5,
-  weight = TRUE,
+  weight = FALSE,
   CRS = NULL,
+  dist_mat = NULL,
   verbosity = 2,
   plot = TRUE
 )
@@ -31,8 +32,9 @@ getRegion(
 \item{clust_dist}{if 'type' involves clusters, numeric value specifying the distance threshold (in km) within which points are clustered together. Default 100.}
 \item{dist_mult}{if type = "mean_dist" or "clust_mean_dist", multiplier of the mean pairwise point distance to use for the \code{\link[terra:buffer]{terra::buffer()}} radius around each cluster. Default 1.}
 \item{width_mult}{if type = "width" or "clust_width", multiplier of the width to use for the \code{\link[terra:buffer]{terra::buffer()}} radius. Default 0.5.}
-\item{weight}{logical (default TRUE, used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes. If TRUE (the default), clusters with fewer points (possibly indicating more sparsely surveyed areas) get smaller buffers than the mean distances among them.}
+\item{weight}{logical (used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes. Default FALSE; if set to TRUE, clusters with fewer points (possibly indicating more sparsely surveyed areas) get proportionally smaller buffers than the mean distances among them.}
 \item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}).}
+\item{dist_mat}{optional matrix of pairwise distances among 'pres.coords', to use (if 'type' includes the string "dist" or "clust") for efficiency instead of computing a new one. Should normally be computed with [terra::distance()] or another function that takes the Earth's curvature into account.}
 \item{verbosity}{integer indicating the amount of messages to displayalong the process. The default is 2, for all available messages.}
 \item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow), together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
 }
@@ -40,7 +42,7 @@ getRegion(
 SpatVector polygon delimiting a region around 'pres.coords'
 }
 \description{
-This function computes a polygon around a set of point coordinates, which may be useful for delimiting background or (pseudo)absence regions for computing species distibution models. Some of the 'type' options, especially those involving clusters, attempt to somewhat address survey bias by making smaller polygons around areas with fewer or more isolated points.
+This function computes a polygon around a set of point coordinates under given criteria, which may be useful for delimiting background or (pseudo)absence regions for computing species distibution models. Some of the 'type' options, especially those involving clusters or inverse distance, attempt to address survey bias by making smaller polygons around areas with fewer or more isolated points.
 }
 \details{
 Most methods for computing species distribution models require predictor values for regions beyond those with species occurrence records, i.e. background or (pseudo)absence areas. The extent of these regions has a strong effect on model predictions. Ideally, they should include the areas that are within the reach of the species AND were reasonably surveyed. While sometimes we have a large enough and delimited area that we can use (e.g. when modelling a region where a national or regional distribution atlas is available), often we need to approximate the areas that appear to be both reasonably surveyed and within the species' reach.

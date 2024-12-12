@@ -12,6 +12,7 @@
 #'  - "clust_width": a different buffer around each cluster of 'pres.coords' (computed with [stats::hclust()]) and then [stats::cutree()], with the mean point distance as the 'h' parameter), sized according to the [terra::width()] of each cluster's 'pres.coords'.
 #' @param width_mult if type = "width" or "clust_width", multiplier of the width to use for the [terra::buffer()] radius. Default 0.5.
 #' @param dist_mult if type = "mean_dist" or "clust_mean_dist", multiplier of the mean pairwise point distance to use for the [terra::buffer()] radius around each cluster. Default 1.
+#' @param dist_mat optional matrix of pairwise distances among 'pres.coords, to reuse (if 'type' includes "dist" or "clust") for efficiency instead of computing a new one. Should normally be computed with [terra::distance()] or another function that takes the Earth's curvature into account.
 #' @param verbosity integer indicating the amount of messages to display. The default is 2, for all available messages.
 #' @param plot logical (default TRUE) indicating whether to plot the resulting region around 'pres.coords'
 #'
@@ -30,8 +31,9 @@ getRegion <- function(pres.coords,
                       clust_dist = 100,
                       dist_mult = 1,
                       width_mult = 0.5,
-                      weight = TRUE,
+                      weight = FALSE,
                       CRS = NULL,
+                      dist_mat = NULL,
                       verbosity = 2,
                       plot = TRUE)
 {
@@ -77,8 +79,12 @@ getRegion <- function(pres.coords,
 
 
   if (grepl("dist|clust", type)) {
-    if (verbosity > 0) message("Computing pairwise distance between points...")
-    dist_mat <- terra::distance(pres.coords)
+    if (is.null(dist_mat)) {
+      if (verbosity > 0) message("Computing pairwise distance between points...")
+      dist_mat <- terra::distance(pres.coords)
+    } else {
+      if (verbosity > 0) message("Using supplied pairwise distance between points...")
+    }
     dist_mean <- mean(dist_mat, na.rm = TRUE)
   }
 

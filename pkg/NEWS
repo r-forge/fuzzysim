@@ -2,11 +2,19 @@
 upcoming...
 ===============================================
 
-* getRegion
-- new arg 'dist_mat' for efficiency when available
-
 * distPres
 - computes terra::nearest instead of pairwise distance (much more efficient and avoids crash for large datasets)
+
+
+===============================================
+fuzzySim v4.29 (committed 2024-12-12)
+===============================================
+
+## Modified functions:
+
+* getRegion
+- added 'dist_mat' argument
+- changed default 'weight' to FALSE, as it looked too restrictive
 
 
 ===============================================

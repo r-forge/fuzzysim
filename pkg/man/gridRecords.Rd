@@ -15,10 +15,10 @@ species = NULL, na.rm = TRUE, plot = FALSE)
 a Raster* or SpatRaster object (the latter is processed faster) with the desired spatial resolution and extent for the species presence-(pseudo)absence data, and the layer(s) whose values to extract for those data.
 }
   \item{pres.coords}{
-a SpatVector of points, or an object inheriting class 'data.frame' with 2 columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst') of the points where species presence was recorded.
+a SpatVector of points, or an object inheriting class 'data.frame' with 2 columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst'!) of the points where species presence was recorded.
 }
   \item{abs.coords}{
-(optional) same as 'pres.coords' but for points where the species was not recorded. If abs.coords=NULL and absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as having absence of records.
+(optional) same as 'pres.coords' but for points where the species was not recorded. If abs.coords=NULL and absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as absences (of records).
 }
   \item{absences}{
 logical value indicating whether pixels without presence records should be returned as absences. The default is TRUE.
@@ -38,11 +38,11 @@ See e.g. Baez et al. (2020), where this function was first used to get unique pr
 
 You should consider cleaning the coordinates beforehand, e.g. with \code{\link{cleanCoords}}.
 
-If your output has an overly large and/or spatially biased set of absences, you can use \code{\link{selectAbsences}} afterwards.
+If your output has an overly large and/or spatially biased set of absences, it may be recommendable to use \code{\link{selectAbsences}} afterwards.
 }
 \value{
 This function returns a data frame with the following columns:
-\item{'presence'}{integer, 1 for the cells (pixels) with at least one presence point; and (if absences=TRUE) 0 for the cells without any presence point, or with at least one absence point (if 'abs.coords' are provided) AND no presence points. If the 'species' argument is provided, instead of 'presence' you get one column named as each species.}
+\item{'presence'}{integer, 1 for the cells (pixels) with one or more presence points; and (if absences=TRUE) 0 for the cells with no presence points, or (if 'abs.coords' are provided) for the cells with one or more absence points AND no presence points. If the 'species' argument is provided, instead of 'presence' you get one column named as each species.}
 \item{'x', 'y'}{centroid coordinates of each cell (pixel).}
 \item{'cell'}{the pixel identifier in 'rst'.}
 \item{one column for each layer in 'rst'}{value of each pixel for each layer.}

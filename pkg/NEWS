@@ -7,7 +7,23 @@ upcoming...
 
 
 ===============================================
-fuzzySim v4.29 (committed 2024-12-12)
+fuzzySim v4.30 (committed 2024-12-16)
+===============================================
+
+## New functions:
+
+* partialResp
+
+
+## Modified functions:
+
+* getRegion
+- use geodist::geodist instead of terra::distance (faster)
+- added 'dist_measure' argument for geodist
+
+
+===============================================
+fuzzySim v4.29 (committed 2024-12-12) -> CRAN
 ===============================================
 
 ## Modified functions:

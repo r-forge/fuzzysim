@@ -13,6 +13,7 @@ getRegion(
   weight = FALSE,
   CRS = NULL,
   dist_mat = NULL,
+  dist_measure = "haversine",
   verbosity = 2,
   plot = TRUE
 )
@@ -35,6 +36,7 @@ getRegion(
 \item{weight}{logical (used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes. Default FALSE; if set to TRUE, clusters with fewer points (possibly indicating more sparsely surveyed areas) get proportionally smaller buffers than the mean distances among them.}
 \item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}).}
 \item{dist_mat}{optional matrix of pairwise distances among 'pres.coords', to use (if 'type' includes the string "dist" or "clust") for efficiency instead of computing a new one. Should normally be computed with [terra::distance()] or another function that takes the Earth's curvature into account.}
+\item{dist_measure}{argument to pass to [geodist::geodist()] (if 'dist_mat' is NULL) specifying the method for geodesic distance calculation. Can be "haversine" (the default, relatively fast but less accurate at long distances, especially near the poles), "vincenty" (more accurate, but slower and may fail for nearly antipodal points), "geodesic" (the most accurate, but slowest and may crash if many points), or "cheap" (the fastest, but inaccurate for maximum distances >100 km).}
 \item{verbosity}{integer indicating the amount of messages to displayalong the process. The default is 2, for all available messages.}
 \item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow), together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
 }

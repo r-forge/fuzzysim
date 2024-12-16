@@ -18,7 +18,7 @@
 #'
 #' @return SpatVector polygon
 #' @author A. Marcia Barbosa
-#' @seealso [terra::buffer()], [terra::width()]
+#' @seealso [terra::buffer()], [terra::width()], [stats::hclust()]
 
 #' @importFrom terra aggregate buffer crs distance is.lonlat is.points set.crs vect width
 #' @importFrom stats cutree hclust
@@ -34,6 +34,7 @@ getRegion <- function(pres.coords,
                       weight = FALSE,
                       CRS = NULL,
                       dist_mat = NULL,
+                      dist_measure = "haversine",
                       verbosity = 2,
                       plot = TRUE)
 {
@@ -81,7 +82,8 @@ getRegion <- function(pres.coords,
   if (grepl("dist|clust", type)) {
     if (is.null(dist_mat)) {
       if (verbosity > 0) message("Computing pairwise distance between points...")
-      dist_mat <- terra::distance(pres.coords)
+      # dist_mat <- terra::distance(pres.coords)
+      dist_mat <- geodist::geodist(terra::crds(pres.coords), measure = dist_measure)
     } else {
       if (verbosity > 0) message("Using supplied pairwise distance between points...")
     }
@@ -121,7 +123,9 @@ getRegion <- function(pres.coords,
     for (i in clusters) {
       # if (verbosity > 1) cat(i, "")
       clust_pts <- pres.coords[pres.coords$clust == i, ]
-      buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
+      # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
+      buff_radius <- mean(geodist::geodist(terra::crds(clust_pts), measure = dist_measure)) * dist_mult
+
       if (!is.finite(buff_radius) || buff_radius <= 0) buff_radius <- 0.001  # clusters with only one point get no distance, and a zero-width buffer cannot be computed for points
       pres.coords[pres.coords$clust == i, "buff_radius"] <- buff_radius
     }

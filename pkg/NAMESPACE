@@ -1,14 +1,15 @@
 exportPattern("^[[:alpha:]]+")
 importFrom("graphics", "abline", "arrows", "axis", "barplot", "lines", "mtext",
            "par", "points", "polygon", "text")
-importFrom("grDevices", "hcl.colors")
+importFrom("grDevices", "hcl.colors", "rgb")
 importFrom("methods", "is")
 importFrom("modEvA", "lollipop", "mod2obspred")
-importFrom("stats", "add1", "drop1", "anova", "reformulate", "as.formula",
+importFrom("stats", "add1", "as.formula", "drop1", "anova", "reformulate",
            "binomial", "complete.cases", "coef", "cor", "cor.test", "dist",
-           "extractAIC", "fitted", "glm", "lm", "na.omit", "nobs", "p.adjust",
-           "p.adjust.methods", "poly", "prcomp", "predict", "quantile", "step",
-           "update", "na.pass", "t.test", "vcov", "weighted.mean")
-importFrom(stringi, stri_unescape_unicode)
+           "extractAIC", "fitted", "glm", "lm", "na.omit", "na.pass", "nobs",
+           "p.adjust", "p.adjust.methods", "poly", "prcomp", "predict",
+           "quantile", "step", "update", "terms", "t.test", "vcov",
+           "weighted.mean")
+importFrom("stringi", "stri_unescape_unicode")
 importFrom("utils", "combn", "read.csv", "stack", "write.csv",
            "setTxtProgressBar", "txtProgressBar")

@@ -19,7 +19,7 @@ ylim = c(0, 1), reset.par = TRUE, ...)
   \item{\dots}{some additional arguments that can be passed to \code{\link{plot}}, e.g. 'main'.}
 }
 \details{
-  Each variable is plotted at intervals corresponding to 1/100th of its range. Confidence intervals are computed as the value plus/minus 2 * the standard error. To avoid the confidence intervals exceeding the 0:1 interval, which is possible for probability, the standard error is computed on the predictions at the scale of the predictors (i.e., computed with \code{type="link"}), and then back-transformed with \code{model\$family\$linkinv} (\url{https://www.r-bloggers.com/2018/12/confidence-intervals-for-glms}).
+  Each variable is plotted at intervals corresponding to 1/100th of its range. Confidence intervals are computed as the value plus/minus 2 * the standard error. To avoid the confidence intervals exceeding the 0:1 interval, which is possible for probability, the standard error is computed on the predictions at the scale of the predictors (i.e., computed with \code{type="link"}), and then back-transformed with \code{model\$family\$linkinv} (\url{https://fromthebottomoftheheap.net/2018/12/10/confidence-intervals-for-glms}).
 }
 \value{
   A partial response plot for each variable.

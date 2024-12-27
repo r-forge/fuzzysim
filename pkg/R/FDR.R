@@ -25,7 +25,7 @@ FDR <- function (data = NULL, sp.cols = NULL, var.cols = NULL, pvalues = NULL,
   if (!is.null(verbose)) {
     warning("'verbose' argument will be removed; instead, use 'verbosity' in your code from now on.")
     if (verbose == TRUE) {
-      warning("For now, verbose=TRUE replaced with verbosity=1 (except if simplif=TRUE, in which case verbose=FALSE) for back-compatibility.")
+      warning("For now, verbose=TRUE replaced with verbosity=1 (except if simplif=TRUE, in which case verbose=FALSE) for backward compatibility.")
       verbosity <- 1
     } else {
       warning("For now, verbose=FALSE replaced with verbosity=0 for back-compatibility.")

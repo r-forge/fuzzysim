@@ -1,9 +1,25 @@
 ===============================================
-upcoming...
+fuzzySim v4.31 (committed 2024-12-27)
 ===============================================
 
+## Modified functions:
+
+* partialResp
+- fixed bug when only one variable in model
+- polygon instead of lines for confidence interval
+- new argument se.mult, default 1.96 for the 95% confidence interval, but can be changed e.g. to 1 (for just the SE) or 0 (for no CI)
+- initial plot with type="n" and points added if plot.points=TRUE, removing boilerplate code
+
+* getRegion
+- before geodist(), project to EPSG:4326 if !is.lonlat
+
+* selectAbsences
+- moved "Absences not enough..." section upwards, avoiding unnecessary remaining computations
+
 * distPres
-- computes terra::nearest instead of pairwise distance (much more efficient and avoids crash for large datasets)
+- removed double loop to increase efficiency
+- new default method "auto"
+- option to use faster methods like haversine and cosine distance if packageVersion("terra") >= "1.8.7"
 
 
 ===============================================

@@ -1,7 +1,7 @@
 #' Get region
 #'
 #' @description
-#' This function suggests a region for building an ecological niche model around a given set of species occurrence point coordinates. Mind that this region does not consider survey effort, geographical barriers or other factors that should also be taken into account when delimiting a region for modelling.
+#' This function suggests a region for building an ecological niche model around a given set of species occurrence point coordinates. Mind that this region does not explicitly consider survey effort, geographical barriers or other factors that should also be taken into account when delimiting a region for modelling.
 
 #' @param pres.coords [SpatVector] points with the species occurrences
 #' @param type character indicating which procedure to use for defining the region. Options are:
@@ -83,6 +83,7 @@ getRegion <- function(pres.coords,
     if (is.null(dist_mat)) {
       if (verbosity > 0) message("Computing pairwise distance between points...")
       # dist_mat <- terra::distance(pres.coords)
+      if (!terra::is.lonlat(pres.coords)) pres.coords <- terra::project(pres.coords, "EPSG:4326")
       dist_mat <- geodist::geodist(terra::crds(pres.coords), measure = dist_measure)
     } else {
       if (verbosity > 0) message("Using supplied pairwise distance between points...")

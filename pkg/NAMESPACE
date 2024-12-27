@@ -11,5 +11,5 @@ importFrom("stats", "add1", "as.formula", "drop1", "anova", "reformulate",
            "quantile", "step", "update", "terms", "t.test", "vcov",
            "weighted.mean")
 importFrom("stringi", "stri_unescape_unicode")
-importFrom("utils", "combn", "read.csv", "stack", "write.csv",
-           "setTxtProgressBar", "txtProgressBar")
+importFrom("utils", "combn", "packageVersion", "read.csv", "stack",
+           "setTxtProgressBar", "txtProgressBar", "write.csv")

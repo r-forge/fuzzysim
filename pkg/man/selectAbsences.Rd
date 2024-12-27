@@ -4,7 +4,7 @@
 Select (spatially biased) absence rows.
 }
 \description{
-This function takes a matrix or (optionally spatial) data frame containing species presence (1) and absence (0) data (e.g., the output of \code{[\link{gridRecords}}), and it selects among the absence rows to stay within a given number or ratio of absences, and/or within and/or beyond a given distance to the presences. Optionally, absences can be selected with higher probability towards the vicinity of presences, to reproduce survey bias; or according to a user-provided bias raster.
+This function takes a matrix or (optionally spatial) data frame containing species presence (1) and (pseudo)absence (0) data (e.g., the output of \code{[\link{gridRecords}}), and it selects among the absence rows to stay within a given number or ratio of absences, and/or within and/or beyond a given distance to the presences. Optionally, to incorporate survey bias, absences can be selected with higher probability towards the vicinity of presences; or with probability weights according to a user-provided bias raster.
 }
 \usage{
 selectAbsences(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dist = NULL,

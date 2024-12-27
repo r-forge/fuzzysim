@@ -1,4 +1,4 @@
-partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.points = FALSE, ylim = c(0, 1)) {
+partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.points = FALSE, ylim = c(0, 1), reset.par = TRUE, ...) {
 
   if (!inherits(model, "glm") || !all(c("binomial", "logit") %in% model$family)) stop ("'model' must be of class 'glm' with 'binomial' family and 'logit' link.")
 
@@ -10,9 +10,11 @@ partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.po
     stopifnot(all(vars %in% vars_mod))
   }
 
-  opar <- par(no.readonly = TRUE)
-  par(mfrow = modEvA::arrangePlots(length(vars)), mar = c(3, 3, 1, 1))
-  on.exit(par(opar))
+  if (reset.par) {
+    opar <- par(no.readonly = TRUE)
+    par(mfrow = modEvA::arrangePlots(length(vars)), mar = c(3, 3, 1, 1))
+    on.exit(par(opar))
+  }
 
   dat <- model$model
 
@@ -45,7 +47,7 @@ partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.po
         if (plot.points)  ylim <- range(c(ylim, model$fitted.values), na.rm = TRUE)
       }
 
-      plot(xlim, ylim, type = "n", xlab = v, ylab = "Probability", mgp = c(1.8, 0.6, 0))
+      plot(xlim, ylim, type = "n", xlab = v, ylab = "Probability", mgp = c(1.8, 0.6, 0), ...)
       polygon(x = c(vals_v, rev(vals_v)),
               y = c(upper_v, rev(lower_v)),  # confidence interval
               col = "#D3DDE9", border = NA)
@@ -67,7 +69,7 @@ partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.po
         if (plot.points)  ylim <- range(c(ylim, fav), na.rm = TRUE)
       }
 
-        plot(xlim, ylim, type = "n", xlab = v, ylab = "Favourability", mgp = c(1.8, 0.6, 0))
+        plot(xlim, ylim, type = "n", xlab = v, ylab = "Favourability", mgp = c(1.8, 0.6, 0), ...)
         polygon(x = c(vals_v, rev(vals_v)),
                 y = c(upper_fav_v, rev(lower_fav_v)),  # confidence interval
                 col = "#D3DDE9", border = NA)

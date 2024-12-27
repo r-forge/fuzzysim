@@ -6,7 +6,7 @@ This function produces partial response plot(s) for probability or favourability
 }
 \usage{
 partialResp(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.points = FALSE,
-ylim = c(0, 1))
+ylim = c(0, 1), reset.par = TRUE, ...)
 }
 \arguments{
   \item{model}{a model object of class 'glm' and family 'binomial'.}
@@ -15,6 +15,8 @@ ylim = c(0, 1))
   \item{se.mult}{numeric value indicating the multiplier for the standard error of the predictions. The default is 1.96, for the 95\% confidence interval. If set to 0, no confidence intervals are plotted.}
   \item{plot.points}{logical value indicating whether to plot the points of predicted probability (or favourability, if \code{Fav=TRUE}) against the values of the plotted variable. Default \code{FALSE}.}
   \item{ylim}{either a numeric vector of length 2 indicating the minimum and maximum value for the y-axis, or character value \code{"auto"} for fitting the axis limits to the existing values in each plot. The default is \code{c(0, 1)}, for all curves to be directly comparable.}
+  \item{reset.par}{logical. If TRUE (the default), plotting \code{\link{par}}ameters are changed by the function and reset in the end. FALSE can be useful if the user wants to set their own parameters (like 'mfrow' or 'mar') and combine this with other plots.}
+  \item{\dots}{some additional arguments that can be passed to \code{\link{plot}}, e.g. 'main'.}
 }
 \details{
   Each variable is plotted at intervals corresponding to 1/100th of its range. Confidence intervals are computed as the value plus/minus 2 * the standard error. To avoid the confidence intervals exceeding the 0:1 interval, which is possible for probability, the standard error is computed on the predictions at the scale of the predictors (i.e., computed with \code{type="link"}), and then back-transformed with \code{model\$family\$linkinv} (\url{https://www.r-bloggers.com/2018/12/confidence-intervals-for-glms}).

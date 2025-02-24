@@ -1,18 +1,36 @@
 cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL, year.col = NULL, rm.dup = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL, year.na.pass = TRUE, plot = TRUE, extend = 0.1) {
-  # version 1.6 (5 Dec 2024)
+  # version 1.7 (21 Jan 2025)
 
   stopifnot(
     inherits(data, "data.frame") || inherits(data, "SpatVector"),
-    is.null(coord.cols) || length(coord.cols) == 2,
-    is.null(coord.cols) || (is.character(coord.cols) && all(coord.cols %in% names(data))) || (is.integer(coord.cols) && all(coord.cols %in% 1:ncol(data))),
+    inherits(data, "SpatVector") || is.null(coord.cols) || length(coord.cols) == 2,
+    inherits(data, "SpatVector") || is.null(coord.cols) || (is.character(coord.cols) && all(coord.cols %in% names(data))) || (is.integer(coord.cols) && all(coord.cols %in% 1:ncol(data))),
     is.null(uncert.col) || length(uncert.col) == 1,
     # !rm.uncert || !is.null(uncert.col),  # too cryptic, replaced below
     is.null(uncert.col) || (is.character(uncert.col) && uncert.col %in% names(data)) || (is.integer(uncert.col) && uncert.col %in% 1:ncol(data)),
     is.null(abs.col) || (is.character(abs.col) && abs.col %in% names(data)) || (is.integer(abs.col) && abs.col %in% 1:ncol(data))
   )
 
+  if (inherits(data, "SpatVector")) {
+    if (isFALSE(terra::is.points(data)))
+      stop ("If 'data' is of class 'SpatVector', its 'geomtype' must be 'points'.")
+    data.sv.in <- data
+    if (!is.null(coord.cols)) {
+      warning("'coord.cols' argument ignored, as 'data' is a spatial object,\n  so coordinates are taken from that")
+    }
+      data <- data.frame(data.frame(data), terra::crds(data))
+      last.cols <- c(ncol(data) - 1, ncol(data))
+      coord.cols <- names(data)[last.cols]
+  } else {
+    data.sv.in <- NULL
+  }
 
-  if (inherits(data, "SpatVector") && isFALSE(terra::is.points(data))) stop ("If 'data' is of class 'SpatVector', its 'geomtype' must be 'points'.")
+  data <- as.data.frame(data)  # for tibbles etc.
+
+  message(nrow(data), " rows in input data")
+
+  if (plot)
+    data.in <- data
 
 
   coord.ops <- c("rm.dup", "rm.equal", "rm.imposs", "rm.missing.any", "rm.missing.both", "rm.zero.any", "rm.zero.both", "rm.imprec.any", "rm.imprec.both")
@@ -27,26 +45,6 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
 
   if (!is.null(year.min) && is.null(year.col)) stop("applying 'year.min' requires specifying 'year.col'.")
 
-
-  if (inherits(data, "SpatVector")) {
-    data.sv.in <- data
-    if (is.null(coord.cols)) {
-      null.coord.cols <- TRUE
-      data <- data.frame(data.frame(data), terra::crds(data))
-      last.cols <- c(ncol(data) - 1, ncol(data))
-      coord.cols <- names(data)[last.cols]
-    } else {
-      null.coord.cols <- FALSE
-    }
-  } else {
-    data.sv.in <- NULL
-  }
-
-  data <- as.data.frame(data)  # for tibbles etc.
-
-  message(nrow(data), " rows in input data")
-
-  if (plot) data.in <- data
 
   if (is.null(coord.cols)) {
     coords <- data.frame()
@@ -140,9 +138,9 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
 
   data.sv.out <- terra::vect(data, geom = coord.cols, crs = terra::crs(data.sv.in), keepgeom = TRUE)
 
-  if (null.coord.cols) {
+  # if (null.coord.cols) {
     data.sv.out <- data.sv.out[ , -last.cols]
-  }
+  # }
 
   if (plot) {
     x_range <- range(terra::crds(data.sv.in)[ , 1], na.rm = TRUE)

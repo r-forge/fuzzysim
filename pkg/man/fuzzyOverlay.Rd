@@ -21,8 +21,8 @@ vector of the names or index numbers of the columns or layers to compare. The de
 character value indicating the operation to perform between the (specified) prediction columns or layers in 'data'. Options are:
   \itemize{
     \item "consensus" for the arithmetic mean of predictions (or the fuzzy equivalent of the proportion of models that agree that the species can potentially occur at each site);
-    \item "fuzzy_and" or "intersection" for fuzzy intersection;
-    \item "fuzzy_or" or "union" for fuzzy union;
+    \item "fuzzy_and" or "intersection" for fuzzy intersection (minimum value; Zadeh, 1965);
+    \item "fuzzy_or" or "union" for fuzzy union (maximum value; Zadeh, 1965);
     \item "prob_and" or "prob_or" for probabilistic and/or, respectively (see Details);
     \item "maintenance" for the values where all predictions for the same row/pixel (rounded to the number of digits specified in 'round.digits') are the same.
     }

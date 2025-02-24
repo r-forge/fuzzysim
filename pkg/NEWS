@@ -1,4 +1,20 @@
 ===============================================
+fuzzySim v4.32 (committed 2025-02-24)
+===============================================
+
+## New functions:
+
+* biasLayer
+
+
+## Modified functions:
+
+* cleanCoords
+- fixed bug when input data is SpatVector
+- 'coord.cols' ignored with warning if provided and input is SpatVector
+
+
+===============================================
 fuzzySim v4.31 (committed 2024-12-27)
 ===============================================
 
@@ -9,7 +25,7 @@ fuzzySim v4.31 (committed 2024-12-27)
 - polygon instead of lines for confidence interval
 - new argument se.mult, default 1.96 for the 95% confidence interval, but can be changed e.g. to 1 (for just the SE) or 0 (for no CI)
 - initial plot with type="n" and points added if plot.points=TRUE, removing boilerplate code
-- added args 'reset.par' and '...'
+- added args 'reset.par' and '...' for plot()
 
 * getRegion
 - before geodist(), project to EPSG:4326 if !is.lonlat

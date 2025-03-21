@@ -1,5 +1,5 @@
 distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, CRS = NULL, method = "auto", suffix = "_D", p = 1, inv = TRUE, verbosity = 2) {
-  # version 2.1 (26 Dec 2024)
+  # version 2.2 (5 Jan 2025)
 
   data <- as.data.frame(data)
 
@@ -16,49 +16,8 @@ distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat =
   )
 
   if (is.null(dist.mat)) {
-    stats_methods <- c("euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski")
-    terra_methods <- c("geo", "haversine", "cosine")
-    # geodist_methods <- c("haversine", "vincenty", "geodesic", or "cheap")
-    if (!(method %in% c("auto", stats_methods, terra_methods))) stop ("Invalid 'method'")
-    if (method %in% terra_methods && !("terra" %in% .packages(all.available = TRUE))) stop("The specified 'method' requires the 'terra' package.\nPlease install it, or choose a different 'method'.")
-    if (method %in% setdiff(terra_methods, "geo") && utils::packageVersion("terra") < "1.8.7") stop ("The specified 'method' requires 'terra' version 1.8.7 or higher.\nPlease update / (re)install 'terra', or choose a different 'method'.")
-
-    if (!("terra" %in% .packages(all.available = TRUE)) || method %in% stats_methods) {
-      if (verbosity > 1) message("Using stats::dist() for distance computation.\n
-                                 Results are less accurate, especially for large distances,\n
-                                 as they don't account for the curvature of the Earth.")
-      if (method == "auto") method <- "euclidean"
-      dist.mat <- as.matrix(stats::dist(data[, coord.cols], method = method))
-
-    } else {  # if terra
-      if (is.null(CRS)) {
-        if (verbosity > 0) warning("With CRS = NULL, distances are in the units of 'coord.cols' and may be inaccurate.")
-        CRS <- "local"  # arbitrary Cartesian space
-      }
-
-      data_sv <- terra::vect(as.matrix(data[, coord.cols]), crs = CRS)
-
-      if (method == "auto") {
-        if (utils::packageVersion("terra") >= "1.8.7") {
-          if (terra::is.lonlat(data_sv))
-            small <- 0.00001  # degrees
-          else
-            small <- 1  # meter
-          min_lon_dist <- min(diff(sort(unique(data[ , coord.cols[1]]))), na.rm = TRUE)
-          min_lat_dist <- min(diff(sort(unique(data[ , coord.cols[2]]))), na.rm = TRUE)
-          if (min_lon_dist < small || min_lat_dist < small)
-            method <- "haversine"
-          else
-            method <- "cosine"  # faster, but inaccurate for distances <1m (https://gis.stackexchange.com/questions/4906/why-is-law-of-cosines-more-preferable-than-haversine-when-calculating-distance-b)
-          if (verbosity > 0) message("using '", method, "' distance", sep = "")
-          dist.mat <- as.matrix(terra::distance(data_sv, method = method))
-        } else {  # if terra < 1.8.7
-            if (verbosity > 0)  message("Faster distance options available with 'terra' >= 1.8.7; using slower 'geo' method.\nUpdate / (re)install 'terra' for much faster computation.")
-         dist.mat <- as.matrix(terra::distance(data_sv))
-        }  # end if terra 1.8.7
-      }  # end if "auto"
-    }  # end if terra
-  }  # end if NULL dist.mat
+    dist.mat <- distMat(data[ , coord.cols], CRS = CRS, dist_method = method, verbosity = verbosity)
+  }
 
   if (is.numeric(sp.cols)) sp.cols <- names(data)[sp.cols]
   n.obs <- nrow(data)

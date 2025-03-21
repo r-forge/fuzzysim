@@ -3,7 +3,7 @@ biasLayer <- function(svc, rst = terra::rast(terra::ext(svc), crs = terra::crs(s
 
   # tentative arguments:
   # inv = TRUE  # for distance
-  # standardize = TRUE  # for stantardizing all to vary between 0 and 1
+  # standardize = TRUE  # for standardizing all to vary between 0 and 1
 
   if (!inherits(svc, "SpatVectorCollection")) stop("'svc' must be of class 'SpatVectorCollection';\n  try converting it with terra::svc()")
   if (!inherits(rst, "SpatRaster")) stop("'rst' must be of class 'SpatRaster'")

@@ -4,7 +4,7 @@
 (Inverse) distance to the nearest presence
 }
 \description{
-This function takes a matrix or data frame containing species presence (1) and absence (0) data and their spatial coordinates (optionally also a pre-calculated distance matrix between all localities), and calculates the (inverse) distance from each locality to the nearest presence locality for each species.
+This function takes a matrix or data frame containing species presence (1) and absence (0) data and their spatial coordinates (optionally also a pre-computed pairwise distance matrix for all localities), and computes the (inverse) distance from each locality to the nearest presence locality for each species.
 }
 \usage{
 distPres(data, sp.cols, coord.cols = NULL, id.col = NULL,
@@ -28,10 +28,10 @@ optionally, the name or index number of a column (to be included in the output) 
 optional pre-computed pairwise distance matrix for the localities in 'data'. If provided, arguments 'CRS' and 'method' are not used.
 }
 \item{CRS}{
-coordinate reference system of the 'coord.cols' in 'data', in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). Ignored if 'dist.mat' is not NULL. Otherwise, if 'CRS' is provided and the 'terra' package is installed, distances are computed with \code{\link[terra:distance]{terra::distance()}}, thus accounting for the curvature of the Earth.
+coordinate reference system of the 'coord.cols' in 'data', to pass to \code{\link{distMat}} for more accurate geographical distances. Ignored if 'dist.mat' is not NULL.
 }
   \item{method}{
-(if 'dist.mat' is NULL) argument to pass to \code{\link{dist}} or to \code{\link[terra:distance]{terra::distance()}} specifying the method for computing the distance matrix. Results are more accurate if a \code{\link[terra:distance]{terra::distance()}} method is used and the 'CRS' argument is provided. The default is "auto". With this, the method is "euclidean" if the 'terra' package isn't available; else "haversine" if there are distances < 1 m or 0.00001 degrees, or "cosine" (faster but inaccurate for small distances) otherwise. You can instead choose method="geo" for the most accurate, yet slowest distance method (see ?terra::distance). For 'terra' versions before 1.8.7, only "geo" is available and will be used.
+(if 'dist.mat' is NULL) argument to pass to \code{\link{distMat}}. The default is "auto".
 }
   \item{suffix}{
 character indicating the suffix to add to the distance columns in the resulting data frame. The default is \code{"_D"}.
@@ -71,7 +71,7 @@ head(rotif.env)
 names(rotif.env)
 
 
-# calculate plain distance to presence:
+# compute plain distance to presence:
 
 rotifers.dist0 <- distPres(rotif.env, sp.cols = 18:47,
 coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 1,
@@ -84,7 +84,7 @@ inv = FALSE, suffix = "_D", CRS = "EPSG:4326")  # in meters
 head(rotifers.dist)
 
 
-# calculate inverse squared distance to presence:
+# compute inverse squared distance to presence:
 
 rotifers.invd2 <- distPres(rotif.env, sp.cols = 18:47,
 coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 2,

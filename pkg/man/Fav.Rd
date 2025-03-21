@@ -4,41 +4,45 @@
 Favourability (probability without the effect of sample prevalence)
 }
 \description{
-Computes prevalence-independent favourability for a species' presence, based on a presence/(pseudo)absence model object, or on a vector of predicted probability values plus either the modelled binary response variable, the total number of modelled ones and zeros, or the prevalence (proportion of ones) in the modelled binary response (i.e., in the training data).
+Computes prevalence-independent favourability for a species' presence, based on a presence/(pseudo)absence model object, or on a vector of predicted probability values plus either the modelled binary response variable, or the total numbers of modelled ones and zeros, or the prevalence (proportion of ones) in the modelled binary response (i.e., in the model training data). It can also do the inverse operation, i.e. compute presence probability from a vector of favourability values and the underlying prevalence.
 }
 \usage{
 Fav(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preval = NULL,
-method = "RBV", true.preval = NULL, verbosity = 2)
+method = "RBV", true.preval = NULL, inv = FALSE, verbosity = 2)
 }
 \arguments{
   \item{model}{
-a binary-response, presence/(pseudo)absence probability-producing model object of class "glm", "gam", "gbm", "randomForest" or "bart" (computed with keeptrees=TRUE), obtained with weights=NULL.
+a binary-response presence/(pseudo)absence model object of class "glm", "gam", "gbm", "randomForest" or "bart" (computed with keeptrees=TRUE), computed with weights=NULL.
 }
   \item{obs}{
 alternatively to 'model', a vector of the 1 and 0 values of the binary response variable (e.g. presence-absence of a species) in the model training data. This argument is ignored if 'model' is provided.
 }
   \item{pred}{
-alternatively to 'model', a numeric vector, RasterLayer or SpatRaster of predicted presence probability values, produced by a presence/(pseudo)absence modelling method yielding presence probability (obtained with weights=NULL). This argument is ignored if 'model' is provided.
+alternatively to 'model', a numeric vector, RasterLayer or SpatRaster of predicted presence probability values, produced by a presence/(pseudo)absence modelling method yielding presence probability (computed with weights=NULL). This argument is ignored if 'model' is provided.
 }
   \item{n1n0}{
-alternatively to 'obs' or 'sample.preval', an integer vector of length 2 providing the total numbers of modelled ones and zeros (in this order) of the binary response variable in the model training data. Ignored if 'obs' or 'model' is provided.
+alternatively to 'obs' or 'sample.preval', an integer vector of length 2 providing the total numbers of modelled ones and zeros (in this order!) of the binary response variable in the model training data. Ignored if 'obs' or 'model' is provided.
 }
   \item{sample.preval}{
 alternatively to 'obs' or 'n1n0', the prevalence (proportion of ones) of the binary response variable in the model training data. Ignored if 'model' is provided.
 }
   \item{method}{
-either "RBV" for the original Real, Barbosa & Vargas (2006) procedure, or "AT" if you want to try out the modification proposed by Albert & Thuiller (2008) (but see Details!).
+either "RBV" for the original Real, Barbosa & Vargas (2006) procedure, or "AT" if you want to try out the modification proposed by Albert & Thuiller (2008) - but see Details!
   }
   \item{true.preval}{
-the true prevalence (as opposed to sample prevalence), necessary if you want to try the "AT" method (but see Details!).
+the true prevalence (as opposed to sample prevalence), necessary if you want to try the "AT" method (but see Details!)
 }
-  \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).
+  \item{inv}{
+logical value (default FALSE) indicating whether to do the inverse operation instead, i.e. compute presence probability from favourability. If TRUE, the user must supply not a 'model' object, but rather a 'pred' vector of favourability values, plus 'obs' or 'n1n0' or 'sample.preval'.
+  }
+  \item{verbosity}{
+numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).
   }
 }
 \details{
-Methods such as Generalized Linear Models, Generalized Additive Models, Random Forests, Boosted Regression Trees / Generalized Boosted Models, Bayesian Additive Regression Trees and several others, are widely used for modelling species' potential distributions using presence/absence data and a set of predictor variables. These models predict presence probability, which (unless presences and abences are given different weights) incorporates the prevalence (proportion of presences) of the species in the modelled sample. So, predictions for restricted species are always generally low, while predictions for widespread species are always generally higher, regardless of the actual environmental quality. Barbosa (2006) and Real, Barbosa & Vargas (2006) proposed an environmental favourability function which is based on presence probability and cancels out uneven proportions of presences and absences in the modelled data. Favourability thus assesses the extent to which the environmental conditions change the probability of occurrence of a species with respect to its overall prevalence in the study area. Model predictions become, therefore, directly comparable among species with different prevalences, without the need to artificially assign different weights to presences and absences.
+Methods such as Generalized Linear Models (GLM), Generalized Additive Models (GAM), Random Forests, Boosted Regression Trees (BRT) / Generalized Boosted Models (GBM), Bayesian Additive Regression Trees (BART) and several others, are widely used for modelling species' potential distributions using presence/absence data and a set of predictor variables. These models predict presence probability, which (unless presences and abences are given different weights) incorporates the prevalence (proportion of presences) of the species in the modelled sample. So, predictions for rare species are always generally low, while predictions for widespread species are always generally higher, regardless of the actual environmental quality. Barbosa (2006) and Real, Barbosa & Vargas (2006) proposed an environmental favourability function which is based on presence probability and cancels out uneven proportions of presences and absences in the modelled data. Favourability thus assesses the extent to which the environmental conditions change the probability of occurrence of a species with respect to its overall prevalence in the study area. Model predictions become, therefore, directly comparable among species with different prevalences, without the need to artificially assign different weights to presences and absences.
 
-Using simulated data, Albert & Thuiller (2008) proposed a modification to the favourability function, but it requires knowing the true prevalence of the species (not just the prevalence in the modelled sample), which is rarely possible in real-world modelling. Besides, this suggestion was based on the misunderstanding that the favourability function was a way to obtain the probability of occurrence when prevalence differs from 50\%, which is incorrect (see Acevedo & Real 2012).
+Using simulated data, Albert & Thuiller (2008) proposed a modification to the favourability function which requires knowing the true prevalence of the species (not just the prevalence in the modelled sample), though this is rarely possible in real-world modelling. Besides, this suggestion was based on the misunderstanding that the favourability function was a way to obtain the probability of occurrence when prevalence differs from 50\%, which is incorrect (see Acevedo & Real 2012).
 
 To get environmental favourability with either the Real, Barbosa & Vargas ("RBV") or the Albert & Thuiller ("AT") method, you just need to get model predictions of presence probability from your data, together with the proportions of presences and absences in the modelled sample, and then use the 'Fav' function. Input data for this function are either a model object of an implemented class, or the vector of presences-absences (1-0) of your species and the corresponding presence probability values, obtained e.g. with predict(mymodel, mydata, type = "response"). Alternatively to the presences-absences, you can provide either the sample prevalence or the numbers of presences and absences in the dataset that was used to generate the presence probabilities. In case you want to use the "AT" method (but see Acevedo & Real 2012), you also need to provide the true (besides the sample) prevalence of your species.
 }

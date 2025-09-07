@@ -141,14 +141,18 @@ points(gridded_pres_mult[gridded_pres_mult[ , 3] == 1, c("x", "y")], col = 3, pc
 
 dir.create("gridRecords_tiles")  # creates a folder to receive the tile files
 
-terra::makeTiles(r, terra::divide(r, 2), filename = "gridRecords_tiles/tile_.tif")  # give a larger 'n' to divide() if your 'rst' still crashes 'gridRecords'
+terra::makeTiles(r, terra::divide(r, 2),
+                 filename = "gridRecords_tiles/tile_.tif")
+# give a larger 'n' to divide() if your 'rst' still crashes 'gridRecords'
 
 tiles <- terra::sprc(list.files("gridRecords_tiles", full.names = TRUE))
 
 par(mfrow = c(2, 2))
 sapply(tiles, plot)
 
-gridded_list <- lapply(tiles, gridRecords, pres.coords = terra::crds(presences), plot = TRUE)
+gridded_list <- lapply(tiles, gridRecords,
+                       pres.coords = terra::crds(presences),
+                       plot = TRUE)
 
 gridded_pres <- do.call(rbind, unname(gridded_list))
 

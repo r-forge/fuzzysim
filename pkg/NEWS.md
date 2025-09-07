@@ -12,9 +12,10 @@
 * getRegion
     - new arguments 'clust_type', 'dist_method', and '...' for plot()
     - distance now computed with distMat(), with several method options and "auto" default
-    - rows with no coordinates removed (with message) to avoid errors
+    - diagonal and lower triangle now removed before computing the mean of the distance matrix
+    - rows with no coordinates removed (with message) to prevent error
     - message if duplicate coordinates found
-    
+
 * distPres
     - distance now computed with distMat()
 

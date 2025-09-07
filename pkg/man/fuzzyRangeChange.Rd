@@ -10,7 +10,7 @@ This function quantifies overall range change (expansion, contraction, maintenan
 fuzzyRangeChange(pred1, pred2, number = TRUE, prop = TRUE,
 na.rm = TRUE, round.digits = 2,
 measures = c("Gain", "Loss", "Stable positive", "Stable negative", "Balance"),
-plot = TRUE, plot.type = "lollipop", x.lab = TRUE, ...)
+plot = TRUE, plot.type = "waterfall", x.lab = TRUE, ...)
 }
 \arguments{
   \item{pred1}{numeric vector or SpatRaster layer containing the predictions (between 0 and 1) of the model that will serve as reference.}
@@ -21,9 +21,9 @@ plot = TRUE, plot.type = "lollipop", x.lab = TRUE, ...)
   \item{round.digits}{argument to pass to \code{\link{fuzzyOverlay}}, indicating the number of decimal places to which to round 'pred' for calculating 'maintenance' or 'stability'. The default is 2.}
   \item{measures}{character vector listing the range change measures to calculate. The default includes all available measures.}
   \item{plot}{logical value indicating whether to plot the results. The default is TRUE.}
-  \item{plot.type}{character value indicating the type of plot to produce (if plot=TRUE). Can be "lollipop" (the default) or "barplot".}
+  \item{plot.type}{character value indicating the type of plot to produce (if plot=TRUE). Can be "barplot" or "waterfall" (the default, synonyms) or "lollipop".}
   \item{x.lab}{logical value indicating whether to add the x axis labels to the plot (i.e., the names below each lollipop or bar). The default is TRUE, but users may set it to FALSE and then add labels differently (e.g. with different names or rotations).}
-  \item{\dots}{additional arguments to pass to \code{barplot} or to \code{modEvA::lollipop} (if plot=TRUE).}
+  \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{\link{barplot}} (if 'plot.type' is "barplot" or "waterfall") or to \code{modEvA::lollipop} (if 'plot.type' is "lollipop").}
 }
 \value{
 This function returns a data frame with the following values in different rows (among those included in 'measures'):
@@ -32,7 +32,7 @@ This function returns a data frame with the following values in different rows (
 \item{Stable positive}{fuzzy equivalent of the number of (predicted) presences that have remained as such (when rounded to 'round.digits') between 'pred1' and 'pred2'}
 \item{Stable negative}{fuzzy equivalent of the number of (predicted) absences that have remained as such (when rounded to 'round.digits') between 'pred1' and 'pred2')}
 \item{Balance}{sum of the change in predicted values from 'pred1' to 'pred2' (fuzzy equivalent of the balance of gained and lost presences)}
-If number=TRUE (the default), there is a column named "Number" with the number of localities in each of the above categories. If prop=TRUE (the default), there is a column named "Proportion" in which this number is divided by the total number of reference values (i.e., the fuzzy range or fuzzy non-range size). If plot=TRUE (the default), a plot is also produced representing the last column of the result data frame.
+If number=TRUE (the default), there is a column named "Number" with the number of localities in each of the above categories. If prop=TRUE (the default), there is a column named "Proportion" in which this number is divided by the total number of reference values (i.e., the fuzzy range or fuzzy non-range size). If plot=TRUE (the default), a plot is also produced (by default, a barplot or waterfall plot) from the values in the last column of the output data frame.
 }
 \author{A. Marcia Barbosa}
 \seealso{

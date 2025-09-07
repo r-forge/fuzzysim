@@ -1,5 +1,5 @@
 distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat = NULL, CRS = NULL, method = "auto", suffix = "_D", p = 1, inv = TRUE, verbosity = 2) {
-  # version 2.2 (5 Jan 2025)
+  # version 2.3 (3 Fev 2025)
 
   data <- as.data.frame(data)
 

@@ -1,9 +1,9 @@
 fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE,
                              na.rm = TRUE, round.digits = 2,
                              measures = c("Gain", "Loss", "Stable positive", "Stable negative", "Balance"),
-                             plot = TRUE, plot.type = "lollipop", x.lab = TRUE,
+                             plot = TRUE, plot.type = "waterfall", x.lab = TRUE,
                              ...)  {   # log = NA,
-  # version 2.0 (3 Oct 2024)
+  # version 2.1 (15 Jul 2025)
   # version -.- (-- --- 202-) -> new arg 'log': NA or the base of the log for the scale (see https://blog.datawrapper.de/weeklychart-logscale3/)
 
 
@@ -49,10 +49,10 @@ fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE,
   }
 
   if (plot) {
-    plot.type <- match.arg(plot.type, c("lollipop", "barplot"))
+    plot.type <- match.arg(plot.type, c("waterfall", "barplot", "lollipop"))
     if (x.lab) xlab <- gsub(x = rownames(result), pattern = " ", replacement = "\n") else xlab <- ""
-    if (plot.type == "lollipop")  modEvA::lollipop(result[ , ncol(result)], names = xlab, ylab = names(result)[ncol(result)], ...)
-    else if (plot.type == "barplot")  barplot(result[ , ncol(result)], names.arg = xlab, ylab = names(result)[ncol(result)], ...)
+    if (plot.type %in% c("waterfall", "barplot"))  barplot(result[ , ncol(result)], names.arg = xlab, ylab = names(result)[ncol(result)], ...)
+    else if (plot.type == "lollipop")  modEvA::lollipop(result[ , ncol(result)], names = xlab, ylab = names(result)[ncol(result)], ...)
     else message("Invalid 'plot.type'. Plot not produced.")
     abline(h = 0)
   }

@@ -12,7 +12,7 @@ less space.
 integerCols(data)
 }
 \arguments{
-  \item{data}{a data frame containing possibly integer columns classified as "numeric".}
+  \item{data}{a matrix or an object inheriting class data.frame containing possibly integer columns classified as "numeric".}
 }
 \value{
 The function returns a data frame with the same columns as 'data', but with
@@ -46,7 +46,7 @@ dat <- integerCols(dat)
 
 str(dat)
 # var2 and var3 now classified as "integer"
-# var4 remains as numeric because contains infinite and NaN 
+# var4 remains as numeric because contains infinite and NaN
 # (not integer) values
 # var5 remains as factor
 }

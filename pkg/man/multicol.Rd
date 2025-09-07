@@ -9,7 +9,7 @@ multicol(vars = NULL, model = NULL, reorder = TRUE)
 }
 \arguments{
   \item{vars}{
-A matrix or data frame containing the numeric variables for which to calculate multicollinearity. Only the 'independent' (predictor, explanatory, right hand side) variables should be entered, as the result obtained for each variable depends on all the other variables present in the analysed data set.
+A matrix, an object inheriting class data.frame, or a multi-layer SpatRaster containing the numeric variables for which to calculate multicollinearity. Note that only the 'independent' (predictor, explanatory, right hand side) variables should be entered, as the result obtained for each variable depends on all the other variables present in the analysed data set.
 }
   \item{model}{
 Alternatively to 'vars', a model object of class "glm" to calculate 'multicol' among the included variables.
@@ -49,17 +49,17 @@ multicol(rotif.env[ , 5:17], reorder = FALSE)
 multicol(rotif.env[ , 5:17])
 
 # you can also calculate multicol among the variables included in a model:
-mod <- step(glm(Abrigh ~ Area + Altitude + AltitudeRange + 
-HabitatDiversity + HumanPopulation + Latitude + Longitude + 
-Precipitation + PrecipitationSeasonality + TemperatureAnnualRange 
-+ Temperature + TemperatureSeasonality + UrbanArea, 
+mod <- step(glm(Abrigh ~ Area + Altitude + AltitudeRange +
+HabitatDiversity + HumanPopulation + Latitude + Longitude +
+Precipitation + PrecipitationSeasonality + TemperatureAnnualRange
++ Temperature + TemperatureSeasonality + UrbanArea,
 data = rotif.env))
 multicol(model = mod)
 
 # more examples using R datasets:
 multicol(trees)
 
-# you'll get a warning and some NA results if any of the variables 
+# you'll get a warning and some NA results if any of the variables
 # is not numeric:
 multicol(OrchardSprays)
 

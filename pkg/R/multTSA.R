@@ -1,16 +1,31 @@
-multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, verbosity = 2, ...) {
+multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step = TRUE, criterion = "AIC", type = "P", Favourability = FALSE, suffix = "_TS", save.models = FALSE, na.rm = TRUE, verbosity = 2, ...) {
 
-  # version 2.8 (5 Jul 2022)
+  # version 3.0 (3 Sep 2025)
 
   if (verbosity > 1) {
     start.time <- Sys.time()
     on.exit(timer(start.time))
   }
-  
-  data <- as.data.frame(data)
+
+  data_in <- data
+  sp.cols_in <- as.data.frame(sp.cols)
+
+  if (inherits(data_in, "SpatRaster")) {
+    if (!is.data.frame(sp.cols_in)) stop ("If 'data' is a SpatRaster, 'sp.cols' must be an object\ninheriting class 'data.frame' of point coordinates.")
+    coords_all <- terra::crds(data_in, na.rm = FALSE)
+    coords_pres <- sp.cols_in
+    data <- data.frame(terra::values(data_in), as.data.frame(coords_all))
+    coord.cols <- c("x", "y")
+    data$pres <- NA
+    data$pres[which(!is.na(terra::values(data_in)))] <- 0
+    data$pres[terra::cellFromXY(data_in, coords_pres)] <- 1
+    sp.cols <- "pres"
+  } else {
+    data <- as.data.frame(data)  # accommodates tibbles etc.
+  }
 
   stopifnot (
-    na.omit(as.matrix(data[ , sp.cols])) %in% c(0,1),
+    all(na.omit(as.matrix(data[ , sp.cols])) %in% c(0,1)),
     #data[ , sp.cols] %in% c(NA, 0, 1),
     length(sp.cols) > 0,
     length(sp.cols) <= ncol(data) - length(coord.cols) - length(id.col),
@@ -36,8 +51,7 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
                                     degree = degree, raw = TRUE, simple = TRUE))
   n.poly.terms <- ncol(coords.poly)
 
-  if (is.character(coord.cols))  coord.names <- coord.cols
-  else  coord.names <- colnames(data)[coord.cols]
+  if (is.character(coord.cols))  coord.names <- coord.cols else  coord.names <- colnames(data)[coord.cols]
   colnames(coords.poly) <- gsub(pattern = "\\.", replacement = "_", x = colnames(coords.poly))
   colnames(coords.poly) <- paste0(coord.names[1], colnames(coords.poly))
   colnames(coords.poly) <- gsub(pattern = "_", replacement = paste0("_", coord.names[2]), x = colnames(coords.poly))
@@ -89,9 +103,13 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
     else colnames(predictions)[1] <- colnames(data)[id.col]
   }
 
+  if(inherits(data_in, "SpatRaster")) {
+    predictions <- terra::setValues(data_in, predictions[,1])
+    if (na.rm) predictions[is.na(data_in)] <- NA
+  }
+
   if (verbosity > 1)  message("Finished!")
 
-  if (save.models) return(list(predictions = data.frame(predictions), models = models))
+  if (save.models) return(list(predictions = predictions, models = models))
   else return (predictions)
-
 }

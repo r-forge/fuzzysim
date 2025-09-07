@@ -1,26 +1,48 @@
 # Version 4.34
-### (Committed 2025-  - )
+### (Committed 2025-09-07)
 
 ### New functions:
 
 * distMat
-- now used by distPres() and getRegion()
+    - now used by distPres() and getRegion()
 
 
 ### Modified functions:
 
 * getRegion
-- added option dist_method="auto" (new default), as in distPres()
-- renamed argument 'dist_measure' to 'dist_method', to match the terra::distance() new argument that it will call, as well as the corresponding argument to distPres()
+    - new arguments 'clust_type', 'dist_method', and '...' for plot()
+    - distance now computed with distMat(), with several method options and "auto" default
+    - rows with no coordinates removed (with message) to avoid errors
+    - message if duplicate coordinates found
+    
+* distPres
+    - distance now computed with distMat()
+
+* multTSA
+    - now implemented also for SpatRaster + presence coordinates
+
+* multConvert
+    - now implemented also for SpatRasters
+    - removed loop
+
+* fuzzyRangeChange
+    - 'plot.type' default changed to new option "waterfall" (same as "barplot"), which seems the most appropriate for this
+
+* gridRecords
+    - some code changes to improve efficiency
 
 
-* getRegion
-- before geodist(), project to EPSG:4326 if !is.lonlat
+### Other modified files:
 
+* multConvert.Rd
+    - mentions and examples for scale() and log() continuous variables
 
-* getRegion
-- use geodist::geodist instead of terra::distance (faster)
-- added 'dist_measure' argument for geodist
+* multicol.Rd, multConvert.Rd
+    - mention implementation also for SpatRasters
+
+* gridRecords.Rd
+    - example for gridding in tiles when 'rst' is large
+
 
 
 # Version 4.33 
@@ -85,7 +107,7 @@
 
 ### New functions:
 
-* partialResp
+* partialResp, which can be used also for favourability (suggested by Alba Estrada)
 
 
 

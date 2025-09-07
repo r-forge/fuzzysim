@@ -11,9 +11,9 @@ distMat <- function(coords, CRS = NULL, dist_method = "auto", verbosity = 2) {
   dist_method <- match.arg(dist_method, unique(c("auto", stats_methods, geodist_methods, terra_methods)))
 
 
-  if (is.null(CRS) || is.na(CRS) || CRS == "") {
-
-  }
+  # if (is.null(CRS) || is.na(CRS) || CRS == "") {
+  #
+  # }
 
 
 
@@ -42,20 +42,20 @@ distMat <- function(coords, CRS = NULL, dist_method = "auto", verbosity = 2) {
           small <- 0.00001  # degrees
         else
           small <- 1  # meter
-        min_lon_dist <- min(diff(sort(unique(terra::values(coords)[,1]))), na.rm = TRUE)
-        min_lat_dist <- min(diff(sort(unique(terra::values(coords)[,2]))), na.rm = TRUE)
+        min_lon_dist <- min(diff(sort(unique(terra::crds(coords)[,1]))), na.rm = TRUE)
+        min_lat_dist <- min(diff(sort(unique(terra::crds(coords)[,2]))), na.rm = TRUE)
         if (min_lon_dist > small || min_lat_dist > small)
           dist_method <- "cosine"  # faster, but inaccurate for distances <1m (https://gis.stackexchange.com/questions/4906/why-is-law-of-cosines-more-preferable-than-haversine-when-calculating-distance-b)
 
       } else {  # if terra < 1.8.7
-        if (verbosity > 0)  message("Faster 'auto' dist_method available with 'terra' >= 1.8.7; using slower 'geo' dist_method instead.\nUpdate / (re)install 'terra' for much faster computation.")
+        if (verbosity > 0)  message("Faster 'auto' dist_method available with 'terra' >= 1.8.7.\nUsing slower 'geo' dist_method instead.\nUpdate or (re)install 'terra' for much faster computation.")
       }
 
-    if (verbosity > 0) message("using '", dist_method, "' distance", sep = "")
+    if (verbosity > 0) message("-> using '", dist_method, "' distance", sep = "")
     }  # end if "auto"
 
   if (dist_method %in% stats_methods) {
-    if (verbosity > 1) message("Using stats::dist() for distance computation.\nResults are less accurate, especially for large distances,\nas they don't consider the curvature of the Earth.")
+    if (verbosity > 1) message("Using stats::dist() for distance computation.\nResults are less accurate, notably for large distances,\nas they don't consider the curvature of the Earth.")
 
     coords <- as.data.frame(coords)
     return(as.matrix(stats::dist(coords, method = dist_method)))

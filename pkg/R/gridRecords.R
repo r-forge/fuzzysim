@@ -7,7 +7,7 @@ gridRecords <- function(rst,
                         plot = FALSE)  # new
 {
 
-  # version 3.8 (24 Sep 2023)
+  # version 3.9 (28 Jul 2025)
 
   if (!("raster" %in% .packages(all.available = TRUE)) && !("terra" %in% .packages(all.available = TRUE))) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -31,7 +31,7 @@ gridRecords <- function(rst,
     if (length(species) != nrow(pres.coords)) stop ("'species' must have the same length as nrow(pres.coords)")
     if (!is.null(abs.coords)) stop ("Sorry, 'abs.coords' is currently only implemented for one species at a time, i.e. when species=NULL")
     #if (suppressWarnings(any(is.finite(as.numeric(species))))) warning ("'species' are used as column names, so they should be of class 'character' and not start with a number.")
-    if (length(unique(species)) != length(unique(trimws(species)))) warning ("Some values in 'species' have leading or trailing spaces and are treated separately; consider using trimws() first.")
+    if (length(unique(species)) != length(unique(trimws(species)))) warning ("Some values in 'species' have leading or trailing spaces and are thus treated separately; consider using trimws() first.")
 
     species_list <- unique(species)
     pres.coords.in <- pres.coords
@@ -39,8 +39,7 @@ gridRecords <- function(rst,
   }
 
   if (inherits(rst, "Raster")) {
-    p_extract <- raster::extract(rst, pres.coords, cellnumbers = TRUE, df = TRUE)[ , -1]
-    p_extract <- unique(p_extract)
+    p_extract <- unique(raster::extract(rst, pres.coords, cellnumbers = TRUE, df = TRUE)[ , -1])
     p_centroids <- raster::xyFromCell(rst, p_extract$cells)
     p_extract <- data.frame(presence = 1, p_centroids, p_extract)
 
@@ -48,9 +47,10 @@ gridRecords <- function(rst,
       if (is.null(abs.coords)) {
         abs.coords <- raster::coordinates(rst)
       }  # presence coordinates removed below
-      a_extract <- raster::extract(rst, abs.coords, cellnumbers = TRUE, df = TRUE)[ , -1]
-      a_extract <- unique(a_extract)
-      a_extract <- a_extract[!(a_extract$cells %in% p_extract$cells), ]
+      a_extract <- unique(raster::extract(rst, abs.coords, cellnumbers = TRUE, df = TRUE)[ , -1])
+      # a_extract <- a_extract[!(a_extract$cells %in% p_extract$cells), ]
+      exclude_cells <- setdiff(a_extract$cells, p_extract$cells)
+      a_extract <- a_extract[match(exclude_cells, a_extract$cells), , drop = FALSE]
       a_centroids <- raster::xyFromCell(rst, a_extract$cells)
       if (nrow(a_extract) > 0) {
         a_extract <- data.frame(presence = 0, a_centroids, a_extract)
@@ -61,19 +61,21 @@ gridRecords <- function(rst,
     # end if Raster*
   } else {
     if (inherits(rst, "SpatRaster")) {
-      p_extract <- terra::extract(rst, pres.coords, cells = TRUE, xy = FALSE)[ , -1]
-      p_extract <- unique(p_extract)
+      p_extract <- unique(terra::extract(rst, pres.coords, cells = TRUE, xy = FALSE)[ , -1])
       p_centroids <- terra::xyFromCell(rst, p_extract$cell)
       p_extract <- data.frame(presence = 1, p_centroids, p_extract[ , "cell", drop = FALSE], p_extract[ , 1:terra::nlyr(rst), drop = FALSE])
 
       if (absences == TRUE) {
+
         if (is.null(abs.coords)) {
-          abs.coords <- terra::crds(rst, df = TRUE, na.rm = FALSE)  # added na.rm
-          #abs.coords <- terra::xyFromCell(rst, cells(rst))
+          # abs.coords <- terra::crds(rst, df = TRUE, na.rm = FALSE)  # added na.rm
+          abs.coords <- data.frame(terra::xyFromCell(rst, terra::cells(rst)))  # usually faster than crds()
         }  # presence coordinates removed below
-        a_extract <- terra::extract(rst, abs.coords, cells = TRUE, xy = FALSE)[ , -1]
-        a_extract <- unique(a_extract)
-        a_extract <- a_extract[!(a_extract$cell %in% p_extract$cell), ]
+
+        a_extract <- unique(terra::extract(rst, abs.coords, cells = TRUE, xy = FALSE)[ , -1])
+        # a_extract <- a_extract[!(a_extract$cell %in% p_extract$cell), ]
+        exclude_cells <- setdiff(a_extract$cell, p_extract$cell)
+        a_extract <- a_extract[match(exclude_cells, a_extract$cell), , drop = FALSE]
         a_centroids <- terra::xyFromCell(rst, a_extract$cell)
         if (nrow(a_extract) > 0) {
           a_extract <- data.frame(presence = 0, a_centroids, a_extract[ , "cell", drop = FALSE], a_extract[ , 1:terra::nlyr(rst), drop = FALSE])
@@ -93,16 +95,28 @@ gridRecords <- function(rst,
   #     result <- result[-result_NA, ]
   #   }
   # }
-  if (na.rm) result <- result[!apply(is.na(result[ , 5:ncol(result), drop = FALSE]), 1, all), ]  # 5:ncol(result)  # names(rst)
+
+  if (na.rm) {
+    # result <- result[!apply(is.na(result[ , 5:ncol(result), drop = FALSE]), 1, all), ]  # 5:ncol(result)  # names(rst)
+    na_relevant <- result[ , 5:ncol(result), drop = FALSE]
+    result <- result[rowSums(!is.na(na_relevant)) > 0, ]  # rowSums faster than apply
+  }
 
   if (!is.null(species)) {
+
+    if (plot) {
+      plot <- FALSE  # otherwise Error: [plot] SpatVector has zero geometries
+      message("'plot' currently incompatible with using 'species'.")
+    }
+
     species_result <- result[ , "cells", drop = FALSE]
 
     for (s in species_list[-1]) {  # species 1 already gridded above
       if (inherits(rst, "Raster"))  species_cells <- raster::cellFromXY(rst, as.matrix(pres.coords.in[species == s, ]))
       if (inherits(rst, "SpatRaster"))  species_cells <- terra::cellFromXY(rst, as.matrix(pres.coords.in[species == s, ]))
       species_result[ , s] <- 0
-      species_result[result$cells %in% species_cells, s] <- 1
+      # species_result[result$cells %in% species_cells, s] <- 1
+      species_result[match(species_cells, result$cells), s] <- 1  # supposedly faster than %in%, but may cause error when 'species' provided and there are NAs
     }  # end for species
 
     result <- data.frame(result[ , 1, drop = FALSE],  # "presence"

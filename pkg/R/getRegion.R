@@ -13,11 +13,13 @@ getRegion <- function(pres.coords,
                       ...)
 {
 
-  # version 1.3 (7 Sep 2025)
+  # version 1.4 (12 Sep 2025)
 
   if (!("terra" %in% .packages(all.available = TRUE))) stop("This function requires the 'terra' package.\nPlease install it first.")
 
   if (!(type %in% c("width", "mean_dist", "inv_dist", "clust_mean_dist", "clust_width"))) stop("Invalid 'type'. See help file for options.")
+
+  if (dist_method == "auto" && type == "clust_mean_dist")  dist_method <- "haversine"  # otherwise "auto" may use different distance methods for each cluster
 
   clust_type <- match.arg(clust_type, c("buffer", "hclust"))
 
@@ -89,7 +91,6 @@ getRegion <- function(pres.coords,
 
 
   if (grepl("clust", type)) {
-    dist_method <- "haversine"  # otherwise "auto" may use different methods for each cluster
 
     if (verbosity > 1) message("Computing point clusters...")
 
@@ -133,7 +134,7 @@ getRegion <- function(pres.coords,
   }  # end if inv_dist
 
   else if (type == "clust_mean_dist") {
-    if (verbosity > 0) message("Computing pairwise distance within clusters...")  # before loop to avoid message repetitions
+    if (verbosity > 0) message("Getting pairwise distance within clusters...")  # before loop to avoid message repetitions
     for (i in clusters) {
       # if (verbosity > 1) cat(i, "")
       clust_pts <- pres.coords[pres.coords$clust == i, ]
@@ -143,8 +144,11 @@ getRegion <- function(pres.coords,
 
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
 
-      dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)
+      # dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)
+      dist_mat_clust <- dist_mat[pres.coords$clust == i, pres.coords$clust == i, drop = FALSE]
+
       if (nrow(dist_mat_clust) > 1)  diag(dist_mat_clust) <- dist_mat_clust[lower.tri(dist_mat_clust)] <- NA  # new
+
       buff_radius <- mean(dist_mat_clust, na.rm = TRUE) * dist_mult
 
       if (!is.finite(buff_radius) || buff_radius <= 0) buff_radius <- 0.001  # because clusters with only one point get no distance, and a zero-width buffer cannot be computed for points

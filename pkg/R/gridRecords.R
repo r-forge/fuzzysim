@@ -7,7 +7,7 @@ gridRecords <- function(rst,
                         plot = FALSE)  # new
 {
 
-  # version 3.9 (28 Jul 2025)
+  # version 3.91 (23 Sep 2025)
 
   if (!("raster" %in% .packages(all.available = TRUE)) && !("terra" %in% .packages(all.available = TRUE))) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -116,7 +116,7 @@ gridRecords <- function(rst,
       if (inherits(rst, "SpatRaster"))  species_cells <- terra::cellFromXY(rst, as.matrix(pres.coords.in[species == s, ]))
       species_result[ , s] <- 0
       # species_result[result$cells %in% species_cells, s] <- 1
-      species_result[match(species_cells, result$cells), s] <- 1  # supposedly faster than %in%, but may cause error when 'species' provided and there are NAs
+      species_result[na.omit(match(species_cells, result$cells)), s] <- 1  # slightly faster than %in%; but without na.omit, "Error in `[<-.data.frame`(`*tmp*`, match(species_cells, result$cells), : missing values are not allowed in subscripted assignments of data frames. Called from: `[<-.data.frame`(`*tmp*`, match(species_cells, result$cells), s, value = 1)
     }  # end for species
 
     result <- data.frame(result[ , 1, drop = FALSE],  # "presence"

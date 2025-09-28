@@ -1,7 +1,7 @@
 getRegion <- function(pres.coords,
                       type = "width",
-                      clust_type = "buffer",
                       clust_dist = 100,
+                      clust_type = "buffer",
                       dist_mult = 1,
                       width_mult = 0.5,
                       weight = FALSE,
@@ -35,9 +35,6 @@ getRegion <- function(pres.coords,
     pres.coords <- terra::vect(pres.coords, geom = colnames(pres.coords))
   }
 
-  if (nrow(pres.coords) > nrow(unique(terra::values(pres.coords))))
-    message("NOTE: Duplicate coordinates found. Clean dataset beforehand?\n")
-
   if (inherits(pres.coords, "SpatVector")) {
 
     if (isFALSE(terra::is.points(pres.coords)))
@@ -61,6 +58,9 @@ getRegion <- function(pres.coords,
     #   }
 
   }  # end if SpatVector
+
+  if (nrow(pres.coords) > nrow(unique(terra::crds(pres.coords))))
+    message("NOTE: Duplicate coordinates found. Clean dataset beforehand?\n")
 
   nrow_in <- nrow(pres.coords)
   pres.coords <- pres.coords[complete.cases(terra::crds(pres.coords)), ]

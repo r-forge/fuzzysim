@@ -1,3 +1,26 @@
+# Version 4.36 -> CRAN
+#### (Committed 2025-09-26)
+
+### Modified functions:
+
+* gridRecords
+    - add na.omit() to match() call, to avoid NA error when 'species' is specified
+
+* getRegion
+    - reordered arguments: 'clust_dist' now before 'clust_type'
+    - use crds() instead of values() to fix false detection of duplicate coords
+    
+* fuzzyRangeChange
+    - if input RasterLayer, coerce to SpatRaster to avoid obscure error downstream
+
+
+### Other modified files:
+
+* getRegion.Rd
+    - improved cluster description
+
+
+
 # Version 4.35
 #### (Committed 2025-09-12)
 

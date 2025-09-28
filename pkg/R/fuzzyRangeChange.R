@@ -3,9 +3,11 @@ fuzzyRangeChange <- function(pred1, pred2, number = TRUE, prop = TRUE,
                              measures = c("Gain", "Loss", "Stable positive", "Stable negative", "Balance"),
                              plot = TRUE, plot.type = "waterfall", x.lab = TRUE,
                              ...)  {   # log = NA,
-  # version 2.1 (15 Jul 2025)
+  # version 2.2 (23 Sep 2025)
   # version -.- (-- --- 202-) -> new arg 'log': NA or the base of the log for the scale (see https://blog.datawrapper.de/weeklychart-logscale3/)
 
+  if (inherits(pred1, "RasterLayer"))  pred1 <- terra::rast(pred1)
+  if (inherits(pred2, "RasterLayer"))  pred2 <- terra::rast(pred2)
 
   if (inherits(pred1, "SpatRaster"))
     pred1 <- terra::values(pred1, mat = FALSE, dataframe = FALSE)

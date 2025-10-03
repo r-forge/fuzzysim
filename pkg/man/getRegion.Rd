@@ -103,9 +103,8 @@ terra::plot(cntry, lwd = 0.2, add = TRUE)
 terra::plot(reg3, lwd = 4, border = "orange", add = TRUE)
 
 
-# note it is up to the user to pre-process the data (e.g. by removing erroneous
-# records) and/or post-process the region (e.g. by erasing islands, countries,
-# or continents that are not accessible to the target species).
+# note it is up to the user to pre-process the data (e.g. by removing duplicate # or erroneous records) and/or post-process the region (e.g. by erasing land
+# masses or water bodies that are not accessible to the target species, or have # not been surveyed).
 }
 }
 \author{

@@ -128,8 +128,8 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
       # expand the range by 10% on either side:
       x_range <- x_range + c(-1, 1) * diff(x_range) * extend
       y_range <- y_range + c(-1, 1) * diff(y_range) * extend
-      plot(data.in[ , coord.cols], pch = 4, cex = 0.4, col = "red", xlim = x_range, ylim = y_range)
-      points(data[ , coord.cols], pch = 20, cex = 0.8, col = "blue")
+      plot(data.in[ , coord.cols], pch = 4, cex = 0.4, col = "red", alpha = 0.5, xlim = x_range, ylim = y_range)
+      points(data[ , coord.cols], pch = 20, cex = 0.5, col = "blue", alpha = 0.5)
     }
 
     return(data)
@@ -148,8 +148,8 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
     # expand the range by 10% on either side:
     x_range <- x_range + c(-1, 1) * diff(x_range) * extend
     y_range <- y_range + c(-1, 1) * diff(y_range) * extend
-    terra::plot(data.sv.in, pch = 4, cex = 0.4, col = "red", ext = c(x_range, y_range))
-    terra::plot(data.sv.out, pch = 20, cex = 0.8, col = "blue", add = TRUE)
+    terra::plot(data.sv.in, pch = 4, cex = 0.4, col = "red", alpha = 0.5, ext = c(x_range, y_range))
+    terra::plot(data.sv.out, pch = 20, cex = 0.5, col = "blue", alpha = 0.5, add = TRUE)
   }
 
   return(data.sv.out)

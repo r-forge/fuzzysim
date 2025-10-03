@@ -13,7 +13,7 @@ getRegion <- function(pres.coords,
                       ...)
 {
 
-  # version 1.4 (12 Sep 2025)
+  # version 1.5 (1 Oct 2025)
 
   if (!("terra" %in% .packages(all.available = TRUE))) stop("This function requires the 'terra' package.\nPlease install it first.")
 
@@ -60,7 +60,7 @@ getRegion <- function(pres.coords,
   }  # end if SpatVector
 
   if (nrow(pres.coords) > nrow(unique(terra::crds(pres.coords))))
-    message("NOTE: Duplicate coordinates found. Clean dataset beforehand?\n")
+    message("NOTE: Duplicate coordinates found, which can bias distance estimates.\nClean dataset beforehand? (see e.g. ?cleanCoords)\n")
 
   nrow_in <- nrow(pres.coords)
   pres.coords <- pres.coords[complete.cases(terra::crds(pres.coords)), ]

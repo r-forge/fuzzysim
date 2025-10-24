@@ -1,3 +1,32 @@
+# Version 4.39
+#### (Committed 2025-10-24)
+
+### Modified functions:
+
+* cleanCoords
+    - removed recently added transparency to point colours, which was not applicable to non-SpatVector inputs and slowed down the function for SpatVector inputs
+
+
+# Version 4.38 -> CRAN
+#### (Committed 2025-10-13)
+
+### Modified functions:
+
+* getRegion
+    - in all cases (e.g. also for type='clust_width'), CRS assumed EPSG:4326 if perhaps is.lonlat()
+    - with type="clust_mean_dist", compute distances only within clusters (each less computer-intensive) rather than in the entire dist_mat
+    
+* timer
+    - fixed new bug that made input expression be evaluated twice
+    - 'start.time' named argument replaced with '...' to work correctly on both POSIXct timestamps and expressions
+
+
+### Other modified files:
+
+* fuzzyRangeChange.Rd
+    - simplified some argument descriptions
+
+
 # Version 4.37
 #### (Committed 2025-10-03)
 

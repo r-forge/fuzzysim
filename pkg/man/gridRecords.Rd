@@ -12,7 +12,7 @@ species = NULL, na.rm = TRUE, plot = FALSE)
 }
 \arguments{
   \item{rst}{
-a Raster* or preferably a SpatRaster object (the latter is processed faster) with the desired spatial resolution and extent for the species presence-(pseudo)absence data, and the layer(s) whose values to extract for those data.
+a Raster* or preferably a SpatRaster object (the latter is processed faster, and the former is no longer being developed) with the desired spatial resolution and extent for the species presence-(pseudo)absence data, and the layer(s) whose values to extract for those data.
 }
   \item{pres.coords}{
 a SpatVector of points, or an object inheriting class 'data.frame' with 2 columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst'!) of the points where species presence was recorded.

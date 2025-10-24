@@ -40,9 +40,9 @@ getRegion(
 \item{dist_mult}{if 'type' involves distance, multiplier of the mean pairwise point distance to use for the \code{\link[terra:buffer]{terra::buffer()}} radius around each cluster. Default 1.}
 \item{width_mult}{if 'type' involves width, multiplier of the width to use for the \code{\link[terra:buffer]{terra::buffer()}} radius. Default 0.5.}
 \item{weight}{logical (used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes. Default FALSE; if set to TRUE, clusters with fewer points (possibly indicating more sparsely surveyed areas) get proportionally smaller buffers than the mean distances among them.}
-\item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}).}
-\item{dist_mat}{optional matrix of pairwise distances among 'pres.coords', to use (if 'type' or 'clust_type' implies computing distances) for efficiency instead of computing a new one. Should normally be computed with \code{\link[terra:distance]{terra::distance()}}, \code{\link[geodist:geodist]{geodist::geodist()}}, or another method that takes the Earth's curvature into account. If not provided, will be computed with \code{\link{distMat}}.}
-\item{dist_method}{argument to pass to \code{\link{distMat}} (if 'dist_mat' is NULL) specifying the method for distance calculation. The default is "auto"; or "haversine" if 'type' is "clust_mean_dist", to avoid different clusters getting a different automatic method.}
+\item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). If not defined, EPSG:4326 (WGS84) is assumed.}
+\item{dist_mat}{optional matrix of pairwise distances among 'pres.coords', to use (if 'type' or 'clust_type' implies computing distances) for efficiency instead of computing a new one. Should normally be computed with \code{\link[terra:distance]{terra::distance()}}, \code{\link[geodist:geodist]{geodist::geodist()}}, or another method that takes the Earth's curvature into account. If not provided, it is computed with \code{\link{distMat}}.}
+\item{dist_method}{argument to pass to \code{\link{distMat}} (if 'dist_mat' is NULL) specifying the method for distance calculation. The default is "auto"; or "haversine" if 'type' is "clust_mean_dist", to avoid different clusters getting a different automatic distance method.}
 \item{verbosity}{integer indicating the amount of messages to display along the process. The default is 2, for all available messages.}
 \item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow), together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
 \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{\link[terra:plot]{terra::plot()}}.}
@@ -103,8 +103,9 @@ terra::plot(cntry, lwd = 0.2, add = TRUE)
 terra::plot(reg3, lwd = 4, border = "orange", add = TRUE)
 
 
-# note it is up to the user to pre-process the data (e.g. by removing duplicate # or erroneous records) and/or post-process the region (e.g. by erasing land
-# masses or water bodies that are not accessible to the target species, or have # not been surveyed).
+# note it is up to the user to pre-process the data (e.g. by removing duplicate
+# or erroneous records) and/or post-process the region (e.g. terra::erase() land
+# masses or water bodies unsurveyed or inaccessible to the target species)
 }
 }
 \author{

@@ -13,15 +13,15 @@ measures = c("Gain", "Loss", "Stable positive", "Stable negative", "Balance"),
 plot = TRUE, plot.type = "waterfall", x.lab = TRUE, ...)
 }
 \arguments{
-  \item{pred1}{numeric vector or SpatRaster layer containing the predictions (between 0 and 1) of the model that will serve as reference.}
-  \item{pred2}{numeric vector or SpatRaster layer containing the predictions (between 0 and 1) of the model whose change will be calculated. Must be of the same dimensions and in the same order as 'pred1'.}
-  \item{number}{logical value indicating if results should include the fuzzy number of cases. The default is TRUE.}
-  \item{prop}{logical value indicating if results should include the proportion of the total number of cases. The default is TRUE.}
-  \item{na.rm}{logical value indicating whether NA values should be ignored. The default is TRUE.}
+  \item{pred1}{numeric vector or SpatRaster layer containing the values (between 0 and 1) that will serve as reference.}
+  \item{pred2}{numeric vector or SpatRaster layer containing the values (between 0 and 1) whose change will be computed. Must be of the same dimensions and in the same order as 'pred1'.}
+  \item{number}{logical value (default TRUE) indicating if results should include the fuzzy number of cases.}
+  \item{prop}{logical value (default TRUE) indicating if results should include the proportion of the total number of cases.}
+  \item{na.rm}{logical value (default TRUE) indicating whether NA values should be ignored.}
   \item{round.digits}{argument to pass to \code{\link{fuzzyOverlay}}, indicating the number of decimal places to which to round 'pred' for calculating 'maintenance' or 'stability'. The default is 2.}
   \item{measures}{character vector listing the range change measures to calculate. The default includes all available measures.}
-  \item{plot}{logical value indicating whether to plot the results. The default is TRUE.}
-  \item{plot.type}{character value indicating the type of plot to produce (if plot=TRUE). Can be "barplot" or "waterfall" (the default, synonyms) or "lollipop".}
+  \item{plot}{logical value (default TRUE) indicating whether to plot the results.}
+  \item{plot.type}{(if plot=TRUE) character value indicating the type of plot to produce. Can be "barplot" or "waterfall" (the default, synonyms) or "lollipop".}
   \item{x.lab}{logical value indicating whether to add the x axis labels to the plot (i.e., the names below each lollipop or bar). The default is TRUE, but users may set it to FALSE and then add labels differently (e.g. with different names or rotations).}
   \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{\link{barplot}} (if 'plot.type' is "barplot" or "waterfall") or to \code{modEvA::lollipop} (if 'plot.type' is "lollipop").}
 }

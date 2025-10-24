@@ -57,8 +57,8 @@ gridRecords <- function(rst,
       }
     } else {
       a_extract <- NULL
-    }
-    # end if Raster*
+    } # end if Raster*
+
   } else {
     if (inherits(rst, "SpatRaster")) {
       p_extract <- unique(terra::extract(rst, pres.coords, cells = TRUE, xy = FALSE)[ , -1])

@@ -1,17 +1,23 @@
-timer <- function(start.time, digits = 1) {
+timer <- function(..., digits = 1) {
 
-  # version 2.0 (2 Oct 2025)
+  # version 2.1 (13 Oct 2025)
 
-  if (inherits(start.time, "POSIXct") || inherits(start.time, "POSIXlt")) {
-    duration <- difftime(Sys.time(), start.time, units = "secs")
-    # units <- attr(duration, "units")
-    # duration <- round(abs(as.numeric(duration)), digits)
-    duration <- as.numeric(duration)
+  expr <- substitute(...)
+  env <- parent.frame()
 
-  } else {  # new, if expression
-    expr <- substitute(start.time)
-    st <- system.time(eval(expr, parent.frame()))
-    duration <- st["elapsed"]
+  # Detect if expr is a symbol (e.g. 'start.time') and refers to a timestamp
+  if (is.symbol(expr)) {
+    val <- eval(expr, env)
+    if (inherits(val, "POSIXct") || inherits(val, "POSIXlt")) {
+      duration <- as.numeric(difftime(Sys.time(), val, units = "secs"))
+
+    } else {
+      duration <- system.time(eval(expr, env))["elapsed"]
+    }
+
+  } else {
+    # If it's not a symbol, treat it as an expression to time
+    duration <- system.time(eval(expr, env))["elapsed"]
   }
 
   if (duration < 60) {

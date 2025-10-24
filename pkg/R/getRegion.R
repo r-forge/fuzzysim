@@ -59,18 +59,20 @@ getRegion <- function(pres.coords,
 
   }  # end if SpatVector
 
+  if (isTRUE(terra::is.lonlat(pres.coords, perhaps = TRUE, warn = FALSE))) {
+    terra::set.crs(pres.coords, "EPSG:4326")
+    if (verbosity > 0) warning("Null or empty CRS; assuming EPSG:4326.")
+  }
+
   if (nrow(pres.coords) > nrow(unique(terra::crds(pres.coords))))
-    message("NOTE: Duplicate coordinates found, which can bias distance estimates.\nClean dataset beforehand? (see e.g. ?cleanCoords)\n")
+    message("NOTE: Duplicate coordinates found, which can bias distance means.\nClean dataset beforehand? (see e.g. ?cleanCoords)\n")
 
   nrow_in <- nrow(pres.coords)
   pres.coords <- pres.coords[complete.cases(terra::crds(pres.coords)), ]
   nrow_out <- nrow(pres.coords)
   if (verbosity > 0 && nrow_out < nrow_in) message(nrow_in, " input rows; ", nrow_in - nrow_out, " excluded due to missing coordinates; ", nrow_out, " rows used.\n")
 
-  # if (grepl("dist|clust", type)) {
-  # length(grep("_dist", type)) > 0   #
-  # type %in% c("mean_dist", "inv_dist")  <- should be this one, but wrong result if no CRS
-  if (length(grep("_dist", type)) > 0 || clust_type == "hclust") {
+  if (type %in% c("mean_dist", "inv_dist") || clust_type == "hclust") {
     if (is.null(dist_mat)) {
       if (verbosity > 0) message("Computing pairwise distance between points...")
 
@@ -78,7 +80,7 @@ getRegion <- function(pres.coords,
 
       # dist_mat <- geodist::geodist(terra::crds(pres.coords), measure = dist_measure)
       # dist_mat <- terra::distance(pres.coords)
-      dist_mat <- distMat(pres.coords, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)  # 'pres.coords' somehow gets a CRS assigned here...
+      dist_mat <- distMat(pres.coords, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)  # 'pres.coords' somehow gets a CRS assigned here... -- because distMat() assigns it if is.lonlat(perhaps=TRUE)
 
     } else {
       if (verbosity > 0) message("Using supplied pairwise distance between points...")
@@ -98,6 +100,8 @@ getRegion <- function(pres.coords,
       # nrby <- nearby(pres.coords, k = 1)
       # nearest_dist <- distance(pres.coords[nrby[ , 1], ], pres.coords[nrby[ , 2], ], pairwise = TRUE)
 
+      # nrst <- nearest(pres.coords)
+
       tree <- stats::hclust(d = stats::as.dist(dist_mat), method = "single")
       pres.coords$clust <- stats::cutree(tree, h = clust_dist * 1000)  # km to meters
     }
@@ -111,12 +115,10 @@ getRegion <- function(pres.coords,
       pres.coords$clust <- terra::extract(groups, pres.coords)$id
     }
 
-    # if (verbosity > 1) message("- got ", length(clusters), " clusters")
-
     # clust_polygons <- terra::convHull(pres.coords, by = "clust")
     # buff_radius <- sqrt(terra::expanse(clust_polygons))
     clusters <- unique(pres.coords$clust)
-    # if (verbosity > 1) message("- got ", length(clusters), " clusters")
+    if (verbosity > 1) message(" - got ", length(clusters), " clusters of points within ", clust_dist, " km of one another")
   }  # end if clust
 
 
@@ -127,25 +129,28 @@ getRegion <- function(pres.coords,
   else if (type == "inv_dist") {
     # dist_df <- as.data.frame(as.matrix(dist_mat))
     dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # sum of distances from each point to all other points
-    range01 <- function(x){(x-min(x))/(max(x)-min(x))}
+    range01 <- function(x){(x - min(x)) / (max(x) - min(x))}
     dist_sums_01 <- range01(dist_sums)
     dist_sums_01[dist_sums_01 == 0] <- 0.001  # otherwise buffer() error
     reg <- terra::buffer(pres.coords, width = dist_mean * rev(dist_sums_01) * dist_mult)
   }  # end if inv_dist
 
   else if (type == "clust_mean_dist") {
-    if (verbosity > 0) message("Getting pairwise distance within clusters...")  # before loop to avoid message repetitions
+    if (verbosity > 0) message("Computing pairwise distance within clusters...")  # before loop to avoid message repetitions
     for (i in clusters) {
       # if (verbosity > 1) cat(i, "")
       clust_pts <- pres.coords[pres.coords$clust == i, ]
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
       # buff_radius <- mean(geodist::geodist(terra::crds(clust_pts), measure = dist_measure)) * dist_mult
+
       # buff_radius <- mean(distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = 0), na.rm = TRUE) * dist_mult
 
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
 
-      # dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)
-      dist_mat_clust <- dist_mat[pres.coords$clust == i, pres.coords$clust == i, drop = FALSE]
+      # dist_mat_clust <- dist_mat[pres.coords$clust == i, pres.coords$clust == i, drop = FALSE]
+
+      dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)
+      buff_radius <- mean(dist_mat_clust, na.rm = TRUE) * dist_mult
 
       if (nrow(dist_mat_clust) > 1)  diag(dist_mat_clust) <- dist_mat_clust[lower.tri(dist_mat_clust)] <- NA  # new
 

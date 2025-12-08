@@ -1,10 +1,22 @@
+# Version 4.40
+#### (Committed 2025-12-08)
+
+### Modified functions:
+
+* getRegion
+    - use input 'dist_mat' also if clusters
+
+* corSelect
+    - add condition verbosity > 0 for three more messages
+
+
 # Version 4.39
 #### (Committed 2025-10-24)
 
 ### Modified functions:
 
 * cleanCoords
-    - removed recently added transparency to point colours, which was not applicable to non-SpatVector inputs and slowed down the function for SpatVector inputs
+    - removed recently added transparency ('alpha') to point colours, which was not applicable to non-spatial inputs and slowed down the function for spatial inputs
 
 
 # Version 4.38 -> CRAN

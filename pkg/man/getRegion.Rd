@@ -103,9 +103,10 @@ terra::plot(cntry, lwd = 0.2, add = TRUE)
 terra::plot(reg3, lwd = 4, border = "orange", add = TRUE)
 
 
-# note it is up to the user to pre-process the data (e.g. by removing duplicate
-# or erroneous records) and/or post-process the region (e.g. terra::erase() land
-# masses or water bodies unsurveyed or inaccessible to the target species)
+# note it is up to the user to pre-process the data
+# (e.g. by removing duplicate or erroneous records)
+# and/or post-process the region (e.g. terra::erase() areas
+# that are unsurveyed or inaccessible to the target species)
 }
 }
 \author{

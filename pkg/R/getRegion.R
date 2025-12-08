@@ -60,8 +60,8 @@ getRegion <- function(pres.coords,
   }  # end if SpatVector
 
   if (isTRUE(terra::is.lonlat(pres.coords, perhaps = TRUE, warn = FALSE))) {
-    terra::set.crs(pres.coords, "EPSG:4326")
     if (verbosity > 0) warning("Null or empty CRS; assuming EPSG:4326.")
+    terra::set.crs(pres.coords, "EPSG:4326")
   }
 
   if (nrow(pres.coords) > nrow(unique(terra::crds(pres.coords))))
@@ -138,21 +138,20 @@ getRegion <- function(pres.coords,
   else if (type == "clust_mean_dist") {
     if (verbosity > 0) message("Computing pairwise distance within clusters...")  # before loop to avoid message repetitions
     for (i in clusters) {
-      # if (verbosity > 1) cat(i, "")
-      clust_pts <- pres.coords[pres.coords$clust == i, ]
+      if (is.null(dist_mat)) {
+        clust_pts <- pres.coords[pres.coords$clust == i, ]
+        dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)
+      } else {
+        dist_mat_clust <- dist_mat[pres.coords$clust == i, pres.coords$clust == i, drop = FALSE]
+      }
+
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
       # buff_radius <- mean(geodist::geodist(terra::crds(clust_pts), measure = dist_measure)) * dist_mult
-
       # buff_radius <- mean(distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = 0), na.rm = TRUE) * dist_mult
-
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
 
-      # dist_mat_clust <- dist_mat[pres.coords$clust == i, pres.coords$clust == i, drop = FALSE]
-
-      dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)
-      buff_radius <- mean(dist_mat_clust, na.rm = TRUE) * dist_mult
-
-      if (nrow(dist_mat_clust) > 1)  diag(dist_mat_clust) <- dist_mat_clust[lower.tri(dist_mat_clust)] <- NA  # new
+      if (nrow(dist_mat_clust) > 1)
+        diag(dist_mat_clust) <- dist_mat_clust[lower.tri(dist_mat_clust)] <- NA  # new
 
       buff_radius <- mean(dist_mat_clust, na.rm = TRUE) * dist_mult
 

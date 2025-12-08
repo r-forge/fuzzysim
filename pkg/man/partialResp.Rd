@@ -11,11 +11,11 @@ ylim = c(0, 1), reset.par = TRUE, ...)
 \arguments{
   \item{model}{a model object of class 'glm' and family 'binomial'.}
   \item{vars}{character vector of the name(s) of the variable(s) for which to compute the partial response plot. The default is \code{NULL}, for all variables in 'model'.}
-  \item{Fav}{logical value indicating whether to compute the response curve(s) for \code{\link{Fav}}ourability instead of predicted probability. Default \code{FALSE}.}
+  \item{Fav}{logical value (default \code{FALSE}) indicating whether to compute the response curve(s) for \code{\link{Fav}}ourability instead of predicted probability.}
   \item{se.mult}{numeric value indicating the multiplier for the standard error of the predictions. The default is 1.96, for the 95\% confidence interval. If set to 0, no confidence intervals are plotted.}
-  \item{plot.points}{logical value indicating whether to plot the points of predicted probability (or favourability, if \code{Fav=TRUE}) against the values of the plotted variable. Default \code{FALSE}.}
+  \item{plot.points}{logical value (default \code{FALSE}) indicating whether to plot the points of predicted probability (or favourability, if \code{Fav=TRUE}) against the values of the plotted variable.}
   \item{ylim}{either a numeric vector of length 2 indicating the minimum and maximum value for the y-axis, or character value \code{"auto"} for fitting the axis limits to the existing values in each plot. The default is \code{c(0, 1)}, for all curves to be directly comparable.}
-  \item{reset.par}{logical. If TRUE (the default), plotting \code{\link{par}}ameters are changed by the function and reset in the end. FALSE can be useful if the user wants to set their own parameters (like 'mfrow' or 'mar') and combine this with other plots.}
+  \item{reset.par}{logical value. If TRUE (the default), plotting \code{\link{par}}ameters are changed by the function and reset in the end. FALSE can be useful if the user wants to set their own parameters (like 'mfrow' or 'mar') and combine this with other plots.}
   \item{\dots}{some additional arguments that can be passed to \code{\link{plot}}, e.g. 'main', 'cex.axis' or 'cex.lab'.}
 }
 \details{

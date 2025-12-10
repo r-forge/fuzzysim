@@ -1,3 +1,13 @@
+# Version 4.41
+#### (Committed 2025-12-10)
+
+### Modified functions:
+
+* multicol
+    - new arguments 'vif.thresh', 'verbosity', 'plot', '...'
+    - can perform backward stepwise removal of variables based on VIF
+
+
 # Version 4.40
 #### (Committed 2025-12-08)
 
@@ -7,7 +17,7 @@
     - use input 'dist_mat' also if clusters
 
 * corSelect
-    - add condition verbosity > 0 for three more messages
+    - add condition verbosity > 0 before most messages
 
 
 # Version 4.39

@@ -2,7 +2,7 @@
 \alias{multicol}
 \title{Analyse multicollinearity in a dataset, including VIF}
 \description{
-This function analyses multicollinearity in a set of variables or in a model, including the R-squared, tolerance and variance inflation factor (VIF).
+This function analyses multicollinearity in a set of variables or in a model, including the R-squared, tolerance and variance inflation factor (VIF). It also allows selecting variables under a given VIF.
 }
 \usage{
 multicol(vars = NULL, model = NULL, reorder = TRUE,
@@ -18,9 +18,16 @@ vif.thresh = Inf, verbosity = 2, plot = FALSE, ...)
   \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{modEvA::lollipop}.}
 }
 \details{
-Testing collinearity among covariates is a recommended step of data exploration before applying a statistical model (Zuur et al. 2010). However, you can also calculate multicollinearity among the variables already included in a model.
+Testing (multi)collinearity among covariates is a recommended step of data exploration before applying a statistical model (Zuur et al. 2010). You can also assess the multicollinearity among the variables already included in a model.
 
-The multicol function calculates the degree of multicollinearity in a set of numeric variables, using three closely related measures: R squared (the coefficient of determination of a linear regression of each predictor variable on all other predictor variables, i.e., the amount of variation in each variable that is accounted for by other variables in the dataset); tolerance (1 - R squared), i.e. the amount of variation in each variable that is not included in the remaining variables; and the variance inflation factor: VIF = 1 / (1 - R squared), which, in a linear model with these variables as predictors, reflects the degree to which the variance of an estimated regression coefficient is increased due only to the correlations among covariates (Marquardt 1970; Mansfield & Helms 1982).
+The multicol function calculates the degree of multicollinearity in a set of numeric variables, using three closely related measures:
+    \itemize{
+      \item{R squared: the coefficient of determination of a linear regression of each predictor variable on all other predictor variables, i.e., the amount of variation in each variable that is accounted for by other variables in the dataset;}
+      \item{Tolerance = 1 - R squared, i.e., the amount of variation in each variable that is not included in the remaining variables;}
+      \item{Variance Inflation Factor: VIF = 1 / (1 - R squared), which, in a linear model with these variables as predictors, reflects the degree to which the variance of an estimated regression coefficient is increased due only to the correlations among covariates (Marquardt 1970; Mansfield & Helms 1982).}
+      }
+
+The function optionally performs a stepwise backward removal of variables whose VIF exceeds a specified threshold. Note, however, that a high VIF does not necessarily imply that a particular variable should be removed. Consider removing instead other (potencially less important) variables that are correlated with it, causing the high VIF; and see also the \code{\link{corSelect}} function.
 }
 \value{
 The function returns a matrix with one row per variable, the names of

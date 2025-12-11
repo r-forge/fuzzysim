@@ -1,6 +1,6 @@
-corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), select = ifelse(is.null(sp.cols), "VIF", "p.value"), test = "Chisq", family = "auto", use = "pairwise.complete.obs", method = "pearson", verbosity = 1) {
+corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), select = ifelse(is.null(sp.cols), "VIF", "cor"), test = "Chisq", family = "auto", use = "pairwise.complete.obs", method = "pearson", verbosity = 1) {
 
-  # version 3.6 (13 Mar 2024)
+  # version 3.8 (10 Dec 2025)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 

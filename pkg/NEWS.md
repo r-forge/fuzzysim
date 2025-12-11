@@ -1,3 +1,12 @@
+# Version 4.42
+#### (Committed 2025-12-11)
+
+### Modified functions:
+
+* corSelect
+    - new default 'cor' (more universal) for 'select' argument
+
+
 # Version 4.41
 #### (Committed 2025-12-10)
 

@@ -83,7 +83,8 @@ distMat <- function(coords, CRS = NULL, dist_method = "auto", verbosity = 2) {
   if (dist_method %in% terra_methods) {
     if (is.null(CRS) || CRS == "") {
       if (isTRUE(terra::is.lonlat(coords, perhaps = TRUE))) {
-        terra::set.crs(coords, "EPSG:4326")
+        # terra::set.crs(coords, "EPSG:4326")
+        terra::crs(coords) <- "EPSG:4326"
         if (verbosity > 0) warning("Null or empty CRS; assuming EPSG:4326.")
       } else {
         terra::set.crs(coords, "local")  # arbitrary Cartesian space

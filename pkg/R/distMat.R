@@ -38,7 +38,7 @@ distMat <- function(coords, CRS = NULL, dist_method = "auto", verbosity = 2) {
       dist_method <- "euclidean"
 
       if ("terra" %in% pkgs && utils::packageVersion("terra") >= "1.8.7") {
-        if (isTRUE(terra::is.lonlat(coords, perhaps = TRUE)))
+        if (isTRUE(terra::is.lonlat(coords, perhaps = TRUE, warn = FALSE)))
           small <- 0.00001  # degrees
         else
           small <- 1  # meter
@@ -82,9 +82,18 @@ distMat <- function(coords, CRS = NULL, dist_method = "auto", verbosity = 2) {
 
   if (dist_method %in% terra_methods) {
     if (is.null(CRS) || CRS == "") {
-      if (isTRUE(terra::is.lonlat(coords, perhaps = TRUE))) {
-        # terra::set.crs(coords, "EPSG:4326")
-        terra::crs(coords) <- "EPSG:4326"
+
+      # to avoid pkg check errors in R older versions, arising from:
+      # Warning: PROJ: proj_create_from_database: Cannot find proj.db (GDAL error 1)
+      # Warning: [crs<-] Cannot set SRS to vector: empty srs
+      plib <- Sys.getenv("PROJ_LIB")
+      prj <- system.file("proj", package = "terra")[1]
+      Sys.setenv("PROJ_LIB" = prj)
+      on.exit(Sys.setenv("PROJ_LIB" = plib))
+      # https://github.com/rspatial/terra/issues/1378#issuecomment-1864893650
+
+      if (isTRUE(terra::is.lonlat(coords, perhaps = TRUE, warn = FALSE))) {
+        terra::set.crs(coords, "EPSG:4326")
         if (verbosity > 0) warning("Null or empty CRS; assuming EPSG:4326.")
       } else {
         terra::set.crs(coords, "local")  # arbitrary Cartesian space

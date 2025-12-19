@@ -1,10 +1,19 @@
+# Version 4.42.2
+#### (Committed 2025-12-19)
+
+### Modified functions:
+
+* distMat
+    - 'dontrun' for examples that require setting CRS
+
+
 # Version 4.42.1
 #### (Committed 2025-12-18)
 
 ### Modified functions:
 
 * distMat
-    - Sys.setenv("PROJ_LIB") to avoid check error on old release
+    - Sys.setenv("PROJ_LIB") to avoid check error on old release (didn't work)
 
 
 # Version 4.42

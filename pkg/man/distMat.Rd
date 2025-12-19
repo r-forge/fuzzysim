@@ -43,11 +43,13 @@
                      ncol = 2)
 
 
-  # compute distance matrix:
+  # compute distance matrix (may fail with outdated PROJ version):
 
-  distMat(coords, dist_method = "euclidean")
+  \dontrun{
+    distMat(coords, dist_method = "euclidean")
 
-  # distMat(coords, dist_method = "auto")
+    distMat(coords, dist_method = "auto")
 
-  distMat(coords, dist_method = "auto", CRS = "EPSG:4326")
+    distMat(coords, dist_method = "auto", CRS = "EPSG:4326")
+  }
 }

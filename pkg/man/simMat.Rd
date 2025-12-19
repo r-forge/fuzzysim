@@ -62,6 +62,7 @@ bin.sim.mat <- simMat(rotif.env[ , 18:47], method = "Jaccard")
 head(bin.sim.mat)
 
 
+\dontrun{
 # calculate a fuzzy version of the presence-absence data
 # based on inverse distance to presences:
 
@@ -106,7 +107,7 @@ main = "Binary cluster dendrogram")
 
 plot(hclust(as.dist(1 - fuz.sim.mat), method = "average"),
 main = "Fuzzy cluster dendrogram")
-
+}
 
 # you can get fuzzy chorotypes from these similarity matrices
 # (or fuzzy biotic regions if you transpose 'data'),

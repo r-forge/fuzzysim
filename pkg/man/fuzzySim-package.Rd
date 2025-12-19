@@ -60,6 +60,7 @@ coord.cols = c("Longitude", "Latitude"), id.col = 1)
 
 head(rotifers.tsa)
 
+\dontrun{
 
 # get inverse squared distance to presence for each species:
 
@@ -110,4 +111,5 @@ head(rot.fuz.reg)
 reg.fuz.sim.mat <- simMat(rot.fuz.reg[ , 1:10], method = "Jaccard")
 
 head(reg.fuz.sim.mat)
+}
 }

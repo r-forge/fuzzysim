@@ -65,6 +65,7 @@ coord.cols = c("Longitude", "Latitude"), n = 150, seed = 123)
 burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
 coord.cols = c("Longitude", "Latitude"), mult.p = 1.5, seed = 123)
 
+\dontrun{
 burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
 coord.cols = c("Longitude", "Latitude"), max.dist = 18)
 
@@ -73,7 +74,6 @@ coord.cols = c("Longitude", "Latitude"), max.dist = 18, min.dist = 5,
 n = sum(rotif.env$Burceo), bias = TRUE)
 
 
-\dontrun{
 # you can run the next example if you have the 'geodata' package installed:
 
 bias_layer <- geodata::footprint(year = 2009, path = tempfile())

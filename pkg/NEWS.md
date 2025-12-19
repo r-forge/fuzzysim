@@ -3,7 +3,7 @@
 
 ### Other modified files:
 
-* distMat.Rd, distPres.Rd, fuzzySim-package.Rd
+* distMat.Rd, distPres.Rd, fuzzySim-package.Rd, selectAbsences.Rd
     - 'dontrun' for examples that require setting CRS, to avoid check error on old release
 
 

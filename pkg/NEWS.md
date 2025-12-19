@@ -1,10 +1,10 @@
 # Version 4.42.2
 #### (Committed 2025-12-19)
 
-### Modified functions:
+### Other modified files:
 
-* distMat
-    - 'dontrun' for examples that require setting CRS
+* distMat.Rd, distPres.Rd
+    - 'dontrun' for examples that require setting CRS, to avoid check error on old release
 
 
 # Version 4.42.1

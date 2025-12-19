@@ -71,6 +71,7 @@ head(rotif.env)
 names(rotif.env)
 
 
+\dontrun{
 # compute plain distance to presence:
 
 rotifers.dist0 <- distPres(rotif.env, sp.cols = 18:47,
@@ -91,6 +92,7 @@ coord.cols = c("Longitude", "Latitude"), id.col = 1, p = 2,
 inv = TRUE, suffix = "_iDsq", CRS = "EPSG:4326")
 
 head(rotifers.invd2)
+}
 }
 \keyword{ spatial }
 \keyword{ models }

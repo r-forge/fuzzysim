@@ -1,3 +1,18 @@
+# Version 4.43
+#### (Committed 2025-12-26)
+
+### Modified functions:
+
+* getRegion
+    - check if CRS indeed empty before assigning EPSG:4326
+
+
+### Other modified files:
+
+* DESCRIPTION
+    - add BugReports field
+    
+
 # Version 4.42.2
 #### (Committed 2025-12-19)
 

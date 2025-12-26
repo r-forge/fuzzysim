@@ -77,8 +77,8 @@ multTSA <- function(data, sp.cols, coord.cols, id.col = NULL, degree = 3, step =
     }
     else model <- eval(model.expr)
 
-    if (type == "Y")  tp = "link"
-    else if (type == "P" | type == "F")  tp = "response"
+    if (type == "Y")  tp <- "link"
+    else if (type == "P" | type == "F")  tp <- "response"
 
     pred <- predict(model, coords.poly, type = tp)
 

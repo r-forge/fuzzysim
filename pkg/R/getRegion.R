@@ -59,7 +59,8 @@ getRegion <- function(pres.coords,
 
   }  # end if SpatVector
 
-  if (isTRUE(terra::is.lonlat(pres.coords, perhaps = TRUE, warn = FALSE))) {
+  if ((is.null(terra::crs(pres.coords)) || terra::crs(pres.coords) == "")
+      && isTRUE(terra::is.lonlat(pres.coords, perhaps = TRUE, warn = FALSE))) {
     if (verbosity > 0) warning("Null or empty CRS; assuming EPSG:4326.")
     terra::set.crs(pres.coords, "EPSG:4326")
   }

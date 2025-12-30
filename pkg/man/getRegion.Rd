@@ -15,6 +15,7 @@ getRegion(
   dist_method = "auto",
   verbosity = 2,
   plot = TRUE,
+  col_reg = "gold",
   ...
 )
 }
@@ -45,6 +46,7 @@ getRegion(
 \item{dist_method}{argument to pass to \code{\link{distMat}} (if 'dist_mat' is NULL) specifying the method for distance calculation. The default is "auto"; or "haversine" if 'type' is "clust_mean_dist", to avoid different clusters getting a different automatic distance method.}
 \item{verbosity}{integer indicating the amount of messages to display along the process. The default is 2, for all available messages.}
 \item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow), together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
+\item{col_reg}{(if plot=TRUE) colour for the region polygon. Defaults to "gold".}
 \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{\link[terra:plot]{terra::plot()}}.}
 }
 \value{

@@ -6,6 +6,7 @@
 * getRegion
     - revert conversion of dist_mat upper triangle to NA (bug)
     - replace sapply() with rowSums() for much improved efficiency when type = "inv_dist"
+    - add 'col_reg' argument and change default polygon colour to gold
 
 
 # Version 4.43

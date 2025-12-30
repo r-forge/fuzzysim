@@ -10,6 +10,7 @@ getRegion <- function(pres.coords,
                       dist_method = "auto",
                       verbosity = 2,
                       plot = TRUE,
+                      col_reg = "gold",
                       ...)
 {
 
@@ -216,7 +217,7 @@ getRegion <- function(pres.coords,
   # }
 
   if (plot) {
-    terra::plot(reg, col = "yellow", border = NA,
+    terra::plot(reg, col = col_reg, border = NA,
                 # main = paste("type =", type),
                 ...)
 

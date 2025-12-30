@@ -1,3 +1,13 @@
+# Version 4.44
+#### (Committed 2025-12-30)
+
+### Modified functions:
+
+* getRegion
+    - revert conversion of dist_mat upper triangle to NA (bug)
+    - replace sapply() with rowSums() for much improved efficiency when type = "inv_dist"
+
+
 # Version 4.43
 #### (Committed 2025-12-26)
 

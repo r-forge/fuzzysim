@@ -13,7 +13,7 @@ getRegion <- function(pres.coords,
                       ...)
 {
 
-  # version 1.5 (1 Oct 2025)
+  # version 1.6 (30 Dec 2025)
 
   if (!("terra" %in% .packages(all.available = TRUE))) stop("This function requires the 'terra' package.\nPlease install it first.")
 
@@ -87,7 +87,8 @@ getRegion <- function(pres.coords,
       if (verbosity > 0) message("Using supplied pairwise distance between points...")
     }
 
-    diag(dist_mat) <- dist_mat[lower.tri(dist_mat)] <- NA  # new
+    diag(dist_mat) <- NA  # new
+    # dist_mat[upper.tri(dist_mat)] <- NA  # was wrong
 
     dist_mean <- mean(dist_mat, na.rm = TRUE)
   }  # end if dist
@@ -128,8 +129,9 @@ getRegion <- function(pres.coords,
   }  # end if mean_dist
 
   else if (type == "inv_dist") {
-    # dist_df <- as.data.frame(as.matrix(dist_mat))
-    dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # sum of distances from each point to all other points
+    # get sum of distances from each point to all other points:
+    # dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # too slow
+    dist_sums <- colSums(dist_mat, na.rm = TRUE)
     range01 <- function(x){(x - min(x)) / (max(x) - min(x))}
     dist_sums_01 <- range01(dist_sums)
     dist_sums_01[dist_sums_01 == 0] <- 0.001  # otherwise buffer() error
@@ -152,7 +154,7 @@ getRegion <- function(pres.coords,
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
 
       if (nrow(dist_mat_clust) > 1)
-        diag(dist_mat_clust) <- dist_mat_clust[lower.tri(dist_mat_clust)] <- NA  # new
+        diag(dist_mat_clust) <- dist_mat_clust[upper.tri(dist_mat_clust)] <- NA  # new
 
       buff_radius <- mean(dist_mat_clust, na.rm = TRUE) * dist_mult
 

@@ -45,7 +45,7 @@ getRegion(
 \item{dist_mat}{optional matrix of pairwise distances among 'pres.coords', to use (if 'type' or 'clust_type' implies computing distances) for efficiency instead of computing a new one. Should normally be computed with \code{\link[terra:distance]{terra::distance()}}, \code{\link[geodist:geodist]{geodist::geodist()}}, or another method that takes the Earth's curvature into account. If not provided, it is computed with \code{\link{distMat}}.}
 \item{dist_method}{argument to pass to \code{\link{distMat}} (if 'dist_mat' is NULL) specifying the method for distance calculation. The default is "auto"; or "haversine" if 'type' is "clust_mean_dist", to avoid different clusters getting a different automatic distance method.}
 \item{verbosity}{integer indicating the amount of messages to display along the process. The default is 2, for all available messages.}
-\item{plot}{logical (default TRUE) indicating whether to plot the resulting region (in yelow), together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
+\item{plot}{logical (default TRUE) indicating whether to plot the resulting region polygon, together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
 \item{col_reg}{(if plot=TRUE) colour for the region polygon. Defaults to "gold".}
 \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{\link[terra:plot]{terra::plot()}}.}
 }

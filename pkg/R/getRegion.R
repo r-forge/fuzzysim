@@ -88,10 +88,10 @@ getRegion <- function(pres.coords,
       if (verbosity > 0) message("Using supplied pairwise distance between points...")
     }
 
-    diag(dist_mat) <- NA  # new
-    # dist_mat[upper.tri(dist_mat)] <- NA  # was wrong
+    # diag(dist_mat) <- NA  # unnecessary
+    # dist_mat[upper.tri(dist_mat)] <- NA  # wrong for rowSums, right for mean distance
 
-    dist_mean <- mean(dist_mat, na.rm = TRUE)
+    dist_mean <- mean(dist_mat[upper.tri(dist_mat, diag = FALSE)], na.rm = TRUE)
   }  # end if dist
 
 
@@ -132,7 +132,7 @@ getRegion <- function(pres.coords,
   else if (type == "inv_dist") {
     # get sum of distances from each point to all other points:
     # dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # too slow
-    dist_sums <- colSums(dist_mat, na.rm = TRUE)
+    dist_sums <- rowSums(dist_mat, na.rm = TRUE)
     range01 <- function(x){(x - min(x)) / (max(x) - min(x))}
     dist_sums_01 <- range01(dist_sums)
     dist_sums_01[dist_sums_01 == 0] <- 0.001  # otherwise buffer() error

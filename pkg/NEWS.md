@@ -5,7 +5,8 @@
 
 * getRegion
     - revert conversion of dist_mat upper triangle to NA (bug)
-    - replace sapply() with rowSums() for much improved efficiency when type = "inv_dist"
+    - restrict mean(dist_mat) to upper triangle
+    - for type="inv_dist", replace sapply() with rowSums() for much improved efficiency
     - add 'col_reg' argument and change default polygon colour to gold
 
 

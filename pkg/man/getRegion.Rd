@@ -16,6 +16,7 @@ getRegion(
   verbosity = 2,
   plot = TRUE,
   col_reg = "gold",
+  prj = NULL,
   ...
 )
 }
@@ -47,6 +48,7 @@ getRegion(
 \item{verbosity}{integer indicating the amount of messages to display along the process. The default is 2, for all available messages.}
 \item{plot}{logical (default TRUE) indicating whether to plot the resulting region polygon, together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
 \item{col_reg}{(if plot=TRUE) colour for the region polygon. Defaults to "gold".}
+\item{prj}{(if plot=TRUE) optional CRS for projecting the region polygon and occurrence points before plotting, in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). Can be useful particularly when using add=TRUE to overlay the output plot on a previous map in a different CRS.}
 \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{\link[terra:plot]{terra::plot()}}.}
 }
 \value{

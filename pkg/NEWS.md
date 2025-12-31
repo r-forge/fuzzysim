@@ -1,3 +1,13 @@
+# Version 4.45
+#### (Committed 2025-12-31)
+
+### Modified functions:
+
+* getRegion
+    - restrict mean(dist_mat) to upper triangle (bug from version 4.44)
+    - add 'prj' argument
+
+
 # Version 4.44
 #### (Committed 2025-12-30)
 
@@ -31,7 +41,7 @@
 ### Other modified files:
 
 * distMat.Rd, distPres.Rd, fuzzySim-package.Rd, selectAbsences.Rd, simMat.Rd
-    - 'dontrun' for examples that require setting CRS, to avoid check error on old release
+    - 'dontrun' for examples that require setting CRS, to avoid check error on Windows old release
 
 
 # Version 4.42.1
@@ -40,7 +50,7 @@
 ### Modified functions:
 
 * distMat
-    - Sys.setenv("PROJ_LIB") to avoid check error on old release (didn't work)
+    - Sys.setenv("PROJ_LIB") to avoid check error on Windows old release (didn't work)
 
 
 # Version 4.42

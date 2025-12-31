@@ -11,10 +11,11 @@ getRegion <- function(pres.coords,
                       verbosity = 2,
                       plot = TRUE,
                       col_reg = "gold",
+                      prj = NULL,
                       ...)
 {
 
-  # version 1.6 (30 Dec 2025)
+  # version 1.8 (31 Dec 2025)
 
   if (!("terra" %in% .packages(all.available = TRUE))) stop("This function requires the 'terra' package.\nPlease install it first.")
 
@@ -89,7 +90,7 @@ getRegion <- function(pres.coords,
     }
 
     # diag(dist_mat) <- NA  # unnecessary
-    # dist_mat[upper.tri(dist_mat)] <- NA  # wrong for rowSums, right for mean distance
+    # dist_mat[upper.tri(dist_mat)] <- NA  # wrong for rowSums, right for mean distance (changed below)
 
     dist_mean <- mean(dist_mat[upper.tri(dist_mat, diag = FALSE)], na.rm = TRUE)
   }  # end if dist
@@ -217,6 +218,12 @@ getRegion <- function(pres.coords,
   # }
 
   if (plot) {
+
+    if (!is.null(prj)) {
+      reg <- terra::project(reg, prj)
+      pres.coords <- terra::project(pres.coords, prj)
+    }
+
     terra::plot(reg, col = col_reg, border = NA,
                 # main = paste("type =", type),
                 ...)
@@ -238,8 +245,8 @@ getRegion <- function(pres.coords,
                   col = grDevices::hcl.colors(length(clusters),
                                               palette = "dark2"))
       terra::text(clust_centroids, "agg_n", cex = 0.5)
-    }
-  }
+    }  # end if !clust
+  }  # end if plot
 
   if (verbosity > 1 && grepl("dist|clust", type)) message("Finished!")
 

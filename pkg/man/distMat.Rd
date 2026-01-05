@@ -5,12 +5,12 @@
   Computes a distance matrix for a given set of spatial coordinates using a specified distance measure.
 }
 \usage{
-  distMat(coords, CRS = NULL, dist_method = "auto", verbosity = 2)
+  distMat(coords, CRS = NULL, method = "auto", verbosity = 2)
 }
 \arguments{
   \item{coords}{data frame (or an object that can be coerced to such) with only two columns containing the spatial coordinates (x and y, or longitude and latitude, or easting and northing, in this order!)}
-  \item{CRS}{Coordinate Reference System for 'coords' (if it is not a SpatVector with its CRS defined already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). If provided and either the 'geodist' or the 'terra' package is installed, distances are computed with \code{\link[geodist:geodist]{geodist::geodist()}} or with \code{\link[terra:distance]{terra::distance()}}, thus accounting for the curvature of the Earth.}
-  \item{dist_method}{The method to use for distance calculation. Partial and case-insensitive argument matching is used. Options are:
+  \item{CRS}{Coordinate Reference System for 'coords' (if it is not a SpatVector with its CRS defined already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). If provided and either the 'geodist' or the 'terra' package is installed, distances are computed with \code{\link[geodist:geodist]{geodist::geodist()}} or with \code{\link[terra:distance]{terra::distance()}}, thus accounting for the curvature of the Earth. If not provided and coordinates fall within valid latitude-longitude bounds, EPSG:4326 is assumed.}
+  \item{method}{The method to use for distance calculation. Partial and case-insensitive argument matching is used. Options are:
     \itemize{
       \item{"auto" (the default): the recommended method under the circumstances (see Details).}
       \item{"euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski": older methods, implemented in \code{\link[stats:dist]{stats::dist()}}, which do not acocunt for the curvature of the Earth}
@@ -46,10 +46,10 @@
   # compute distance matrix (may fail with outdated PROJ version):
 
   \dontrun{
-    distMat(coords, dist_method = "euclidean")
+    distMat(coords, method = "euclidean")
 
-    distMat(coords, dist_method = "auto")
+    distMat(coords, method = "auto")
 
-    distMat(coords, dist_method = "auto", CRS = "EPSG:4326")
+    distMat(coords, method = "auto", CRS = "EPSG:4326")
   }
 }

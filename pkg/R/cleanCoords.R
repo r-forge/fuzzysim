@@ -1,5 +1,5 @@
-cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL, year.col = NULL, rm.dup = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL, year.na.pass = TRUE, plot = TRUE, extend = 0.1) {
-  # version 1.7 (21 Jan 2025)
+cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL, year.col = NULL, rm.dup = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL, year.na.pass = TRUE, plot = TRUE, extend = 0.1) {
+  # version 1.8 (2 Jan 2026)
 
   stopifnot(
     inherits(data, "data.frame") || inherits(data, "SpatVector"),
@@ -59,6 +59,14 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
     message(nrow(coords), " rows after 'rm.dup'")
   }
 
+  if (nrow(coords) > 0 && rm.zero.any) {
+    coords <- subset(coords, coords$lon != 0 | coords$lat != 0)
+    message(nrow(coords), " rows after 'rm.zero.any'")
+  } else if (nrow(coords) > 0 && rm.zero.both) {
+    coords <- subset(coords, coords$lon != 0 & coords$lat != 0)
+    message(nrow(coords), " rows after 'rm.zero.both'")
+  }
+
   if (nrow(coords) > 0 && rm.equal) {
     coords <- subset(coords, coords$lon != coords$lat)
     message(nrow(coords), " rows after 'rm.equal'")
@@ -75,14 +83,6 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
   } else if (nrow(coords) > 0 && rm.missing.both) {
     coords <- subset(coords, !is.na(coords$lon) & !is.na(coords$lat))
     message(nrow(coords), " rows after 'rm.missing.both'")
-  }
-
-  if (nrow(coords) > 0 && rm.zero.any) {
-    coords <- subset(coords, coords$lon != 0 | coords$lat != 0)
-    message(nrow(coords), " rows after 'rm.zero.any'")
-  } else if (nrow(coords) > 0 && rm.zero.both) {
-    coords <- subset(coords, coords$lon != 0 & coords$lat != 0)
-    message(nrow(coords), " rows after 'rm.zero.both'")
   }
 
   if (nrow(coords) > 0 && rm.imprec.any) {

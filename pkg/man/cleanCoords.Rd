@@ -10,9 +10,9 @@
 \usage{
   cleanCoords(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL,
   year.col = NULL, rm.dup = !is.null(coord.cols),
-  rm.equal = !is.null(coord.cols),   rm.imposs = !is.null(coord.cols),
   rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols),
   rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols),
+  rm.equal = !is.null(coord.cols),   rm.imposs = !is.null(coord.cols),
   rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols),
   imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000,
   uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL,
@@ -25,12 +25,12 @@
   \item{abs.col}{character or integer vector of length 1, with either the name or the position of the column that specifies whether the species is present or absent (e.g., in GBIF this column is usually named "occurrenceStatus").}
   \item{year.col}{character or integer vector of length 1, with either the name or the position of the column that specifies the year in which the observation was made (e.g., in GBIF this column is usually named "year").}
   \item{rm.dup}{logical, whether to remove rows with exactly the same location, i.e. the same pair of longitude-latitude coordinates. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
-  \item{rm.equal}{logical, whether to remove rows where latitude exactly equals longitude (which is likely an error). The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
-  \item{rm.imposs}{logical, whether to remove rows with impossible coordinates outside planet Earth, i.e. with absolute value >180 for longitude or >90 for latitude. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise. Note that this is only valid for unprojected angular coordinates in geographic degrees.}
   \item{rm.missing.any}{logical, whether to remove rows where at least one of the coordinates is NA. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
   \item{rm.missing.both}{logical, whether to remove rows where both coordinates are NA. The default is TRUE if 'coord.cols' is not NULL and FALSE otherwise, but it is not used (as it is redundant) if rm.missing.any=TRUE.}
   \item{rm.zero.any}{logical, whether to remove rows where at least one of the coordinates exactly equals zero (which is likely an error). The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
   \item{rm.zero.both}{logical, whether to remove rows where both coordinates equal zero (which is likely an error). The default is TRUE if 'coord.cols' is not NULL and FALSE otherwise, but it is not used (as it is redundant) if rm.zero.any=TRUE.}
+  \item{rm.equal}{logical, whether to remove rows where latitude exactly equals longitude (which is likely an error). The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
+  \item{rm.imposs}{logical, whether to remove rows with impossible coordinates outside planet Earth, i.e. with absolute value >180 for longitude or >90 for latitude. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise. Note that this is only valid for unprojected angular coordinates in geographic degrees.}
   \item{rm.imprec.any}{logical, whether to remove rows where at least one of the coordinates is imprecise, i.e. has no more decimal places than 'imprec.digits'. The default is TRUE if 'coord.cols' is not NULL and FALSE otherwise, but note this is normally only relevant for unprojected geographical coordinates in degrees; if your coordinates are in meters, they are usually precise enough without decimal places, so you should probably set this argument and the next to FALSE.}
   \item{rm.imprec.both}{logical, whether to remove rows where both coordinates are imprecise, i.e. have no more decimal places than 'imprec.digits'. The default is TRUE if 'coord.cols' is not NULL and FALSE otherwise, but it is not used (as it is redundant) if rm.imprec.any=TRUE. See 'rm.imprec.any' above for important details.}
   \item{imprec.digits}{integer, maximum number of digits to consider that a coordinate is imprecise. Used only if 'rm.imprec.any' or 'rm.imprec.both' is TRUE. The default is 0, for eliminating coordinates with no more than zero decimal places.}

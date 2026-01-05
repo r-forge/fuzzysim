@@ -1,10 +1,31 @@
+# Version 4.46
+#### (Committed 2026-01-05)
+
+### Modified functions:
+
+* cleanCoords
+    - 'rm.zero' now executed before 'rm.equal'
+    - reordered some arguments
+    
+* distMat
+    - argument 'dist_method' renamed to 'method'
+
+* distPres, getRegion
+    - import modEvA::range01() instead of re-defining it
+    
+
+### Other modified files:
+
+* distPres.Rd, distMat.Rd, getRegion.Rd
+    - updated to reflect CRS assumption
+    
+
 # Version 4.45
 #### (Committed 2025-12-31)
 
 ### Modified functions:
 
 * getRegion
-    - restrict mean(dist_mat) to upper triangle (bug from version 4.44)
     - add 'prj' argument
 
 
@@ -14,8 +35,7 @@
 ### Modified functions:
 
 * getRegion
-    - revert conversion of dist_mat upper triangle to NA (bug)
-    - restrict mean(dist_mat) to upper triangle
+    - revert conversion of dist_mat upper triangle to NA (bug for type="inv_dist")
     - for type="inv_dist", replace sapply() with rowSums() for much improved efficiency
     - add 'col_reg' argument and change default polygon colour to gold
 

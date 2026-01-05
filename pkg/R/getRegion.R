@@ -83,18 +83,13 @@ getRegion <- function(pres.coords,
 
       # dist_mat <- geodist::geodist(terra::crds(pres.coords), measure = dist_measure)
       # dist_mat <- terra::distance(pres.coords)
-      dist_mat <- distMat(pres.coords, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)  # 'pres.coords' somehow gets a CRS assigned here... -- because distMat() assigns it if is.lonlat(perhaps=TRUE)
+      dist_mat <- distMat(pres.coords, CRS = terra::crs(pres.coords), method = dist_method, verbosity = verbosity)  # 'pres.coords' somehow gets a CRS assigned here... -- because distMat() assigns it if is.lonlat(perhaps=TRUE)
 
     } else {
       if (verbosity > 0) message("Using supplied pairwise distance between points...")
     }
 
-    # diag(dist_mat) <- NA  # unnecessary
-    # dist_mat[upper.tri(dist_mat)] <- NA  # wrong for rowSums, right for mean distance (changed below)
-
-    dist_mean <- mean(dist_mat[upper.tri(dist_mat, diag = FALSE)], na.rm = TRUE)
   }  # end if dist
-
 
   if (grepl("clust", type)) {
 
@@ -126,18 +121,50 @@ getRegion <- function(pres.coords,
   }  # end if clust
 
 
+  if (type %in% c("mean_dist", "inv_dist")) {
+    if (verbosity > 0) message("Computing mean distance...")
+    # dist_mean <- mean(dist_mat[upper.tri(dist_mat, diag = FALSE)], na.rm = TRUE)  # upper.tri overuses memory, crashing for large matrices, and mean has the same numeric result
+    # diag(dist_mat) <- NA
+    dist_mean <- mean(dist_mat, na.rm = TRUE)
+  }
+
   if (type == "mean_dist") {
+    if (verbosity > 0) message("Computing buffer...")
     reg <- terra::buffer(pres.coords, width = dist_mean * dist_mult)
-  }  # end if mean_dist
+  }
 
   else if (type == "inv_dist") {
-    # get sum of distances from each point to all other points:
-    # dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # too slow
-    dist_sums <- rowSums(dist_mat, na.rm = TRUE)
-    range01 <- function(x){(x - min(x)) / (max(x) - min(x))}
-    dist_sums_01 <- range01(dist_sums)
-    dist_sums_01[dist_sums_01 == 0] <- 0.001  # otherwise buffer() error
-    reg <- terra::buffer(pres.coords, width = dist_mean * rev(dist_sums_01) * dist_mult)
+    if (verbosity > 0) message("Computing distance sums...")
+    # dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # too slow, and crashes for large datasets
+    dist_sums <- rowSums(sqrt(dist_mat), na.rm = TRUE)
+    # range01 <- function(x){(x - min(x)) / (max(x) - min(x))}
+    dist_sums_01 <- modEvA::range01(dist_sums)
+
+    if (verbosity > 0) message("Computing buffer...")
+    # buff_width <- dist_mean * (1 - dist_sums_01)
+    buff_width <- dist_mean * rev(dist_sums_01)
+
+    # buff_width <- dist_mean * (1 / (sqrt(dist_sums_01) + 1e-6))  # avoid division by 0
+    # buff_width <- dist_mean * exp(-dist_sums_01)
+    # buff_width <- dist_mean * (rowSums(exp(-dist_mat)) - 1)
+
+    # nn <- apply(dist_mat + diag(Inf, nrow(dist_mat)), 1, min)  # nearest-neighbour distance for each point
+    # # K <- exp(-dist_mat / median(nn))  # proximity kernel
+    # K <- 1 / (1 + dist_mat / median(nn))  # proximity kernel with slower decay
+    # buff_width <- dist_mean * range01(rowSums(K))  # crowdedness index
+    #
+    # # local scale: median distance from each point to all others
+    # m <- apply(dist_mat + diag(Inf, nrow(dist_mat)), 1, median)
+    #
+    # # kernel with local scaling
+    # K <- 1 / (1 + sweep(dist_mat, 1, m, "/"))
+    #
+    # # crowdedness index
+    # buff_width <- dist_mean * (range01(rowSums(K)))
+
+
+    buff_width[buff_width == 0] <- 1e-6  # otherwise buffer() error
+    reg <- terra::buffer(pres.coords, width = buff_width * dist_mult)
   }  # end if inv_dist
 
   else if (type == "clust_mean_dist") {
@@ -145,31 +172,46 @@ getRegion <- function(pres.coords,
     for (i in clusters) {
       if (is.null(dist_mat)) {
         clust_pts <- pres.coords[pres.coords$clust == i, ]
-        dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = verbosity)
+        dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), method = dist_method, verbosity = verbosity)
       } else {
         dist_mat_clust <- dist_mat[pres.coords$clust == i, pres.coords$clust == i, drop = FALSE]
       }
 
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
       # buff_radius <- mean(geodist::geodist(terra::crds(clust_pts), measure = dist_measure)) * dist_mult
-      # buff_radius <- mean(distMat(clust_pts, CRS = terra::crs(pres.coords), dist_method = dist_method, verbosity = 0), na.rm = TRUE) * dist_mult
+      # buff_radius <- mean(distMat(clust_pts, CRS = terra::crs(pres.coords), method = dist_method, verbosity = 0), na.rm = TRUE) * dist_mult
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
 
-      if (nrow(dist_mat_clust) > 1)
-        diag(dist_mat_clust) <- dist_mat_clust[upper.tri(dist_mat_clust)] <- NA  # new
+      # if (nrow(dist_mat_clust) > 1) {
+      #   diag(dist_mat_clust) <- NA
+      #   dist_mat_clust[upper.tri(dist_mat_clust)] <- NA
+      # }  # unnecessary
 
       buff_radius <- mean(dist_mat_clust, na.rm = TRUE) * dist_mult
 
-      if (!is.finite(buff_radius) || buff_radius <= 0) buff_radius <- 0.001  # because clusters with only one point get no distance, and a zero-width buffer cannot be computed for points
+      if (!is.finite(buff_radius) || buff_radius <= 0) buff_radius <- 1e-6  # because clusters with only one point get no distance, and a zero-width buffer cannot be computed for points
       pres.coords[pres.coords$clust == i, "buff_radius"] <- buff_radius
-    }
+    }  # end for clust
+
+    # if (type == "dist_pres") {
+    #   if (verbosity > 0) message("Computing distance to presences...")
+    #   e <- terra::ext(pres.coords) * 1.2  # points extent plus 20%
+    #   e <- terra::crop(e, terra::ext())  # limit to Earth's extent
+    #   rs <- c(xmax(e) - xmin(e), ymax(e) - ymin(e)) / 100
+    #   pres.coords.rst <- terra::rasterize(pres.coords, terra::rast(e, resolution = rs))
+    #   pres.dist <- terra::stretch(terra::distance(pres.coords.rst), minv = 0, maxv = 1)
+    #   pres.dist <- 1 - pres.dist
+    #   pres.dist <- terra::ifel(pres.dist >= 0.8, pres.dist, NA)
+    #   buf <- terra::as.polygons(pres.dist * 0)
+    # }  # end if dist_pres
 
     if (isTRUE(weight)) {
+      if (verbosity > 0) message("Computing weights...")
       counts <- table(pres.coords$clust)
       clust_n <- counts[match(pres.coords$clust, names(counts))]
       # clust_abund <- clust_n / sum(clust_n)  # would add up to 1
       clust_abund <- (clust_n - min(clust_n)) / (max(clust_n) - min(clust_n))  # range between 0 and 1
-      clust_abund[clust_abund == 0] <- 0.001  # zero buffer not allowed for points
+      clust_abund[clust_abund == 0] <- 1e-6  # zero buffer not allowed for points
       pres.coords$buff_radius <- pres.coords$buff_radius * clust_abund
     }
 
@@ -182,6 +224,7 @@ getRegion <- function(pres.coords,
     # }
     # reg <- terra::aggregate(do.call(rbind, buffs))
 
+    if (verbosity > 0) message("Computing buffer...")
     reg <- terra::buffer(pres.coords, width = "buff_radius")  # uses column value
   }
 
@@ -190,18 +233,20 @@ getRegion <- function(pres.coords,
     for (i in clusters) {
       clust_pts <- pres.coords[pres.coords$clust == i, ]
       clust_width <- terra::width(terra::aggregate(clust_pts)) * width_mult
-      if (clust_width <= 0) clust_width <- 0.001  # negative or zero-width buffer cannot be computed for points
+      if (clust_width <= 0) clust_width <- 1e-6  # negative or zero-width buffer cannot be computed for points
       pres.coords[pres.coords$clust == i, "clust_width"] <- clust_width
     }
 
     if (isTRUE(weight)) {
+      if (verbosity > 0) message("Computing weights...")
       counts <- table(pres.coords$clust)
       clust_n <- counts[match(pres.coords$clust, names(counts))]
       clust_abund <- (clust_n - min(clust_n)) / (max(clust_n) - min(clust_n))  # range between 0 and 1
-      clust_abund[clust_abund == 0] <- 0.001  # zero buffer not allowed for points
+      clust_abund[clust_abund == 0] <- 1e-6  # zero buffer not allowed for points
       pres.coords$clust_width <- pres.coords$clust_width * clust_abund
     }
 
+    if (verbosity > 0) message("Computing buffers...")
     reg <- terra::buffer(pres.coords, width = "clust_width")  # uses column value
   }
 

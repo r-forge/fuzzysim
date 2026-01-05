@@ -16,7 +16,7 @@ distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat =
   )
 
   if (is.null(dist.mat)) {
-    dist.mat <- distMat(data[ , coord.cols], CRS = CRS, dist_method = method, verbosity = verbosity)
+    dist.mat <- distMat(data[ , coord.cols], CRS = CRS, method = method, verbosity = verbosity)
   }
 
   if (is.numeric(sp.cols)) sp.cols <- names(data)[sp.cols]
@@ -39,7 +39,8 @@ distPres <- function(data, sp.cols, coord.cols = NULL, id.col = NULL, dist.mat =
 
   if (inv) {
     d <- pres.dist.mat  # short alias for next command
-    pres.dist.mat <- (d - min(d, na.rm = TRUE)) / (max(d, na.rm = TRUE) - min(d, na.rm = TRUE))  # normalize to [0,1]
+    # pres.dist.mat <- (d - min(d, na.rm = TRUE)) / (max(d, na.rm = TRUE) - min(d, na.rm = TRUE))  # normalize to [0,1]
+    pres.dist.mat <- modEvA::range01(pres.dist.mat)
     pres.dist.mat <- 1 - pres.dist.mat
   }
 

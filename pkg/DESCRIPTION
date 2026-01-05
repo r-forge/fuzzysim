@@ -1,8 +1,8 @@
 Package: fuzzySim
 Type: Package
 Title: Fuzzy Similarity in Species Distributions
-Version: 4.45
-Data: 2025-12-31
+Version: 4.46
+Date: 2026-01-05
 Authors@R: c(person(given = c("A.", "Marcia"),
                     family = "Barbosa",
                     role = "aut"),

@@ -112,7 +112,7 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
     message(nrow(data), " rows after 'rm.abs'")
   }
 
-  if (is.finite(year.min) && !is.null(year.col) && nrow(data) > 0) {
+  if (!is.null(year.min) && is.finite(year.min) && !is.null(year.col) && nrow(data) > 0) {
     year_ok <- data[ , year.col] >= year.min
     # if (year.na.pass) year_ok[is.na(data[ , year.col])] <- TRUE
     # else year_ok[is.na(data[ , year.col])] <- FALSE

@@ -5,6 +5,7 @@
 
 * cleanCoords
     - consider NAs as presences in 'abs.col'
+    - fix error when year.min = NULL
     
     
 # Version 4.46 -> CRAN

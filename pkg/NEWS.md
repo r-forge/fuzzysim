@@ -1,4 +1,13 @@
-# Version 4.46
+# Version 4.47
+#### (Committed 2026-01-20)
+
+### Modified functions:
+
+* cleanCoords
+    - consider NAs as presences in 'abs.col'
+    
+    
+# Version 4.46 -> CRAN
 #### (Committed 2026-01-05)
 
 ### Modified functions:

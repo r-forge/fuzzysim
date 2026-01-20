@@ -107,7 +107,7 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
 
   if (rm.abs && !is.null(abs.col) && nrow(data) > 0) {
     value <- tolower(as.character(data[ , abs.col]))
-    pres <- value != "absent" & value != "ausente"
+    pres <- is.na(value) | (value != "absent" & value != "ausente")
     data <- data[sapply(pres, isTRUE), ]
     message(nrow(data), " rows after 'rm.abs'")
   }

@@ -30,6 +30,6 @@ timer(start)
 
 
 # time an expression directly:
-timer(x <- sort(rnorm(1e7)))
-timer(x <- sort(rnorm(1e7)), digits = 2)
+timer(x <- sort(rnorm(1e6)))
+timer(x <- sort(rnorm(1e6)), digits = 2)
 }

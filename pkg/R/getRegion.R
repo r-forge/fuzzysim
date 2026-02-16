@@ -15,7 +15,7 @@ getRegion <- function(pres.coords,
                       ...)
 {
 
-  # version 1.8 (31 Dec 2025)
+  # version 1.9 (16 Feb 2026)
 
   if (!("terra" %in% .packages(all.available = TRUE))) stop("This function requires the 'terra' package.\nPlease install it first.")
 
@@ -137,12 +137,11 @@ getRegion <- function(pres.coords,
     if (verbosity > 0) message("Computing distance sums...")
     # dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # too slow, and crashes for large datasets
     dist_sums <- rowSums(sqrt(dist_mat), na.rm = TRUE)
-    # range01 <- function(x){(x - min(x)) / (max(x) - min(x))}
     dist_sums_01 <- modEvA::range01(dist_sums)
 
     if (verbosity > 0) message("Computing buffer...")
     # buff_width <- dist_mean * (1 - dist_sums_01)
-    buff_width <- dist_mean * rev(dist_sums_01)
+    buff_width <- dist_mean * rev(sort(dist_sums_01))
 
     # buff_width <- dist_mean * (1 / (sqrt(dist_sums_01) + 1e-6))  # avoid division by 0
     # buff_width <- dist_mean * exp(-dist_sums_01)

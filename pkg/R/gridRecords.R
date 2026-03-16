@@ -7,7 +7,7 @@ gridRecords <- function(rst,
                         plot = FALSE)  # new
 {
 
-  # version 3.91 (23 Sep 2025)
+  # version 3.92 (16 Mar 2026)
 
   if (!("raster" %in% .packages(all.available = TRUE)) && !("terra" %in% .packages(all.available = TRUE))) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -29,7 +29,11 @@ gridRecords <- function(rst,
 
   if (!is.null(species)) {
     if (length(species) != nrow(pres.coords)) stop ("'species' must have the same length as nrow(pres.coords)")
-    if (!is.null(abs.coords)) stop ("Sorry, 'abs.coords' is currently only implemented for one species at a time, i.e. when species=NULL")
+
+    if (isFALSE(absences) || !is.null(abs.coords)) {
+      stop ("Sorry, 'absences=FALSE' and 'abs.coords' are currently only implemented for one species at a time, i.e. when species=NULL")
+    }
+
     #if (suppressWarnings(any(is.finite(as.numeric(species))))) warning ("'species' are used as column names, so they should be of class 'character' and not start with a number.")
     if (length(unique(species)) != length(unique(trimws(species)))) warning ("Some values in 'species' have leading or trailing spaces and are thus treated separately; consider using trimws() first.")
 
@@ -55,7 +59,7 @@ gridRecords <- function(rst,
       if (nrow(a_extract) > 0) {
         a_extract <- data.frame(presence = 0, a_centroids, a_extract)
       }
-    } else {
+    } else {  # if absences = FALSE
       a_extract <- NULL
     } # end if Raster*
 
@@ -80,7 +84,7 @@ gridRecords <- function(rst,
         if (nrow(a_extract) > 0) {
           a_extract <- data.frame(presence = 0, a_centroids, a_extract[ , "cell", drop = FALSE], a_extract[ , 1:terra::nlyr(rst), drop = FALSE])
         }
-      } else {
+      } else {  # if absences = FALSE
         a_extract <- NULL
       }
     } # end if SpatRaster

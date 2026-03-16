@@ -30,7 +30,7 @@ getRegion(
   \itemize{
     \item "width": a buffer whose radius is the minimum diameter of the 'pres.coords' spatial extent (computed with \code{\link[terra:width]{terra::width()}});
     \item "mean_dist": a buffer whose radius is the mean pairwise \code{\link[terra:distance]{terra::distance()}} among 'pres.coords';
-    \item "inv_dist": a buffer whose radius is the mean pairwise \code{\link[terra:distance]{terra::distance()}} among 'pres.coords', inversely downweighted by the sum of the distances from each point to all other points in 'pres.coords' - a rough measure of how isolated each point is, possibly indicating opportunistic records in sparsely surveyed areas;
+    \item "inv_dist": a buffer whose radius is the mean pairwise \code{\link[terra:distance]{terra::distance()}} among 'pres.coords', downweighted by the sum of the square-rooted distances from each point to all other points in 'pres.coords' - a rough measure of how isolated each point is, possibly indicating opportunistic records in sparsely surveyed areas;
     \item "clust_mean_dist": a different buffer around each cluster of 'pres.coords' (clusters computed as described in 'clust_type'), sized according to the mean pairwise distance between the points in that cluster.
     \item "clust_width": a different buffer around each cluster of 'pres.coords' (clusters computed as described in 'clust_type'), sized according to the \code{\link[terra:width]{terra::width()}} of that cluster.
   }

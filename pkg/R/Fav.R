@@ -72,18 +72,20 @@ Fav <- function(model = NULL, obs = NULL, pred = NULL, n1n0 = NULL, sample.preva
   # slightly reduce probabilities of exactly 1, which would cause division by zero (resulting favourability is still 1):
   pred[pred == 1] <- 1 - 2.2e-16
 
+  odds <- pred / (1 - pred)
+
   if (method == "RBV") {  # original Real, Barbosa & Vargas (2006)
     if (inv)
       out <- (pred * n1 / n0) / (pred * n1 / n0 + 1 - pred)
     else
-      out <- (pred / (1 - pred)) / ((n1 / n0) + (pred / (1 - pred)))
+      out <- odds / ((n1 / n0) + odds)
 
   } else if (method == "AT") {  # Albert & Thuiller (2008); but see Acevedo & Real (2012)!
     sample.preval <- n1 / (n1 + n0)
     if (inv)
       out <- (pred * sample.preval) / (sample.preval + true.preval + pred * sample.preval)
     else
-      out <- (pred / (1 - pred)) / ((sample.preval / true.preval) + (pred / (1 - pred)))
+      out <- odds / ((sample.preval / true.preval) + odds)
 
   } else stop("method must be either 'RBV' or 'AT'")
 

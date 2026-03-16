@@ -1,3 +1,17 @@
+# Version 4.49
+#### (Committed 2026-03-16)
+
+### Modified functions:
+
+* Fav
+    - internally create object 'odds <- pred / (1 - pred)', to avoid repeated computation
+    - make help file more explicit about 'model' being optional, and about training prevalence not being necessarily the same as in the raw input data
+    
+
+* gridRecords
+    - specify (in both function and help file) that argument 'absences' (like 'abs.coords') can only be used if 'species' not provided (bug report by Alba Estrada)
+
+
 # Version 4.48 -> CRAN
 #### (Committed 2026-02-16)
 

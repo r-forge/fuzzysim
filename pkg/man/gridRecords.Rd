@@ -18,13 +18,13 @@ a SpatRaster object (or a much slower Raster* object, just for back-compatibilit
 a SpatVector of points, or an object inheriting class 'data.frame' with 2 columns containing, respectively, the x and y, or longitude and latitude coordinates (in this order, and in the same coordinate reference system as 'rst'!) of the points where species presence was recorded.
 }
   \item{abs.coords}{
-(optional) same as 'pres.coords' but for points where the species was not recorded. If abs.coords=NULL and absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as absences (of occurrence records).
+(optional) same as 'pres.coords' but for points where the species was not recorded. If abs.coords=NULL and absences=TRUE (the default), all pixels that are not intersected by 'pres.coords' will be returned as absences (of occurrence records). Curently cannot be used if 'species' provided.
 }
   \item{absences}{
-logical value (default TRUE) indicating whether pixels without presence points should be returned as absences (of occurrence records).
+logical value (default TRUE) indicating if pixels without presence points should be returned as absences (of occurrence records). FALSE can currently not be used if 'species' provided.
 }
   \item{species}{
-(optional) character vector, of the same length as 'nrow(pres.coords)', indicating the species to which each pair of coordinates corresponds. Useful for gridding records of more than one species at a time. Its unique values will be used as column names in the output. If this argument is specified, 'abs.coords' cannot be used and 'plot' is set to FALSE.
+(optional) character vector, of the same length as 'nrow(pres.coords)', indicating the species to which each pair of coordinates corresponds. Useful for gridding records of more than one species at a time. Its unique values will be used as column names in the output. If this argument is specified, 'absences=FALSE' and 'abs.coords' cannot be used, and 'plot' is set to FALSE.
 }
   \item{na.rm}{
 logical value indicating whether pixels with NA in all of the 'rst' layers should be excluded from the output data frame. The default is TRUE.

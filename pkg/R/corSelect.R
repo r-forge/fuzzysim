@@ -1,6 +1,6 @@
-corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), select = ifelse(is.null(sp.cols), "VIF", "cor"), test = "Chisq", family = "auto", use = "pairwise.complete.obs", method = "pearson", verbosity = 1) {
+corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05), select = ifelse(is.null(sp.cols), "VIF", "cor"), test = "Chisq", family = "auto", use = "pairwise.complete.obs", method = "pearson", simplif = FALSE, verbosity = 1) {
 
-  # version 3.8 (10 Dec 2025)
+  # version 3.9 (23 Mar 2026)
 
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 
@@ -15,7 +15,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
 
   notnum <- names(which(!sapply(data[ , var.cols, drop = FALSE], is.numeric)))
   if (length(notnum) > 0) {
-    warning("Disregarded the following non-numeric input variable(s):\n- ", paste(notnum, collapse = "\n- "), "\nYou can add them manually and consider finding a package with a correlation method appropriate for that type of variable(s).\n")
+    warning("Disregarding the following non-numeric input variable(s):\n- ", paste(notnum, collapse = "\n- "), "\nYou can add them manually and consider finding a package with a correlation method appropriate for that type of variable(s).\n")
     if (is.numeric(var.cols)) var.cols <- names(data)[var.cols]
     var.cols <- var.cols[-grep(paste(notnum, collapse = "|"), var.cols)]
   }
@@ -172,12 +172,15 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
     cat(excluded.vars, sep = ", ")
     cat("\n\nSELECTED:\n")
     cat(selected.vars, sep = ", ")
-    cat("\n")
+    cat("\n\n")
   }
 
-  if (isFALSE(coeff)) cor.mat <- cor.mat[rownames(cor.mat.p), colnames(cor.mat.p)]
-  strongest.remaining.corr <- suppressMessages(cor.mat[which.max(abs(cor.mat))])
-
+  if (!simplif) {
+    if (isFALSE(coeff)) cor.mat <- cor.mat[rownames(cor.mat.p), colnames(cor.mat.p)]
+    strongest.remaining.corr <- suppressMessages(cor.mat[which.max(abs(cor.mat))])
+  } else {  # if simplif
+    return(selected.vars)
+  }
 
   list(high.correlations = high.cor.mat,
        bivariate.significance = bivar.mat,

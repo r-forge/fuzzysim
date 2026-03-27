@@ -77,7 +77,14 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
 
       } else if (inherits(bias, "SpatRaster")) {
         if (verbosity > 0) cat("\nBiasing the selection of absences according to the input 'bias' raster...\n")
-        if (terra::global(bias, "min", na.rm = TRUE) < 0 || terra::global(bias, "max", na.rm = TRUE) == 0) stop ("'bias' values must be non-negative and not all zeros.")
+        # if (terra::global(bias, "min", na.rm = TRUE) < 0 || terra::global(bias, "max", na.rm = TRUE) == 0) stop ("'bias' values must be non-negative and not all zeros.")
+
+        if (terra::global(bias, "min", na.rm = TRUE) < 0) {
+          message("negative 'bias' values not allowed; converting them to zero")
+          bias <- terra::clamp(bias, lower = 0)
+        }
+
+        if (isTRUE(all.equal(as.vector(terra::minmax(bias)), c(0, 0)))) stop ("'bias' values must not be all zero.")
 
         bias.abs <- terra::extract(bias, data[abs.rows, coord.cols], cells = FALSE, xy = FALSE, ID = FALSE)[ , 1]
         bias.abs[!is.finite(bias.abs)] <- 0  # zero probability where NA

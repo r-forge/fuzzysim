@@ -11,7 +11,7 @@ corSelect(data, sp.cols = NULL, var.cols, coeff = TRUE,
 cor.thresh = ifelse(isTRUE(coeff), 0.8, 0.05),
 select = ifelse(is.null(sp.cols), "VIF", "cor"), test = "Chisq",
 family = "auto", use = "pairwise.complete.obs", method = "pearson",
-verbosity = 1)
+simplif = FALSE, verbosity = 1)
 }
 \arguments{
   \item{data}{a data frame containing the response and predictor variables.}
@@ -24,6 +24,7 @@ verbosity = 1)
 \item{family}{If 'select' is "p.value", "AIC" or "BIC", the error distribution and (optionally) the link function to use for assessing significant / informative variables (see \code{\link{glm}} or \code{\link{family}} for details). The default "auto" automatically uses "binomial" family for response variables containing only values of 0 and 1; "poisson" for positive integer responses (i.e. count data); "Gamma" for positive non-integer; and "gaussian" (i.e., linear models) otherwise.}
   \item{use}{argument to pass to \code{\link{cor}} indicating which rows to use when there are missing values. Can be "pairwise.complete.obs" (the default here), "everything", "all.obs", "complete.obs", "na.or.complete".}
   \item{method}{argument to pass to \code{\link{cor}} specifying the correlation coefficient to use. Can be "pearson" (the default, with a recommended minimum of 30 rows of data), "kendall", or "spearman" (with a recommended minimum of 10 rows of data).}
+  \item{simplif}{(if 'select' is not NULL) logical (default FALSE) indicating whether to produce a simplified output, consisting only of a character vector of the names of the selected variables.}
   \item{verbosity}{integer value indicating the amount of messages to display. The default is 1, for a medium amount of messages. Use 2 for more messages.}
 }
 \details{
@@ -34,7 +35,7 @@ One of the strategies to reduce correlations within a dataset consists of exclud
 If 'select' is NULL, or if 'select' is other than "VIF" but 'sp.cols' is NULL, the function returns only a table showing the pairs of variables that are correlated beyond the given threshold, without selection or exclusion. If the 'select' criterion requires assessing bivariate relationships and 'sp.cols' is provided, the function uses only the rows of the dataset where 'sp.cols' (used as the response variable) contains finite values against which the predictor variables can be modelled; rows with NA or NaN in 'sp.cols' are thus excluded from the calculation of correlations among predictor variables.
 }
 \value{
-This function returns a list of 7 elements (unless select=NULL, in which case it returns only the first of these elements):
+If simplif=TRUE (and select is not NULL), the function returns a character vector of the names of the selected variables. Otherwise (the default), it returns a list of 7 elements (unless select=NULL, in which case it returns only the first of these elements):
 \item{high.correlations}{data frame showing the pairs of input variables that are correlated beyond the given threshold, their correlation coefficient and its associated p-value.}
 \item{bivariate.significance}{data frame with the individual p-value, AIC, BIC and correlation coefficient (if one of these was the 'select' criterion and if 'sp.cols' was provided) of each of the highly correlated variables against the response variable.}
 \item{excluded.vars}{character vector containing the names of the variables to exclude (i.e., from each highly correlated pair, the variable with the worse 'select' score.}
@@ -72,6 +73,8 @@ corSelect(rotif.env, var.cols = 5:17, select = NULL)
 corSelect(rotif.env, var.cols = 5:17)
 
 corSelect(rotif.env, sp.cols = 46, var.cols = 5:17)
+
+corSelect(rotif.env, sp.cols = 46, var.cols = 5:17, simplif = TRUE)
 
 corSelect(rotif.env, sp.cols = 46, var.cols = 5:17, cor.thresh = 0.7)
 

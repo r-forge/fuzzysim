@@ -59,30 +59,57 @@ table(rotif.env$Burceo)
 
 # select among the absences using different criteria:
 
-burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
+abselect <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
 coord.cols = c("Longitude", "Latitude"), n = 150, seed = 123)
 
-burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
+abselect <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
 coord.cols = c("Longitude", "Latitude"), mult.p = 1.5, seed = 123)
 
 \dontrun{
-burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
+abselect <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
 coord.cols = c("Longitude", "Latitude"), max.dist = 18)
 
-burceo_select <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
+abselect <- selectAbsences(data = rotif.env, sp.cols = "Burceo",
 coord.cols = c("Longitude", "Latitude"), max.dist = 18, min.dist = 5,
 n = sum(rotif.env$Burceo), bias = TRUE)
 
 
 # you can run the next example if you have the 'geodata' package installed:
 
-bias_layer <- geodata::footprint(year = 2009, path = tempfile())
+human_footprint <- geodata::footprint(year = 2009, path = tempfile())
 
 # see also the biasLayer() function for creating your own bias layer
+# or see below for creating a bias layer based on target-group background
 
 
-burceo_select <- fuzzySim::selectAbsences(data = rotif.env, sp.cols = "Burceo",
+abselect <- fuzzySim::selectAbsences(data = rotif.env, sp.cols = "Burceo",
 coord.cols = c("Longitude", "Latitude"), n = sum(rotif.env$Burceo),
-bias = bias_layer)
+bias = human_footprint)
+
+terra::plot(human_footprint, alpha = 0.3, add = TRUE)
+
+
+# you can run the next example if you have 'terra' and 'spatstat' installed:
+
+# coordinates of records (surveyed sites) for the whole taxonomic group:
+recs <- rotif.env[rowSums(rotif.env[ , 18:47] > 0), c("Longitude", "Latitude")]
+
+rng <- terra::ext()
+
+win <- spatstat.geom::owin(xrange = rng[1:2], yrange = rng[3:4])
+
+ppp <- spatstat.geom::ppp(x = recs$Longitude, y = recs$Latitude, window = win)
+
+kernel_density <- terra::rast(spatstat.explore::density.ppp(ppp))
+
+terra::plot(kernel_density)
+
+points(recs, col = "red", cex = 0.2)
+
+abselect <- fuzzySim::selectAbsences(data = rotif.env, sp.cols = "Burceo",
+coord.cols = c("Longitude", "Latitude"), n = sum(rotif.env$Burceo),
+bias = kernel_density)
+
+terra::plot(kernel_density, alpha = 0.3, add = TRUE)
 }
 }

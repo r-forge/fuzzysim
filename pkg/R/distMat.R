@@ -31,28 +31,33 @@ distMat <- function(coords, CRS = NULL, method = "auto", verbosity = 2) {
     } else CRS <- terra::crs(coords)
   }  # end if terra
 
-    if (method == "auto") {
-      if (any(c("terra", "geodist") %in% pkgs))
+  if (method == "auto") {
+    if (any(c("terra", "geodist") %in% pkgs) &&
+        terra::is.lonlat(coords, perhaps = TRUE, warn = FALSE))
+        # but watch out: what if 'terra' is missing?
+    {
       method <- "haversine"
-    else
+    } else {
       method <- "euclidean"
+    }
 
-      if ("terra" %in% pkgs && utils::packageVersion("terra") >= "1.8.7") {
-        if (isTRUE(terra::is.lonlat(coords, perhaps = TRUE, warn = FALSE)))
-          small <- 0.00001  # degrees
-        else
-          small <- 1  # meter
-        min_lon_dist <- min(diff(sort(unique(terra::crds(coords)[,1]))), na.rm = TRUE)
-        min_lat_dist <- min(diff(sort(unique(terra::crds(coords)[,2]))), na.rm = TRUE)
-        if (min_lon_dist > small || min_lat_dist > small)
-          method <- "cosine"  # faster, but inaccurate for distances <1m (https://gis.stackexchange.com/questions/4906/why-is-law-of-cosines-more-preferable-than-haversine-when-calculating-distance-b)
 
-      } else {  # if terra < 1.8.7
-        if (verbosity > 0)  message("Faster 'auto' method available with 'terra' >= 1.8.7.\nUsing slower 'geo' method instead.\nUpdate or (re)install 'terra' for much faster computation.")
-      }
+    if ("terra" %in% pkgs && utils::packageVersion("terra") >= "1.8.7") {
+      if (isTRUE(terra::is.lonlat(coords, perhaps = TRUE, warn = FALSE)))
+        small <- 0.00001  # degrees
+      else
+        small <- 1  # meter
+      min_lon_dist <- min(diff(sort(unique(terra::crds(coords)[,1]))), na.rm = TRUE)
+      min_lat_dist <- min(diff(sort(unique(terra::crds(coords)[,2]))), na.rm = TRUE)
+      if (min_lon_dist > small || min_lat_dist > small)
+        method <- "cosine"  # faster, but inaccurate for distances <1m (https://gis.stackexchange.com/questions/4906/why-is-law-of-cosines-more-preferable-than-haversine-when-calculating-distance-b)
+
+    } else {  # if terra < 1.8.7
+      if (verbosity > 0)  message("Faster 'auto' method available with 'terra' >= 1.8.7.\nUsing slower 'geo' method instead.\nUpdate or (re)install 'terra' for much faster computation.")
+    }
 
     if (verbosity > 0) message("  -> using '", method, "' distance", sep = "")
-    }  # end if "auto"
+  }  # end if "auto"
 
   if (method %in% stats_methods) {
     if (verbosity > 1) message("Using stats::dist() for distance computation.\nResults are less accurate, notably for large distances,\nas they don't consider the curvature of the Earth.")

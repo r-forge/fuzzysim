@@ -5,6 +5,7 @@ getRegion <- function(pres.coords,
                       dist_mult = 1,
                       width_mult = 0.5,
                       weight = FALSE,
+                      decay = TRUE,
                       CRS = NULL,
                       dist_mat = NULL,
                       dist_method = "auto",
@@ -15,13 +16,21 @@ getRegion <- function(pres.coords,
                       ...)
 {
 
-  # version 1.9 (16 Feb 2026)
+  # version 2.1 (27 Mar 2026)
+
+  if (!terra::is.lonlat(pres.coords, perhaps = TRUE, warn = FALSE))
+    message("NOTE: projected coordinates (not in longitude-latitude degrees)\nmay produce inaccurate results, especially for long distances,\nas they ignore the curvature of the Earth.\n")
 
   if (!("terra" %in% .packages(all.available = TRUE))) stop("This function requires the 'terra' package.\nPlease install it first.")
 
   if (!(type %in% c("width", "mean_dist", "inv_dist", "clust_mean_dist", "clust_width"))) stop("Invalid 'type'. See help file for options.")
 
-  if (dist_method == "auto" && type == "clust_mean_dist")  dist_method <- "haversine"  # otherwise "auto" may use different distance methods for each cluster
+  if (dist_method == "auto" && type == "clust_mean_dist") {
+    if (terra::is.lonlat(pres.coords, perhaps = TRUE, warn = FALSE))
+      dist_method <- "haversine"
+    else
+      dist_method <- "euclidean"
+  }  # otherwise "auto" may use different distance methods for each cluster
 
   clust_type <- match.arg(clust_type, c("buffer", "hclust"))
 
@@ -103,16 +112,16 @@ getRegion <- function(pres.coords,
 
       tree <- stats::hclust(d = stats::as.dist(dist_mat), method = "single")
       pres.coords$clust <- stats::cutree(tree, h = clust_dist * 1000)  # km to meters
-    }
+    }  # end if hclust
 
-    if (clust_type == "buffer") {
-      buffers <- terra::buffer(pres.coords, width = clust_dist * 1000)  # km to meters
+    else if (clust_type == "buffer") {
+      buffers <- terra::buffer(pres.coords, width = clust_dist / 2 * 1000)  # km to meters
       # clust_polygons <- terra::convHull(pres.coords, by = "clust")
       # buff_radius <- sqrt(terra::expanse(clust_polygons))
       groups <- terra::disagg(terra::aggregate(buffers))
       groups$id <- 1:nrow(groups)
       pres.coords$clust <- terra::extract(groups, pres.coords)$id
-    }
+    }  # end if clust_type buffer
 
     # clust_polygons <- terra::convHull(pres.coords, by = "clust")
     # buff_radius <- sqrt(terra::expanse(clust_polygons))
@@ -124,7 +133,7 @@ getRegion <- function(pres.coords,
   if (type %in% c("mean_dist", "inv_dist")) {
     if (verbosity > 0) message("Computing mean distance...")
     # dist_mean <- mean(dist_mat[upper.tri(dist_mat, diag = FALSE)], na.rm = TRUE)  # upper.tri overuses memory, crashing for large matrices, and mean has the same numeric result
-    # diag(dist_mat) <- NA
+    if (nrow(dist_mat) > 1)  diag(dist_mat) <- NA
     dist_mean <- mean(dist_mat, na.rm = TRUE)
   }
 
@@ -134,44 +143,36 @@ getRegion <- function(pres.coords,
   }
 
   else if (type == "inv_dist") {
-    if (verbosity > 0) message("Computing distance sums...")
-    # dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # too slow, and crashes for large datasets
-    dist_sums <- rowSums(sqrt(dist_mat), na.rm = TRUE)
-    dist_sums_01 <- modEvA::range01(dist_sums)
+    if (verbosity > 0) message("Computing buffer widths...")
 
-    if (verbosity > 0) message("Computing buffer...")
-    # buff_width <- dist_mean * (1 - dist_sums_01)
-    buff_width <- dist_mean * rev(sort(dist_sums_01))
+    if (decay) {  # distance-decay kernel (farther points contribute less)
+      K <- exp(-dist_mat / stats::median(dist_mat, na.rm = TRUE))  # dist median used as scale (bandwidth)
+      diag(K) <- NA
+      prox <- rowSums(K, na.rm = TRUE)
+      prox_01 <- modEvA::range01(prox)
+      buff_width <- dist_mean * prox_01
 
-    # buff_width <- dist_mean * (1 / (sqrt(dist_sums_01) + 1e-6))  # avoid division by 0
-    # buff_width <- dist_mean * exp(-dist_sums_01)
-    # buff_width <- dist_mean * (rowSums(exp(-dist_mat)) - 1)
-
-    # nn <- apply(dist_mat + diag(Inf, nrow(dist_mat)), 1, min)  # nearest-neighbour distance for each point
-    # # K <- exp(-dist_mat / median(nn))  # proximity kernel
-    # K <- 1 / (1 + dist_mat / median(nn))  # proximity kernel with slower decay
-    # buff_width <- dist_mean * range01(rowSums(K))  # crowdedness index
-    #
-    # # local scale: median distance from each point to all others
-    # m <- apply(dist_mat + diag(Inf, nrow(dist_mat)), 1, median)
-    #
-    # # kernel with local scaling
-    # K <- 1 / (1 + sweep(dist_mat, 1, m, "/"))
-    #
-    # # crowdedness index
-    # buff_width <- dist_mean * (range01(rowSums(K)))
-
+    } else { # simple inverse distance (complementary, proximity)
+      # dist_sums <- sapply(dist_mat, sum, na.rm = TRUE)  # too slow, and crashes for large datasets
+      dist_sums <- rowSums(dist_mat, na.rm = TRUE)
+      dist_sums_01 <- modEvA::range01(dist_sums)
+      prox <- 1 - dist_sums_01
+      buff_width <- dist_mean * prox
+    }
 
     buff_width[buff_width == 0] <- 1e-6  # otherwise buffer() error
     reg <- terra::buffer(pres.coords, width = buff_width * dist_mult)
   }  # end if inv_dist
 
   else if (type == "clust_mean_dist") {
-    if (verbosity > 0) message("Computing pairwise distance within clusters...")  # before loop to avoid message repetitions
+    if (verbosity > 0) message("Computing pairwise distance within clusters...")
+    if (is.null(dist_mat)) message("  -> using '", dist_method, "' distance", sep = "")
+    # both the above before loop to avoid message repetitions
+
     for (i in clusters) {
       if (is.null(dist_mat)) {
         clust_pts <- pres.coords[pres.coords$clust == i, ]
-        dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), method = dist_method, verbosity = verbosity)
+        dist_mat_clust <- distMat(clust_pts, CRS = terra::crs(pres.coords), method = dist_method, verbosity = 0)
       } else {
         dist_mat_clust <- dist_mat[pres.coords$clust == i, pres.coords$clust == i, drop = FALSE]
       }
@@ -181,10 +182,10 @@ getRegion <- function(pres.coords,
       # buff_radius <- mean(distMat(clust_pts, CRS = terra::crs(pres.coords), method = dist_method, verbosity = 0), na.rm = TRUE) * dist_mult
       # buff_radius <- mean(terra::distance(clust_pts)) * dist_mult
 
-      # if (nrow(dist_mat_clust) > 1) {
-      #   diag(dist_mat_clust) <- NA
-      #   dist_mat_clust[upper.tri(dist_mat_clust)] <- NA
-      # }  # unnecessary
+      if (nrow(dist_mat_clust) > 1) {
+        diag(dist_mat_clust) <- NA
+        # dist_mat_clust[upper.tri(dist_mat_clust)] <- NA  # unnecessary
+      }
 
       buff_radius <- mean(dist_mat_clust, na.rm = TRUE) * dist_mult
 
@@ -264,13 +265,12 @@ getRegion <- function(pres.coords,
   if (plot) {
 
     if (!is.null(prj)) {
-      reg <- terra::project(reg, prj)
+      reg_prj <- terra::project(reg, prj)
       pres.coords <- terra::project(pres.coords, prj)
+      terra::plot(reg_prj, col = col_reg, border = NA, ...)
+    } else {
+      terra::plot(reg, col = col_reg, border = NA, ...)
     }
-
-    terra::plot(reg, col = col_reg, border = NA,
-                # main = paste("type =", type),
-                ...)
 
     if (!grepl("clust", type)) {
       terra::plot(pres.coords, cex = 0.3, add = TRUE)
@@ -279,7 +279,7 @@ getRegion <- function(pres.coords,
       clust_centroids <- terra::centroids(clust_aggregates)
 
       # with cluster legend:
-      # terra::text(clust_centroids, "agg_n", cex = 0.5)  # not all labels show if this is placed only after the following plot...
+      # terra::text(clust_centroids, "agg_n", cex = 0.5)  # not all labels appear if this is placed only after the following plot...
       # nc <- ifelse(length(clusters) > 10, 2, 1)
       # terra::plot(pres.coords, "clust", cex = 0.3, add = TRUE,
       #             col = grDevices::hcl.colors(length(clusters),

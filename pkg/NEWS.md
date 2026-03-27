@@ -1,3 +1,26 @@
+# Version 4.50 -> CRAN
+#### (Committed 2026-03-27)
+
+### Modified functions:
+
+* corSelect
+    - added 'simplif' argument
+
+* distMat (affecting getRegion)
+    - method "auto": "haversine" only if is.lonlat(perhaps=TRUE), otherwise "euclidean"
+
+* getRegion
+    - 'prj=TRUE' used only for plotting; output always in input CRS
+    - distance matrix diagonal converted to NA before computing mean
+    - distances no longer squared-rooted (results better after 0-1 normalization)
+    - new 'decay' argument (default TRUE) if type="inv_dist"
+    - 'clust_dist' divided by 2 for clust_type ="buffer"
+
+* selectAbsences
+    - reclassify to zero and message (not error) if negative 'bias' values
+    - help file: add example bias layer with 'spatstat' kernel density, for target group background approach
+
+
 # Version 4.49
 #### (Committed 2026-03-16)
 
@@ -5,8 +28,8 @@
 
 * Fav
     - internally create object 'odds <- pred / (1 - pred)', to avoid repeated computation
-    - make help file more explicit about 'model' being optional, and about training prevalence not being necessarily the same as in the raw input data
-    
+    - help file more explicit about 'model' being optional, and about training prevalence not being necessarily the same as in the raw input data
+
 
 * gridRecords
     - specify (in both function and help file) that argument 'absences' (like 'abs.coords') can only be used if 'species' not provided (bug report by Alba Estrada)

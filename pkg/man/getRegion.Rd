@@ -2,7 +2,7 @@
 \alias{getRegion}
 \title{Get region}
 \description{
-This function computes a (possibly multi-part) polygon around a set of point coordinates under given criteria, useful for delineating background or (pseudo)absence regions for computing species distibution models. Some of the 'type' options, especially those involving clusters or inverse distance, address survey bias by making smaller polygons around areas with fewer or more isolated points.
+This function computes a (possibly multi-part) polygon around a set of point coordinates under given criteria, useful for delineating background or (pseudo)absence regions for computing species distibution models. Some of the 'type' options, especially those involving clusters or inverse distance, address survey bias by making smaller polygons around areas with fewer and/or more isolated points.
 }
 \usage{
 getRegion(
@@ -13,6 +13,7 @@ getRegion(
   dist_mult = 1,
   width_mult = 0.5,
   weight = FALSE,
+  decay = TRUE,
   CRS = NULL,
   dist_mat = NULL,
   dist_method = "auto",
@@ -44,14 +45,15 @@ getRegion(
 }
 \item{dist_mult}{if 'type' involves distance, multiplier for the mean distance to use for the \code{\link[terra:buffer]{terra::buffer()}} radius. Default 1.}
 \item{width_mult}{if 'type' involves width, multiplier of the width to use for the \code{\link[terra:buffer]{terra::buffer()}} radius. Default 0.5.}
-\item{weight}{logical (used only if 'type' includes clusters) indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes. Default FALSE; if set to TRUE, clusters with fewer points (possibly indicating more sparsely surveyed areas) get proportionally smaller buffers than their mean distances or widths.}
-\item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). If not defined and coordinates fall within valid latitude-longitude bounds, EPSG:4326 is assumed.}
+\item{weight}{(if 'type' includes clusters) logical value indicating whether to weigh the radius of the buffer around each cluster proportionally to the number of points that it includes. Default FALSE; if set to TRUE, clusters with fewer points (possibly indicating more sparsely surveyed areas) get proportionally smaller buffers than their mean distances or widths.}
+\item{decay}{if type="inv_dist") logical value (default TRUE) indicating whether to use a distance-decay kernel (negative exponential function) to make farther points weight progressively less.}
+\item{CRS}{coordinate reference system of 'pres.coords' (if it is not a SpatVector with a defined CRS already), in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). If not defined and the coordinates fall within valid latitude-longitude bounds, EPSG:4326 is assumed. Note that input points in an unprojected CRS, with longitude-latitude coordinates in degrees, allow more accurate spherical distance calculations because they account for the curvature of the Earth (see e.g. \code{\link[terra:distance]{terra::distance()}} and \code{\link[terra:buffer]{terra::buffer()}}).}
 \item{dist_mat}{optional matrix of pairwise distances among 'pres.coords', to use (if 'type' or 'clust_type' implies computing distances) for efficiency instead of computing a new one. Should normally be computed with \code{\link[terra:distance]{terra::distance()}}, \code{\link[geodist:geodist]{geodist::geodist()}}, or another method that takes the Earth's curvature into account. If not provided, it is computed with \code{\link{distMat}}.}
-\item{dist_method}{(if 'dist_mat' is NULL) argument to pass to \code{\link{distMat}} specifying the 'method' for distance calculation. The default is "auto"; or "haversine" if 'type' is "clust_mean_dist", to avoid different clusters getting a different automatic distance method.}
+\item{dist_method}{(if 'dist_mat' is NULL) argument to pass to \code{\link{distMat}} specifying the 'method' for distance calculation. The general default is "auto". However, if type="clust_mean_dist", to avoid different clusters getting a different automatically assigned distance method, the method is "haversine" if coordinates are longitude-latitude degrees, or "euclidean" if they are projected.}
 \item{verbosity}{integer indicating the amount of messages to display along the process. The default is 2, for all available messages.}
 \item{plot}{logical (default TRUE) indicating whether to plot the resulting region polygon, together with the input 'pres.coords' (black points, or points coloured according to their cluster) and a label with the number of points in each cluster (if 'type' involves clusters).}
 \item{col_reg}{(if plot=TRUE) colour for the region polygon. Defaults to "gold".}
-\item{prj}{(if plot=TRUE) optional CRS for projecting the region polygon and occurrence points before plotting, in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). Can be useful particularly when using add=TRUE to overlay the output plot on a previous map in a different CRS.}
+\item{prj}{(if plot=TRUE) optional CRS for projecting the region polygon and occurrence points after computing, just for plotting purposes, in one of the following formats: WKT/WKT2, <authority>:<code>, or PROJ-string notation (see \code{\link[terra:crs]{terra::crs()}}). Can be useful particularly when using add=TRUE to overlay the output plot on a previous map in a different CRS.}
 \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{\link[terra:plot]{terra::plot()}}.}
 }
 \details{
@@ -96,7 +98,7 @@ reg2 <- fuzzySim::getRegion(occs_sv, type = "inv_dist")
 
 terra::plot(cntry, lwd = 0.2, add = TRUE)
 
-terra::plot(reg2, lwd = 4, border = "orange", add = TRUE)
+terra::plot(reg2, lwd = 3, border = "orange", add = TRUE)
 
 
 reg3 <- fuzzySim::getRegion(occs_sv, type = "clust_width", weight = TRUE,
@@ -104,7 +106,7 @@ width_mult = 0.3)
 
 terra::plot(cntry, lwd = 0.2, add = TRUE)
 
-terra::plot(reg3, lwd = 4, border = "orange", add = TRUE)
+terra::plot(reg3, lwd = 3, border = "orange", add = TRUE)
 
 
 # note it is up to the user to pre-process the data

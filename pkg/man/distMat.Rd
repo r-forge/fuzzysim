@@ -13,9 +13,9 @@
   \item{method}{The method to use for distance calculation. Partial and case-insensitive argument matching is used. Options are:
     \itemize{
       \item{"auto" (the default): the recommended method under the circumstances (see Details).}
-      \item{"euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski": older methods, implemented in \code{\link[stats:dist]{stats::dist()}}, which do not acocunt for the curvature of the Earth}
+      \item{"euclidean", "maximum", "manhattan", "canberra", "binary", "minkowski": older methods, implemented in \code{\link[stats:dist]{stats::dist()}}, which do not account for the curvature of the Earth}
       \item{"geodesic", "haversine" "vincenty", "cheap": methods implemented in \code{\link[geodist:geodist]{geodist::geodist()}} (note this requires that 'coords' are in geographic degrees)}
-      \item{"geo", "haversine", "cosine": methods implemented in \code{\link[terra:distance]{terra::distance()}}}
+      \item{"geo", "haversine", "cosine": methods implemented in \code{\link[terra:distance]{terra::distance()}} (also requiring 'coords' in geographic degrees)}
   }
   If a metric has the same name in 'terra' and 'geodist' and both packages are available, the latter is used, as it is slightly faster.
 }
@@ -24,7 +24,7 @@
 \details{
   This function computes a matrix of pairwise distances for the input set of coordinates. It supports various distance measures by calling \code{\link[stats:dist]{stats::dist()}}, \code{\link[terra:distance]{terra::distance()}} or \code{\link[geodist:geodist]{geodist::geodist()}}, depending on the specified method and on the installed R packages.
 
-  With the default "auto" option, if neither \code{terra} nor \code{geodist} are installed, the method is "euclidean" from \code{\link[stats:dist]{stats::dist()}}. Otherwise, the method is "haversine" (relatively fast, but may be inaccurate at long distances, especially near the poles) if there are distances < 1 m or 0.00001 degrees; or "cosine" (faster but inaccurate for small distances) otherwise (unless 'terra' version is older than 1.8.7, when "cosine" was implemented). You can instead choose a specific option, e.g. "geo" or "geodesic" for the most accurate yet slowest distance method (see ?terra::distance; may crash if many points); "vincenty" (more accurate than "haversine" as it considers the Earth's ellipticity, but slower and may fail for nearly antipodal points); or "cheap" (the fastest, but inaccurate for maximum distances >100 km).
+  With the default "auto" option, if neither \code{terra} nor \code{geodist} are installed or if the input 'coords' are projected rather than in geographic degrees, the method is "euclidean" from \code{\link[stats:dist]{stats::dist()}}. Otherwise, the method is "haversine" (relatively fast, but may be inaccurate at long distances, especially near the poles) if there are distances < 1 m or 0.00001 degrees; or "cosine" (faster but inaccurate for small distances) otherwise (unless 'terra' version is older than 1.8.7, before "cosine" was implemented). You can instead choose a specific option, e.g. "geo" or "geodesic" for the most accurate yet slowest distance method (see ?terra::distance; may crash if many points); "vincenty" (more accurate than "haversine" as it considers the Earth's ellipticity, but slower and may fail for nearly antipodal points); or "cheap" (the fastest, but inaccurate for maximum distances >100 km).
 }
 \value{
   A matrix of distances between the coordinates.

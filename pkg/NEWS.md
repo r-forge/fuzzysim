@@ -1,3 +1,13 @@
+# Version 4.51
+#### (Committed 2026-04-07)
+
+### Modified functions:
+
+* cleanCoords
+    - plot red X only for removed (not all input) records
+    - use GBIF default values for coord.cols, uncert.col, abs.col and year.col
+
+
 # Version 4.50 -> CRAN
 #### (Committed 2026-03-27)
 
@@ -29,7 +39,6 @@
 * Fav
     - internally create object 'odds <- pred / (1 - pred)', to avoid repeated computation
     - help file more explicit about 'model' being optional, and about training prevalence not being necessarily the same as in the raw input data
-
 
 * gridRecords
     - specify (in both function and help file) that argument 'absences' (like 'abs.coords') can only be used if 'species' not provided (bug report by Alba Estrada)

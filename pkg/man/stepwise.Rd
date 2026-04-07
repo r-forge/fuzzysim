@@ -37,25 +37,25 @@ argument to pass to \code{\link{add1}} specifying the statistical test whose 'p.
 argument to pass to \code{\link{drop1}} specifying the statistical test whose 'p.out' a variable must exceed to be expelled from the model (if it does not simultaneously pass the 'test.in' when direction="both"). Can be "LRT" (the default), "Rao", "Chisq" or "F".
 }
   \item{p.in}{
-threshold p-value for a variable to enter the model. Defaults to 0.05.
+threshold p-value (default 0.05) for a variable to enter the model.
 }
   \item{p.out}{
-threshold p-value for a variable to leave the model. Defaults to 0.1.
+threshold p-value (default 0.1) for a variable to leave the model.
 }
   \item{trace}{
 if positive, information is printed to the console at each step. The default is 1, for naming each variable that was added or removed. With trace=2, the summary of the model at each step is also printed.
 }
   \item{simplif}{
-logical, whether to return a simpler output containing only the model object (the default), or a list with, additionally, a data frame with the variable included or excluded at each step.
+logical (default TRUE), whether to return a simple output containing only the model object. With FALSE, the output is a list with, additionally, a data frame showing the variable included or excluded at each step.
 }
   \item{preds}{
-logical, whether to return also the predictions given by the model at each step. This argument is ignored if simplif=TRUE.
+(if simplif=FALSE) logical, whether to return also the predictions produced by the model at each step.
 }
   \item{Favourability}{
-logical, whether to convert the predictions (if preds=TRUE) with the \code{\link{Fav}} function. This argument is ignored if simplif=TRUE.
+(if simplif=FALSE and preds=TRUE) logical, whether to convert the predictions with the \code{\link{Fav}} function.
 }
   \item{Wald}{
-logical, whether to print the Wald test statistics using \code{\link{summaryWald}}, rather than the z test normally returned by \code{\link{summary}}. Used only if trace > 1. Requires the \pkg{aod} package. The default is FALSE.
+(if trace > 1) logical (default FALSE), whether to print the Wald test statistics using \code{\link{summaryWald}}, rather than the z test normally returned by \code{\link{summary}}. Requires the \pkg{aod} package.
 }
 }
 \details{

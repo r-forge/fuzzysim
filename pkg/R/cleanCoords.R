@@ -1,4 +1,4 @@
-cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL, year.col = NULL, rm.dup = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL, year.na.pass = TRUE, plot = TRUE, extend = 0.1) {
+cleanCoords <- function(data, coord.cols = c("decimalLongitude", "decimalLatitude"), uncert.col = "coordinateUncertaintyInMeters", abs.col = "occurrenceStatus", year.col = "year", rm.dup = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL, year.na.pass = TRUE, plot = TRUE, extend = 0.1) {
   # version 1.9 (20 Jan 2026)
 
   stopifnot(
@@ -125,10 +125,15 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
     if (plot) {
       x_range <- range(data.in[ , coord.cols[1]], na.rm = TRUE)
       y_range <- range(data.in[ , coord.cols[2]], na.rm = TRUE)
-      # expand the range by 10% on either side:
+      # expand the range by 10% (or input 'extend') on either side:
       x_range <- x_range + c(-1, 1) * diff(x_range) * extend
       y_range <- y_range + c(-1, 1) * diff(y_range) * extend
-      plot(data.in[ , coord.cols], pch = 4, cex = 0.4, col = "red", xlim = x_range, ylim = y_range)
+
+      # combo <- rbind(data.in[ , coord.cols], data[ , coord.cols])
+      # dups <- duplicated(combo)
+      # removed <- combo[!dups, ]
+      removed <- data.in[!duplicated(rbind(data, data.in))[seq_len(nrow(data.in))], coord.cols]
+      plot(removed, pch = 4, cex = 0.4, col = "red", xlim = x_range, ylim = y_range)
       points(data[ , coord.cols], pch = 20, cex = 0.5, col = "blue")
     }
 
@@ -145,10 +150,13 @@ cleanCoords <- function(data, coord.cols = NULL, uncert.col = NULL, abs.col = NU
   if (plot) {
     x_range <- range(terra::crds(data.sv.in)[ , 1], na.rm = TRUE)
     y_range <- range(terra::crds(data.sv.in)[ , 2], na.rm = TRUE)
-    # expand the range by 10% on either side:
+    # expand the range by 10% (or by 'extend') on either side:
     x_range <- x_range + c(-1, 1) * diff(x_range) * extend
     y_range <- y_range + c(-1, 1) * diff(y_range) * extend
-    terra::plot(data.sv.in, pch = 4, cex = 0.4, col = "red", ext = c(x_range, y_range))
+
+    # terra::plot(terra::erase(data.sv.in, data.sv.out), pch = 4, cex = 0.4, col = "red", ext = c(x_range, y_range))
+    removed <- data.in[!duplicated(rbind(data, data.in))[seq_len(nrow(data.in))], coord.cols]
+    terra::plot(terra::vect(removed, geom = coord.cols), pch = 4, cex = 0.4, col = "red", xlim = x_range, ylim = y_range)
     terra::plot(data.sv.out, pch = 20, cex = 0.5, col = "blue", add = TRUE)
   }
 

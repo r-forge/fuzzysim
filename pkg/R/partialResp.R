@@ -70,6 +70,8 @@ partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.po
       if (length(ylim) == 1 && ylim == "auto") {
         ylim_v <- range(c(lower_fav_v, upper_fav_v), na.rm = TRUE)
         if (plot.points)  ylim_v <- range(c(ylim_v, fav), na.rm = TRUE)
+      } else {
+        ylim_v <- ylim
       }
 
         plot(xlim, ylim_v, type = "n", xlab = v, ylab = "Favourability", mgp = c(1.8, 0.6, 0), ...)

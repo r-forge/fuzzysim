@@ -1,4 +1,4 @@
-partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.points = FALSE, ylim = c(0, 1), reset.par = TRUE, ...) {
+partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.points = FALSE, ylim = c(0, 1), reset.par = TRUE, line.col = "darkblue", ci.col = "#D3DDE9", point.col = grDevices::rgb(0.7, 0.7, 0.7, alpha = 0.5), ...) {
 
   if (!inherits(model, "glm") || !all(c("binomial", "logit") %in% model$family)) stop ("'model' must be of class 'glm' with 'binomial' family and 'logit' link.")
 
@@ -24,10 +24,11 @@ partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.po
     vals_v <- seq(range_v[1], range_v[2], by = diff(range_v) / 100)
     # vals_v <- seq(floor(range_v[1]), ceiling(range_v[2]), by = diff(range_v) / 100)
 
-    if (length(vars_mod) > 1)
+    if (length(vars_mod) > 1) {
       partial_df <- data.frame(vals_v, sapply(setdiff(vars_mod, v), function(x) rep(mean(dat[[x]], na.rm = TRUE), length(vals_v))))
-    else
+    } else {
       partial_df <- data.frame(vals_v)
+    }
     names(partial_df)[1] <- v
 
     # compute the partial prediction and CIs (https://www.r-bloggers.com/2018/12/confidence-intervals-for-glms):
@@ -43,16 +44,16 @@ partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.po
       if (plot.points) xlim <- range(xlim, dat[ , v], na.rm = TRUE)
 
       if (length(ylim) == 1 && ylim == "auto") {
-        ylim <- range(c(lower_v, upper_v), na.rm = TRUE)
-        if (plot.points)  ylim <- range(c(ylim, model$fitted.values), na.rm = TRUE)
+        ylim_v <- range(c(lower_v, upper_v), na.rm = TRUE)
+        if (plot.points)  ylim_v <- range(c(ylim_v, model$fitted.values), na.rm = TRUE)
       }
 
-      plot(xlim, ylim, type = "n", xlab = v, ylab = "Probability", mgp = c(1.8, 0.6, 0), ...)
+      plot(xlim, ylim_v, type = "n", xlab = v, ylab = "Probability", mgp = c(1.8, 0.6, 0), ...)
       polygon(x = c(vals_v, rev(vals_v)),
               y = c(upper_v, rev(lower_v)),  # confidence interval
-              col = "#D3DDE9", border = NA)
-      if (plot.points) points(dat[ , v], model$fitted.values, col = grDevices::rgb(0.7, 0.7, 0.7, alpha = 0.4), cex = 0.1)
-      lines(vals_v, prob_v, lwd = 1.5, col = "darkblue")  # response curve
+              col = ci.col, border = NA)
+      if (plot.points) points(dat[ , v], model$fitted.values, col = point.col, cex = 0.1)
+      lines(vals_v, prob_v, lwd = 1.5, col = line.col)  # response curve
 
     } else {  # if Fav
       prev <- prevalence(model = model)
@@ -65,16 +66,16 @@ partialResp <- function(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.po
       if (plot.points) xlim <- range(xlim, dat[ , v], na.rm = TRUE)
 
       if (length(ylim) == 1 && ylim == "auto") {
-        ylim <- range(c(lower_fav_v, upper_fav_v), na.rm = TRUE)
-        if (plot.points)  ylim <- range(c(ylim, fav), na.rm = TRUE)
+        ylim_v <- range(c(lower_fav_v, upper_fav_v), na.rm = TRUE)
+        if (plot.points)  ylim_v <- range(c(ylim_v, fav), na.rm = TRUE)
       }
 
-        plot(xlim, ylim, type = "n", xlab = v, ylab = "Favourability", mgp = c(1.8, 0.6, 0), ...)
+        plot(xlim, ylim_v, type = "n", xlab = v, ylab = "Favourability", mgp = c(1.8, 0.6, 0), ...)
         polygon(x = c(vals_v, rev(vals_v)),
                 y = c(upper_fav_v, rev(lower_fav_v)),  # confidence interval
-                col = "#D3DDE9", border = NA)
-        if (plot.points) points(dat[ , v], fav, col = grDevices::rgb(0.7, 0.7, 0.7, alpha = 0.4), cex = 0.1)
-        lines(vals_v, fav_v, lwd = 1.5, col = "darkblue")  # response curve
+                col = ci.col, border = NA)
+        if (plot.points) points(dat[ , v], fav, col = point.col, cex = 0.1)
+        lines(vals_v, fav_v, lwd = 1.5, col = line.col)  # response curve
     }  # end if Fav else
   }  # end for v
 }

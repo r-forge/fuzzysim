@@ -2,7 +2,7 @@
 \alias{getRegion}
 \title{Get region}
 \description{
-This function computes a (possibly multi-part) polygon around a set of point coordinates under given criteria, useful for delineating background or (pseudo)absence regions for computing species distibution models. Some of the 'type' options, especially those involving clusters or inverse distance, address survey bias by making smaller polygons around areas with fewer and/or more isolated points.
+This function computes a (possibly multi-part) polygon around a set of point coordinates under given criteria, useful for delineating background or (pseudo)absence regions for computing species distibution models. Some of the 'type' options, namely those involving clusters or inverse distance, address survey bias by making smaller polygons around areas with fewer and/or more isolated points, as described in Barbosa (2026).
 }
 \usage{
 getRegion(
@@ -31,9 +31,9 @@ getRegion(
   \itemize{
     \item "width": a buffer whose radius is the minimum diameter of the 'pres.coords' spatial extent (computed with \code{\link[terra:width]{terra::width()}});
     \item "mean_dist": a buffer whose radius is the mean pairwise \code{\link[terra:distance]{terra::distance()}} among 'pres.coords';
-    \item "inv_dist": a buffer whose radius is the mean pairwise \code{\link[terra:distance]{terra::distance()}} among 'pres.coords', downweighted by the sum of the square-rooted distances from each point to all other points in 'pres.coords' - a rough measure of how isolated each point is, possibly indicating opportunistic records in sparsely surveyed areas;
-    \item "clust_mean_dist": a different buffer around each cluster of 'pres.coords' (clusters computed as described in 'clust_type'), sized according to the mean pairwise distance between the points in that cluster.
-    \item "clust_width": a different buffer around each cluster of 'pres.coords' (clusters computed as described in 'clust_type'), sized according to the \code{\link[terra:width]{terra::width()}} of that cluster.
+    \item "inv_dist": a buffer whose radius is the mean pairwise \code{\link[terra:distance]{terra::distance()}} among 'pres.coords', downweighted by the sum of the square-rooted distances from each point to all other points in 'pres.coords' - a rough measure of how isolated each point is, possibly indicating opportunistic records in sparsely surveyed areas (Barbosa, 2026);
+    \item "clust_mean_dist": a different buffer around each cluster of 'pres.coords' (clusters computed as described in 'clust_type'), sized according to the mean pairwise distance between the points in that cluster (Barbosa, 2026).
+    \item "clust_width": a different buffer around each cluster of 'pres.coords' (clusters computed as described in 'clust_type'), sized according to the \code{\link[terra:width]{terra::width()}} of that cluster (Barbosa, 2026).
   }
 }
 \item{clust_dist}{if 'type' involves clusters, numeric value specifying the distance threshold (in km) within which points are clustered together. Default 100.}
@@ -59,7 +59,7 @@ getRegion(
 \details{
 Most methods for computing species distribution models require predictor values for regions beyond those with species occurrence records, i.e. background or (pseudo)absence areas. The extent (as well as the spatial resolution) of these regions has a strong effect on model predictions. Ideally, they should include the areas that are within the reach of the species AND were reasonably surveyed (though you can further refine the latter with \code{\link{selectAbsences}} and an optional \code{\link{biasLayer}}). While sometimes we have a large enough and delimited area that we can use (e.g. when modelling a region where a national or regional distribution atlas is available), often we need to approximate the areas that appear to be both reasonably surveyed and within the species' reach.
 
-Mind that no automated procedure can properly address all possible issues related to uneven data collection, or properly conform to all possible species distribution and survey patterns. Mind also that the output region from this function does not consider geographical barriers, or other factors that should also be taken into account when delimiting a region for modelling.
+The procedures implemented in this function, aimed at approximating accessible and (roughly) surveyed areas given a set of occurrence points, are described in Barbosa (2026). Mind that no automated procedure can properly address all possible issues related to uneven data collection, or properly conform to all possible species distribution and survey patterns. Mind also that the output region from this function does not currently consider geographical barriers, or other factors that should also be taken into account when delimiting a region for modelling.
 
 It is thus recommended to try different values for 'type' and associated parameters; judge for yourself which one provides the most plausible approximation to the surveyed region accessible to your target species; and possibly post-process (i.e. further edit) the resulting region in light of the available knowledge of that species' distribution, survey patterns and study region.
 }
@@ -114,6 +114,9 @@ terra::plot(reg3, lwd = 3, border = "orange", add = TRUE)
 # and/or post-process the region (e.g. terra::erase() areas
 # that are unsurveyed or inaccessible to the target species)
 }
+}
+\references{
+Barbosa, A.M. (2026) Spatially adaptive background delimitation strategies for species distribution models with unevenly surveyed occurrences. Biodiversity Informatics, in press
 }
 \author{
 A. Marcia Barbosa

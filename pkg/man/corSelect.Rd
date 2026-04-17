@@ -14,7 +14,7 @@ family = "auto", use = "pairwise.complete.obs", method = "pearson",
 simplif = FALSE, verbosity = 1)
 }
 \arguments{
-  \item{data}{a data frame containing the response and predictor variables.}
+  \item{data}{a data frame containing the (optionally response and) predictor variables.}
   \item{sp.cols}{optional, name or index number of the column of 'data' that contains the response (e.g. species) variable. Currently, only one 'sp.cols' can be used at a time, so an error message is returned if length(sp.cols) > 1. If left NULL, 'select' will be "VIF" by default.}
   \item{var.cols}{names or index numbers of the columns of 'data' that contain the predictor variables.}
   \item{coeff}{logical value  (default TRUE) indicating whether two variables should be considered highly correlated based on the magnitude of their coefficient of correlation. If set to FALSE, this classification will be based instead on the p-value of the correlation, but mind that (with sufficient sample size) correlations can be statistically significant even if weak.}

@@ -6,7 +6,8 @@ This function produces partial response plot(s) for probability or favourability
 }
 \usage{
 partialResp(model, vars = NULL, Fav = FALSE, se.mult = 1.96, plot.points = FALSE,
-ylim = c(0, 1), reset.par = TRUE, ...)
+ylim = c(0, 1), reset.par = TRUE, line.col = "darkblue", ci.col = "#D3DDE9",
+point.col = grDevices::rgb(0.7, 0.7, 0.7, alpha = 0.5), ...)
 }
 \arguments{
   \item{model}{a model object of class 'glm' and family 'binomial'.}
@@ -16,7 +17,10 @@ ylim = c(0, 1), reset.par = TRUE, ...)
   \item{plot.points}{logical value (default \code{FALSE}) indicating whether to plot the points of predicted probability (or favourability, if \code{Fav=TRUE}) against the values of the plotted variable.}
   \item{ylim}{either a numeric vector of length 2 indicating the minimum and maximum value for the y-axis, or character value \code{"auto"} for fitting the axis limits to the existing values in each plot. The default is \code{c(0, 1)}, for all curves to be directly comparable.}
   \item{reset.par}{logical value. If TRUE (the default), plotting \code{\link{par}}ameters are changed by the function and reset in the end. FALSE can be useful if the user wants to set their own parameters (like 'mfrow' or 'mar') and combine this with other plots.}
-  \item{\dots}{some additional arguments that can be passed to \code{\link{plot}}, e.g. 'main', 'cex.axis' or 'cex.lab'.}
+  \item{line.col}{colour for the response curve line.}
+  \item{ci.col}{colour for the confidence interval polygon.}
+  \item{point.col}{(if plot.points=TRUE) colour for the points. The default uses transparency (alpha) to improve visibility of overlapping points.}
+  \item{\dots}{additional arguments that can be passed to \code{\link{plot}}, e.g. 'main', 'cex.axis' or 'cex.lab'.}
 }
 \details{
   Each variable is plotted at intervals of 1/100th of its range. Confidence intervals are computed as the value plus/minus the standard error multiplied by 'se.mult' (default 1.96, for the 95\% confidence interval). To avoid the confidence intervals exceeding the 0:1 interval that's possible for probability, the standard error is computed on the predictions at the scale of the predictors (i.e., computed with \code{type="link"}), and then back-transformed with \code{model$family$linkinv} (see \url{https://fromthebottomoftheheap.net/2018/12/10/confidence-intervals-for-glms} -- thanks to Gavin Simpson for this post!).

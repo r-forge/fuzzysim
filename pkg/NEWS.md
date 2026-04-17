@@ -27,7 +27,7 @@
     - added 'simplif' argument
 
 * distMat (affecting getRegion)
-    - method "auto": "haversine" only if is.lonlat(perhaps=TRUE), otherwise "euclidean"
+    - method "auto": "haversine" only if is.lonlat(perhaps=TRUE), otherwise "euclidean" (bug report by getRegion article reviewer)
 
 * getRegion
     - 'prj=TRUE' used only for plotting; output always in input CRS

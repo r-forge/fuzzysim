@@ -1,3 +1,12 @@
+# Version 4.53
+#### (Committed 2026-04-22)
+
+### Modified functions:
+
+* multicol
+    - new arguments 'max.nvars' and 'simplif'
+
+
 # Version 4.52
 #### (Committed 2026-04-17)
 

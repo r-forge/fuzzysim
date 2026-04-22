@@ -5,15 +5,17 @@
 This function analyses multicollinearity in a set of variables or in a model, including the R-squared, tolerance and variance inflation factor (VIF). It also allows selecting variables under a given VIF.
 }
 \usage{
-multicol(vars = NULL, model = NULL, reorder = TRUE,
-vif.thresh = Inf, verbosity = 2, plot = FALSE, ...)
+multicol(vars = NULL, model = NULL, reorder = TRUE, vif.thresh = Inf,
+max.nvars = Inf, verbosity = 2, simplif = FALSE, plot = FALSE, ...)
 }
 \arguments{
   \item{vars}{A matrix, an object inheriting class data.frame, or a multi-layer SpatRaster containing the numeric variables for which to calculate multicollinearity. Note that only the 'independent' (predictor, explanatory, right hand side) variables should be entered, as the result obtained for each variable depends on all the other variables present in the analysed data set.}
   \item{model}{Alternatively to 'vars', a model object of class "glm" to calculate 'multicol' among the included variables.}
   \item{reorder}{logical, whether variables should be output in decreasing order or VIF value rather than in their input order. The default is TRUE.}
   \item{vif.thresh}{numeric value specifying the maximum VIF allowed in the output. The default is \code{Inf}, for no limit. Variables above the threshold are excluded in a stepwise manner, starting from the highest one and recomputing the VIFs every time, until no variable exceeds the 'vif.thresh' value.}
+  \item{max.nvars}{integer value specifying the maximum number of variables allowed in the output. The default is \code{Inf}, for no limit. If there are more variables than 'max.nvars', variables are excluded in a stepwise manner, starting from the one with the highest VIF and recomputing the VIFs every time, until the specified number of variables is reached.}
   \item{verbosity}{integer specifying the amount of messages to display along the process. The default is 2, for the maximum amount of messages available.}
+    \item{simplif}{(if 'vif.thresh' is not \code{Inf}) logical (default FALSE) indicating whether to produce a simplified output, consisting only of a character vector of the names of the selected variables.}
   \item{plot}{logical value (default TRUE) indicating whether to plot the output VIF values.}
   \item{\dots}{(if plot=TRUE) additional arguments to pass to \code{modEvA::lollipop}.}
 }
@@ -27,7 +29,9 @@ The multicol function calculates the degree of multicollinearity in a set of num
       \item{Variance Inflation Factor: VIF = 1 / (1 - R squared), which, in a linear model with these variables as predictors, reflects the degree to which the variance of an estimated regression coefficient is increased due only to the correlations among covariates (Marquardt 1970; Mansfield & Helms 1982).}
       }
 
-The function optionally performs a stepwise backward removal of variables whose VIF exceeds a specified threshold. Note, however, that a high VIF does not necessarily imply that a particular variable should be removed. Consider removing instead other (potencially less important) variables that are correlated with it, causing the high VIF; and see also the \code{\link{corSelect}} function.
+The function optionally performs stepwise backward removal of variables, to keep the VIF under a given threshold, or to keep the number of variables under a given threshold (e.g., if you need a computation that is implemented for a limited number of variables, such as a Kernel density estimate with \code{ks::kde}). This procedure is greedy, in the sense that it makes the locally optimal choice at each step without reconsidering previous decisions. It does not evaluate whether removing a different variable at a given step might lead to a better overall subset. Exploring many (or all) possible subsets could yield improved results, but would be computationally much more demanding.
+
+Note also that a high VIF does not necessarily imply that a particular variable should be removed. Consider removing instead other (potencially less important) variables that are correlated with it, causing the high VIF; and see also the \code{\link{corSelect}} function.
 }
 \value{
 The function returns a matrix with one row per variable, the names of

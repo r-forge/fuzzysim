@@ -1,6 +1,6 @@
-multicol <- function(vars = NULL, model = NULL, reorder = TRUE, vif.thresh = Inf, verbosity = 2, plot = FALSE, ...) {
+multicol <- function(vars = NULL, model = NULL, reorder = TRUE, vif.thresh = Inf, max.nvars = Inf, verbosity = 2, simplif = FALSE, plot = FALSE, ...) {
 
-  # version 1.4 (10 Dec 2025)
+  # version 1.5 (22 Apr 2026)
 
   if (is.null(vars)) {
     if (is.null(model)) stop ("You must provide either 'vars' or 'model'.")
@@ -31,12 +31,16 @@ multicol <- function(vars = NULL, model = NULL, reorder = TRUE, vif.thresh = Inf
 
   repeat {
     result <- multic(vars)
-    if (max(result$VIF, na.rm = TRUE) < vif.thresh) break
+    if ((max(result$VIF, na.rm = TRUE) < vif.thresh) &&
+        (ncol(vars) <= max.nvars)) break
     exclude <- rownames(result)[which.max(result$VIF)]
-    if (verbosity > 0) message(paste0("removing ", exclude, " (VIF = ", round(result[exclude, "VIF"], 3), ")"))
+    if (verbosity > 0) {
+      message(paste0("removing ", exclude,
+                     " (VIF = ", round(result[exclude, "VIF"], 3), ")"))
+    }
     vars[ , exclude] <- NULL
-    if (ncol(result) < 2) break
-  }  # end repeat loop
+    if (ncol(vars) < 2) break
+  }
 
   if (reorder)  result <- result[order(result$VIF, decreasing = TRUE), ]
 
@@ -44,5 +48,6 @@ multicol <- function(vars = NULL, model = NULL, reorder = TRUE, vif.thresh = Inf
     modEvA::lollipop(result$VIF, names = rownames(result), ...)
   }
 
+  if (simplif) return(rownames(result))
   return(result)
 }

@@ -1,3 +1,12 @@
+# Version 4.54
+#### (Committed 2026-04-21)
+
+### Modified functions:
+
+* cleanCoords, gridRecords
+    - new argument '...' to pass to plot()
+
+
 # Version 4.53
 #### (Committed 2026-04-22)
 

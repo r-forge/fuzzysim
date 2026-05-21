@@ -8,7 +8,7 @@ This function takes a (single or multi-layer) SpatRaster (or a Raster* object fo
 }
 \usage{
 gridRecords(rst, pres.coords, abs.coords = NULL, absences = TRUE,
-species = NULL, na.rm = TRUE, plot = FALSE)
+species = NULL, na.rm = TRUE, plot = FALSE, ...)
 }
 \arguments{
   \item{rst}{
@@ -32,6 +32,7 @@ logical value indicating whether pixels with NA in all of the 'rst' layers shoul
   \item{plot}{
   logical value specifying whether to plot the resulting presence and (pseudo)absence points. The default is FALSE for backward compatibility. Automatically set to FALSE if 'species' is not NULL.
 }
+  \item{\dots}{(if plot=TRUE) some additional arguments that can be passed to \code{\link{plot}}, e.g "main" (plot title).}
 }
 \details{
 See e.g. Baez et al. (2020), where this function was first used to get unique presences and absences from point occurrence data at the spatial resolution of marine raster variables.

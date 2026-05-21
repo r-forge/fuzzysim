@@ -4,10 +4,11 @@ gridRecords <- function(rst,
                         absences = TRUE,
                         species = NULL,  # new
                         na.rm = TRUE,  # new
-                        plot = FALSE)  # new
+                        plot = FALSE, # new
+                        ...)  # new
 {
 
-  # version 3.92 (16 Mar 2026)
+  # version 3.93 (7 May 2026)
 
   if (!("raster" %in% .packages(all.available = TRUE)) && !("terra" %in% .packages(all.available = TRUE))) stop("This function requires having either the 'raster' or the 'terra' package installed.")
 
@@ -140,7 +141,7 @@ gridRecords <- function(rst,
       result_sv <- terra::vect(result, geom = c("x", "y"), keepgeom = TRUE)  # for better-shaped plot
       terra::plot(result_sv[result_sv$presence == 0, ],
                   ext = terra::ext(result_sv),
-                  pch = "-", col = "red")
+                  pch = "-", col = "red", ...)
       terra::points(result_sv[result_sv$presence == 1, ],
                     pch = "+", col = "blue")
       if (sv_input) result <- result_sv
@@ -149,7 +150,7 @@ gridRecords <- function(rst,
       yrange <- range(result$y, na.rm = TRUE)
       plot(result[result$presence == 0, c("x", "y")],
            xlim = xrange, ylim = yrange,
-           pch = "-", col = "red")
+           pch = "-", col = "red", ...)
       points(result[result$presence == 1, c("x", "y")],
              pch = "+", col = "blue")
     }

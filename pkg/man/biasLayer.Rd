@@ -23,6 +23,9 @@
 \value{
   A \code{\link[terra:SpatRaster]{terra::SpatRaster}}.
 }
+\seealso{
+\code{\link{selectAbsences}}
+}
 \examples{
   \dontrun{
     # load mapping packages:

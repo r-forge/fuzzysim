@@ -17,7 +17,7 @@
   rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols),
   imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000,
   uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL,
-  year.na.pass = TRUE, plot = TRUE, extend = 0.1)
+  year.na.pass = TRUE, plot = TRUE, extend = 0.1, ...)
 }
 \arguments{
   \item{data}{an object inheriting class 'data.frame' with the spatial coordinates to be cleaned, or a 'SpatVector' of points.}
@@ -42,7 +42,8 @@
   \item{year.min}{positive integer specifying the minimum (earliest) value admitted for the year column. The default is NULL (no limit).}
   \item{year.na.pass}{logical, whether rows with NA in 'year.col' should be kept as if fulfilling the year.min criterion. The default is TRUE.}
   \item{plot}{logical value specifying whether to plot the result. The default is TRUE.}
-  \item{extend}{numeric value specifying the proportion of the input coordinates range by which to increase the extent of the output plot (if plot=TRUE). The default is 0.1, i.e. 10\%.}
+  \item{extend}{(if plot=TRUE) numeric value specifying the proportion of the input coordinates range by which to increase the extent of the output plot. The default is 0.1, i.e. 10\%.}
+    \item{\dots}{(if plot=TRUE) some additional arguments that can be passed to \code{\link{plot}}, e.g "main" (plot title).}
 }
 \details{
   This function applies some basic cleaning procedures for species occurrence data, removing some of the most common errors in biodiversity databases. It is inspired by a few functions (namely 'coord_incomplete', 'coord_imprecise', 'coord_impossible', 'coord_unlikely' and 'coord_uncertain') that were present in the 'scrubr' package by Scott Chamberlain, which was archived (https://github.com/ropensci-archive/scrubr). It implements some additional cleaning procedures, such as removal of records of absence and records older than a given year. It also maps the result.
